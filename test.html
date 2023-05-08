@@ -136,6 +136,16 @@ window.onload = function () {
   addShape2('unitLine', 0,0, 1,1, );
   addShape5('unitLine', 0,0,1,1,0, 1,1,0,1,0, );
   addShape5('divLine',  0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
+  addShape5('divLineV',
+    1,0.0,0,0,0, 0,0.0,0,0,0, 
+    1,0.4,1,1,1, 0,0.4,1,1,1, 
+    1,0.6,1,1,1, 0,0.6,1,1,1, 
+    1,1.0,0,0,0, 0,1.0,0,0,0, );
+  addShape5('divLineH',
+    0.0,1,0,0,0, 0.0,0,0,0,0, 
+    0.4,1,1,1,1, 0.4,0,1,1,1, 
+    0.6,1,1,1,1, 0.6,0,1,1,1, 
+    1.0,1,0,0,0, 1.0,0,0,0,0, );
 
 
   // WEBGL INITIALIZATION
@@ -231,7 +241,7 @@ window.onload = function () {
   function useProg2() {
     gl.useProgram(prog2);
     gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
-    gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
+    //gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
     //gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'vertexColor'));
     var a = gl.getAttribLocation(prog2, 'aVertexPosition')
     gl.vertexAttribPointer(
@@ -246,7 +256,7 @@ window.onload = function () {
   function useProg5() {
     gl.useProgram(prog5);
     gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
-    gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
+    //gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
     var a = gl.getAttribLocation(prog5, 'aVertexPosition')
     gl.vertexAttribPointer(
 	a,
@@ -439,16 +449,22 @@ window.onload = function () {
 		gl.getUniformLocation(prog5, 'uProjectionMatrix'),
 		false, this.mat);
 	if (this.parent.state == 'v') {
-		mat4.translate(mat, mat, [0.5, 0, 0]);
-		mat4.scale(mat, mat, [0, this.h , 0]);
+		//mat4.translate(mat, mat, [0.5, 0, 0]);
+		//mat4.scale(mat, mat, [0, this.h , 0]);
 	} else {
-		mat4.translate(mat, mat, [0, 0.5, 0]);
-		mat4.scale(mat, mat, [this.w, 0, 0]);
+		//mat4.translate(mat, mat, [0, 0.5, 0]);
+		//mat4.scale(mat, mat, [this.w, 0, 0]);
 	}
+	mat4.scale(mat, mat, [this.w, this.h, 0]);
 	gl.uniformMatrix4fv(
 		gl.getUniformLocation(prog5, 'uModelViewMatrix'),
 		false, mat);
-	gl.drawArrays(gl.LINE_STRIP, beg5.divLine, len5.divLine);
+	//gl.drawArrays(gl.LINE_STRIP, beg5.divLine, len5.divLine);
+	if (this.parent.state == 'v') {
+		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineV, len5.divLineV);
+	} else {
+		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineH, len5.divLineH);
+	}
   };
 
   var div = v = new vp.ViewDivider(null, 'a', 0.5, 1);
