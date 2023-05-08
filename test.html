@@ -35,28 +35,28 @@ var vp=function(){function P(){return 0<navigator.maxTouchPoints?85:5}function e
 (d.x-d.px)/a,d.px=d.x,d.dy=(d.y-d.py)/a,d.py=d.y,b+=Math.sqrt(d.dx*d.dx+d.dy*d.dy)/fa;Z&&Z.setValueAtTime(b,F.currentTime);a=[];d=0;for(var c of S){b=c.getScale();var e=Math.max(c.minX+c.w/b,c.maxX)-c.w/b,g=Math.min(c.maxX-c.w/b,c.minX),f=Math.max(c.minY+c.h/b,c.maxY)-c.h/b,k=Math.min(c.maxY-c.h/b,c.minY);if(g<e){var h=e;e=g;g=h}k<f&&(h=f,f=k,k=h);if(c.tempVX||c.tempVY||c.tempDX||c.tempDY){h=Math.sign(c.tempDX)*Math.min(10,Math.abs(c.tempDX));var u=Math.sign(c.tempDY)*Math.min(10,Math.abs(c.tempDY));
 c.tempDX=Math.sign(c.tempDX)*Math.max(0,Math.abs(c.tempDX)-10);c.tempDY=Math.sign(c.tempDY)*Math.max(0,Math.abs(c.tempDY)-10);c.userX-=1E3*c.tempVX/30/b-h;c.userY-=1E3*c.tempVY/30/b-u;c.userX-c.ox/b<e||c.userX-c.ox/b>g||c.userY-c.oy/b<f||c.userY-c.oy/b>k?(c.userX=Math.max(e,Math.min(g,c.userX-c.ox/b))+c.ox/b,c.userY=Math.max(f,Math.min(k,c.userY-c.oy/b))+c.oy/b,c.rematrix(),c.relayout(),c.setRenderFlag(!0),a.push(d),delete c.tempVX,delete c.tempVY):(c.rematrix(),c.relayout(),c.setRenderFlag(!0),b=
 Math.sqrt(c.tempVX*c.tempVX+c.tempVY*c.tempVY),e=Math.max(0,b-.1),0!=b&&(c.tempVX=c.tempVX/b*e,c.tempVY=c.tempVY/b*e))}else{if(c.userX-c.ox/b<e||c.userX-c.ox/b>g||c.userY-c.oy/b<f||c.userY-c.oy/b>k)c.userX=Math.max(e,Math.min(g,c.userX-c.ox/b))+c.ox/b,c.userY=Math.max(f,Math.min(k,c.userY-c.oy/b))+c.oy/b,c.rematrix(),c.relayout(),c.setRenderFlag(!0);a.push(d);delete c.tempVX;delete c.tempVY}d++}for(E.renderAll();a.length;)S.splice(a.pop(),1);0<S.length&&E.setRenderFlag(!0);if(ha){l.viewport(0,0,x.width,
-x.height);l.disable(l.SCISSOR_TEST);l.useProgram(z);l.bindBuffer(l.ARRAY_BUFFER,aa);l.vertexAttribPointer(l.getAttribLocation(z,"aVertexPosition"),2,l.FLOAT,!1,0,0);l.enable(l.BLEND);l.uniform4fv(l.getUniformLocation(z,"uVertexColor"),new Float32Array([1,1,1,1]));l.uniformMatrix4fv(l.getUniformLocation(z,"uProjectionMatrix"),!1,N);c=mat4.create();if(Y){b=[];for(var [,n]of Object.entries(r))if(n.hitList){a=n.hitList.getActionableGads(vp.GAF_ALL);for(var q of a)b.includes(q)||b.push(q)}for(const m of b)if(m.ownedBy){n=
-m.convexHull;for(p=0;p<n.length;p+=2)mat4.fromTranslation(c,[m.viewport.x,m.viewport.y,0]),mat4.mul(c,c,m.viewport.userMat),mat4.scale(c,c,[m.viewport.getScale(),m.viewport.getScale(),1]),mat4.translate(c,c,[m.x+n[p+0]-m.viewport.userX,m.y+n[p+1]-m.viewport.userY,0]),mat4.scale(c,c,[n[(p+2)%n.length]-n[p+0],n[(p+3)%n.length]-n[p+1],1]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitLine,A.unitLine);q=vec3.create();mat4.getScaling(q,m.viewport.userMat);
-for(const t in m.extendedHulls)if(t==""+P()/m.viewport.getScale()/q[0])for(n=m.extendedHulls[t],p=0;p<n.length;p+=2)mat4.fromTranslation(c,[m.viewport.x,m.viewport.y,0]),mat4.mul(c,c,m.viewport.userMat),mat4.scale(c,c,[m.viewport.getScale(),m.viewport.getScale(),1]),mat4.translate(c,c,[m.x+n[p+0]-m.viewport.userX,m.y+n[p+1]-m.viewport.userY,0]),mat4.scale(c,c,[n[(p+2)%n.length]-n[p+0],n[(p+3)%n.length]-n[p+1],0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,
-y.unitLine,A.unitLine)}for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[m.x,m.y,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),"mouse"==m.e.pointerType?l.drawArrays(l.LINE_LOOP,y.roundMouse,A.roundMouse):l.drawArrays(l.LINE_LOOP,y.roundTouch,A.roundTouch)}ba=(ba+1)%16;mat4.identity(c);mat4.translate(c,c,[160,45,0]);mat4.rotate(c,c,Math.PI/8*ba,[0,0,1]);mat4.scale(c,c,[40,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,
-y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,10,0]);mat4.scale(c,c,[50,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,25,0]);mat4.scale(c,c,[50*window.visualViewport.scale,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,40,0]);mat4.scale(c,
-c,[50*window.devicePixelRatio,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,55,0]);mat4.scale(c,c,[50*window.innerWidth/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[12,57,0]),mat4.scale(c,c,[46*m.x/B/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,
-"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,70,0]);mat4.scale(c,c,[50*window.innerHeight/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[12,72,0]),mat4.scale(c,c,[46*m.y/B/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,
-y.unitSquare,A.unitSquare)}}}window.requestAnimationFrame(ea)}function ca(){W=10;var b=window.innerWidth,a=window.innerHeight;x.width=b*window.visualViewport.scale*window.devicePixelRatio;x.height=a*window.visualViewport.scale*window.devicePixelRatio;x.style.width=b*window.visualViewport.scale;x.style.height=a*window.visualViewport.scale;fa=Math.sqrt(x.width*x.width+x.height*x.height);B=window.visualViewport.scale*window.devicePixelRatio;X=!0}function J(b,a){function d(k){xdiff=k.x-k.ox;ydiff=k.y-
-k.oy;return xdiff*xdiff>ydiff*ydiff?0<xdiff?"right":"left":0<ydiff?"down":"up"}if("touches"==a&&b.touches&&0==b.touches.length){a=[];for(var [,c]of Object.entries(r))c.tempIsActive="mouse"==c.e.pointerType;for(const [k,h]of Object.entries(r))h.tempIsActive||a.push(k);for(;a.length;)delete r[a.pop()];for(const [,k]of Object.entries(r))delete k.tempIsActive}else switch(B!=window.visualViewport.scale*window.devicePixelRatio&&ca(),c="p-"+b.pointerId,a){case "down":r.hasOwnProperty(c)||(r[c]={gestureState:"",
-touching:!1,px:b.layerX*B,py:b.layerY*B});a=r[c];a.e=b;a.touching=!0;a.x=b.layerX*B;a.y=b.layerY*B;a.ox=a.x;a.oy=a.y;a.hitList=new vp.HitList(a.x,a.y);E.getHits(a.hitList,P());a.hitList.sortHits();if("mouse"==b.pointerType){if(1==(b.buttons|1))for(const k of a.hitList.hits){var e=k.gad;!e.ownedBy&&e.actionFlags&vp.GAF_CLICKABLE&&(e.gestureState="begin-click",e.ownedBy=c);!e.ownedBy&&e.actionFlags&vp.GAF_DRAGGABLE&&(e.gestureState="begin-drag",e.ownedBy=c,e.gestureTimerId=setTimeout(J,250,b,"drag time reached"))}if(2==
-(b.buttons|2))for(const k of a.hitList.hits)a=k.gad,!a.ownedBy&&a.actionFlags&vp.GAF_CONTEXTMENU&&(a.gestureState="begin-menu",a.ownedBy=c,G&&G.setValueAtTime(.1,F.currentTime),G&&G.setValueAtTime(0,F.currentTime+.001),console.log("menu down"))}else for(const k of a.hitList.hits)(a=k.gad,a.ownedBy)?a.ownedBy!=c&&("await-pinch"==a.gestureState||a.actionFlags&vp.GAF_PINCHABLE&&("begin-drag"==a.gestureState||"begin-tap"==a.gestureState)?(a.gestureState="pinch",a.secondTouch=c,a.pinchBeginFunc&&a.pinchBeginFunc.call(a,
-r[a.ownedBy],r[a.secondTouch])):"drag"==a.gestureState&&a.actionFlags&vp.GAF_PINCHABLE&&(a.gestureState="pinch",a.secondTouch=c,a.dragEndFunc&&a.dragEndFunc.call(a,r[a.ownedBy]),a.pinchBeginFunc&&a.pinchBeginFunc.call(a,r[a.ownedBy],r[a.secondTouch]))):a.actionFlags&vp.GAF_CLICKABLE?(a.gestureState="begin-tap",a.ownedBy=c,a.gestureBeginTime=b.timeStamp,a.actionFlags&0!=(vp.GAF_CONTEXTMENU|vp.GAF_DRAGGABLE)&&(a.gestureTimerId=setTimeout(J,250,b,"tap-and-hold time reached"))):a.actionFlags&vp.GAF_CONTEXTMENU?
-(a.gestureState="begin-menu",a.ownedBy=c,a.gestureTimerId=setTimeout(J,250,b,"tap-and-hold time reached")):a.actionFlags&vp.GAF_DRAGGABLE?(a.gestureState="begin-drag",a.ownedBy=c,a.gestureTimerId=setTimeout(J,250,b,"drag time reached")):a.actionFlags&vp.GAF_SWIPEABLE?(a.gestureState="begin-swipe",a.ownedBy=c):a.actionFlags&vp.GAF_PINCHABLE&&(a.gestureState="await-pinch",a.ownedBy=c);break;case "move":da||"mouse"!=b.pointerType||(da=1,E.enableMouse&&E.enableMouse.call(E));r.hasOwnProperty(c)||(r[c]=
-{gestureState:"mouse"==b.pointerType?"hover":"",touching:"mouse"==b.pointerType?!1:!0});a=r[c];a.e=b;a.px=a.x;a.x=b.layerX*B;a.py=a.y;a.y=b.layerY*B;if("mouse"==b.pointerType){if(a.hitList)for(e of a.hitList.hits){var g=e.gad;if(g.ownedBy==c)switch(g.gestureState){case "begin-click":case "recover-click":b=new vp.HitList(a.x,a.y);g.getHits(b,P());0==b.hits.length&&(g.gestureState="abandon-click");break;case "abandon-click":b=new vp.HitList(a.x,a.y);g.getHits(b,P());0!=b.hits.length&&(g.gestureState=
-"recover-click");break;case "begin-drag":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(g.hasOwnProperty("gestureTimerId")&&(clearTimeout(g.gestureTimerId),delete g.gestureTimerId),("up"==b||"down"==b)&&g.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&g.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT)){g.gestureState="drag";for(var f of a.hitList.hits)f.gad!==g&&f.gad.ownedBy==c&&delete f.gad.ownedBy;g.dragBeginFunc&&g.dragBeginFunc.call(g,a);g.dragMoveFunc&&g.dragMoveFunc.call(g,a)}break;
-case "drag":g.dragMoveFunc&&g.dragMoveFunc.call(g,a)}}}else for(const k of a.hitList.hits)if(e=k.gad,e.ownedBy==c)switch(e.gestureState){case "begin-tap":if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.gestureState="invalid-tap",!a.swiping))if(b=d(a),("up"==b||"down"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT){e.gestureState="swipe";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;e.swipeBeginFunc&&
-e.swipeBeginFunc.call(e,a);e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a);console.log("swipe "+b)}else if(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT){e.gestureState="drag";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;e.dragBeginFunc&&e.dragBeginFunc.call(e,a);e.dragMoveFunc&&e.dragMoveFunc.call(e,a);console.log("drag "+b)}break;case "begin-menu":Math.sqrt((a.ox-a.x)**2+(a.oy-
-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),e.gestureState="invalid-menu");break;case "begin-swipe":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),!a.swiping&&(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT))){e.gestureState="swipe";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==
-e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;e.swipeBeginFunc&&e.swipeBeginFunc.call(e,a);e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a)}break;case "swipe":e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a);break;case "begin-drag":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),!a.swiping&&(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT))){e.gestureState=
-"drag";a.swiping=!0;for(const h of a.hitList.hits)if(h.gad!==e&&(h.gad.ownedBy==c&&delete h.gad.ownedBy,h.gad.secondTouch==c))switch(h.gad.gestureState){case "pinch":h.gad.gestureState="drag",delete h.gad.secondTouch,h.gad.pinchEndFunc&&h.gad.pinchEndFunc.call(h.gad),h.gad.dragBeginFunc&&h.gad.dragBeginFunc.call(h.gad,r[h.gad.ownedBy])}e.dragBeginFunc&&e.dragBeginFunc.call(e,a);e.dragMoveFunc&&e.dragMoveFunc.call(e,a)}break;case "drag":e.dragMoveFunc&&e.dragMoveFunc.call(e,a);break;case "pinch":e.pinchMoveFunc&&
-e.pinchMoveFunc.call(e,r[e.ownedBy],r[e.secondTouch])}else if(e.secondTouch==c)switch(e.gestureState){case "pinch":e.pinchMoveFunc&&e.pinchMoveFunc.call(e,r[e.ownedBy],r[e.secondTouch])}break;case "up":r.hasOwnProperty(c)||(r[c]={gestureState:"",touching:!1,x:0,y:0,px:0,py:0});a=r[c];a.e=b;a.touching=!1;if("mouse"==b.pointerType){if(1==(b.buttons|1)){e=0;for(const k of a.hitList.hits)if(f=k.gad,f.ownedBy==c){if(!e)switch(f.gestureState){case "begin-click":case "recover-click":G&&G.setValueAtTime(.1,
-F.currentTime);G&&G.setValueAtTime(0,F.currentTime+.001);f.clickFunc&&f.clickFunc.call(f);e=1;break;case "begin-drag":f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId);break;case "drag":f.dragMoveFunc&&f.dragMoveFunc.call(f,a),f.dragEndFunc&&f.dragEndFunc.call(f,a),console.log("drag release")}delete f.gestureState;delete f.ownedBy}}if(2==(b.buttons|2))for(g of a.hitList.hits)if(e=g.gad,e.ownedBy==c){switch(e.gestureState){case "begin-menu":console.log("menu up")}delete e.gestureState;
+x.height);l.disable(l.SCISSOR_TEST);l.useProgram(z);l.bindBuffer(l.ARRAY_BUFFER,aa);c=l.getAttribLocation(z,"aVertexPosition");l.vertexAttribPointer(c,2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(c);l.enable(l.BLEND);l.uniform4fv(l.getUniformLocation(z,"uVertexColor"),new Float32Array([1,1,1,1]));l.uniformMatrix4fv(l.getUniformLocation(z,"uProjectionMatrix"),!1,N);c=mat4.create();if(Y){b=[];for(var [,n]of Object.entries(r))if(n.hitList){a=n.hitList.getActionableGads(vp.GAF_ALL);for(var q of a)b.includes(q)||
+b.push(q)}for(const m of b)if(m.ownedBy){n=m.convexHull;for(p=0;p<n.length;p+=2)mat4.fromTranslation(c,[m.viewport.x,m.viewport.y,0]),mat4.mul(c,c,m.viewport.userMat),mat4.scale(c,c,[m.viewport.getScale(),m.viewport.getScale(),1]),mat4.translate(c,c,[m.x+n[p+0]-m.viewport.userX,m.y+n[p+1]-m.viewport.userY,0]),mat4.scale(c,c,[n[(p+2)%n.length]-n[p+0],n[(p+3)%n.length]-n[p+1],1]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitLine,A.unitLine);q=vec3.create();
+mat4.getScaling(q,m.viewport.userMat);for(const t in m.extendedHulls)if(t==""+P()/m.viewport.getScale()/q[0])for(n=m.extendedHulls[t],p=0;p<n.length;p+=2)mat4.fromTranslation(c,[m.viewport.x,m.viewport.y,0]),mat4.mul(c,c,m.viewport.userMat),mat4.scale(c,c,[m.viewport.getScale(),m.viewport.getScale(),1]),mat4.translate(c,c,[m.x+n[p+0]-m.viewport.userX,m.y+n[p+1]-m.viewport.userY,0]),mat4.scale(c,c,[n[(p+2)%n.length]-n[p+0],n[(p+3)%n.length]-n[p+1],0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),
+!1,c),l.drawArrays(l.LINE_LOOP,y.unitLine,A.unitLine)}for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[m.x,m.y,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),"mouse"==m.e.pointerType?l.drawArrays(l.LINE_LOOP,y.roundMouse,A.roundMouse):l.drawArrays(l.LINE_LOOP,y.roundTouch,A.roundTouch)}ba=(ba+1)%16;mat4.identity(c);mat4.translate(c,c,[160,45,0]);mat4.rotate(c,c,Math.PI/8*ba,[0,0,1]);mat4.scale(c,c,[40,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,
+"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,10,0]);mat4.scale(c,c,[50,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,25,0]);mat4.scale(c,c,[50*window.visualViewport.scale,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);
+mat4.translate(c,c,[10,40,0]);mat4.scale(c,c,[50*window.devicePixelRatio,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,55,0]);mat4.scale(c,c,[50*window.innerWidth/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[12,57,0]),mat4.scale(c,
+c,[46*m.x/B/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,70,0]);mat4.scale(c,c,[50*window.innerHeight/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare);for(const [,m]of Object.entries(r))mat4.identity(c),mat4.translate(c,c,[12,72,0]),mat4.scale(c,c,[46*m.y/B/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,
+"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitSquare,A.unitSquare)}}}window.requestAnimationFrame(ea)}function ca(){W=10;var b=window.innerWidth,a=window.innerHeight;x.width=b*window.visualViewport.scale*window.devicePixelRatio;x.height=a*window.visualViewport.scale*window.devicePixelRatio;x.style.width=b*window.visualViewport.scale;x.style.height=a*window.visualViewport.scale;fa=Math.sqrt(x.width*x.width+x.height*x.height);B=window.visualViewport.scale*window.devicePixelRatio;X=!0}function J(b,
+a){function d(k){xdiff=k.x-k.ox;ydiff=k.y-k.oy;return xdiff*xdiff>ydiff*ydiff?0<xdiff?"right":"left":0<ydiff?"down":"up"}if("touches"==a&&b.touches&&0==b.touches.length){a=[];for(var [,c]of Object.entries(r))c.tempIsActive="mouse"==c.e.pointerType;for(const [k,h]of Object.entries(r))h.tempIsActive||a.push(k);for(;a.length;)delete r[a.pop()];for(const [,k]of Object.entries(r))delete k.tempIsActive}else switch(B!=window.visualViewport.scale*window.devicePixelRatio&&ca(),c="p-"+b.pointerId,a){case "down":r.hasOwnProperty(c)||
+(r[c]={gestureState:"",touching:!1,px:b.layerX*B,py:b.layerY*B});a=r[c];a.e=b;a.touching=!0;a.x=b.layerX*B;a.y=b.layerY*B;a.ox=a.x;a.oy=a.y;a.hitList=new vp.HitList(a.x,a.y);E.getHits(a.hitList,P());a.hitList.sortHits();if("mouse"==b.pointerType){if(1==(b.buttons|1))for(const k of a.hitList.hits){var e=k.gad;!e.ownedBy&&e.actionFlags&vp.GAF_CLICKABLE&&(e.gestureState="begin-click",e.ownedBy=c);!e.ownedBy&&e.actionFlags&vp.GAF_DRAGGABLE&&(e.gestureState="begin-drag",e.ownedBy=c,e.gestureTimerId=setTimeout(J,
+250,b,"drag time reached"))}if(2==(b.buttons|2))for(const k of a.hitList.hits)a=k.gad,!a.ownedBy&&a.actionFlags&vp.GAF_CONTEXTMENU&&(a.gestureState="begin-menu",a.ownedBy=c,G&&G.setValueAtTime(.1,F.currentTime),G&&G.setValueAtTime(0,F.currentTime+.001),console.log("menu down"))}else for(const k of a.hitList.hits)(a=k.gad,a.ownedBy)?a.ownedBy!=c&&("await-pinch"==a.gestureState||a.actionFlags&vp.GAF_PINCHABLE&&("begin-drag"==a.gestureState||"begin-tap"==a.gestureState)?(a.gestureState="pinch",a.secondTouch=
+c,a.pinchBeginFunc&&a.pinchBeginFunc.call(a,r[a.ownedBy],r[a.secondTouch])):"drag"==a.gestureState&&a.actionFlags&vp.GAF_PINCHABLE&&(a.gestureState="pinch",a.secondTouch=c,a.dragEndFunc&&a.dragEndFunc.call(a,r[a.ownedBy]),a.pinchBeginFunc&&a.pinchBeginFunc.call(a,r[a.ownedBy],r[a.secondTouch]))):a.actionFlags&vp.GAF_CLICKABLE?(a.gestureState="begin-tap",a.ownedBy=c,a.gestureBeginTime=b.timeStamp,a.actionFlags&0!=(vp.GAF_CONTEXTMENU|vp.GAF_DRAGGABLE)&&(a.gestureTimerId=setTimeout(J,250,b,"tap-and-hold time reached"))):
+a.actionFlags&vp.GAF_CONTEXTMENU?(a.gestureState="begin-menu",a.ownedBy=c,a.gestureTimerId=setTimeout(J,250,b,"tap-and-hold time reached")):a.actionFlags&vp.GAF_DRAGGABLE?(a.gestureState="begin-drag",a.ownedBy=c,a.gestureTimerId=setTimeout(J,250,b,"drag time reached")):a.actionFlags&vp.GAF_SWIPEABLE?(a.gestureState="begin-swipe",a.ownedBy=c):a.actionFlags&vp.GAF_PINCHABLE&&(a.gestureState="await-pinch",a.ownedBy=c);break;case "move":da||"mouse"!=b.pointerType||(da=1,E.enableMouse&&E.enableMouse.call(E));
+r.hasOwnProperty(c)||(r[c]={gestureState:"mouse"==b.pointerType?"hover":"",touching:"mouse"==b.pointerType?!1:!0});a=r[c];a.e=b;a.px=a.x;a.x=b.layerX*B;a.py=a.y;a.y=b.layerY*B;if("mouse"==b.pointerType){if(a.hitList)for(e of a.hitList.hits){var g=e.gad;if(g.ownedBy==c)switch(g.gestureState){case "begin-click":case "recover-click":b=new vp.HitList(a.x,a.y);g.getHits(b,P());0==b.hits.length&&(g.gestureState="abandon-click");break;case "abandon-click":b=new vp.HitList(a.x,a.y);g.getHits(b,P());0!=b.hits.length&&
+(g.gestureState="recover-click");break;case "begin-drag":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(g.hasOwnProperty("gestureTimerId")&&(clearTimeout(g.gestureTimerId),delete g.gestureTimerId),("up"==b||"down"==b)&&g.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&g.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT)){g.gestureState="drag";for(var f of a.hitList.hits)f.gad!==g&&f.gad.ownedBy==c&&delete f.gad.ownedBy;g.dragBeginFunc&&g.dragBeginFunc.call(g,a);g.dragMoveFunc&&g.dragMoveFunc.call(g,
+a)}break;case "drag":g.dragMoveFunc&&g.dragMoveFunc.call(g,a)}}}else for(const k of a.hitList.hits)if(e=k.gad,e.ownedBy==c)switch(e.gestureState){case "begin-tap":if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.gestureState="invalid-tap",!a.swiping))if(b=d(a),("up"==b||"down"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT){e.gestureState="swipe";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;
+e.swipeBeginFunc&&e.swipeBeginFunc.call(e,a);e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a);console.log("swipe "+b)}else if(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT){e.gestureState="drag";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;e.dragBeginFunc&&e.dragBeginFunc.call(e,a);e.dragMoveFunc&&e.dragMoveFunc.call(e,a);console.log("drag "+b)}break;case "begin-menu":Math.sqrt((a.ox-
+a.x)**2+(a.oy-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),e.gestureState="invalid-menu");break;case "begin-swipe":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),!a.swiping&&(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT))){e.gestureState="swipe";a.swiping=!0;
+for(const h of a.hitList.hits)h.gad!==e&&h.gad.ownedBy==c&&delete h.gad.ownedBy;e.swipeBeginFunc&&e.swipeBeginFunc.call(e,a);e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a)}break;case "swipe":e.swipeMoveFunc&&e.swipeMoveFunc.call(e,a);break;case "begin-drag":b=d(a);if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)>Q&&(e.hasOwnProperty("gestureTimerId")&&(clearTimeout(e.gestureTimerId),delete e.gestureTimerId),!a.swiping&&(("up"==b||"down"==b)&&e.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==b||"right"==b)&&e.actionFlags&
+vp.GAF_DRAGGABLE_LEFTRIGHT))){e.gestureState="drag";a.swiping=!0;for(const h of a.hitList.hits)if(h.gad!==e&&(h.gad.ownedBy==c&&delete h.gad.ownedBy,h.gad.secondTouch==c))switch(h.gad.gestureState){case "pinch":h.gad.gestureState="drag",delete h.gad.secondTouch,h.gad.pinchEndFunc&&h.gad.pinchEndFunc.call(h.gad),h.gad.dragBeginFunc&&h.gad.dragBeginFunc.call(h.gad,r[h.gad.ownedBy])}e.dragBeginFunc&&e.dragBeginFunc.call(e,a);e.dragMoveFunc&&e.dragMoveFunc.call(e,a)}break;case "drag":e.dragMoveFunc&&
+e.dragMoveFunc.call(e,a);break;case "pinch":e.pinchMoveFunc&&e.pinchMoveFunc.call(e,r[e.ownedBy],r[e.secondTouch])}else if(e.secondTouch==c)switch(e.gestureState){case "pinch":e.pinchMoveFunc&&e.pinchMoveFunc.call(e,r[e.ownedBy],r[e.secondTouch])}break;case "up":r.hasOwnProperty(c)||(r[c]={gestureState:"",touching:!1,x:0,y:0,px:0,py:0});a=r[c];a.e=b;a.touching=!1;if("mouse"==b.pointerType){if(1==(b.buttons|1)){e=0;for(const k of a.hitList.hits)if(f=k.gad,f.ownedBy==c){if(!e)switch(f.gestureState){case "begin-click":case "recover-click":G&&
+G.setValueAtTime(.1,F.currentTime);G&&G.setValueAtTime(0,F.currentTime+.001);f.clickFunc&&f.clickFunc.call(f);e=1;break;case "begin-drag":f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId);break;case "drag":f.dragMoveFunc&&f.dragMoveFunc.call(f,a),f.dragEndFunc&&f.dragEndFunc.call(f,a),console.log("drag release")}delete f.gestureState;delete f.ownedBy}}if(2==(b.buttons|2))for(g of a.hitList.hits)if(e=g.gad,e.ownedBy==c){switch(e.gestureState){case "begin-menu":console.log("menu up")}delete e.gestureState;
 delete e.ownedBy}delete a.hitList}else{e=0;for(const k of a.hitList.hits)if(f=k.gad,skipDel=0,f.ownedBy==c){f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId);if(!e)switch(f.gestureState){case "begin-tap":250>b.timeStamp-f.gestureBeginTime?(G&&G.setValueAtTime(.1,F.currentTime),G&&G.setValueAtTime(0,F.currentTime+.001),f.clickFunc&&f.clickFunc.call(f),e=1):console.log("tap-and-hold release (edge case)");break;case "tap-and-hold":console.log("tap-and-hold release");
 break;case "swipe":f.swipeMoveFunc&&f.swipeMoveFunc.call(f,a);f.swipeEndFunc&&f.swipeEndFunc.call(f,a);break;case "drag":f.dragMoveFunc&&f.dragMoveFunc.call(f,a);f.dragEndFunc&&f.dragEndFunc.call(f,a);break;case "pinch":f.gestureState="drag",f.ownedBy=f.secondTouch,delete f.secondTouch,f.pinchEndFunc&&f.pinchEndFunc.call(f),f.dragBeginFunc&&f.dragBeginFunc.call(f,r[f.ownedBy]),skipDel=1}skipDel||(delete f.gestureState,delete f.ownedBy)}else if(f.secondTouch==c)switch(f.gestureState){case "pinch":f.gestureState=
 "drag",delete f.secondTouch,f.pinchEndFunc&&f.pinchEndFunc.call(f),f.dragBeginFunc&&f.dragBeginFunc.call(f,r[f.ownedBy])}}"touch"==b.pointerType&&delete r[c];delete a.swiping;break;case "wheel":r.hasOwnProperty(c)||(r[c]={gestureState:"",touching:!1,px:b.layerX*B,py:b.layerY*B});a=r[c];a.e=b;a.touching=!0;a.x=b.layerX*B;a.y=b.layerY*B;a.hitList=new vp.HitList(a.x,a.y);E.getHits(a.hitList,P());a.hitList.sortHits();if("wheel"==b.type){e=0;for(const k of a.hitList.hits)f=k.gad,e||f.ownedBy||(f.actionFlags&
@@ -64,7 +64,7 @@ break;case "swipe":f.swipeMoveFunc&&f.swipeMoveFunc.call(f,a);f.swipeEndFunc&&f.
 f.rotateFunc.call(f,a,Math.sign(b.wheelDelta)):f.actionFlags&vp.GAF_SCALABLE&&f.zoomFunc&&f.zoomFunc.call(f,a,Math.sign(b.wheelDelta)),e=1))}break;case "drag time reached":r.hasOwnProperty(c)||(r[c]={gestureState:"",touching:!0});a=r[c];a.e=b;for(const k of a.hitList.hits)if(b=k.gad,b.ownedBy==c){if("begin-drag"==b.gestureState&&!a.swiping){b.gestureState="drag";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==b&&h.gad.ownedBy==c&&delete h.gad.ownedBy;b.dragBeginFunc&&b.dragBeginFunc.call(b,a)}b.hasOwnProperty("gestureTimerId")&&
 delete b.gestureTimerId}break;case "tap-and-hold time reached":r.hasOwnProperty(c)||(r[c]={gestureState:"",touching:!0});a=r[c];a.e=b;for(const k of a.hitList.hits)if(b=k.gad,b.ownedBy==c){if(Math.sqrt((a.ox-a.x)**2+(a.oy-a.y)**2)<=Q)switch(b.gestureState){case "begin-tap":case "begin-menu":case "begin-swipe":case "begin-drag":if(b.actionFlags&vp.GAF_CONTEXTMENU&&!a.swiping)b.gestureState="tap-and-hold",console.log("tap-and-hold");else if(b.actionFlags&vp.GAF_DRAGGABLE&&!a.swiping){b.gestureState=
 "drag";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==b&&h.gad.ownedBy==c&&delete h.gad.ownedBy;b.dragBeginFunc&&b.dragBeginFunc.call(b,a)}else if(b.actionFlags&vp.GAF_SWIPEABLE&&!a.swiping){b.gestureState="swipe";a.swiping=!0;for(const h of a.hitList.hits)h.gad!==b&&h.gad.ownedBy==c&&delete h.gad.ownedBy;b.swipeBeginFunc&&b.swipeBeginFunc.call(b,a)}else b.gestureState="invalid-tap-and-hold"}b.hasOwnProperty("gestureTimerId")&&delete b.gestureTimerId}}}var x,l;const y={},A={};var F,G,Z,aa,fa,
-B,X;const M=[];var S=[];const N=mat4.create();var z,da=0;class ja{constructor(b,a){this.x=b;this.y=a;this.hits=[]}sortHits(){for(var b=[];0<this.hits.length;){var a=0,d=this.hits[0].dist,c,e=this.hits[0].gad.z?this.hits[0].gad.z:0,g;for(c=0;c<this.hits.length&&(g=this.hits[c].gad.z?this.hits[c].gad.z:0,1);c++)if(g>e||g==e&&this.hits[c].dist<d)a=c,d=this.hits[c].dist,e=g;b.push(this.hits[a]);this.hits.splice(a,1)}this.hits=b}containsAny(b){for(var a=0;a<this.hits.length;a++)if(0!=(this.hits[a].gad.actionFlags&
+B,X;const M=[];var S=[];const N=mat4.create();var da=0,z;class ja{constructor(b,a){this.x=b;this.y=a;this.hits=[]}sortHits(){for(var b=[];0<this.hits.length;){var a=0,d=this.hits[0].dist,c,e=this.hits[0].gad.z?this.hits[0].gad.z:0,g;for(c=0;c<this.hits.length&&(g=this.hits[c].gad.z?this.hits[c].gad.z:0,1);c++)if(g>e||g==e&&this.hits[c].dist<d)a=c,d=this.hits[c].dist,e=g;b.push(this.hits[a]);this.hits.splice(a,1)}this.hits=b}containsAny(b){for(var a=0;a<this.hits.length;a++)if(0!=(this.hits[a].gad.actionFlags&
 b))return!0;return!1}getActionableGads(b){for(var a=[],d=0;d<this.hits.length;d++)0!=(this.hits[d].gad.actionFlags&b)&&a.splice(a.length,0,this.hits[d].gad);return a}click(){for(var b=0;b<this.hits.length;b++)0!=(this.hits[b].gad.actionFlags&vp.GAF_CLICKABLE)&&this.hits[b].gad.click&&this.hits[b].gad.click.call(this.hits[b].gad)}menu(){for(var b=0;b<this.hits.length;b++)0!=(this.hits[b].gad.actionFlags&vp.GAF_CONTEXTMENU)&&this.hits[b].gad.menu&&this.hits[b].gad.menu.call(this.hits[b].gad)}}class O{constructor(b,
 a){this.totalWidth=b;this.totalHeight=a;this.remainingY=this.remainingX=0;this.remainingWidth=b;this.remainingHeight=a}}class T{constructor(b){this.parent=b;this.H=this.W=this.h=this.w=this.y=this.x=this.designHeight=this.designWidth=this.designScale=this.designSize=0;this.userMat=mat4.create();mat4.identity(this.userMat);this.userY=this.userX=this.oy=this.ox=0;this.gadgets=[];this.mat=mat4.create();this.childRender=this.needsRender=!0}insideFit(b,a){this.viewScale=this.w/b<this.h/a?this.w/b:this.h/
 a}layoutAll(b){this.x=b.remainingX;this.y=b.remainingY;this.w=b.remainingWidth;this.h=b.remainingHeight;this.W=b.totalWidth;this.H=b.totalHeight;this.viewScale=this.designSize?Math.sqrt(this.w*this.h/this.designSize):this.designScale?this.designScale*window.devicePixelRatio:this.designWidth?this.w/this.designWidth:this.designHeight?this.h/this.designHeight:this.parent?this.parent.viewScale:1;this.rematrix();this.layoutFunc&&(this.layoutFunc.call(this),this.rematrix());this.setRenderFlag(!0)}rematrix(){mat4.scale(this.mat,
@@ -116,23 +116,35 @@ window.onload = function () {
   vp.initialize(canvas);
   const gl = vp.getContext();
 
+  // Shape data storage
+  const beg2 = {}, len2 = {}; var all2 = [], buf2;
+  const beg5 = {}, len5 = {}; var all5 = [], buf5;
 
-    var all2 = [];
+  // Shape building functions
+  function addShape2(name, ...points) {
+    beg2[name] = all2.length/2;
+    all2.splice (all2.length, 0, ...points);
+    len2[name] = all2.length/2 - beg2[name];
+  }
+  function addShape5(name, ...points) {
+    beg5[name] = all5.length/5;
+    all5.splice (all5.length, 0, ...points);
+    len5[name] = all5.length/5 - beg5[name];
+  }
 
-    const unitLine2beg = all2.length/2; all2.splice(all2.length, 0,
-      0, 0,
-      1, 1,
-    ); const unitLine2len = all2.length/2 - unitLine2beg;
+  // Shape definitions
+  addShape2('unitLine', 0,0, 1,1, );
+  addShape5('unitLine', 0,0,1,1,0, 1,1,0,1,0, );
+  addShape5('divLine',  0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
 
 
-    // WEBGL INITIALIZATION
+  // WEBGL INITIALIZATION
 
-    const plainVertexShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(plainVertexShader, `
-
+  const plainVertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(plainVertexShader, `
       attribute vec4 aVertexPosition;
       attribute vec2 aTex;
-      uniform vec4 uVertexColor;
+      uniform vec4 vertexColor;
       uniform mat4 uModelViewMatrix;
       uniform mat4 uProjectionMatrix;
       varying vec4 vColor;
@@ -140,16 +152,15 @@ window.onload = function () {
 
       void main() {
         gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-        vColor = uVertexColor;
+        vColor = vertexColor;
         vTex = aTex;
       }
-    `);
-    gl.compileShader(plainVertexShader);
-    if (!gl.getShaderParameter(plainVertexShader, gl.COMPILE_STATUS)) return;
+  `);
+  gl.compileShader(plainVertexShader);
+  if (!gl.getShaderParameter(plainVertexShader, gl.COMPILE_STATUS)) return;
 
-    const plainFragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(plainFragmentShader, `
-
+  const plainFragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(plainFragmentShader, `
       varying lowp vec4 vColor;
       uniform sampler2D sampler0;
       varying highp vec2 vTex;
@@ -158,18 +169,103 @@ window.onload = function () {
         //gl_FragColor = texture2D(sampler0, vTex);
         gl_FragColor = vColor;
       }
-    `);
-    gl.compileShader(plainFragmentShader);
-    if (!gl.getShaderParameter(plainFragmentShader, gl.COMPILE_STATUS)) return;
+  `);
+  gl.compileShader(plainFragmentShader);
+  if (!gl.getShaderParameter(plainFragmentShader, gl.COMPILE_STATUS)) return;
 
-    const plainProgram = gl.createProgram();
-    gl.attachShader(plainProgram, plainVertexShader);
-    gl.attachShader(plainProgram, plainFragmentShader);
-    gl.linkProgram(plainProgram);
-    if (!gl.getProgramParameter(plainProgram, gl.LINK_STATUS)) return;
+  const prog2 = gl.createProgram();
+  gl.attachShader(prog2, plainVertexShader);
+  gl.attachShader(prog2, plainFragmentShader);
+  gl.linkProgram(prog2);
+  if (!gl.getProgramParameter(prog2, gl.LINK_STATUS)) return;
 
+  buf2 = gl.createBuffer(); // buffer for 2-value vertices
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all2), gl.STATIC_DRAW);
 
+  const prog5VertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(prog5VertexShader, `
+      attribute vec4 aVertexPosition;
+      attribute vec4 vertexColor;
+      attribute vec2 aTex;
+      //uniform vec4 vertexColor;
+      uniform mat4 uModelViewMatrix;
+      uniform mat4 uProjectionMatrix;
+      varying vec4 vColor;
+      varying highp vec2 vTex;
 
+      void main() {
+        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+        vColor = vertexColor;
+        vTex = aTex;
+      }
+  `);
+  gl.compileShader(prog5VertexShader);
+  if (!gl.getShaderParameter(prog5VertexShader, gl.COMPILE_STATUS)) return;
+
+  const prog5FragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(prog5FragmentShader, `
+      varying lowp vec4 vColor;
+      uniform sampler2D sampler0;
+      varying highp vec2 vTex;
+
+      void main() {
+        //gl_FragColor = texture2D(sampler0, vTex);
+        gl_FragColor = vColor;
+      }
+  `);
+  gl.compileShader(prog5FragmentShader);
+  if (!gl.getShaderParameter(prog5FragmentShader, gl.COMPILE_STATUS)) return;
+
+  const prog5 = gl.createProgram();
+  gl.attachShader(prog5, prog5VertexShader);
+  gl.attachShader(prog5, prog5FragmentShader);
+  gl.linkProgram(prog5);
+  if (!gl.getProgramParameter(prog5, gl.LINK_STATUS)) return;
+
+  gl.useProgram(prog5);
+  buf5 = gl.createBuffer(); // buffer for 5-value vertices
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
+
+  function useProg2() {
+    gl.useProgram(prog2);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+    gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
+    //gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'vertexColor'));
+    var a = gl.getAttribLocation(prog2, 'aVertexPosition')
+    gl.vertexAttribPointer(
+	a,
+	2, // numComponents
+	gl.FLOAT, // type
+	false, // normalize
+	0, // stride
+	0); // offset
+    gl.enableVertexAttribArray(a);
+  }
+  function useProg5() {
+    gl.useProgram(prog5);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
+    gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
+    var a = gl.getAttribLocation(prog5, 'aVertexPosition')
+    gl.vertexAttribPointer(
+	a,
+	2, // numComponents
+	gl.FLOAT, // type
+	false, // normalize
+	4 * 5, // stride
+	4 * 0); // offset
+    gl.enableVertexAttribArray(a);
+    a = gl.getAttribLocation(prog5, 'vertexColor')
+    gl.vertexAttribPointer(
+	a,
+	3, // numComponents
+	gl.FLOAT, // type
+	false, // normalize
+	4 * 5, // stride
+	4 * 2); // offset
+    gl.enableVertexAttribArray(a);
+  }
 
   var v, g;
 
@@ -185,9 +281,9 @@ window.onload = function () {
   v.renderFunc = function() {
     gl.clearColor(0.612, 0.745, 0.345, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(plainProgram);
-    gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([0,0,0, 1]));
-    gl.uniformMatrix4fv(gl.getUniformLocation(plainProgram, 'uProjectionMatrix'), false, this.mat);
+    useProg2();
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
       var h = g.convexHull;
@@ -196,9 +292,9 @@ window.onload = function () {
       mat4.translate(mat, mat, [h[p+0], h[p+1], 0]);
       mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);
       gl.uniformMatrix4fv(
-        gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+        gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(gl.LINE_LOOP, unitLine2beg, unitLine2len);
+      gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -221,10 +317,10 @@ window.onload = function () {
   v.renderFunc = function() {
     gl.clearColor(0.380, 0.588, 0.259, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(plainProgram);
+    useProg2();
     gl.enable(gl.BLEND);
-    gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([0,0,0, 1]));
-    gl.uniformMatrix4fv(gl.getUniformLocation(plainProgram, 'uProjectionMatrix'), false, this.mat);
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
       var h = g.convexHull;
@@ -233,9 +329,9 @@ window.onload = function () {
       mat4.translate(mat, mat, [h[p+0], h[p+1], 0]);
       mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);
       gl.uniformMatrix4fv(
-        gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+        gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(gl.LINE_LOOP, unitLine2beg, unitLine2len);
+      gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -255,9 +351,9 @@ window.onload = function () {
   v.renderFunc = function() {
     gl.clearColor(0.882, 0.647, 0.353, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(plainProgram);
-    gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([0,0,0, 1]));
-    gl.uniformMatrix4fv(gl.getUniformLocation(plainProgram, 'uProjectionMatrix'), false, this.mat);
+    useProg2();
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
       var h = g.convexHull;
@@ -266,9 +362,9 @@ window.onload = function () {
       mat4.translate(mat, mat, [h[p+0], h[p+1], 0]);
       mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);
       gl.uniformMatrix4fv(
-        gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+        gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(gl.LINE_LOOP, unitLine2beg, unitLine2len);
+      gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -290,10 +386,10 @@ window.onload = function () {
   v.renderFunc = function() {
     gl.clearColor(0.416, 0.533, 0.573, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(plainProgram);
+    useProg2();
     gl.enable(gl.BLEND);
-    gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([0,0,0, 1]));
-    gl.uniformMatrix4fv(gl.getUniformLocation(plainProgram, 'uProjectionMatrix'), false, this.mat);
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
       var h = g.convexHull;
@@ -303,9 +399,9 @@ window.onload = function () {
         mat4.translate(mat, mat, [h[p+0], h[p+1], 0]);
         mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);
         gl.uniformMatrix4fv(
-          gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+          gl.getUniformLocation(prog2, 'uModelViewMatrix'),
           false, mat);
-        gl.drawArrays(gl.LINE_LOOP, unitLine2beg, unitLine2len);
+        gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -329,10 +425,33 @@ window.onload = function () {
   v.c = div3and4; div3and4.parent = v;
 
   var maindivider = v = new vp.View();
+  v.designScale = 1;
   v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
   v.layoutFunc = function() { this.middleDividerGad.layout(); }
+  v.renderFunc = function() {
+	gl.clearColor(0,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	useProg5();
+	gl.enable(gl.BLEND);
+	const mat = mat4.create();
+	mat4.identity(mat);
+	gl.uniformMatrix4fv(
+		gl.getUniformLocation(prog5, 'uProjectionMatrix'),
+		false, this.mat);
+	if (this.parent.state == 'v') {
+		mat4.translate(mat, mat, [0.5, 0, 0]);
+		mat4.scale(mat, mat, [0, this.h , 0]);
+	} else {
+		mat4.translate(mat, mat, [0, 0.5, 0]);
+		mat4.scale(mat, mat, [this.w, 0, 0]);
+	}
+	gl.uniformMatrix4fv(
+		gl.getUniformLocation(prog5, 'uModelViewMatrix'),
+		false, mat);
+	gl.drawArrays(gl.LINE_STRIP, beg5.divLine, len5.divLine);
+  };
 
-  var div = v = new vp.ViewDivider(null, 'a', 0.5, 0);
+  var div = v = new vp.ViewDivider(null, 'a', 0.5, 1);
   div.designSize = 640*400;
   v.a = quadrants1and2; quadrants1and2.parent = v;
   v.b = quadrants3and4; quadrants3and4.parent = v;
