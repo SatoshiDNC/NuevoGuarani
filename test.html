@@ -155,6 +155,8 @@ window.onload = function () {
     0.4,1,1,1,1, 0.4,0,1,1,1, 
     0.6,1,1,1,1, 0.6,0,1,1,1, 
     1.0,1,0,0,0, 1.0,0,0,0,0, );
+  addShape5('rect',
+    0.0,1,1,1,1, 0.0,0,1,1,1, 1.0,1,1,1,1, 1.0,0,1,1,1, );
   addShape5('scrollUp',
     0.5,0,0.75,0.75,0.75,
 		0.0,1,0.25,0.25,0.25, 
@@ -304,7 +306,7 @@ window.onload = function () {
   v.gadgets.push(g = new vp.MatrixGadget(v));
   //g.w = 10; g.h = 1000; //g.f = GF_RELH;
   g.convexHull = g.computeHull([50,50, 100,200, 200,200, 200,100]);
-  g.actionFlags = vp.GAF_CLICKABLE | vp.GAF_DRAGGABLE | vp.GAF_PINCHABLE;
+  g.actionFlags = vp.GAF_CLICKABLE;// | vp.GAF_DRAGGABLE | vp.GAF_PINCHABLE;
   g.clickFunc = function() {
     var g = this; g.f = !(g.f); vp.setDebugFlags(g.f, g.f);
     var v = g.viewport; while (v.parent) v = v.parent; v.setRenderFlag(true);
@@ -329,6 +331,9 @@ window.onload = function () {
       }
     }
   };
+  v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+  v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SWIPEABLE_LEFTRIGHT;
+  v.layoutFunc = function() { this.swipeGad.layout(); }
 
   var quadrant2 = v = new vp.View(null);
   var quadrant4;
@@ -441,7 +446,9 @@ window.onload = function () {
 	v.gadgets.push(g = v.upGad = new vp.Gadget(v));
 	v.gadgets.push(g = v.dnGad = new vp.Gadget(v));
 	v.gadgets.push(g = v.knobGad = new vp.Gadget(v)); g.z = -1;
+  g.shown = 40; g.total = 100; g.start = 10;
 	v.layoutFunc = function() {
+		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		//var g, v=this, s=v.getScale(), t=v.parent.size;
 		var g, v = this, s = v.getScale();
 		g = v.upGad; g.actionFlags = vp.GAF_CLICKABLE;
@@ -451,7 +458,9 @@ window.onload = function () {
 		g.convexHull = g.computeHull([0,0, 5,10, 10,0]); g.y = v.h/s - 10;
 		g.extendedHulls = {}; g.boundingBoxes = {};
 		g = v.knobGad; g.actionFlags = vp.GAF_CLICKABLE | vp.GAF_DRAGGABLE_UPDOWN;
-		g.convexHull = g.computeHull([0,0, 10,0, 10,v.h/s-20, 0,v.h/s-20]); g.y = 10;
+    var h = (v.h/s-20  )*clamp(g.shown/g.total, 0,1);
+		var y = (v.h/s-20-h)*clamp(g.start/(g.total-g.shown), 0,1);
+		g.convexHull = g.computeHull([0,y, 10,y, 10,y+h, 0,y+h]); g.y = 10;
 		g.extendedHulls = {}; g.boundingBoxes = {};
 	}
 	v.renderFunc = function() {
@@ -463,13 +472,15 @@ window.onload = function () {
 		gl.enable(gl.BLEND);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		const mat = mat4.create();
+    var selColor = [1,0.1,0.1, 1];
+		var white = [1,1,1, 1]
 
 		// Up button.
 		sel = this.upGad.gestureState
 			&& (this.upGad.gestureState=='begin-click'
 				||this.upGad.gestureState=='recover-click')
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array([1,1,sel?0:1, 1]));
+			new Float32Array(sel?selColor:white));
 		mat4.identity(mat);
 		mat4.scale(mat, mat, [10, 10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
@@ -480,7 +491,7 @@ window.onload = function () {
 			&& (this.dnGad.gestureState=='begin-click'
 				||this.dnGad.gestureState=='recover-click')
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array([1,1,sel?0:1, 1]));
+			new Float32Array(sel?selColor:white));
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [0, this.h/s, 0]);
 		mat4.scale(mat, mat, [10, -10, 0]);
@@ -488,15 +499,21 @@ window.onload = function () {
 		gl.drawArrays(gl.TRIANGLE_FAN, beg5.scrollDn, len5.scrollDn);
 
 		// Scroll bar knob.
-console.log(this.knobGad.gestureState);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array([.1,.1,.1,1]));
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [4, 10, 0]);
+		mat4.scale(mat, mat, [2, this.h/s-20, 0]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.rect, len5.rect);
 		sel = this.knobGad.gestureState
 			&& (this.knobGad.gestureState=='begin-click'
 				||this.knobGad.gestureState=='recover-click')
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array([1,1,sel?0:1, 1]));
+			new Float32Array(sel?selColor:white));
 		mat4.identity(mat);
-		mat4.translate(mat, mat, [3, 10, 0]);
-		mat4.scale(mat, mat, [4, this.h/s-20, 0]);
+		mat4.translate(mat, mat, [3, 10+this.knobGad.convexHull[1], 0]);
+		mat4.scale(mat, mat, [4, this.knobGad.convexHull[5]-this.knobGad.convexHull[1], 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineH, len5.divLineH);
 	};
