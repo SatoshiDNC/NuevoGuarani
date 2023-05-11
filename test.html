@@ -836,6 +836,8 @@ console.log('File format: '+r.ver);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.BLEND);
       gl.bindTexture(gl.TEXTURE_2D, this.tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
       gl.enableVertexAttribArray(this.vloc);
       gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuff);
@@ -847,14 +849,17 @@ console.log('File format: '+r.ver);
 
       gl.uniformMatrix4fv(this.projMatLoc, false, mat0);
       mat4.translate(mat1, mat1, [x, y, 0]);
-      var scaleVec; scaleVec = vec3.create(); mat4.getScaling(scaleVec, mat1); gl.uniform1f(this.scaleFactorLoc, scaleVec[0]*2);
+      var sv0; sv0 = vec3.create(); mat4.getScaling(sv0, mat0);
+      var sv1; sv1 = vec3.create(); mat4.getScaling(sv1, mat1);
+      gl.uniform1f(this.scaleFactorLoc, sv1[0]*sv0[0]*gl.drawingBufferWidth);
+      //var scaleVec; scaleVec = vec3.create(); mat4.getScaling(scaleVec, mat1); gl.uniform1f(this.scaleFactorLoc, scaleVec[0]*2);
       for (let codePoint of str) {
         var cc = codePoint.codePointAt(0);
         {//if (cc >= this.lo && cc <= this.hi) {
           var g; for (g=0; g<this.glyphCodes.length; g++) { if (this.glyphCodes[g]==cc) break; }
           mat4.translate(mat1, mat1, [-this.glyphX1[g], -this.glyphHeights[g]+this.glyphY1[g], 0]);
           if (g >= this.glyphCodes.length) /* console.log('Glyph '+cc+' not found in font "'+this.name+'"'); */ ; else { var plane = 0; //for (var plane = 0; plane < this.planes[g]; plane++) {
-            var p = g;//this.planeIndex[g]+plane;
+            var p = g; //this.planeIndex[g]+plane;
             //var rr = ((this.color[p]/0x01000000)&0xFF), gg = ((this.color[p]/0x00010000)&0xFF), bb = ((this.color[p]/0x00000100)&0xFF), aa = ((this.color[p]/0x00000001)&0xFF);
             var c = color;
             //if (aa == 0xFF) c = [rr/255,gg/255,bb/255,1];
