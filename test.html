@@ -184,30 +184,40 @@ function main() {
 		return style == PARAGUAY? s * 2: s / 3600;
 	}
 
-	const tr = {};
-  function enUS(s) {
-		if (!(s in tr)) {
-			tr[s] = {'en-US': s}
+	const trs = {};
+  function tr(s) {
+		if (!(s in trs)) {
+			trs[s] = {'source': s};
 			switch(s) {
-			case 'about @': tr[s]['es-PY'] = 'circa de @'; tr[s]['gn-PY'] = '@ rupi'      ; break;
-			case 'bill'   : tr[s]['es-PY'] = 'factura'   ; tr[s]['gn-PY'] = 'ñemumbyrehai'; break;
-			case 'pay'    : tr[s]['es-PY'] = 'pago'      ; tr[s]['gn-PY'] = 'hepyme\'ẽ'   ; break;
-			case 'INVOICE': tr[s]['es-PY'] = 'FACTURA'   ; tr[s]['gn-PY'] = 'ÑEMUMBYREHAI'; break;
-			case 'PAYMENT': tr[s]['es-PY'] = 'PAGO'      ; tr[s]['gn-PY'] = 'HEPYME\'Ẽ'   ; break;
+			case 'about @':
+				trs[s]['en-US'] = 'about @';
+				trs[s]['es-PY'] = 'circa de @';
+				trs[s]['gn-PY'] = '@ rupi';
+				break;
+			case 'bill':
+				trs[s]['en-US'] = 'INVOICE';
+				trs[s]['es-PY'] = 'FACTURA';
+				trs[s]['gn-PY'] = 'ÑEMUMBYREHAI';
+				break;
+			case 'pay':
+				trs[s]['en-US'] = 'PAYMENT';
+				trs[s]['es-PY'] = 'PAGO';
+				trs[s]['gn-PY'] = 'HEPYME\'Ẽ';
+				break;
 			}
-			if(	!('en-US' in tr[s])
-			||	!('es-PY' in tr[s])
-			||	!('gn-PY' in tr[s])) {
-				console.log("Translation(s) missing for", tr[s]);
+			if(	!('en-US' in trs[s])
+			||	!('es-PY' in trs[s])
+			||	!('gn-PY' in trs[s])) {
+				console.log("Translation(s) missing for", trs[s]);
 			}
 		}
-		if (lcode in tr[s]) {
-			return tr[s][lcode];
+		if (lcode in trs[s]) {
+			return trs[s][lcode];
 		} else {
-			//console.log("Translation missing for", tr[s]);
-			for(var v in tr[s]) {
-				if(!tr[s].hasOwnProperty(v)) continue;
-				return tr[s][v];
+			//console.log("Translation missing for", trs[s]);
+			for(var v in trs[s]) {
+				if(!trs[s].hasOwnProperty(v)) continue;
+				return trs[s][v];
 			}
 		}
   }
@@ -216,55 +226,64 @@ function main() {
 	const uiFiatGreen = [112/255, 130/255, 56/255, 1];
 	const uiBlack = [0,0,0, 1];
 	const uiWhite = [1,1,1, 1];
+	const uiDarkWhite = [0.9,0.9,0.9, 1];
 
   // Shape data storage
-  const beg2 = {}, len2 = {}; var all2 = [], buf2;
-  const beg5 = {}, len5 = {}; var all5 = [], buf5;
+  const beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
+  const beg5 = {}, len5 = {}, typ5 = {}; var all5 = [], buf5;
 
   // Shape building functions
-  function addShape2(name, ...points) {
-    beg2[name] = all2.length/2;
+  function addShape2(name, typ, ...points) {
+    beg2[name] = all2.length/2; typ2[name] = typ;
     all2.splice (all2.length, 0, ...points);
     len2[name] = all2.length/2 - beg2[name];
   }
-  function addShape5(name, ...points) {
-    beg5[name] = all5.length/5;
+  function addShape5(name, typ, ...points) {
+    beg5[name] = all5.length/5; typ5[name] = typ;
     all5.splice (all5.length, 0, ...points);
     len5[name] = all5.length/5 - beg5[name];
   }
 
   // Shape definitions
-  addShape2('unitLine', 0,0, 1,1, );
-  addShape5('unitLine', 0,0,1,1,0, 1,1,0,1,0, );
-  addShape5('divLine',  0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
-  addShape5('divLineV',
+  addShape2('unitLine', gl.LINE_LOOP, 0,0, 1,1, );
+  addShape5('unitLine', gl.LINE_LOOP, 0,0,1,1,0, 1,1,0,1,0, );
+  addShape5('divLine', gl.LINE_STRIP, 0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
+  addShape5('divLineV', gl.TRIANGLE_STRIP,
     1,0.0,0,0,0, 0,0.0,0,0,0, 
     1,0.4,1,1,1, 0,0.4,1,1,1, 
     1,0.6,1,1,1, 0,0.6,1,1,1, 
     1,1.0,0,0,0, 0,1.0,0,0,0, );
-  addShape5('divLineH',
+  addShape5('divLineH', gl.TRIANGLE_STRIP,
     0.0,1,0,0,0, 0.0,0,0,0,0, 
     0.4,1,1,1,1, 0.4,0,1,1,1, 
     0.6,1,1,1,1, 0.6,0,1,1,1, 
     1.0,1,0,0,0, 1.0,0,0,0,0, );
-  addShape5('rect',
+  addShape2('rect', gl.TRIANGLE_STRIP,
+    0.0,1, 0.0,0, 1.0,1, 1.0,0, );
+  addShape5('rect', gl.TRIANGLE_STRIP,
     0.0,1,1,1,1, 0.0,0,1,1,1, 1.0,1,1,1,1, 1.0,0,1,1,1, );
-  addShape5('scrollUp',
+  addShape5('scrollUp', gl.TRIANGLE_FAN,
     0.5,0,0.75,0.75,0.75,
 		0.0,1,0.25,0.25,0.25, 
 		0.4,1,1,1,1, 0.6,1,1,1,1, 
 		1.0,1,0.25,0.25,0.25, );
-  addShape5('scrollDn',
+  addShape5('scrollDn', gl.TRIANGLE_FAN,
     0.5,0,0.75,0.75,0.75,
 		0.0,1,0.25,0.25,0.25, 
 		0.4,1,1,1,1, 0.6,1,1,1,1, 
 		1.0,1,0.25,0.25,0.25, );
   var r = 0.2, w = 0.8, b = 0.3;
   if (style != PARAGUAY) { r = 1; w = 1; b = 1; }
-  addShape5('hamburger',
+  addShape5('hamburger', gl.TRIANGLES,
     0,0.0,1,r,r, 1,0.0,1,r,r, 0,0.2,1,r,r, 0,0.2,1,r,r, 1,0.0,1,r,r, 1,0.2,1,r,r,
     0,0.4,w,w,w, 1,0.4,w,w,w, 0,0.6,w,w,w, 0,0.6,w,w,w, 1,0.4,w,w,w, 1,0.6,w,w,w,
     0,0.8,b,b,1, 1,0.8,b,b,1, 0,1.0,b,b,1, 0,1.0,b,b,1, 1,0.8,b,b,1, 1,1.0,b,b,1,
+	);
+  addShape2('maximizer', gl.TRIANGLES,
+		0,1, 0,0.6, 0.4,1,
+		1,0, 1,0.4, 0.6,0,
+		1,0.1, 0.1,1, 0,0.9,
+		0,0.9, 0.9,0, 1,0.1,
 	);
 
 
@@ -274,7 +293,7 @@ function main() {
   gl.shaderSource(plainVertexShader, `
       attribute vec4 aVertexPosition;
       attribute vec2 aTex;
-      uniform vec4 vertexColor;
+      uniform vec4 overallColor;
       uniform mat4 uModelViewMatrix;
       uniform mat4 uProjectionMatrix;
       varying vec4 vColor;
@@ -282,7 +301,7 @@ function main() {
 
       void main() {
         gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-        vColor = vertexColor;
+        vColor = overallColor;
         vTex = aTex;
       }
   `);
@@ -358,21 +377,21 @@ function main() {
   gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
 
-  function useProg2() {
-    gl.useProgram(prog2);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
-    //gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
-    //gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'vertexColor'));
-    var a = gl.getAttribLocation(prog2, 'aVertexPosition')
-    gl.vertexAttribPointer(
-	a,
-	2, // numComponents
-	gl.FLOAT, // type
-	false, // normalize
-	0, // stride
-	0); // offset
-    gl.enableVertexAttribArray(a);
-  }
+	function useProg2() {
+		gl.useProgram(prog2);
+		gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'overallColor'));
+		var a = gl.getAttribLocation(prog2, 'aVertexPosition')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			0, // stride
+			0); // offset
+		gl.enableVertexAttribArray(a);
+	}
 	function useProg5() {
 		gl.useProgram(prog5);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -405,6 +424,24 @@ function main() {
 		var tw = defaultFont.calcWidth(s);
 		defaultFont.draw(x+(w-tw)/2,y+14+(h-16)/2,s,c,m0,m1);
 	}
+	function fullscreen(on) {
+		var element = document.body;
+		var fs =
+			document.webkitIsFullScreen ||
+			document.mozFullScreen || false;
+		element.requestFullScreen =
+			element.requestFullScreen ||
+			element.webkitRequestFullScreen ||
+			element.mozRequestFullScreen ||
+			function() { return false; };
+		document.cancelFullScreen =
+			document.cancelFullScreen ||
+			document.webkitCancelFullScreen ||
+			document.mozCancelFullScreen ||
+			function() { return false; };
+		if (fs && !on) document.cancelFullScreen();
+		if (!fs && on) element.requestFullScreen();
+	}
 
 
   var v, g;
@@ -422,12 +459,51 @@ function main() {
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [g.w, g.h, 0]);
+			useProg5();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-			gl.drawArrays(gl.TRIANGLES, beg5.hamburger, len5.hamburger);
+			gl.drawArrays(typ5.hamburger, beg5.hamburger, len5.hamburger);
+		}
+	v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
+		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+		g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+		g.autoHull();
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+			g.x = v.w/s - g.w - (50 - g.w)/2;
+		}
+		g.renderFunc = function() {
+			var g = this;
+			const mat = mat4.create();
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [g.w, g.h, 0]);
+			useProg2();
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);
+			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+				new Float32Array(uiWhite));
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+			gl.drawArrays(typ2.maximizer, beg2.maximizer, len2.maximizer);
+		}
+		g.clickFunc = function() {
+			var element = document.body;
+			var fs =
+				document.webkitIsFullScreen ||
+				document.mozFullScreen || false;
+			element.requestFullScreen =
+				element.requestFullScreen ||
+				element.webkitRequestFullScreen ||
+				element.mozRequestFullScreen ||
+				function() { return false; };
+			document.cancelFullScreen =
+				document.cancelFullScreen ||
+				document.webkitCancelFullScreen ||
+				document.mozCancelFullScreen ||
+				function() { return false; };
+			fs ? document.cancelFullScreen() : element.requestFullScreen();
 		}
 	v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
-		g.text = enUS('INVOICE');
+		g.text = tr('bill');
 		g.layoutFunc = function() {
 			var g = this, v = g.viewport, s = v.getScale();
 			g.W = v.w/s; g.x = (g.W - g.w) / 2;
@@ -445,18 +521,19 @@ function main() {
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 				new Float32Array(sel?uiWhite:uiPillOrange));
-			gl.drawArrays(gl.TRIANGLE_STRIP, beg5.rect, len5.rect);
+			gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [50/32, 50/32, 1]);
 			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
 		}
 		g.clickFunc = function() {
+			fullscreen(true);
 			console.log('click invoice');
 		}
 	v.gadgets.push(v.payment = g = new vp.Gadget(v));
 		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
-		g.text = enUS('PAYMENT');
+		g.text = tr('pay');
 		g.layoutFunc = function() {
 			var g = this, v = g.viewport, s = v.getScale();
 			g.W = v.w/s; g.x = (g.W - g.w) / 2;
@@ -471,8 +548,9 @@ function main() {
 	v.minY = 0; v.maxY = 1000;
 	v.layoutFunc = function() {
 //		this.swipeGad.layout.call(this.swipeGad);
-		this.invoice.layoutFunc.call(this.invoice);
-		this.payment.layoutFunc.call(this.payment);
+		for (const g of this.gadgets) {
+			if (g.layoutFunc) g.layoutFunc.call(g);
+		}
 	}
 	v.renderFunc = function() {
 		var g = scrollbar.knobGad, s = this.getScale();
@@ -488,9 +566,9 @@ function main() {
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array([1,1,1,1]));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
-		this.hamburger.renderFunc.call(this.hamburger);
-		this.invoice.renderFunc.call(this.invoice);
-		this.payment.renderFunc.call(this.payment);
+		for (const g of this.gadgets) {
+			if (g.renderFunc) g.renderFunc.call(g);
+		}
 /*
 		var tmpw;
     var m = mat4.create();
@@ -510,7 +588,7 @@ function main() {
 		bal = toFiat(bal);
 		if (style == PARAGUAY) {
 			balstr = bal.toLocaleString(lcode);
-			balstr = enUS('about @').replace('@', 'Gs ' + balstr);
+			balstr = tr('about @').replace('@', 'Gs ' + balstr);
 		} else {
 			if (bal > 9999)
 				balstr = bal.toLocaleString(lcode, {
@@ -519,7 +597,7 @@ function main() {
 				});
 			else
 				balstr = bal.toFixed(2);
-			balstr = enUS('about @').replace('@', '$' + balstr);
+			balstr = tr('about @').replace('@', '$' + balstr);
 		}
 		balw = defaultFont.calcWidth(balstr)/2;
 		tmpw = Math.max(128, balw + 10);
@@ -563,7 +641,7 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     useProg2();
     gl.enable(gl.BLEND);
-    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
@@ -575,7 +653,7 @@ function main() {
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
+      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -596,7 +674,7 @@ function main() {
     gl.clearColor(0.882, 0.647, 0.353, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     useProg2();
-    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
@@ -608,7 +686,7 @@ function main() {
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
+      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -632,7 +710,7 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     useProg2();
     gl.enable(gl.BLEND);
-    gl.uniform4fv(gl.getUniformLocation(prog2, 'vertexColor'), new Float32Array([0,0,0, 1]));
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
     for (const g of this.gadgets) {
@@ -645,7 +723,7 @@ function main() {
         gl.uniformMatrix4fv(
           gl.getUniformLocation(prog2, 'uModelViewMatrix'),
           false, mat);
-        gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
+        gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
       }
     }
   };
@@ -725,7 +803,7 @@ function scrollUpDn(g, amt) {
 		mat4.identity(mat);
 		mat4.scale(mat, mat, [10, 10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(gl.TRIANGLE_FAN, beg5.scrollUp, len5.scrollUp);
+		gl.drawArrays(typ5.scrollUp, beg5.scrollUp, len5.scrollUp);
 
 		// Down button.
 		if (this.dnGad.gestureState && this.dnGad.gestureState == 'hold')
@@ -738,7 +816,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [0, this.h/s, 0]);
 		mat4.scale(mat, mat, [10, -10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(gl.TRIANGLE_FAN, beg5.scrollDn, len5.scrollDn);
+		gl.drawArrays(typ5.scrollDn, beg5.scrollDn, len5.scrollDn);
 
 		// Scroll bar knob.
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -747,7 +825,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [4, 10, 0]);
 		mat4.scale(mat, mat, [2, this.h/s-20, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.rect, len5.rect);
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 		sel = this.knobGad.gestureState
 			&& (this.knobGad.gestureState=='drag'
 				||this.knobGad.gestureState=='drag');
@@ -757,7 +835,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [3, 10+this.knobGad.convexHull[1], 0]);
 		mat4.scale(mat, mat, [4, this.knobGad.convexHull[5]-this.knobGad.convexHull[1], 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineH, len5.divLineH);
+		gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
 	};
 
   var walletpane = v = new vp.ViewSlice(null, 'r', 10);
@@ -788,11 +866,11 @@ function scrollUpDn(g, amt) {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		mat4.scale(mat, mat, [this.w, this.h, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		//gl.drawArrays(gl.LINE_STRIP, beg5.divLine, len5.divLine);
+		//gl.drawArrays(typ5.divLine, beg5.divLine, len5.divLine);
 		if (this.parent.state == 'v') {
-			gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineV, len5.divLineV);
+			gl.drawArrays(typ5.divLineV, beg5.divLineV, len5.divLineV);
 		} else {
-			gl.drawArrays(gl.TRIANGLE_STRIP, beg5.divLineH, len5.divLineH);
+			gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
 		}
 	};
 
