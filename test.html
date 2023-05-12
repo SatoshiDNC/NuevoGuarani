@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta name="viewport"><!-- content="width=device-width"> -->
+<meta name="viewport" content="width=device-width">
 <meta charset="UTF-8">
 <script type="text/javascript" charset="utf-8"><!--
 /*!
@@ -163,9 +163,9 @@ var e=F.createBufferSource();F.createScriptProcessor(2048);e.start();h=2}else 2=
 l.compileShader(g);if(l.getShaderParameter(g,l.COMPILE_STATUS)){var c=l.createShader(l.FRAGMENT_SHADER);l.shaderSource(c,"\n        varying lowp vec4 v_Color;\n        void main() {\n          gl_FragColor = v_Color;\n        }\n\t");l.compileShader(c);if(l.getShaderParameter(c,l.COMPILE_STATUS)&&(z=l.createProgram(),l.attachShader(z,g),l.attachShader(z,c),l.linkProgram(z),l.getProgramParameter(z,l.LINK_STATUS))){ba=l.createBuffer();l.bindBuffer(l.ARRAY_BUFFER,ba);l.vertexAttribPointer(l.getAttribLocation(z,
 "aVertexPosition"),2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(l.getAttribLocation(z,"aVertexPosition"));cum2=[];y.unitLine=cum2.length/2;cum2.splice(cum2.length,0,0,0,1,1);C.unitLine=cum2.length/2-y.unitLine;y.unitSquare=cum2.length/2;cum2.splice(cum2.length,0,1,1,0,1,0,0,1,0);C.unitSquare=cum2.length/2-y.unitSquare;y.roundTouch=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,85*Math.sin(i/18*Math.PI),85*Math.cos(i/18*Math.PI));C.roundTouch=cum2.length/2-y.roundTouch;y.squareTouch=cum2.length/
 2;cum2.splice(cum2.length,0,84.5,84.5,-84.5,84.5,-84.5,-84.5,84.5,-84.5);C.squareTouch=cum2.length/2-y.squareTouch;y.roundMouse=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,5*Math.sin(i/18*Math.PI),5*Math.cos(i/18*Math.PI));C.roundMouse=cum2.length/2-y.roundMouse;y.squareMouse=cum2.length/2;cum2.splice(cum2.length,0,4.5,4.5,-4.5,4.5,-4.5,-4.5,4.5,-4.5);C.squareMouse=cum2.length/2-y.squareMouse;l.bufferData(l.ARRAY_BUFFER,new Float32Array(cum2),l.STATIC_DRAW);var b=!1,h=0;a&&(E=a);window.addEventListener("resize",
-function(e){da()},!1);da();window.requestAnimationFrame(fa);ja.addEventListener("input",function(e){console.log(e)},!1);x.addEventListener("touchend",function(e){L(e,"touches")},!1);x.addEventListener("pointerdown",function(e){b||d();e.preventDefault();L(e,"down")},!1);x.addEventListener("pointermove",function(e){e.preventDefault();L(e,"move")},!1);x.addEventListener("pointerup",function(e){b||d();e.preventDefault();L(e,"up")},!1);x.addEventListener("contextmenu",function(e){e.preventDefault()},!1);
-x.addEventListener("wheel",function(e){e.preventDefault();L(e,"wheel")},!1)}}}},setDebugFlags:function(a,d){ia=!!a;Z=!!d},getContext:function(){return l},getPointerRadius:N,isMouseEnabled:function(){return ea},View:S,ViewDivider:ma,ViewSlice:na,ViewOverlay:oa,ViewMultiverse:pa,ViewPicker:ka,Gadget:T,MatrixGadget:ra,SwipeGadget:sa,MiddleDividerGadget:qa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,
-GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_ALL:3901,HitList:la,LayoutState:M}}();
+function(e){da()},!1);da();window.requestAnimationFrame(fa);ja.addEventListener("input",function(e){console.log(e)},!1);numpad.addEventListener("input",function(e){console.log(e)},!1);x.addEventListener("touchend",function(e){L(e,"touches")},!1);x.addEventListener("pointerdown",function(e){b||d();e.preventDefault();L(e,"down")},!1);x.addEventListener("pointermove",function(e){e.preventDefault();L(e,"move")},!1);x.addEventListener("pointerup",function(e){b||d();e.preventDefault();L(e,"up")},!1);x.addEventListener("contextmenu",
+function(e){e.preventDefault()},!1);x.addEventListener("wheel",function(e){e.preventDefault();L(e,"wheel")},!1)}}}},setDebugFlags:function(a,d){ia=!!a;Z=!!d},getContext:function(){return l},getPointerRadius:N,isMouseEnabled:function(){return ea},View:S,ViewDivider:ma,ViewSlice:na,ViewOverlay:oa,ViewMultiverse:pa,ViewPicker:ka,Gadget:T,MatrixGadget:ra,SwipeGadget:sa,MiddleDividerGadget:qa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,
+GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_ALL:3901,HitList:la,LayoutState:M}}();
 function main() {
 	const canvas = document.querySelector('#app1');
 	vp.initialize(canvas, document.getElementById('kb'));
@@ -677,7 +677,8 @@ var invoicepane;
 			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
 		}
 		g.clickFunc = function() {
-window.prompt("sometext","defaultText");
+document.getElementById('numpad').focus();
+//window.prompt("sometext","defaultText");
 //			transitionTo(startpane);
 		}
 	v.gadgets.push(v.payment = g = new vp.Gadget(v));
@@ -1102,6 +1103,7 @@ window.onload = function () {
 </head>
 <body style="text-align: center; touch-action: none; overflow: hidden; margin: 0; padding: 0;">
   <canvas id="app1"></canvas>
+  <input id="numpad" type="number" style="position:fixed;left:-2000px";>
   <input id="kb" type="text" style="position:fixed;left:-2000px";>
   <input type="file" id="fileinput" multiple accept="image/*" style="display:none">
 </body>
