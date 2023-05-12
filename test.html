@@ -167,60 +167,22 @@ function(e){da()},!1);da();window.requestAnimationFrame(fa);x.addEventListener("
 L(e,"wheel")},!1)}}}},setDebugFlags:function(a,d){ia=!!a;Z=!!d},getContext:function(){return l},getPointerRadius:N,isMouseEnabled:function(){return ea},View:S,ViewDivider:la,ViewSlice:ma,ViewOverlay:na,ViewMultiverse:oa,ViewPicker:ja,Gadget:T,MatrixGadget:qa,SwipeGadget:ra,MiddleDividerGadget:pa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,
 GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_ALL:3901,HitList:ka,LayoutState:M}}();
 function main() {
-  const canvas = document.querySelector('#app1');
-  vp.initialize(canvas);
-  const gl = vp.getContext();
+	const canvas = document.querySelector('#app1');
+	vp.initialize(canvas);
+	const gl = vp.getContext();
 
-  df.glSet(gl);
-  defaultFont.init();
+	df.glSet(gl);
+	defaultFont.init();
 
-  const GENERIC = 0;
+	const GENERIC = 0;
 	const PARAGUAY = 1;
-  const style = Math.round(Math.random() * 1);
+	const style = Math.round(Math.random() * 1);
 
 	const lcode = style == PARAGUAY? (Math.random() > 0.5?'gn-PY':'es-PY') : 'en-US';
 
-  function toFiat(s) {
+	function toFiat(s) {
 		return style == PARAGUAY? s * 2: s / 3600;
 	}
-
-	const trs = {};
-  function tr(s) {
-		if (!(s in trs)) {
-			trs[s] = {'source': s};
-			switch(s) {
-			case 'about @':
-				trs[s]['en-US'] = 'about @';
-				trs[s]['es-PY'] = 'circa de @';
-				trs[s]['gn-PY'] = '@ rupi';
-				break;
-			case 'bill':
-				trs[s]['en-US'] = 'INVOICE';
-				trs[s]['es-PY'] = 'FACTURA';
-				trs[s]['gn-PY'] = 'ÑEMUMBYREHAI';
-				break;
-			case 'pay':
-				trs[s]['en-US'] = 'PAYMENT';
-				trs[s]['es-PY'] = 'PAGO';
-				trs[s]['gn-PY'] = 'HEPYME\'Ẽ';
-				break;
-			}
-			if(	!('en-US' in trs[s])
-			||	!('es-PY' in trs[s])
-			||	!('gn-PY' in trs[s])) {
-				console.log("Translation(s) missing for", trs[s]);
-			}
-		}
-		if (lcode in trs[s]) {
-			return trs[s][lcode];
-		} else {
-			//console.log("Translation missing for", trs[s]);
-			for(var v in trs[s]) {
-				if(!trs[s].hasOwnProperty(v)) continue;
-				return trs[s][v];
-			}
-		}
-  }
 
 	const uiPillOrange = [1, 0.55, 0.1, 1];
 	const uiFiatGreen = [112/255, 130/255, 56/255, 1];
@@ -228,65 +190,101 @@ function main() {
 	const uiWhite = [1,1,1, 1];
 	const uiDarkWhite = [0.9,0.9,0.9, 1];
 
-  // Shape data storage
-  const beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
-  const beg5 = {}, len5 = {}, typ5 = {}; var all5 = [], buf5;
+	var v, g;
+const trs = {};
+ function tr(s) {
+	if (!(s in trs)) {
+		trs[s] = {'source': s};
+		switch(s) {
+		case 'about @':
+			trs[s]['en-US'] = 'about @';
+			trs[s]['es-PY'] = 'circa de @';
+			trs[s]['gn-PY'] = '@ rupi';
+			break;
+		case 'bill':
+			trs[s]['en-US'] = 'INVOICE';
+			trs[s]['es-PY'] = 'FACTURA';
+			trs[s]['gn-PY'] = 'ÑEMUMBYREHAI';
+			break;
+		case 'pay':
+			trs[s]['en-US'] = 'PAYMENT';
+			trs[s]['es-PY'] = 'PAGO';
+			trs[s]['gn-PY'] = 'HEPYME\'Ẽ';
+			break;
+		}
+		if(	!('en-US' in trs[s])
+		||	!('es-PY' in trs[s])
+		||	!('gn-PY' in trs[s])) {
+			console.log("Translation(s) missing for", trs[s]);
+		}
+	}
+	if (lcode in trs[s]) {
+		return trs[s][lcode];
+	} else {
+		//console.log("Translation missing for", trs[s]);
+		for(var v in trs[s]) {
+			if(!trs[s].hasOwnProperty(v)) continue;
+			return trs[s][v];
+		}
+	}
+}
+// Shape data storage
+const beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
+const beg5 = {}, len5 = {}, typ5 = {}; var all5 = [], buf5;
 
-  // Shape building functions
-  function addShape2(name, typ, ...points) {
-    beg2[name] = all2.length/2; typ2[name] = typ;
-    all2.splice (all2.length, 0, ...points);
-    len2[name] = all2.length/2 - beg2[name];
-  }
-  function addShape5(name, typ, ...points) {
-    beg5[name] = all5.length/5; typ5[name] = typ;
-    all5.splice (all5.length, 0, ...points);
-    len5[name] = all5.length/5 - beg5[name];
-  }
+// Shape building functions
+function addShape2(name, typ, ...points) {
+	beg2[name] = all2.length/2; typ2[name] = typ;
+	all2.splice (all2.length, 0, ...points);
+	len2[name] = all2.length/2 - beg2[name];
+}
+function addShape5(name, typ, ...points) {
+	beg5[name] = all5.length/5; typ5[name] = typ;
+	all5.splice (all5.length, 0, ...points);
+	len5[name] = all5.length/5 - beg5[name];
+}
 
-  // Shape definitions
-  addShape2('unitLine', gl.LINE_LOOP, 0,0, 1,1, );
-  addShape5('unitLine', gl.LINE_LOOP, 0,0,1,1,0, 1,1,0,1,0, );
-  addShape5('divLine', gl.LINE_STRIP, 0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
-  addShape5('divLineV', gl.TRIANGLE_STRIP,
-    1,0.0,0,0,0, 0,0.0,0,0,0, 
-    1,0.4,1,1,1, 0,0.4,1,1,1, 
-    1,0.6,1,1,1, 0,0.6,1,1,1, 
-    1,1.0,0,0,0, 0,1.0,0,0,0, );
-  addShape5('divLineH', gl.TRIANGLE_STRIP,
-    0.0,1,0,0,0, 0.0,0,0,0,0, 
-    0.4,1,1,1,1, 0.4,0,1,1,1, 
-    0.6,1,1,1,1, 0.6,0,1,1,1, 
-    1.0,1,0,0,0, 1.0,0,0,0,0, );
-  addShape2('rect', gl.TRIANGLE_STRIP,
-    0.0,1, 0.0,0, 1.0,1, 1.0,0, );
-  addShape5('rect', gl.TRIANGLE_STRIP,
-    0.0,1,1,1,1, 0.0,0,1,1,1, 1.0,1,1,1,1, 1.0,0,1,1,1, );
-  addShape5('scrollUp', gl.TRIANGLE_FAN,
-    0.5,0,0.75,0.75,0.75,
-		0.0,1,0.25,0.25,0.25, 
-		0.4,1,1,1,1, 0.6,1,1,1,1, 
-		1.0,1,0.25,0.25,0.25, );
-  addShape5('scrollDn', gl.TRIANGLE_FAN,
-    0.5,0,0.75,0.75,0.75,
-		0.0,1,0.25,0.25,0.25, 
-		0.4,1,1,1,1, 0.6,1,1,1,1, 
-		1.0,1,0.25,0.25,0.25, );
-  var r = 0.2, w = 0.8, b = 0.3;
-  if (style != PARAGUAY) { r = 1; w = 1; b = 1; }
-  addShape5('hamburger', gl.TRIANGLES,
-    0,0.0,1,r,r, 1,0.0,1,r,r, 0,0.2,1,r,r, 0,0.2,1,r,r, 1,0.0,1,r,r, 1,0.2,1,r,r,
-    0,0.4,w,w,w, 1,0.4,w,w,w, 0,0.6,w,w,w, 0,0.6,w,w,w, 1,0.4,w,w,w, 1,0.6,w,w,w,
-    0,0.8,b,b,1, 1,0.8,b,b,1, 0,1.0,b,b,1, 0,1.0,b,b,1, 1,0.8,b,b,1, 1,1.0,b,b,1,
-	);
-  addShape2('maximizer', gl.TRIANGLES,
-		0,1, 0,0.6, 0.4,1,
-		1,0, 1,0.4, 0.6,0,
-		1,0.1, 0.1,1, 0,0.9,
-		0,0.9, 0.9,0, 1,0.1,
-	);
-
-
+// Shape definitions
+addShape2('unitLine', gl.LINE_LOOP, 0,0, 1,1, );
+addShape5('unitLine', gl.LINE_LOOP, 0,0,1,1,0, 1,1,0,1,0, );
+addShape5('divLine', gl.LINE_STRIP, 0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
+addShape5('divLineV', gl.TRIANGLE_STRIP,
+	1,0.0,0,0,0, 0,0.0,0,0,0,
+	1,0.4,1,1,1, 0,0.4,1,1,1,
+	1,0.6,1,1,1, 0,0.6,1,1,1,
+	1,1.0,0,0,0, 0,1.0,0,0,0, );
+addShape5('divLineH', gl.TRIANGLE_STRIP,
+	0.0,1,0,0,0, 0.0,0,0,0,0,
+	0.4,1,1,1,1, 0.4,0,1,1,1,
+	0.6,1,1,1,1, 0.6,0,1,1,1,
+	1.0,1,0,0,0, 1.0,0,0,0,0, );
+addShape2('rect', gl.TRIANGLE_STRIP,
+	0.0,1, 0.0,0, 1.0,1, 1.0,0, );
+addShape5('rect', gl.TRIANGLE_STRIP,
+	0.0,1,1,1,1, 0.0,0,1,1,1, 1.0,1,1,1,1, 1.0,0,1,1,1, );
+addShape5('scrollUp', gl.TRIANGLE_FAN,
+	0.5,0,0.75,0.75,0.75,
+	0.0,1,0.25,0.25,0.25,
+	0.4,1,1,1,1, 0.6,1,1,1,1,
+	1.0,1,0.25,0.25,0.25, );
+addShape5('scrollDn', gl.TRIANGLE_FAN,
+	0.5,0,0.75,0.75,0.75,
+	0.0,1,0.25,0.25,0.25,
+	0.4,1,1,1,1, 0.6,1,1,1,1,
+	1.0,1,0.25,0.25,0.25, );
+var r = 0.2, w = 0.8, b = 0.3;
+if (style != PARAGUAY) { r = 1; w = 1; b = 1; }
+addShape5('hamburger', gl.TRIANGLES,
+	0,0.0,1,r,r, 1,0.0,1,r,r, 0,0.2,1,r,r, 0,0.2,1,r,r, 1,0.0,1,r,r, 1,0.2,1,r,r,
+	0,0.4,w,w,w, 1,0.4,w,w,w, 0,0.6,w,w,w, 0,0.6,w,w,w, 1,0.4,w,w,w, 1,0.6,w,w,w,
+	0,0.8,b,b,1, 1,0.8,b,b,1, 0,1.0,b,b,1, 0,1.0,b,b,1, 1,0.8,b,b,1, 1,1.0,b,b,1,
+);
+addShape2('maximizer', gl.TRIANGLES,
+	0,1, 0,0.6, 0.4,1,
+	1,0, 1,0.4, 0.6,0,
+	1,0.1, 0.1,1, 0,0.9,
+	0,0.9, 0.9,0, 1,0.1,
+);
   // WEBGL INITIALIZATION
 
   const plainVertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -418,35 +416,46 @@ function main() {
 		gl.enableVertexAttribArray(a);
 	}
 
-
-	// Helpers
-	function centerText(x,y,w,h,s,c,m0,m1) {
-		var tw = defaultFont.calcWidth(s);
-		defaultFont.draw(x+(w-tw)/2,y+14+(h-16)/2,s,c,m0,m1);
+// Helpers
+function centerText(x,y,w,h,s,c,m0,m1) {
+	var tw = defaultFont.calcWidth(s);
+	defaultFont.draw(x+(w-tw)/2,y+14+(h-16)/2,s,c,m0,m1);
+}
+var fullscreen = (function() {
+	var element = document.body;
+	element.requestFullscreen =
+		element.requestFullscreen ||
+		element.requestFullScreen ||
+		element.webkitRequestFullScreen ||
+		element.mozRequestFullScreen ||
+		function() { return false; };
+	document.cancelFullScreen =
+		document.cancelFullScreen ||
+		document.webkitCancelFullScreen ||
+		document.mozCancelFullScreen ||
+		function() { return false; };
+	function active() {
+		return document.webkitIsFullScreen || document.mozFullScreen || false;
 	}
-	function fullscreen(on) {
-		var element = document.body;
-		var fs =
-			document.webkitIsFullScreen ||
-			document.mozFullScreen || false;
-		element.requestFullScreen =
-			element.requestFullScreen ||
-			element.webkitRequestFullScreen ||
-			element.mozRequestFullScreen ||
-			function() { return false; };
-		document.cancelFullScreen =
-			document.cancelFullScreen ||
-			document.webkitCancelFullScreen ||
-			document.mozCancelFullScreen ||
-			function() { return false; };
-		if (fs && !on) document.cancelFullScreen();
-		if (!fs && on) element.requestFullScreen();
+	function toggle() {
+		if (active()) document.cancelFullScreen(); else element.requestFullscreen();
 	}
+	function enter() {
+		if (!active()) element.requestFullscreen();
+	}
+	function exit() {
+		if (active()) document.cancelFullScreen();
+	}
+	return {
+		active: active,
+		toggle: toggle,
+		enter: enter,
+		exit: exit,
+	};
+})();
 
+var invoicepane;
 
-  var v, g;
-
-	var scrollbar;
 	var startpane = v = new vp.View(null);
 	v.designFit = [400,300];
 	v.gadgets.push(v.hamburger = g = new vp.Gadget(v));
@@ -485,21 +494,7 @@ function main() {
 			gl.drawArrays(typ2.maximizer, beg2.maximizer, len2.maximizer);
 		}
 		g.clickFunc = function() {
-			var element = document.body;
-			var fs =
-				document.webkitIsFullScreen ||
-				document.mozFullScreen || false;
-			element.requestFullScreen =
-				element.requestFullScreen ||
-				element.webkitRequestFullScreen ||
-				element.mozRequestFullScreen ||
-				function() { return false; };
-			document.cancelFullScreen =
-				document.cancelFullScreen ||
-				document.webkitCancelFullScreen ||
-				document.mozCancelFullScreen ||
-				function() { return false; };
-			fs ? document.cancelFullScreen() : element.requestFullScreen();
+			fullscreen.toggle();
 		}
 	v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
@@ -528,8 +523,7 @@ function main() {
 			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
 		}
 		g.clickFunc = function() {
-			fullscreen(true);
-			console.log('click invoice');
+			transitionTo(invoicepane);
 		}
 	v.gadgets.push(v.payment = g = new vp.Gadget(v));
 		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
@@ -542,7 +536,7 @@ function main() {
 		}
 		g.renderFunc = v.invoice.renderFunc;
 		g.clickFunc = function() {
-			console.log('click payment');
+			transitionTo(invoicepane);
 		}
 	v.minX = 0; v.maxX = 100;
 	v.minY = 0; v.maxY = 1000;
@@ -552,6 +546,7 @@ function main() {
 			if (g.layoutFunc) g.layoutFunc.call(g);
 		}
 	}
+	var scrollbar;
 	v.renderFunc = function() {
 		var g = scrollbar.knobGad, s = this.getScale();
 		g.shown = this.h/this.getScale();
@@ -612,6 +607,159 @@ function main() {
 //	v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 //	v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 
+	var invoicepane = v = new vp.View(null);
+	v.designFit = [400,300];
+	v.gadgets.push(v.hamburger = g = new vp.Gadget(v));
+		g.w = 30; g.h = 30 * 0.618; g.actionFlags = vp.GAF_CLICKABLE;
+		g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+		g.autoHull();
+		g.renderFunc = function() {
+			var g = this;
+			const mat = mat4.create();
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [g.w, g.h, 0]);
+			useProg5();
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+			gl.drawArrays(typ5.hamburger, beg5.hamburger, len5.hamburger);
+		}
+		g.clickFunc = function() {
+			transitionTo(startpane, false);
+		}
+	v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
+		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+		g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+		g.autoHull();
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+			g.x = v.w/s - g.w - (50 - g.w)/2;
+		}
+		g.renderFunc = function() {
+			var g = this;
+			const mat = mat4.create();
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [g.w, g.h, 0]);
+			useProg2();
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);
+			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+				new Float32Array(uiWhite));
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+			gl.drawArrays(typ2.maximizer, beg2.maximizer, len2.maximizer);
+		}
+		g.clickFunc = function() {
+			fullscreen.toggle();
+		}
+	v.gadgets.push(v.invoice = g = new vp.Gadget(v));
+		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
+		g.text = tr('bill');
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+			g.W = v.w/s; g.x = (g.W - g.w) / 2;
+			g.H = v.h/s; g.y = (g.H - g.h) / 2 - 50;
+			g.autoHull();
+		}
+		g.renderFunc = function() {
+			var g = this;
+			var sel = ['begin-click','recover-click','begin-tap'].includes(g.gestureState);
+			const mat = mat4.create();
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [g.w, g.h, 1]);
+			useProg5();
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+				new Float32Array(sel?uiWhite:uiPillOrange));
+			gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [50/32, 50/32, 1]);
+			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
+		}
+		g.clickFunc = function() {
+			transitionTo(startpane);
+		}
+	v.gadgets.push(v.payment = g = new vp.Gadget(v));
+		g.w = 250; g.h = 50; g.actionFlags = vp.GAF_CLICKABLE;
+		g.text = tr('pay');
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+			g.W = v.w/s; g.x = (g.W - g.w) / 2;
+			g.H = v.h/s; g.y = (g.H - g.h) / 2 + 50;
+			g.autoHull();
+		}
+		g.renderFunc = v.invoice.renderFunc;
+		g.clickFunc = function() {
+			transitionTo(startpane);
+		}
+	v.minX = 0; v.maxX = 100;
+	v.minY = 0; v.maxY = 1000;
+	v.layoutFunc = function() {
+//		this.swipeGad.layout.call(this.swipeGad);
+		for (const g of this.gadgets) {
+			if (g.layoutFunc) g.layoutFunc.call(g);
+		}
+	}
+	var scrollbar;
+	v.renderFunc = function() {
+		var g = scrollbar.knobGad, s = this.getScale();
+		g.shown = this.h/this.getScale();
+    g.total = this.maxY;
+    g.start = this.userY;
+		g.viewport.relayout();
+		//g.viewport.setRenderFlag(true);
+		gl.clearColor(0,0,0, 1);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+		useProg5();
+		gl.enable(gl.BLEND);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array([1,1,1,1]));
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+		for (const g of this.gadgets) {
+			if (g.renderFunc) g.renderFunc.call(g);
+		}
+/*
+		var tmpw;
+    var m = mat4.create();
+
+		bal = Math.round(Math.random() * (10 ** (Math.random() * 10)));
+		balstr = lcode != 'en-US' || bal > 9999? bal.toLocaleString(lcode) : bal.toString();
+		balw = defaultFont.calcWidth(balstr) + defaultFont.calcWidth(' sats')/2;
+		tmpw = Math.max(128, balw + 10);
+
+		mat4.identity(m);
+		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
+		mat4.translate(m, m, [(tmpw/400*this.w/s-balw)*0.51, (tmpw/400*this.h/s-20)*0.49, 0]);
+		defaultFont.draw(0,0, balstr, uiPillOrange, this.mat, m);
+		mat4.scale(m, m, [0.5, 0.5, 1]);
+		defaultFont.draw(0,0, ' sats', uiPillOrange, this.mat, m);
+
+		bal = toFiat(bal);
+		if (style == PARAGUAY) {
+			balstr = bal.toLocaleString(lcode);
+			balstr = tr('about @').replace('@', 'Gs ' + balstr);
+		} else {
+			if (bal > 9999)
+				balstr = bal.toLocaleString(lcode, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				});
+			else
+				balstr = bal.toFixed(2);
+			balstr = tr('about @').replace('@', '$' + balstr);
+		}
+		balw = defaultFont.calcWidth(balstr)/2;
+		tmpw = Math.max(128, balw + 10);
+
+		mat4.identity(m);
+		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
+		mat4.translate(m, m, [(tmpw/400*this.w/s-balw)*0.51, (tmpw/400*this.h/s-20)*0.49+10, 0]);
+		mat4.scale(m, m, [0.5, 0.5, 1]);
+		defaultFont.draw(0,0, balstr, uiFiatGreen, this.mat, m);
+*/
+	};
+//	v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+//	v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
   var menupane = v = new vp.View(null);
   v.gadgets.push(g = new vp.MatrixGadget(v));
   //g.w = 10; g.h = 1000; //g.f = GF_RELH;
@@ -884,15 +1032,54 @@ function scrollUpDn(g, amt) {
   v.a = walletpane; walletpane.parent = v;
   v.b = quadrants3and4; quadrants3and4.parent = v;
   v.c = maindivider; maindivider.parent = v;
+	transitionTo = function(view, fullscreen = true) {
+		v = allblack;
+		v.fullscreen = fullscreen;
+		v.root = menudiv;
+		v.state = 'begin';
+		v.root.b = v; v.parent = v.root;
+		v.target = view;
+		v.setRenderFlag(true);
+	};
 
+	var allblack = v = new vp.View(null);
+	v.renderFunc = function() {
+		switch (this.state) {
+		case 'begin':
+			gl.clearColor(0,0,0, 1);
+			gl.clear(gl.COLOR_BUFFER_BIT);
+			this.counter = 0; this.state = 't1';
+			break;
+		case 't1':
+			this.counter = this.counter + 1;
+			if (this.counter >= 1) this.state = 'go fullscreen';
+			break;
+		case 'go fullscreen':
+			if (this.fullscreen) fullscreen.enter();
+			this.counter = 0; this.state = 't2';
+			break;
+		case 't2':
+			this.counter = this.counter + 1;
+			if (this.counter >= 5) this.state = 'switch view';
+			break;
+		case 'switch view':
+			this.root.b = this.target; this.target.parent = this.root
+			this.root.relayout();
+			this.state = 'done';
+			break;
+		default:
+			return;
+		}
+		this.root.setRenderFlag(true);
+	};
   var menudiv = v = new vp.ViewDivider(null, 'h', 0, 0);
   div.designSize = 640*400;
   v.a = menupane; menupane.parent = v;
   v.b = startpane; startpane.parent = v;
   v.c = menudivider; menudivider.parent = v;
-
   vp.start(menudiv);
-}var loadPending = true;
+}
+var loadPending = true;
 function loadCheck() {
   if ( loadPending
     && defaultFont.isReady()
