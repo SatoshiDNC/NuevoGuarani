@@ -231,12 +231,14 @@ function main() {
 	const uiWhite = [1,1,1, 1];
 	const uiDarkWhite = [0.9,0.9,0.9, 1];
 
-	const uiButton			= [0.6,0.6,0.6, 1];
-	const uiButtonSel		= [1.0,0.2,0.2, 1];
-	const uiButtonGhost	= [0.2,0.2,0.2, 1];
-	const uiTextField		= uiButtonGhost;
-	const uiTextFocus		= uiButtonSel;
-	const uiText				= [1,1,1, 1];
+	const uiButton				= [0.6,0.6,0.6, 1];
+	const uiButtonSel			= [1.0,0.2,0.2, 1];
+	const uiButtonGhost		= [0.2,0.2,0.2, 1];
+	const uiTextLabelArea	= uiButtonGhost;
+	const uiTextField			= uiBlack;
+	const uiTextFocus			= uiButtonSel;
+	const uiText					= uiWhite;
+	const uiTextLabel			= uiButton;
 
   clickTapActive = ['begin-click','recover-click','begin-tap'];
 
@@ -260,6 +262,26 @@ const trs = {};
 			trs[s]['en-US'] = 'PAYMENT';
 			trs[s]['es-PY'] = 'PAGO';
 			trs[s]['gn-PY'] = 'HEPYME\'Ẽ';
+			break;
+		case 'item':
+			trs[s]['en-US'] = 'ITEM';
+			trs[s]['es-PY'] = 'ARTÍCULO';
+			trs[s]['gn-PY'] = 'MBA\'E';
+			break;
+		case 'tax':
+			trs[s]['en-US'] = 'TAX';
+			trs[s]['es-PY'] = 'IVA';
+			trs[s]['gn-PY'] = 'IVA';
+			break;
+		case 'price':
+			trs[s]['en-US'] = 'PRICE';
+			trs[s]['es-PY'] = 'PRECIO';
+			trs[s]['gn-PY'] = 'HEPYKUE';
+			break;
+		case 'qty':
+			trs[s]['en-US'] = 'QTY';
+			trs[s]['es-PY'] = 'CANTIDAD';
+			trs[s]['gn-PY'] = 'HETAKUE';
 			break;
 		}
 		if(	!('en-US' in trs[s])
@@ -725,25 +747,33 @@ var invoicepane;
 	};
 
 	var invoicemain = v = new vp.View(null);
-	v.designFit = [400,300];
+	v.designFit = [240,150];
 	v.gadgets.push(v.item = g = new vp.Gadget(v));
-		g.x = 120; g.y = 20; g.w = 250; g.h = 50;
+		g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 		g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
-		g.text = 'abc';
+		g.text = ''; g.label = tr('item'); g.autoHull();
+/*
 		g.layoutFunc = function() {
 			var g = this, v = g.viewport, s = v.getScale();
 //			g.W = v.w/s; g.x = (g.W - g.w) / 2;
 //			g.H = v.h/s; g.y = (g.H - g.h) / 2 - 50;
-			g.autoHull();
 		}
+*/
 		g.renderFunc = function() {
 			var g = this;
 			var sel = ['begin-input'].includes(g.gestureState) || vp.getInputGad() === g;
 			const mat = mat4.create();
+			useProg5();
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x-1, g.y-11, 0]);
+			mat4.scale(mat, mat, [g.w+2, g.h+12, 1]);
+			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+				new Float32Array(uiTextLabelArea));
+			gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [g.w, g.h, 1]);
-			useProg5();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 				new Float32Array(uiTextField));
@@ -754,23 +784,22 @@ var invoicepane;
 				for (var i=0; i<4; i++) {
 					mat4.identity(mat);
 					switch (i) {
-					case 0: mat4.translate(mat, mat, [g.x-2, g.y-2, 0]);
-						mat4.scale(mat, mat, [4, g.h+4, 1]); break;
-					case 1: mat4.translate(mat, mat, [g.x-2, g.y-2, 0]);
-						mat4.scale(mat, mat, [g.w+4, 4, 1]); break;
-					case 2: mat4.translate(mat, mat, [g.x-2, g.y+g.h-2, 0]);
-						mat4.scale(mat, mat, [g.w+4, 4, 1]); break;
-					case 3: mat4.translate(mat, mat, [g.x+g.w-2, g.y-2, 0]);
-						mat4.scale(mat, mat, [4, g.h+4, 1]); break;
+					case 0: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+						mat4.scale(mat, mat, [2, g.h+2, 1]); break;
+					case 1: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+						mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+					case 2: mat4.translate(mat, mat, [g.x-1, g.y+g.h-1, 0]);
+						mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+					case 3: mat4.translate(mat, mat, [g.x+g.w-1, g.y-1, 0]);
+						mat4.scale(mat, mat, [2, g.h+2, 1]); break;
 					}
 					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 					gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 				}
 			}
 			mat4.identity(mat);
-			mat4.translate(mat, mat, [g.x, g.y, 0]);
-			mat4.scale(mat, mat, [50/32, 50/32, 1]);
-			centerText(8,7, 5*32-16,32-14, g.text, uiText, g.viewport.mat, mat);
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+			defaultFont.draw(0,0, g.text, uiText, g.viewport.mat, mat);
 		}
 		g.textBeginFunc = function() {
 			var g = this; g.text = '';
@@ -786,8 +815,9 @@ var invoicepane;
 			vp.beginInput(this.viewport.unitprice);
 		}
 	v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
-		g.x = 120; g.y = 75; g.w = 250; g.h = 50; g.actionFlags = vp.GAF_NUMINPUT;
-		g.text = '123';
+		g.x = 5; g.y = 55; g.w = 150; g.h = 20;
+		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+		g.text = ''; g.label = tr('price');
 		g.layoutFunc = function() {
 			var g = this, v = g.viewport, s = v.getScale();
 			g.W = v.w/s; //g.x = (g.W - g.w) / 2;
@@ -805,6 +835,65 @@ var invoicepane;
 		g.textEndFunc = function() {
 			this.viewport.setRenderFlag(true);
 		}
+		g.textNextFunc = function() {
+			vp.beginInput(this.viewport.qty);
+		}
+	v.gadgets.push(v.qty = g = new vp.Gadget(v));
+		g.x = 160; g.y = 55; g.w = 35; g.h = 20;
+		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+		g.text = ''; g.label = tr('qty');
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+			g.W = v.w/s; //g.x = (g.W - g.w) / 2;
+			g.H = v.h/s; //g.y = g.h + 5; //(g.H - g.h) / 2 + 50;
+			g.autoHull();
+		}
+		g.renderFunc = v.item.renderFunc;
+		g.textBeginFunc = function() {
+			var g = this; if (g.text == '') g.text = '1';
+			g.viewport.setRenderFlag(true);
+		}
+		g.textFunc = function() {
+			this.viewport.setRenderFlag(true);
+		}
+		g.textEndFunc = function() {
+			this.viewport.setRenderFlag(true);
+		}
+		g.textNextFunc = function() {
+			vp.beginInput(this.viewport.taxrate);
+		}
+	v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
+		g.x = 200; g.y = 55; g.w = 35; g.h = 20;
+		g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
+		g.text = ''; g.label = tr('tax');
+		g.layoutFunc = function() {
+			var g = this, v = g.viewport, s = v.getScale();
+//			g.W = v.w/s; g.x = (g.W - g.w) / 2;
+//			g.H = v.h/s; g.y = (g.H - g.h) / 2 - 50;
+			g.autoHull();
+		}
+		g.renderFunc = v.item.renderFunc;
+		g.textBeginFunc = function() {
+			var g = this; g.text = '';
+			g.viewport.setRenderFlag(true);
+		}
+		g.textFunc = function() {
+			this.viewport.setRenderFlag(true);
+		}
+		g.textEndFunc = function() {
+			this.viewport.setRenderFlag(true);
+		}
+		g.textNextFunc = function() {
+			var g = this, v = g.viewport;
+			v.clearDataEntry();
+			vp.beginInput(v.item);
+		}
+	v.clearDataEntry = function() {
+		this.item.text = '';
+		this.unitprice.text = '';
+		this.qty.text = '';
+		this.taxrate.text = '';
+	}
 	v.minX = 0; v.maxX = 100;
 	v.minY = 0; v.maxY = 1000;
 	v.layoutFunc = function() {
@@ -823,26 +912,27 @@ var invoicepane;
 		//g.viewport.setRenderFlag(true);
 		gl.clearColor(0,0,0, 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		useProg5();
-		gl.enable(gl.BLEND);
-		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array([1,1,1,1]));
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
-
-    var m = mat4.create();
-		mat4.identity(m);
-		mat4.scale(m, m, [50/32, 50/32, 1]);
-		mat4.translate(m, m, [10, 10 + this.item.y/50*32 + 16 + (this.item.h/2 - 16)/2, 0]);
-		defaultFont.draw(0,0, 'item', uiWhite, this.mat, m);
-		mat4.identity(m);
-		mat4.scale(m, m, [50/32, 50/32, 1]);
-		mat4.translate(m, m, [10, 10 + this.unitprice.y/50*32 + 16 + (this.unitprice.h/2 - 16)/2, 0]);
-		defaultFont.draw(0,0, 'price', uiWhite, this.mat, m);
-
 
 		for (const g of this.gadgets) {
 			if (g.renderFunc) g.renderFunc.call(g);
 		}
+
+		useProg5();
+		gl.enable(gl.BLEND);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(uiTextLabel));
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+
+    var m = mat4.create();
+		var scale = [0.5, 0.5, 1];
+		for (const g of this.gadgets) {
+			mat4.identity(m);
+			mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
+			mat4.scale(m, m, scale);
+			defaultFont.draw(0,0, g.label, uiWhite, this.mat, m);
+		}
+
+
 /*
 		var tmpw;
     var m = mat4.create();
