@@ -197,11 +197,11 @@ var d=D.createBufferSource();D.createScriptProcessor(2048);d.start();h=2}else 2=
 l.compileShader(g);if(l.getShaderParameter(g,l.COMPILE_STATUS)){var c=l.createShader(l.FRAGMENT_SHADER);l.shaderSource(c,"\n        varying lowp vec4 v_Color;\n        void main() {\n          gl_FragColor = v_Color;\n        }\n\t");l.compileShader(c);if(l.getShaderParameter(c,l.COMPILE_STATUS)&&(z=l.createProgram(),l.attachShader(z,g),l.attachShader(z,c),l.linkProgram(z),l.getProgramParameter(z,l.LINK_STATUS))){ia=l.createBuffer();l.bindBuffer(l.ARRAY_BUFFER,ia);l.vertexAttribPointer(l.getAttribLocation(z,
 "aVertexPosition"),2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(l.getAttribLocation(z,"aVertexPosition"));cum2=[];y.unitLine=cum2.length/2;cum2.splice(cum2.length,0,0,0,1,1);E.unitLine=cum2.length/2-y.unitLine;y.unitSquare=cum2.length/2;cum2.splice(cum2.length,0,1,1,0,1,0,0,1,0);E.unitSquare=cum2.length/2-y.unitSquare;y.roundTouch=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,85*Math.sin(i/18*Math.PI),85*Math.cos(i/18*Math.PI));E.roundTouch=cum2.length/2-y.roundTouch;y.squareTouch=cum2.length/
 2;cum2.splice(cum2.length,0,84.5,84.5,-84.5,84.5,-84.5,-84.5,84.5,-84.5);E.squareTouch=cum2.length/2-y.squareTouch;y.roundMouse=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,5*Math.sin(i/18*Math.PI),5*Math.cos(i/18*Math.PI));E.roundMouse=cum2.length/2-y.roundMouse;y.squareMouse=cum2.length/2;cum2.splice(cum2.length,0,4.5,4.5,-4.5,4.5,-4.5,-4.5,4.5,-4.5);E.squareMouse=cum2.length/2-y.squareMouse;l.bufferData(l.ARRAY_BUFFER,new Float32Array(cum2),l.STATIC_DRAW);var b=!1,h=0;a&&(H=a);window.addEventListener("resize",
-function(d){ka()},!1);ka();window.requestAnimationFrame(na);M.addEventListener("input",function(d){d=F;d.text=M.value;d.textFunc&&d.textFunc.call(d)},!1);M.addEventListener("blur",function(d){d=F;M.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);Y=d;F=void 0},!1);M.addEventListener("keyup",function(d){if("Enter"==d.key){var f=F;M.style.display="none";f.textEndFunc&&f.textEndFunc.call(f);Y=f;F=void 0;d.preventDefault()}},!1);L.addEventListener("input",function(d){d=F;d.text=L.value;d.textFunc&&
-d.textFunc.call(d)},!1);L.addEventListener("blur",function(d){d=F;L.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);Y=d;F=void 0},!1);L.addEventListener("keyup",function(d){if("Enter"==d.key){var f=F;L.style.display="none";f.textEndFunc&&f.textEndFunc.call(f);Y=f;F=void 0;d.preventDefault()}},!1);aa.addEventListener("focus",function(d){d=Y;M.style.display="none";L.style.display="none";aa.style.display="none";F=void 0;d&&d.textNextFunc&&d.textNextFunc.call(d)},!1);x.addEventListener("touchend",
-function(d){O(d,"touches")},!1);x.addEventListener("pointerdown",function(d){b||e();d.preventDefault();O(d,"down")},!1);x.addEventListener("pointermove",function(d){d.preventDefault();O(d,"move")},!1);x.addEventListener("pointerup",function(d){b||e();d.preventDefault();O(d,"up")},!1);x.addEventListener("contextmenu",function(d){d.preventDefault()},!1);x.addEventListener("wheel",function(d){d.preventDefault();O(d,"wheel")},!1)}}}},setDebugFlags:function(a,e){pa=!!a;fa=!!e},getContext:function(){return l},
-getPointerRadius:P,isMouseEnabled:function(){return la},getInputGad:function(){return F},beginInput:da,View:V,ViewDivider:sa,ViewSlice:ta,ViewOverlay:ua,ViewMultiverse:va,ViewPicker:qa,Gadget:W,MatrixGadget:xa,SwipeGadget:ya,MiddleDividerGadget:wa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,
-GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_NUMINPUT:4096,GAF_TEXTINPUT:8192,GAF_GONEXT:16384,GAF_ALL:3901,HitList:ra,LayoutState:Q}}();
+function(d){ka()},!1);ka();window.requestAnimationFrame(na);M.addEventListener("input",function(d){d=F;d.text=M.value;d.textFunc&&d.textFunc.call(d)},!1);M.addEventListener("blur",function(d){d=F;M.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);Y=d;F=void 0},!1);M.addEventListener("keyup",function(d){if("Enter"==d.key){var f=F;M.style.display="none";f&&f.textEndFunc&&f.textEndFunc.call(f);Y=f;F=void 0;f&&f.textNextFunc&&setTimeout(function(k){k.textNextFunc.call(k)},1,f);d.preventDefault()}},
+!1);L.addEventListener("input",function(d){d=F;d.text=L.value;d.textFunc&&d.textFunc.call(d)},!1);L.addEventListener("blur",function(d){d=F;L.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);Y=d;F=void 0},!1);L.addEventListener("keyup",function(d){if("Enter"==d.key){var f=F;L.style.display="none";f&&f.textEndFunc&&f.textEndFunc.call(f);Y=f;F=void 0;d.preventDefault()}},!1);aa.addEventListener("focus",function(d){d=Y;M.style.display="none";L.style.display="none";aa.style.display="none";
+F=void 0;d&&d.textNextFunc&&d.textNextFunc.call(d)},!1);x.addEventListener("touchend",function(d){O(d,"touches")},!1);x.addEventListener("pointerdown",function(d){b||e();d.preventDefault();O(d,"down")},!1);x.addEventListener("pointermove",function(d){d.preventDefault();O(d,"move")},!1);x.addEventListener("pointerup",function(d){b||e();d.preventDefault();O(d,"up")},!1);x.addEventListener("contextmenu",function(d){d.preventDefault()},!1);x.addEventListener("wheel",function(d){d.preventDefault();O(d,
+"wheel")},!1)}}}},setDebugFlags:function(a,e){pa=!!a;fa=!!e},getContext:function(){return l},getPointerRadius:P,isMouseEnabled:function(){return la},getInputGad:function(){return F},beginInput:da,View:V,ViewDivider:sa,ViewSlice:ta,ViewOverlay:ua,ViewMultiverse:va,ViewPicker:qa,Gadget:W,MatrixGadget:xa,SwipeGadget:ya,MiddleDividerGadget:wa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,
+GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_NUMINPUT:4096,GAF_TEXTINPUT:8192,GAF_GONEXT:16384,GAF_ALL:3901,HitList:ra,LayoutState:Q}}();
 function main() {
 	const canvas = document.querySelector('#app1');
 	vp.initialize(canvas,
@@ -231,8 +231,12 @@ function main() {
 	const uiWhite = [1,1,1, 1];
 	const uiDarkWhite = [0.9,0.9,0.9, 1];
 
-	const uiButton		= [1,1,1, 1];
-	const uiButtonSel	= [1,0.2,0.2, 1];
+	const uiButton			= [0.6,0.6,0.6, 1];
+	const uiButtonSel		= [1.0,0.2,0.2, 1];
+	const uiButtonGhost	= [0.2,0.2,0.2, 1];
+	const uiTextField		= uiButtonGhost;
+	const uiTextFocus		= uiButtonSel;
+	const uiText				= [1,1,1, 1];
 
   clickTapActive = ['begin-click','recover-click','begin-tap'];
 
@@ -668,7 +672,9 @@ var invoicepane;
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 			mat4.translate(mat, mat, [-1, 16, 0]);
-			iconFont.draw(0,0, g.icon, sel?uiButtonSel:uiButton, g.viewport.mat, mat);
+			iconFont.draw(0,0, g.icon,
+				g.enabled?(sel?uiButtonSel:uiButton):uiButtonGhost,
+				g.viewport.mat, mat);
 		}
 		g.clickFunc = function() {
 			transitionTo(startpane, 'min');
@@ -687,6 +693,7 @@ var invoicepane;
 		g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
 		g.autoHull();
 		g.icon = "\x02";
+		g.enabled = false;
 		g.renderFunc = v.homeGad.renderFunc;
 		g.clickFunc = function() {
 			console.log('popGad');
@@ -739,12 +746,31 @@ var invoicepane;
 			useProg5();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-				new Float32Array(sel?uiWhite:uiPillOrange));
+				new Float32Array(uiTextField));
 			gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			if (sel) {
+				gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+					new Float32Array(uiTextFocus));
+				for (var i=0; i<4; i++) {
+					mat4.identity(mat);
+					switch (i) {
+					case 0: mat4.translate(mat, mat, [g.x-2, g.y-2, 0]);
+						mat4.scale(mat, mat, [4, g.h+4, 1]); break;
+					case 1: mat4.translate(mat, mat, [g.x-2, g.y-2, 0]);
+						mat4.scale(mat, mat, [g.w+4, 4, 1]); break;
+					case 2: mat4.translate(mat, mat, [g.x-2, g.y+g.h-2, 0]);
+						mat4.scale(mat, mat, [g.w+4, 4, 1]); break;
+					case 3: mat4.translate(mat, mat, [g.x+g.w-2, g.y-2, 0]);
+						mat4.scale(mat, mat, [4, g.h+4, 1]); break;
+					}
+					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+					gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+				}
+			}
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [50/32, 50/32, 1]);
-			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
+			centerText(8,7, 5*32-16,32-14, g.text, uiText, g.viewport.mat, mat);
 		}
 		g.textBeginFunc = function() {
 			var g = this; g.text = '';
