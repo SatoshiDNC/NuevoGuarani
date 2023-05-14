@@ -238,7 +238,7 @@ function main() {
 	const uiTextField			= uiBlack;
 	const uiTextFocus			= uiButtonSel;
 	const uiText					= uiWhite;
-	const uiTextLabel			= uiButton;
+	const uiTextLabel			= uiWhite;
 
   clickTapActive = ['begin-click','recover-click','begin-tap'];
 
@@ -678,6 +678,16 @@ var invoicepane;
 	};
 //	v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 //	v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+var invoicepane;
+
+class LineItem {
+	constructor(item, unitprice, qty, taxrate) {
+		this.item = item;
+		this.unitprice = unitprice;
+		this.qty = qty;
+		this.taxrate = taxrate;
+	}
+}
 
 	var buttonbar = v = new vp.View(null);
 	v.designFit = [400,50];
@@ -746,19 +756,12 @@ var invoicepane;
 		}
 	};
 
-	var invoicemain = v = new vp.View(null);
-	v.designFit = [240,150];
+	var dataentry = v = new vp.View(null);
+	v.designFit = [240,80];
 	v.gadgets.push(v.item = g = new vp.Gadget(v));
 		g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 		g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
 		g.text = ''; g.label = tr('item'); g.autoHull();
-/*
-		g.layoutFunc = function() {
-			var g = this, v = g.viewport, s = v.getScale();
-//			g.W = v.w/s; g.x = (g.W - g.w) / 2;
-//			g.H = v.h/s; g.y = (g.H - g.h) / 2 - 50;
-		}
-*/
 		g.renderFunc = function() {
 			var g = this;
 			var sel = ['begin-input'].includes(g.gestureState) || vp.getInputGad() === g;
@@ -815,7 +818,7 @@ var invoicepane;
 			vp.beginInput(this.viewport.unitprice);
 		}
 	v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
-		g.x = 5; g.y = 55; g.w = 150; g.h = 20;
+		g.x = 5; g.y = 55; g.w = 145; g.h = 20;
 		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
 		g.text = ''; g.label = tr('price');
 		g.layoutFunc = function() {
@@ -839,7 +842,7 @@ var invoicepane;
 			vp.beginInput(this.viewport.qty);
 		}
 	v.gadgets.push(v.qty = g = new vp.Gadget(v));
-		g.x = 160; g.y = 55; g.w = 35; g.h = 20;
+		g.x = 155; g.y = 55; g.w = 40; g.h = 20;
 		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
 		g.text = ''; g.label = tr('qty');
 		g.layoutFunc = function() {
@@ -885,6 +888,9 @@ var invoicepane;
 		}
 		g.textNextFunc = function() {
 			var g = this, v = g.viewport;
+			var li = new LineItem(v.item.text, v.unitprice.text, v.qty.text, v.taxrate.text);
+			invoicepane.invoiceitems.unshift(li);
+			invoicepane.setRenderFlag(true);
 			v.clearDataEntry();
 			vp.beginInput(v.item);
 		}
@@ -913,15 +919,15 @@ var invoicepane;
 		gl.clearColor(0,0,0, 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		for (const g of this.gadgets) {
-			if (g.renderFunc) g.renderFunc.call(g);
-		}
-
 		useProg5();
 		gl.enable(gl.BLEND);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array(uiTextLabel));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+
+		for (const g of this.gadgets) {
+			if (g.renderFunc) g.renderFunc.call(g);
+		}
 
     var m = mat4.create();
 		var scale = [0.5, 0.5, 1];
@@ -929,7 +935,7 @@ var invoicepane;
 			mat4.identity(m);
 			mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
 			mat4.scale(m, m, scale);
-			defaultFont.draw(0,0, g.label, uiWhite, this.mat, m);
+			defaultFont.draw(0,0, g.label, uiTextLabel, this.mat, m);
 		}
 
 
@@ -976,10 +982,125 @@ var invoicepane;
 //	v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 //	v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 
-	var invoicepane = v = new vp.ViewSlice(null, 'b', 0.125);
-	v.prop = true;
-	v.a = buttonbar; buttonbar.parent = v;
-	v.b = invoicemain; invoicemain.parent = v;
+var vendorinvoice = v = new vp.View(null);
+v.designWidth = 400;
+v.layoutFunc = function() {
+};
+v.renderFunc = function(flip = false) {
+	gl.clearColor(0,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+
+	var y = 16, w, t, dir = 1;
+	if (flip) {
+		this.rematrix();
+		var s = this.getScale();
+		mat4.translate(this.mat, this.mat, [this.w/2/s, this.h/2/s, 0]);
+		mat4.rotate(this.mat, this.mat, Math.PI, [0,0,1]);
+		mat4.translate(this.mat, this.mat, [-this.w/2/s, -this.h/2/s, 0]);
+		y = this.h/s - 18; dir = -1;
+	}
+
+	var skip = 0;
+	if (this.scrollY == undefined) this.scrollY = 0;
+	if (this.countN == undefined) this.countN = 0;
+	if (this.countN < invoicepane.invoiceitems.length) {
+		this.setRenderFlag(true);
+		this.scrollY += dir * 2;
+		if (Math.abs(this.scrollY) >= 32) {
+			this.scrollY = 0;
+			this.countN += 1;
+		}
+		y += this.scrollY;
+		skip = invoicepane.invoiceitems.length - this.countN;
+	}
+
+  var m = mat4.create();
+	for (const li of invoicepane.invoiceitems) {
+		if (skip > 0) { skip -= 1; continue; }
+		mat4.identity(m);
+		mat4.translate(m, m, [10, y, 0]);
+		defaultFont.draw(0,0, li.item, uiText, this.mat, m);
+		y += 16;
+		mat4.identity(m);
+		mat4.translate(m, m, [10, y, 0]);
+		w = defaultFont.calcWidth(li.qty);
+		defaultFont.draw(72-w,0, li.qty + ' ×', uiText, this.mat, m);
+		mat4.identity(m);
+		mat4.translate(m, m, [10, y, 0]);
+		w = defaultFont.calcWidth(li.unitprice);
+		defaultFont.draw(162-w,0, li.unitprice, uiText, this.mat, m);
+		mat4.identity(m);
+		mat4.translate(m, m, [10, y, 0]);
+		t = (li.unitprice * li.qty).toString(); w = defaultFont.calcWidth(t);
+		defaultFont.draw(340-w,0, t, uiText, this.mat, m);
+		mat4.identity(m);
+		mat4.translate(m, m, [10, y, 0]);
+		w = defaultFont.calcWidth(li.taxrate);
+		defaultFont.draw(380-w,0, li.taxrate, uiText, this.mat, m);
+		y -= 16;
+		y += 32 * dir;
+	}
+};
+
+var customerinvoice = v = new vp.View(null);
+v.designWidth = 400;
+v.layoutFunc = function() {
+};
+v.renderFunc = function() {
+	vendorinvoice.renderFunc.call(customerinvoice, true);
+};
+
+var customertotal = v = new vp.View(null);
+v.designFit = [400,50];
+v.layoutFunc = function() {
+};
+v.renderFunc = function() {
+	gl.clearColor(0.25,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+};
+
+var customerpane = v = new vp.ViewSlice(null, 't', 0.125);
+v.prop = true;
+v.a = customertotal; customertotal.parent = v;
+v.b = customerinvoice; customerinvoice.parent = v;
+
+var invoicemain = v = new vp.ViewSlice(null, 't', 85/240);
+v.prop = true;
+v.a = dataentry; dataentry.parent = v;
+v.b = vendorinvoice; vendorinvoice.parent = v;
+
+var vendorpane = v = new vp.ViewSlice(null, 'b', 0.125);
+v.prop = true;
+v.a = buttonbar; buttonbar.parent = v;
+v.b = invoicemain; invoicemain.parent = v;
+
+var vendorcustomerdiv = v = new vp.View();
+v.designScale = 1;
+v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
+v.layoutFunc = function() { this.middleDividerGad.layout(); }
+v.renderFunc = function() {
+	gl.clearColor(0,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	useProg5();
+	gl.enable(gl.BLEND);
+	const mat = mat4.create();
+	mat4.identity(mat);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+	mat4.scale(mat, mat, [this.w, this.h, 0]);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+	//gl.drawArrays(typ5.divLine, beg5.divLine, len5.divLine);
+	if (this.parent.state == 'v') {
+		gl.drawArrays(typ5.divLineV, beg5.divLineV, len5.divLineV);
+	} else {
+		gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+	}
+};
+
+var invoicepane = v = new vp.ViewDivider(null, 'a', 0.5, 1);
+v.invoiceitems = [];
+v.a = customerpane; customerpane.parent = v;
+v.b = vendorpane; vendorpane.parent = v;
+v.c = vendorcustomerdiv; vendorcustomerdiv.parent = v;
   var menupane = v = new vp.View(null);
   v.gadgets.push(g = new vp.MatrixGadget(v));
   //g.w = 10; g.h = 1000; //g.f = GF_RELH;
