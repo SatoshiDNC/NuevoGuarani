@@ -69,36 +69,35 @@ df.ff.CHUNK_GLYPHSET).toString(16)+"0c"+this.makeInt(g,6)+this.makeInt(d,6)}make
 g),16);this.i+=g;return d}getChunkHeader(){var g=this.getInt(1),d=this.getInt(2);return{type:g,length:d}}getGlyphSet(){var g=this.getInt(6),d=this.getInt(6);return{first:g,last:d}}getAttrs(g){for(var d=this.getInt(1),b=this.getInt(1),a=[],k=0;k<(g-1-1)/b;k++)a[a.length]=this.getInt(b);return{attr:d,size:b,values:a}}getColorAttrs(g){var d=this.getInt(1),b=[];for(--g;0<g;){var a=this.getInt(1);--g;for(var k,v,x,r=[],C=0;C<a;C++){0<g&&(k=this.getInt(1));--g;0<g&&(v=this.getInt(1));--g;0<g&&(x=this.getInt(1));
 --g;var A=[k/15,v/15,x/15,1];r[r.length]=16777216*~~(255*A[0])+65536*~~(255*A[1])+256*~~(255*A[2])+~~(255*A[3])}b[b.length]=r}return{attr:d,values:b}}applySign(g,d){for(var b=0;b<g.length;b++)g[b]>=2**(4*d-1)&&(g[b]-=2**(4*d))}}return{CHUNK_EOF:0,CHUNK_GLYPHSET:1,CHUNK_GLYPHATTR:2,CHUNK_COLORGLYPHSET:3,CHUNK_COLORGLYPHATTR:4,ZD_ENCODE:e,ZD_DECODE:[[0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3]],ATTR_GLYPH_WIDTH:0,ATTR_GLYPH_HEIGHT:1,ATTR_GLYPH_X1:2,ATTR_GLYPH_Y1:3,ATTR_GLYPH_X2:4,
 ATTR_GLYPH_Y2:5,ATTR_GLYPH_IMGX:6,ATTR_GLYPH_IMGY:7,ATTR_GLYPH_IMGZD:8,ATTR_COLORGLYPH_COLORS:0,Packer:m,Parser:l}}();class O{constructor(){}loadFromURL(e,m,l){var g=new Image;g.associatedGlyphSet=this;g.associatedCallback=m;g.associatedName=l;g.onload=this.imgCallback;g.src=e}loadFromImage(e,m,l){this.loadFromObject(e,m,l)}loadFromCanvas(e,m,l){this.loadFromObject(e,m,l)}initGlyphs(){this.glyphCodes=[];this.glyphWidths=[];this.glyphHeights=[];this.glyphX1=[];this.glyphY1=[];this.glyphX2=[];this.glyphY2=
-[];this.glyphSourceX=[];this.glyphSourceY=[];this.glyphSourceZD=[];this.glyphHasColors=[];this.glyphColors=[]}isReady(){return this.ready?!0:!1}imgCallback(e){e=e.target;var m=e.associatedGlyphSet;m.loadFromObject.call(m,e,e.associatedCallback,e.associatedName)}loadFromObject(e,m,l){this.ready=!1;this.finalCallback=m;this.name=l;this.initGlyphs();this.pixCoords=[];this.texCoords=[];this.init2(e);console.log("Loaded "+this.glyphCodes.length+" glyphs in new format.");0==this.glyphCodes.length&&(this.init1(e),
-console.log("Loaded "+this.glyphCodes.length+" glyphs in old format."))}init1(e){function m(p){function q(){for(;n<y.length&&(0==n%4&&0<z||1==n%4&&(1<z||2>B+z)||2==n%4&&3>B+z||3==n%4);)n+=1;var H=y[n]&15;for(n+=1;n<y.length&&(0==n%4&&0<z||1==n%4&&(1<z||2>B+z)||2==n%4&&3>B+z||3==n%4);)n+=1;return H}var n=0,t=5>=p.zd?p.zd:9>=p.zd?p.zd-6:p.zd-10,B=5>=p.zd?1:9>=p.zd?2:3,z=~~(t/2),y=g.getImageData(p.x,p.y+(1==t%2?l.height:0),p.w,p.h).data;q();t=q();var E=16*q()+q();0==E&&(E=256);var F=16*q()+q();0==F&&
-(F=256);for(var I=4096*q()+256*q()+16*q()+q(),J=4096*q()+256*q()+16*q()+q(),G="";n<y.length;)G+=q().toString(16);p.x=I;p.y=J;p.w=E;p.h=F;p.zd=t;return G}var l=e;e=document.createElement("canvas");e.width=l.width;e.height=2*l.height;var g=e.getContext("2d");g.drawImage(l,0,0);g.drawImage(l,0,l.height);for(var d=g.getImageData(0,0,l.width,l.height),b=d.data,a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&240)+~~((b[a+0]&240)/16),b[a+1]=(b[a+1]&240)+~~((b[a+1]&240)/16),b[a+2]=(b[a+2]&240)+~~((b[a+2]&240)/16);g.putImageData(d,
-0,0);d=g.getImageData(0,l.height,l.width,l.height);b=d.data;for(a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&15)+16*(b[a+0]&15),b[a+1]=(b[a+1]&15)+16*(b[a+1]&15),b[a+2]=(b[a+2]&15)+16*(b[a+2]&15);g.putImageData(d,0,l.height);a=[];a.x=l.width-2;a.y=1;a.w=1;a.h=5;a.zd=10;d=m(a,!0);do d+=m(a);while(a.x);d=new f.Parser(d);b=d.getChunkHeader();for(var k=0,v=0,x=0,r=0,C=0,A=0,K=0,L=0,M=0,w=0;b.type!=f.CHUNK_EOF;){if(b.type==f.CHUNK_COLORATTR&&0==this.colorType.length)for(a=0;a<this.glyphColorIndices.length;a++)for(;this.glyphColorIndices[a]>=
-this.colorType.length;)this.colorType[this.colorType.length]=0;if(b.type==f.CHUNK_SOLIDATTR&&0==this.solidRGB.length)for(a=0;a<this.colorType.length;a++)0==this.colorType[a]&&(this.solidRGB[this.solidRGB.length]=0,this.solidMode[this.solidMode.length]=0);switch(b.type){case f.CHUNK_GLYPHSET:case f.CHUNK_COLORGLYPHSET:if(12==b.length){var D=d.getGlyphSet();for(a=D.first;a<=D.last;a++){var c=this.glyphCodes.length;this.glyphCodes[c]=a;this.glyphWidths[c]=8;this.glyphHeights[c]=8;this.glyphX1[c]=0;this.glyphY1[c]=
-0;this.glyphX2[c]=8;this.glyphY2[c]=0;this.glyphHasColors[c]=b.type==f.CHUNK_COLORGLYPHSET?1:0;this.glyphColors[c]=[]}}else console.log("chuck length: ",b.length),console.log("error: bad data 1:",d.data.substr(d.i,10)),d.skip(b.length);break;case f.CHUNK_GLYPHATTR:D=d.i;c=d.getAttrs(b.length);if(1==c.values.length)switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<this.glyphCodes.length;a++)this.glyphWidths[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=
-0;a<this.glyphCodes.length;a++)this.glyphHeights[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX2[a]=c.values[0];break;
-case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceX[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceY[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceZD[a]=c.values[0];
-break;default:console.log("chuck length: ",b.length),console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}else switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<c.values.length;a++)this.glyphWidths[k++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<c.values.length;a++)this.glyphHeights[v++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX1[x++]=
-c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY1[r++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX2[C++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY2[A++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<c.values.length;a++)this.glyphSourceX[K++]=
-c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<c.values.length;a++)this.glyphSourceY[L++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<c.values.length;a++)this.glyphSourceZD[M++]=c.values[a];break;default:console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2");break;case f.CHUNK_COLORGLYPHATTR:c=d.getColorAttrs(b.length);switch(c.attr){case f.ATTR_COLORGLYPH_COLORS:for(a=
-0;a<c.values.length;a++){for(;!this.glyphHasColors[w]&&w<this.glyphCodes.length;)w++;w<this.glyphCodes.length&&(this.glyphColors[w++]=c.values[a])}break;default:console.log("ignoring unknown color attribute: ",b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,
-this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],this.pixCoords[8*k+2]=0,this.pixCoords[8*k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+
-this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/
-16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}init2(e){function m(p,q=!1){function n(){for(;t<E.length&&(0==t%4&&0<y||1==t%4&&(1<y||2>z+y)||2==t%4&&3>z+y||3==t%4);)t+=1;var H=E[t]&15;for(t+=1;t<E.length&&(0==t%4&&0<y||1==t%4&&(1<y||2>z+y)||2==t%4&&3>z+y||3==t%4);)t+=1;return H}var t=0,B=5>=p.zd?p.zd:9>=p.zd?p.zd-6:p.zd-10,z=5>=p.zd?1:9>=p.zd?
-2:3,y=~~(B/2),E=g.getImageData(p.x,p.y+(1==B%2?l.height:0),p.w,p.h).data;q&&(q=""+n().toString(16),q+=n().toString(16),q+=n().toString(16),q+=n().toString(16),p.ver=q);n();q=n();B=16*n()+n();0==B&&(B=256);var F=16*n()+n();0==F&&(F=256);for(var I=4096*n()+256*n()+16*n()+n(),J=4096*n()+256*n()+16*n()+n(),G="";t<E.length;)G+=n().toString(16);p.x=I;p.y=J;p.w=B;p.h=F;p.zd=q;return G}var l=e;e=document.createElement("canvas");e.width=l.width;e.height=2*l.height;var g=e.getContext("2d");g.drawImage(l,0,
-0);g.drawImage(l,0,l.height);for(var d=g.getImageData(0,l.height,l.width,l.height),b=d.data,a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&240)+~~((b[a+0]&240)/16),b[a+1]=(b[a+1]&240)+~~((b[a+1]&240)/16),b[a+2]=(b[a+2]&240)+~~((b[a+2]&240)/16);g.putImageData(d,0,l.height);d=g.getImageData(0,0,l.width,l.height);b=d.data;for(a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&15)+16*(b[a+0]&15),b[a+1]=(b[a+1]&15)+16*(b[a+1]&15),b[a+2]=(b[a+2]&15)+16*(b[a+2]&15);g.putImageData(d,0,0);a=[];a.x=l.width-2;a.y=1;a.w=1;a.h=6;a.zd=10;
-d=m(a,!0);console.log("File format: "+a.ver);if("fed1"!=a.ver)console.log("Unrecognized file format.");else{do d+=m(a);while(a.x);d=new f.Parser(d);b=d.getChunkHeader();for(var k=0,v=0,x=0,r=0,C=0,A=0,K=0,L=0,M=0,w=0;b.type!=f.CHUNK_EOF;){if(b.type==f.CHUNK_COLORATTR&&0==this.colorType.length)for(a=0;a<this.glyphColorIndices.length;a++)for(;this.glyphColorIndices[a]>=this.colorType.length;)this.colorType[this.colorType.length]=0;if(b.type==f.CHUNK_SOLIDATTR&&0==this.solidRGB.length)for(a=0;a<this.colorType.length;a++)0==
-this.colorType[a]&&(this.solidRGB[this.solidRGB.length]=0,this.solidMode[this.solidMode.length]=0);switch(b.type){case f.CHUNK_GLYPHSET:case f.CHUNK_COLORGLYPHSET:if(12==b.length){var D=d.getGlyphSet();for(a=D.first;a<=D.last;a++){var c=this.glyphCodes.length;this.glyphCodes[c]=a;this.glyphWidths[c]=8;this.glyphHeights[c]=8;this.glyphX1[c]=0;this.glyphY1[c]=0;this.glyphX2[c]=8;this.glyphY2[c]=0;this.glyphHasColors[c]=b.type==f.CHUNK_COLORGLYPHSET?1:0;this.glyphColors[c]=[]}}else{console.log("chuck length: ",
-b.length);console.log("error: bad data 1:",d.data.substr(d.i,10));return}break;case f.CHUNK_GLYPHATTR:D=d.i;c=d.getAttrs(b.length);if(1==c.values.length)switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<this.glyphCodes.length;a++)this.glyphWidths[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<this.glyphCodes.length;a++)this.glyphHeights[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);
-for(a=0;a<this.glyphCodes.length;a++)this.glyphX1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY2[a]=c.values[0];break;
-case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceX[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceY[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceZD[a]=c.values[0];break;default:console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}else switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<
-16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<c.values.length;a++)this.glyphWidths[k++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<c.values.length;a++)this.glyphHeights[v++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX1[x++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY1[r++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<
-16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX2[C++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY2[A++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<c.values.length;a++)this.glyphSourceX[K++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<c.values.length;a++)this.glyphSourceY[L++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<
-16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<c.values.length;a++)this.glyphSourceZD[M++]=c.values[a];break;default:console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2");break;case f.CHUNK_COLORGLYPHATTR:c=d.getColorAttrs(b.length);switch(c.attr){case f.ATTR_COLORGLYPH_COLORS:for(a=0;a<c.values.length;a++){for(;!this.glyphHasColors[w]&&w<this.glyphCodes.length;)this.glyphColors[w++]=null;w<this.glyphCodes.length&&(this.glyphColors[w++]=c.values[a])}for(;!this.glyphHasColors[w]&&
-w<this.glyphCodes.length;)this.glyphColors[w++]=null;break;default:console.log("ignoring unknown color attribute: ",b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],this.pixCoords[8*k+2]=0,this.pixCoords[8*
-k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+
-6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/
-16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}}init(){if(!u){{var e=h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,
-"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
+[];this.glyphSourceX=[];this.glyphSourceY=[];this.glyphSourceZD=[];this.glyphHasColors=[];this.glyphColors=[]}isReady(){return this.ready?!0:!1}imgCallback(e){e=e.target;var m=e.associatedGlyphSet;m.loadFromObject.call(m,e,e.associatedCallback,e.associatedName)}loadFromObject(e,m,l){this.ready=!1;this.finalCallback=m;this.name=l;this.initGlyphs();this.pixCoords=[];this.texCoords=[];this.init2(e);0==this.glyphCodes.length&&(this.init1(e),console.log("Loaded "+this.glyphCodes.length+" glyphs in old format."))}init1(e){function m(p){function q(){for(;n<
+y.length&&(0==n%4&&0<z||1==n%4&&(1<z||2>B+z)||2==n%4&&3>B+z||3==n%4);)n+=1;var H=y[n]&15;for(n+=1;n<y.length&&(0==n%4&&0<z||1==n%4&&(1<z||2>B+z)||2==n%4&&3>B+z||3==n%4);)n+=1;return H}var n=0,t=5>=p.zd?p.zd:9>=p.zd?p.zd-6:p.zd-10,B=5>=p.zd?1:9>=p.zd?2:3,z=~~(t/2),y=g.getImageData(p.x,p.y+(1==t%2?l.height:0),p.w,p.h).data;q();t=q();var E=16*q()+q();0==E&&(E=256);var F=16*q()+q();0==F&&(F=256);for(var I=4096*q()+256*q()+16*q()+q(),J=4096*q()+256*q()+16*q()+q(),G="";n<y.length;)G+=q().toString(16);p.x=
+I;p.y=J;p.w=E;p.h=F;p.zd=t;return G}var l=e;e=document.createElement("canvas");e.width=l.width;e.height=2*l.height;var g=e.getContext("2d");g.drawImage(l,0,0);g.drawImage(l,0,l.height);for(var d=g.getImageData(0,0,l.width,l.height),b=d.data,a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&240)+~~((b[a+0]&240)/16),b[a+1]=(b[a+1]&240)+~~((b[a+1]&240)/16),b[a+2]=(b[a+2]&240)+~~((b[a+2]&240)/16);g.putImageData(d,0,0);d=g.getImageData(0,l.height,l.width,l.height);b=d.data;for(a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&15)+
+16*(b[a+0]&15),b[a+1]=(b[a+1]&15)+16*(b[a+1]&15),b[a+2]=(b[a+2]&15)+16*(b[a+2]&15);g.putImageData(d,0,l.height);a=[];a.x=l.width-2;a.y=1;a.w=1;a.h=5;a.zd=10;d=m(a,!0);do d+=m(a);while(a.x);d=new f.Parser(d);b=d.getChunkHeader();for(var k=0,v=0,x=0,r=0,C=0,A=0,K=0,L=0,M=0,w=0;b.type!=f.CHUNK_EOF;){if(b.type==f.CHUNK_COLORATTR&&0==this.colorType.length)for(a=0;a<this.glyphColorIndices.length;a++)for(;this.glyphColorIndices[a]>=this.colorType.length;)this.colorType[this.colorType.length]=0;if(b.type==
+f.CHUNK_SOLIDATTR&&0==this.solidRGB.length)for(a=0;a<this.colorType.length;a++)0==this.colorType[a]&&(this.solidRGB[this.solidRGB.length]=0,this.solidMode[this.solidMode.length]=0);switch(b.type){case f.CHUNK_GLYPHSET:case f.CHUNK_COLORGLYPHSET:if(12==b.length){var D=d.getGlyphSet();for(a=D.first;a<=D.last;a++){var c=this.glyphCodes.length;this.glyphCodes[c]=a;this.glyphWidths[c]=8;this.glyphHeights[c]=8;this.glyphX1[c]=0;this.glyphY1[c]=0;this.glyphX2[c]=8;this.glyphY2[c]=0;this.glyphHasColors[c]=
+b.type==f.CHUNK_COLORGLYPHSET?1:0;this.glyphColors[c]=[]}}else console.log("chuck length: ",b.length),console.log("error: bad data 1:",d.data.substr(d.i,10)),d.skip(b.length);break;case f.CHUNK_GLYPHATTR:D=d.i;c=d.getAttrs(b.length);if(1==c.values.length)switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<this.glyphCodes.length;a++)this.glyphWidths[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<this.glyphCodes.length;a++)this.glyphHeights[a]=
+c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,
+c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceX[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceY[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceZD[a]=c.values[0];break;default:console.log("chuck length: ",b.length),console.log("ignoring unknown attribute: ",
+b.type,c.attr),d.skip(b.length)}else switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<c.values.length;a++)this.glyphWidths[k++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<c.values.length;a++)this.glyphHeights[v++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX1[x++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,
+c.size);for(a=0;a<c.values.length;a++)this.glyphY1[r++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX2[C++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY2[A++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<c.values.length;a++)this.glyphSourceX[K++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+
+f.ATTR_GLYPH_IMGY:for(a=0;a<c.values.length;a++)this.glyphSourceY[L++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<c.values.length;a++)this.glyphSourceZD[M++]=c.values[a];break;default:console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2");break;case f.CHUNK_COLORGLYPHATTR:c=d.getColorAttrs(b.length);switch(c.attr){case f.ATTR_COLORGLYPH_COLORS:for(a=0;a<c.values.length;a++){for(;!this.glyphHasColors[w]&&
+w<this.glyphCodes.length;)w++;w<this.glyphCodes.length&&(this.glyphColors[w++]=c.values[a])}break;default:console.log("ignoring unknown color attribute: ",b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],
+this.pixCoords[8*k+2]=0,this.pixCoords[8*k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/
+(2*d),this.texCoords[8*k+6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+
+1]/16),b[a+2]|=~~(b[a+2]/16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}init2(e){function m(p,q=!1){function n(){for(;t<E.length&&(0==t%4&&0<y||1==t%4&&(1<y||2>z+y)||2==t%4&&3>z+y||3==t%4);)t+=1;var H=E[t]&15;for(t+=1;t<E.length&&(0==t%4&&0<y||1==t%4&&(1<y||2>z+y)||2==t%4&&3>z+y||3==t%4);)t+=1;return H}var t=0,B=5>=p.zd?p.zd:9>=p.zd?p.zd-6:p.zd-10,z=5>=p.zd?1:9>=p.zd?2:3,y=~~(B/2),E=g.getImageData(p.x,p.y+(1==B%2?l.height:0),p.w,
+p.h).data;q&&(q=""+n().toString(16),q+=n().toString(16),q+=n().toString(16),q+=n().toString(16),p.ver=q);n();q=n();B=16*n()+n();0==B&&(B=256);var F=16*n()+n();0==F&&(F=256);for(var I=4096*n()+256*n()+16*n()+n(),J=4096*n()+256*n()+16*n()+n(),G="";t<E.length;)G+=n().toString(16);p.x=I;p.y=J;p.w=B;p.h=F;p.zd=q;return G}var l=e;e=document.createElement("canvas");e.width=l.width;e.height=2*l.height;var g=e.getContext("2d");g.drawImage(l,0,0);g.drawImage(l,0,l.height);for(var d=g.getImageData(0,l.height,
+l.width,l.height),b=d.data,a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&240)+~~((b[a+0]&240)/16),b[a+1]=(b[a+1]&240)+~~((b[a+1]&240)/16),b[a+2]=(b[a+2]&240)+~~((b[a+2]&240)/16);g.putImageData(d,0,l.height);d=g.getImageData(0,0,l.width,l.height);b=d.data;for(a=0;a<b.length;a+=4)b[a+0]=(b[a+0]&15)+16*(b[a+0]&15),b[a+1]=(b[a+1]&15)+16*(b[a+1]&15),b[a+2]=(b[a+2]&15)+16*(b[a+2]&15);g.putImageData(d,0,0);a=[];a.x=l.width-2;a.y=1;a.w=1;a.h=6;a.zd=10;d=m(a,!0);if("fed1"!=a.ver)console.log("Unrecognized file format.");
+else{do d+=m(a);while(a.x);d=new f.Parser(d);b=d.getChunkHeader();for(var k=0,v=0,x=0,r=0,C=0,A=0,K=0,L=0,M=0,w=0;b.type!=f.CHUNK_EOF;){if(b.type==f.CHUNK_COLORATTR&&0==this.colorType.length)for(a=0;a<this.glyphColorIndices.length;a++)for(;this.glyphColorIndices[a]>=this.colorType.length;)this.colorType[this.colorType.length]=0;if(b.type==f.CHUNK_SOLIDATTR&&0==this.solidRGB.length)for(a=0;a<this.colorType.length;a++)0==this.colorType[a]&&(this.solidRGB[this.solidRGB.length]=0,this.solidMode[this.solidMode.length]=
+0);switch(b.type){case f.CHUNK_GLYPHSET:case f.CHUNK_COLORGLYPHSET:if(12==b.length){var D=d.getGlyphSet();for(a=D.first;a<=D.last;a++){var c=this.glyphCodes.length;this.glyphCodes[c]=a;this.glyphWidths[c]=8;this.glyphHeights[c]=8;this.glyphX1[c]=0;this.glyphY1[c]=0;this.glyphX2[c]=8;this.glyphY2[c]=0;this.glyphHasColors[c]=b.type==f.CHUNK_COLORGLYPHSET?1:0;this.glyphColors[c]=[]}}else{console.log("chuck length: ",b.length);console.log("error: bad data 1:",d.data.substr(d.i,10));return}break;case f.CHUNK_GLYPHATTR:D=
+d.i;c=d.getAttrs(b.length);if(1==c.values.length)switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<this.glyphCodes.length;a++)this.glyphWidths[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=0;a<this.glyphCodes.length;a++)this.glyphHeights[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,
+c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY1[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphX2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<this.glyphCodes.length;a++)this.glyphY2[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceX[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<
+16)+f.ATTR_GLYPH_IMGY:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceY[a]=c.values[0];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<this.glyphCodes.length;a++)this.glyphSourceZD[a]=c.values[0];break;default:console.log("ignoring unknown attribute: ",b.type,c.attr),d.skip(b.length)}else switch((b.type<<16)+c.attr){case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_WIDTH:for(a=0;a<c.values.length;a++)this.glyphWidths[k++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_HEIGHT:for(a=
+0;a<c.values.length;a++)this.glyphHeights[v++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX1[x++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_Y1:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY1[r++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_X2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphX2[C++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<
+16)+f.ATTR_GLYPH_Y2:d.applySign(c.values,c.size);for(a=0;a<c.values.length;a++)this.glyphY2[A++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGX:for(a=0;a<c.values.length;a++)this.glyphSourceX[K++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGY:for(a=0;a<c.values.length;a++)this.glyphSourceY[L++]=c.values[a];break;case (f.CHUNK_GLYPHATTR<<16)+f.ATTR_GLYPH_IMGZD:for(a=0;a<c.values.length;a++)this.glyphSourceZD[M++]=c.values[a];break;default:console.log("ignoring unknown attribute: ",
+b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2");break;case f.CHUNK_COLORGLYPHATTR:c=d.getColorAttrs(b.length);switch(c.attr){case f.ATTR_COLORGLYPH_COLORS:for(a=0;a<c.values.length;a++){for(;!this.glyphHasColors[w]&&w<this.glyphCodes.length;)this.glyphColors[w++]=null;w<this.glyphCodes.length&&(this.glyphColors[w++]=c.values[a])}for(;!this.glyphHasColors[w]&&w<this.glyphCodes.length;)this.glyphColors[w++]=null;break;default:console.log("ignoring unknown color attribute: ",
+b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],this.pixCoords[8*k+2]=0,this.pixCoords[8*k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],
+this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/
+(2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}}init(){if(!u){{var e=
+h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
 g=e.createProgram();e.attachShader(g,m);e.attachShader(g,l);e.linkProgram(g);e.getProgramParameter(g,e.LINK_STATUS)?u=g:(alert("Unable to initialize the shader program: "+e.getProgramInfoLog(g)),u=null)}}h.useProgram(u);this.tex=h.createTexture();h.bindTexture(h.TEXTURE_2D,this.tex);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MIN_FILTER,h.LINEAR);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MAG_FILTER,h.LINEAR);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data);this.vertexBuff=h.createBuffer();
 h.bindBuffer(h.ARRAY_BUFFER,this.vertexBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.pixCoords),h.STATIC_DRAW);this.texBuff=h.createBuffer();h.bindBuffer(h.ARRAY_BUFFER,this.texBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.texCoords),h.STATIC_DRAW);this.vloc=h.getAttribLocation(u,"aVertex");this.tloc=h.getAttribLocation(u,"aUV");this.scaleFactorLoc=h.getUniformLocation(u,"scaleFactor");this.layerLoc=h.getUniformLocation(u,"layer");this.depthLoc=h.getUniformLocation(u,"depth");
 this.projMatLoc=h.getUniformLocation(u,"uProjectionMatrix");this.viewMatLoc=h.getUniformLocation(u,"uModelViewMatrix");this.color1Loc=h.getUniformLocation(u,"color1");this.color2Loc=h.getUniformLocation(u,"color2");this.color3Loc=h.getUniformLocation(u,"color3")}update(){h.useProgram(u);h.bindTexture(h.TEXTURE_2D,this.tex);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data)}calcWidth(e){var m=0;for(let g of e){e=g.codePointAt(0);var l;for(l=0;l<this.glyphCodes.length&&this.glyphCodes[l]!=
@@ -191,17 +190,17 @@ class Aa extends W{constructor(a){super(a);this.actionFlags=vp.GAF_SWIPEABLE_UPD
 (e.y-d.y-d.oy)/b+d.userY-this.tempY;d.userY=g(g(d.userY-c-d.oy/b,q,n)+d.oy/b,q,n);d.rematrix();this.layout();d.tempVX=0;d.tempVY=e.dy;break;case vp.GAF_SWIPEABLE_LEFTRIGHT:h=(e.x-d.x-d.ox)/b+d.userX-this.tempX;d.userX=g(g(d.userX-h-d.ox/b,f,k)+d.ox/b,f,k);d.rematrix();this.layout();d.tempVX=e.dx;d.tempVY=0;break;case vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SWIPEABLE_LEFTRIGHT:h=(e.x-d.x-d.ox)/b+d.userX-this.tempX,c=(e.y-d.y-d.oy)/b+d.userY-this.tempY,d.userX=g(g(d.userX-h-d.ox/b,f,k)+d.ox/b,f,k),d.userY=g(g(d.userY-
 c-d.oy/b,q,n)+d.oy/b,q,n),d.rematrix(),this.layout(),d.tempVX=e.dx,d.tempVY=e.dy}};this.swipeEndFunc=function(e){function g(f,k){var q=h.getScale(),n=f[0];f=f[1];var m=k[0];k=k[1];var r=Math.sqrt(m*m+k*k),u=Math.floor(10*r),w=(10*r-u)/10,D=(u+1)*u/2;0<r&&(n-=m/r*(D/10+w*u)*1E3/30/q,f-=k/r*(D/10+w*u)*1E3/30/q);return[n,f]}function d(f,k){var q="unset",n;if(k)for(n of k)if(k=Math.sqrt((f[0]-n[0])**2+(f[1]-n[1])**2),"unset"==q||k<q){q=k;var m=n}return m}function b(f,k){var q=k.getScale(),n=Math.max(k.minX+
 k.w/q,k.maxX)-k.w/q,m=Math.min(k.maxX-k.w/q,k.minX),r=Math.max(k.minY+k.h/q,k.maxY)-k.h/q,u=Math.min(k.maxY-k.h/q,k.minY);if(m<n){var w=n;n=m;m=w}u<r&&(w=r,r=u,u=w);return f[0]-k.ox/q<n||f[0]-k.ox/q>m||f[1]-k.oy/q<r||f[1]-k.oy/q>u}var h=this.viewport;delete this.tempX;delete this.tempY;h.tempDX=0;h.tempDY=0;if(h.snaps&&0<h.snaps.length){e=g([h.userX,h.userY],[h.tempVX,h.tempVY]);var c=d(e,h.snaps);b(e,h)||(h.tempDX=c[0]-e[0],h.tempDY=c[1]-e[1])}X.includes(h)||X.push(h);h.setRenderFlag(!0)}}layout(){var a=
-this.viewport;this.convexHull=this.computeHull([0,a.minY,0,a.maxY,a.w,a.maxY,a.w,a.minY]);this.extendedHulls={};this.boundingBoxes={}}}var H=new sa;var ca=-1,la=0,ia=0,da=0,ra=0,t={};const R=15*window.devicePixelRatio;return{initialize:function(a,e,g,d){x=a;Q=e;L=g;ba=d;l=x.getContext("webgl2",{antialias:!0,alpha:!1,desynchronized:!0,preserveDrawingBuffer:!0});var b=l.viewport.bind(l),h;l.viewport=function(f,k,q,n){h=[f,k,q,n];b(f,k,q,n)};var c=l.getParameter.bind(l);l.getParameter=function(f){return f==
-l.VIEWPORT&&h?h:c(f)}},start:function(a){async function e(){if(0==h)B=new AudioContext,h=1;else if(1==h){await B.audioWorklet.addModule("data:application/javascript;base64,"+btoa("\n            class AudioProcessor extends AudioWorkletProcessor {\n              constructor() {\n                super();\n                this.lastClick = 0;\n                this.wave = 0;\n              }\n              process (inputs, outputs, parameters) {\n                const output = outputs[0];\n                output.forEach(channel => {\n                  for (var i = 0; i < channel.length; i++) {\n                    channel[i] =\n                      (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +\n                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +\n                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);\n                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };\n                  }\n                });\n                return true;\n              }\n              static get parameterDescriptors() {\n                return [\n                  {\n                    name: \"windspeed\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"click\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"beep\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                ];\n              }\n            }\n            registerProcessor('audio-processor', AudioProcessor);\n\t\t\t\t"));
+this.viewport;this.convexHull=this.computeHull([a.minX,a.minY,a.minX,a.maxY,a.maxX,a.maxY,a.maxX,a.minY]);this.extendedHulls={};this.boundingBoxes={}}}var H=new sa;var ca=-1,la=0,ia=0,da=0,ra=0,t={};const R=15*window.devicePixelRatio;return{initialize:function(a,e,g,d){x=a;Q=e;L=g;ba=d;l=x.getContext("webgl2",{antialias:!0,alpha:!1,desynchronized:!0,preserveDrawingBuffer:!0});var b=l.viewport.bind(l),h;l.viewport=function(f,k,q,n){h=[f,k,q,n];b(f,k,q,n)};var c=l.getParameter.bind(l);l.getParameter=
+function(f){return f==l.VIEWPORT&&h?h:c(f)}},start:function(a){async function e(){if(0==h)B=new AudioContext,h=1;else if(1==h){await B.audioWorklet.addModule("data:application/javascript;base64,"+btoa("\n            class AudioProcessor extends AudioWorkletProcessor {\n              constructor() {\n                super();\n                this.lastClick = 0;\n                this.wave = 0;\n              }\n              process (inputs, outputs, parameters) {\n                const output = outputs[0];\n                output.forEach(channel => {\n                  for (var i = 0; i < channel.length; i++) {\n                    channel[i] =\n                      (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +\n                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +\n                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);\n                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };\n                  }\n                });\n                return true;\n              }\n              static get parameterDescriptors() {\n                return [\n                  {\n                    name: \"windspeed\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"click\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"beep\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                ];\n              }\n            }\n            registerProcessor('audio-processor', AudioProcessor);\n\t\t\t\t"));
 var c=B.createBufferSource();B.createScriptProcessor(2048);c.start();h=2}else 2==h&&(c=new AudioWorkletNode(B,"audio-processor"),c.connect(B.destination),A=c.parameters.get("click"),Z=c.parameters.get("beep"),ja=c.parameters.get("windspeed"),h=3,b=!0)}if(l){var g=l.createShader(l.VERTEX_SHADER);l.shaderSource(g,"\n        attribute vec4 aVertexPosition;\n        uniform vec4 uVertexColor;\n        uniform mat4 uModelViewMatrix;\n        uniform mat4 uProjectionMatrix;\n        varying vec4 v_Color;\n        void main() {\n          gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;\n          v_Color = uVertexColor;\n        }\n\t");
 l.compileShader(g);if(l.getShaderParameter(g,l.COMPILE_STATUS)){var d=l.createShader(l.FRAGMENT_SHADER);l.shaderSource(d,"\n        varying lowp vec4 v_Color;\n        void main() {\n          gl_FragColor = v_Color;\n        }\n\t");l.compileShader(d);if(l.getShaderParameter(d,l.COMPILE_STATUS)&&(z=l.createProgram(),l.attachShader(z,g),l.attachShader(z,d),l.linkProgram(z),l.getProgramParameter(z,l.LINK_STATUS))){ka=l.createBuffer();l.bindBuffer(l.ARRAY_BUFFER,ka);l.vertexAttribPointer(l.getAttribLocation(z,
 "aVertexPosition"),2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(l.getAttribLocation(z,"aVertexPosition"));cum2=[];y.unitLine=cum2.length/2;cum2.splice(cum2.length,0,0,0,1,1);E.unitLine=cum2.length/2-y.unitLine;y.unitSquare=cum2.length/2;cum2.splice(cum2.length,0,1,1,0,1,0,0,1,0);E.unitSquare=cum2.length/2-y.unitSquare;y.roundTouch=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,85*Math.sin(i/18*Math.PI),85*Math.cos(i/18*Math.PI));E.roundTouch=cum2.length/2-y.roundTouch;y.squareTouch=cum2.length/
 2;cum2.splice(cum2.length,0,84.5,84.5,-84.5,84.5,-84.5,-84.5,84.5,-84.5);E.squareTouch=cum2.length/2-y.squareTouch;y.roundMouse=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,5*Math.sin(i/18*Math.PI),5*Math.cos(i/18*Math.PI));E.roundMouse=cum2.length/2-y.roundMouse;y.squareMouse=cum2.length/2;cum2.splice(cum2.length,0,4.5,4.5,-4.5,4.5,-4.5,-4.5,4.5,-4.5);E.squareMouse=cum2.length/2-y.squareMouse;l.bufferData(l.ARRAY_BUFFER,new Float32Array(cum2),l.STATIC_DRAW);var b=!1,h=0;a&&(H=a);window.addEventListener("resize",
 function(c){ma()},!1);ma();window.requestAnimationFrame(pa);L.addEventListener("keydown",function(c){var f=G;f&&1==c.key.length&&f.limitChars&&!f.limitChars.includes(c.key)&&(c.preventDefault(),Y());f&&1==c.key.length&&f.limitLen&&f.text.length>=f.limitLen&&(c.preventDefault(),Y())},!1);Q.addEventListener("input",function(c){c=G;c.text=Q.value;c.textFunc&&c.textFunc.call(c)},!1);Q.addEventListener("blur",function(c){c=G;Q.style.display="none";c&&c.textEndFunc&&c.textEndFunc.call(c);oa=c;G=void 0},
-!1);L.addEventListener("keydown",function(c){var f=G;f&&1==c.key.length&&f.limitChars&&!f.limitChars.includes(c.key)&&(c.preventDefault(),Y());f&&1==c.key.length&&f.limitLen&&f.text.length>=f.limitLen&&(c.preventDefault(),Y())},!1);L.addEventListener("input",function(c){console.log("kbnum.input",c);c=G;c.text=L.value;c.textFunc&&c.textFunc.call(c)},!1);L.addEventListener("blur",function(c){c=G;L.style.display="none";c&&c.textEndFunc&&c.textEndFunc.call(c);oa=c;G=void 0},!1);ba.addEventListener("focus",
-function(c){c=oa;Q.style.display="none";L.style.display="none";ba.style.display="none";G=void 0;c&&c.textNextFunc&&c.textNextFunc.call(c)},!1);x.addEventListener("touchend",function(c){N(c,"touches")},!1);x.addEventListener("pointerdown",function(c){b||e();c.preventDefault();N(c,"down")},!1);x.addEventListener("pointermove",function(c){c.preventDefault();N(c,"move")},!1);x.addEventListener("pointerup",function(c){b||e();c.preventDefault();N(c,"up")},!1);x.addEventListener("contextmenu",function(c){c.preventDefault()},
-!1);x.addEventListener("wheel",function(c){c.preventDefault();N(c,"wheel")},!1);document.addEventListener("keydown",function(c){var f=G;"Enter"==c.key&&f&&f.textNextFunc?(c.preventDefault(),f.textNextFunc.call(f)):f&&f.specialKeys&&f.specialKeys.includes(c.key)?(c.preventDefault(),f.specialFunc&&f.specialFunc.call(f,c)):f&&f.specialCodes&&f.specialCodes.includes(c.code)&&(c.preventDefault(),f.specialFunc&&f.specialFunc.call(f,c))})}}}},setDebugFlags:function(a,e){ra=!!a;ia=!!e},getContext:function(){return l},
-getPointerRadius:O,isMouseEnabled:function(){return na},getInputGad:function(){return G},beginInput:fa,endInput:ea,beep:Y,View:V,ViewDivider:ua,ViewSlice:va,ViewOverlay:wa,ViewMultiverse:xa,ViewPicker:sa,Gadget:W,MatrixGadget:za,SwipeGadget:Aa,MiddleDividerGadget:ya,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,
+!1);L.addEventListener("keydown",function(c){var f=G;f&&1==c.key.length&&f.limitChars&&!f.limitChars.includes(c.key)&&(c.preventDefault(),Y());f&&1==c.key.length&&f.limitLen&&f.text.length>=f.limitLen&&(c.preventDefault(),Y())},!1);L.addEventListener("input",function(c){c=G;c.text=L.value;c.textFunc&&c.textFunc.call(c)},!1);L.addEventListener("blur",function(c){c=G;L.style.display="none";c&&c.textEndFunc&&c.textEndFunc.call(c);oa=c;G=void 0},!1);ba.addEventListener("focus",function(c){c=oa;Q.style.display=
+"none";L.style.display="none";ba.style.display="none";G=void 0;c&&c.textNextFunc&&c.textNextFunc.call(c)},!1);x.addEventListener("touchend",function(c){N(c,"touches")},!1);x.addEventListener("pointerdown",function(c){b||e();c.preventDefault();N(c,"down")},!1);x.addEventListener("pointermove",function(c){c.preventDefault();N(c,"move")},!1);x.addEventListener("pointerup",function(c){b||e();c.preventDefault();N(c,"up")},!1);x.addEventListener("contextmenu",function(c){c.preventDefault()},!1);x.addEventListener("wheel",
+function(c){c.preventDefault();N(c,"wheel")},!1);document.addEventListener("keydown",function(c){var f=G;"Enter"==c.key&&f&&f.textNextFunc?(c.preventDefault(),f.textNextFunc.call(f)):f&&f.specialKeys&&f.specialKeys.includes(c.key)?(c.preventDefault(),f.specialFunc&&f.specialFunc.call(f,c)):f&&f.specialCodes&&f.specialCodes.includes(c.code)&&(c.preventDefault(),f.specialFunc&&f.specialFunc.call(f,c))})}}}},setDebugFlags:function(a,e){ra=!!a;ia=!!e},getContext:function(){return l},getPointerRadius:O,
+isMouseEnabled:function(){return na},getInputGad:function(){return G},beginInput:fa,endInput:ea,beep:Y,View:V,ViewDivider:ua,ViewSlice:va,ViewOverlay:wa,ViewMultiverse:xa,ViewPicker:sa,Gadget:W,MatrixGadget:za,SwipeGadget:Aa,MiddleDividerGadget:ya,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,
 GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_NUMINPUT:4096,GAF_TEXTINPUT:8192,GAF_GONEXT:16384,GAF_ALL:3901,HitList:ta,LayoutState:P}}();
 function main() {
 	const canvas = document.querySelector('#app1');
@@ -220,7 +219,23 @@ function main() {
 	const PARAGUAY = 1;
 	const style = Math.round(Math.random() * 1);
 
-	const lcode = style == PARAGUAY? (Math.random() > 0.5?'gn-PY':'es-PY') : 'en-US';
+	const lcode = Math.random() > 0.5?
+		(Math.random() > 0.5?'gn-PY':'es-PY'):
+		(Math.random() > 0.5?'en-US':'de-DE');
+
+	const enabledVendorCurrencies = ['₿','₲','$','€'];
+	const enabledCustomerCurrencies = ['₿','₲','$','€'];
+	for (var i=enabledVendorCurrencies.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledVendorCurrencies.splice(i,1);
+	for (var i=enabledCustomerCurrencies.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
+	if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
+	if (enabledCustomerCurrencies.length == 0) enabledCustomerCurrencies.push('₲');
+	const defaultVendorCurrency = enabledVendorCurrencies[
+		Math.floor(enabledVendorCurrencies.length * Math.random())];
+	const defaultCustomerCurrency = enabledCustomerCurrencies[
+		Math.floor(enabledCustomerCurrencies.length * Math.random())];
+	console.log(enabledVendorCurrencies, enabledCustomerCurrencies);
 
 	function toFiat(s) {
 		return style == PARAGUAY? s * 2: s / 3600;
@@ -286,7 +301,7 @@ const trs = {};
 			trs[s]['en-US'] = 'CURRENCY';
 			trs[s]['es-PY'] = 'MONEDA';
 			trs[s]['gn-PY'] = 'VIRU';
-			trs[s]['de-DE'] = 'GELD';
+			trs[s]['de-DE'] = 'WÄHRUNG';
 			break;
 		case 'price':
 			trs[s]['en-US'] = 'PRICE';
@@ -296,9 +311,9 @@ const trs = {};
 			break;
 		case 'qty':
 			trs[s]['en-US'] = 'QTY';
-			trs[s]['es-PY'] = 'CANTIDAD';
+			trs[s]['es-PY'] = 'CANT.'; // CANTIDAD
 			trs[s]['gn-PY'] = 'HETAKUE';
-			trs[s]['de-DE'] = 'QUANTITÄT';
+			trs[s]['de-DE'] = 'QUANT.'; // QUANTITÄT
 			break;
 		case 'Discard this invoice?':
 			trs[s]['en-US'] = 'Discard this invoice?';
@@ -640,13 +655,13 @@ var invoicepane;
 			if (g.layoutFunc) g.layoutFunc.call(g);
 		}
 	}
-	var scrollbar;
+//	var scrollbar;
 	v.renderFunc = function() {
-		var g = scrollbar.knobGad, s = this.getScale();
-		g.shown = this.h/this.getScale();
-    g.total = this.maxY;
-    g.start = this.userY;
-		g.viewport.relayout();
+		var /*g = scrollbar.knobGad,*/ s = this.getScale();
+//		g.shown = this.h/this.getScale();
+//    g.total = this.maxY;
+//    g.start = this.userY;
+//		g.viewport.relayout();
 		//g.viewport.setRenderFlag(true);
 		gl.clearColor(0,0,0, 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
@@ -862,11 +877,11 @@ class LineItem {
 			vp.beginInput(this.viewport.unitprice);
 		}
 	v.gadgets.push(v.currency = g = new vp.Gadget(v));
-		g.w = 40; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
+		g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
 		g.x = 4; g.y = 55;
 		g.autoHull();
 		g.label = tr('currency');
-		g.icon = "₲";
+		g.icon = defaultVendorCurrency;
 		g.renderFunc = function() {
 			var g = this;
 			var sel = clickTapActive.includes(g.gestureState);
@@ -887,17 +902,14 @@ class LineItem {
 		}
 		g.clickFunc = function() {
 			var g = this;
-			switch (g.icon) {
-			case '₲': g.icon = '₿'; break;
-			case '₿': g.icon = '$'; break;
-			case '$': g.icon = '€'; break;
-			case '€': g.icon = '₲'; break;
-			default:  g.icon = '₿';
-			}
+			var i = enabledVendorCurrencies.indexOf(g.icon);
+			i += 1;
+			if (i >= enabledVendorCurrencies.length) i = 0;
+			g.icon = enabledVendorCurrencies[i];
 			dataentry.setRenderFlag(true);
 		}
 	v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
-		g.x = 50; g.y = 55; g.w = 100; g.h = 20;
+		g.x = 52; g.y = 55; g.w = 101; g.h = 20;
 		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
 		g.text = ''; g.label = tr('price'); g.limitChars = '0123456789'; g.limitLen = 11;
 		g.specialKeys = ["*"];
@@ -928,9 +940,9 @@ class LineItem {
 			}
 		}
 	v.gadgets.push(v.qty = g = new vp.Gadget(v));
-		g.x = 155; g.y = 55; g.w = 40; g.h = 20;
+		g.x = 158; g.y = 55; g.w = 37; g.h = 20;
 		g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
-		g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789'; g.limitLen = 4;
+		g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789'; g.limitLen = 3;
 		g.align = 'r';
 		g.layoutFunc = function() {
 			var g = this, v = g.viewport, s = v.getScale();
@@ -1001,6 +1013,7 @@ class LineItem {
 		}
 	v.clearDataEntry = function() {
 		this.item.text = '';
+		this.currency.icon = defaultVendorCurrency;
 		this.unitprice.text = '';
 		this.qty.text = '';
 		this.taxrate.text = '';
@@ -1088,26 +1101,27 @@ class LineItem {
 
 var vendorinvoice = v = new vp.View(null);
 v.designWidth = 400;
-v.minX = 0; v.maxX = 100;
-v.minY = 0; v.maxY = 1000;
+v.minX = 0; v.maxX = 400;
+v.minY = 0; v.maxY = 32;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.layoutFunc = function() {
 	this.swipeGad.layout.call(this.swipeGad);
 };
-var scrollbar;
+//var scrollbar;
 v.renderFunc = function(flip = false) {
-	var g = scrollbar.knobGad, s = this.getScale();
-	g.shown = this.h/this.getScale();
-  g.total = this.maxY;
-  g.start = this.userY;
-	g.viewport.relayout();
+	// WARNING: This is called by customerinvoice also, so "this" may be either!
+	var /*g = scrollbar.knobGad,*/ s = this.getScale();
+//	g.shown = this.h/this.getScale();
+//  g.total = this.maxY;
+//  g.start = this.userY;
+//	g.viewport.relayout();
 	//g.viewport.setRenderFlag(true);
 
 	gl.clearColor(0,0,0, 1);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
-	var y = 16, w, t, c, s, dir = 1;
+	var y = 16, h = 0, w, t, c, s, dir = 1;
 	if (flip) {
 		this.rematrix();
 		var s = this.getScale();
@@ -1145,7 +1159,7 @@ v.renderFunc = function(flip = false) {
 		y += 16;
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
-		defaultFont.draw(45-w,0, t + ' ×', uiText, this.mat, m);
+		defaultFont.draw(36-w,0, t + ' ×', uiText, this.mat, m);
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = (+li.unitprice).toString(); w = defaultFont.calcWidth(t);
 		defaultFont.draw(180-w,0, t, uiText, this.mat, m);
@@ -1165,12 +1179,20 @@ v.renderFunc = function(flip = false) {
 		defaultFont.draw(380-w,0, t, uiText, this.mat, m);
 		y -= 16;
 		y += 32 * dir;
+		h += 32;
 	}
+	this.maxY = h + Math.abs(this.scrollY);
+	this.swipeGad.layout.call(this.swipeGad);
 };
 
 var customerinvoice = v = new vp.View(null);
 v.designWidth = 400;
+v.minX = 0; v.maxX = 400;
+v.minY = 0; v.maxY = 32;
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.layoutFunc = function() {
+	this.swipeGad.layout.call(this.swipeGad);
 };
 v.renderFunc = function() {
 	vendorinvoice.renderFunc.call(customerinvoice, true);
@@ -1355,7 +1377,7 @@ function scrollUpDn(g, amt) {
 	if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
 	if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
 }
-
+/*
 	var scrollbar = v = new vp.View();
 	v.gadgets.push(g = v.upGad = new vp.Gadget(v)); g.z = 2;
   g.clickFunc = function() { scrollUpDn(startpane.swipeGad, 0.885); }
@@ -1457,7 +1479,7 @@ function scrollUpDn(g, amt) {
 	v.designFit = [400,400];
   v.a = scrollbar; scrollbar.parent = v;
   v.b = startpane; startpane.parent = v;
-
+*/
   var div3and4 = v = new vp.View();
   v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
   v.layoutFunc = function() { this.middleDividerGad.layout(); }
@@ -1496,7 +1518,7 @@ function scrollUpDn(g, amt) {
 
   var div = v = new vp.ViewDivider(null, 'a', 0.5, 1);
   div.designSize = 640*400;
-  v.a = walletpane; walletpane.parent = v;
+  v.a = startpane; startpane.parent = v;
   v.b = quadrants3and4; quadrants3and4.parent = v;
   v.c = maindivider; maindivider.parent = v;
 	transitionTo = function(view, option = '') {
