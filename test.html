@@ -1264,7 +1264,11 @@ v.b = vendorpane; vendorpane.parent = v;
 v.c = vendorcustomerdiv; vendorcustomerdiv.parent = v;
 v.layoutEndFunc = function() {
 	var v = this, h = v.h/v.getScale();
-	v.ratioMax = (v.h - v.w/400*50 - v.w/240*80) / v.h;
+	if (v.state == 'h') {
+		v.ratioMax = (v.h - v.w/400*50 - v.w/240*80) / v.h;
+	} else {
+		v.ratioMax = 1;
+	}
 }
   var menupane = v = new vp.View(null);
 	v.name = Object.keys({menupane}).pop();
