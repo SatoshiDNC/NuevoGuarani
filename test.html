@@ -105,9 +105,9 @@ e;l++);m+=this.glyphX2[l]-this.glyphX1[l]}return m}findGlyph(e){var m=-1;"number
 h.LINEAR);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MAG_FILTER,h.LINEAR);h.enableVertexAttribArray(this.vloc);h.bindBuffer(h.ARRAY_BUFFER,this.vertexBuff);h.vertexAttribPointer(this.vloc,2,h.FLOAT,!1,0,0);h.enableVertexAttribArray(this.tloc);h.bindBuffer(h.ARRAY_BUFFER,this.texBuff);h.vertexAttribPointer(this.tloc,2,h.FLOAT,!1,0,0);h.uniformMatrix4fv(this.projMatLoc,!1,d);mat4.translate(b,b,[e,m,0]);e=vec3.create();mat4.getScaling(e,d);d=vec3.create();mat4.getScaling(d,b);h.uniform1f(this.scaleFactorLoc,
 d[0]*e[0]*h.drawingBufferWidth);for(let k of l){d=k.codePointAt(0);for(l=0;l<this.glyphCodes.length&&this.glyphCodes[l]!=d;l++);mat4.translate(b,b,[-this.glyphX1[l],-this.glyphHeights[l]+this.glyphY1[l],0]);l>=this.glyphCodes.length||(d=l,h.uniformMatrix4fv(this.viewMatLoc,!1,b),h.uniform1i(this.layerLoc,~~(f.ZD_DECODE[~~this.glyphSourceZD[l]][0]/2)),h.uniform1i(this.depthLoc,~~f.ZD_DECODE[~~this.glyphSourceZD[l]][1]),e=this.glyphHasColors[l]&&this.glyphColors[l]?this.glyphColors[l].length:0,0==e&&
 h.uniform4fv(this.color1Loc,g),0<e&&h.uniform4fv(this.color1Loc,a(this.glyphColors[l][0])),1<e&&h.uniform4fv(this.color2Loc,a(this.glyphColors[l][1])),2<e&&h.uniform4fv(this.color3Loc,a(this.glyphColors[l][2])),h.drawArrays(h.TRIANGLE_FAN,4*d,4));mat4.translate(b,b,[this.glyphX2[l],this.glyphHeights[l]-this.glyphY2[l],0])}}}return{glSet:function(e){h=e},getProg:function(){return u},GlyphSet:O,ff:f}}();
-var vp=function(){function O(){return 0<navigator.maxTouchPoints?85:5}function da(){if(H){var a=H;a.actionFlags&vp.GAF_NUMINPUT&&(el=M);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.blur();el.style.display="none";H=void 0}}function ea(a){da();H=a;a.textBeginFunc&&a.textBeginFunc.call(a);a.actionFlags&vp.GAF_GONEXT&&(ba.style.display="inline");a.actionFlags&vp.GAF_NUMINPUT&&(el=M);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.value=a.text;el.style.display="inline";el.focus()}function pa(a){if(a!=ca){var e=
-0;0<ca&&(e=a-ca);ca=a;for(a=[];lv=I.pop();)a.push(lv);if(fa)fa=!1,l.viewport(0,0,x.width,x.height),mat4.identity(U),mat4.translate(U,U,[-1,1,0]),mat4.scale(U,U,[2/x.width,-2/x.height,1]),C&&(a=new vp.LayoutState(x.width,x.height),C.layoutAll(a));else for(;lv=a.pop();)lv.relayout();ha&&(--ha||C.setRenderFlag(!0));ia&&C.setRenderFlag(!0);if(C&&(C.needsRender||C.childRender)){a=0;for(var [,g]of Object.entries(t))g.dx=(g.x-g.px)/e,g.px=g.x,g.dy=(g.y-g.py)/e,g.py=g.y,a+=Math.sqrt(g.dx*g.dx+g.dy*g.dy)/
-qa;ja&&ja.setValueAtTime(a,B.currentTime);e=[];g=0;for(var d of X){a=d.getScale();var b=d.minX,h=Math.max(d.maxX-d.w/a,b),c=d.minY,f=Math.max(d.maxY-d.h/a,c);if(d.tempVX||d.tempVY||d.tempDX||d.tempDY){var k=Math.sign(d.tempDX)*Math.min(10,Math.abs(d.tempDX)),q=Math.sign(d.tempDY)*Math.min(10,Math.abs(d.tempDY));d.tempDX=Math.sign(d.tempDX)*Math.max(0,Math.abs(d.tempDX)-10);d.tempDY=Math.sign(d.tempDY)*Math.max(0,Math.abs(d.tempDY)-10);d.userX=J(d.userX-(1E3*d.tempVX/30/a-k),b,h);d.userY=J(d.userY-
+var vp=function(){function O(){return 0<navigator.maxTouchPoints?85:5}function da(){if(H){var a=H;a.actionFlags&vp.GAF_NUMINPUT&&(el=M);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.blur();el.style.display="none";H=void 0}}function ea(a){da();H=a;a.textBeginFunc&&a.textBeginFunc.call(a);a.actionFlags&vp.GAF_GONEXT&&(ba.style.display="inline");a.actionFlags&vp.GAF_NUMINPUT&&(el=M);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.value=a.text;el.style.display="inline";el.focus();el.select()}function pa(a){if(a!=
+ca){var e=0;0<ca&&(e=a-ca);ca=a;for(a=[];lv=I.pop();)a.push(lv);if(fa)fa=!1,l.viewport(0,0,x.width,x.height),mat4.identity(U),mat4.translate(U,U,[-1,1,0]),mat4.scale(U,U,[2/x.width,-2/x.height,1]),C&&(a=new vp.LayoutState(x.width,x.height),C.layoutAll(a));else for(;lv=a.pop();)lv.relayout();ha&&(--ha||C.setRenderFlag(!0));ia&&C.setRenderFlag(!0);if(C&&(C.needsRender||C.childRender)){a=0;for(var [,g]of Object.entries(t))g.dx=(g.x-g.px)/e,g.px=g.x,g.dy=(g.y-g.py)/e,g.py=g.y,a+=Math.sqrt(g.dx*g.dx+g.dy*
+g.dy)/qa;ja&&ja.setValueAtTime(a,B.currentTime);e=[];g=0;for(var d of X){a=d.getScale();var b=d.minX,h=Math.max(d.maxX-d.w/a,b),c=d.minY,f=Math.max(d.maxY-d.h/a,c);if(d.tempVX||d.tempVY||d.tempDX||d.tempDY){var k=Math.sign(d.tempDX)*Math.min(10,Math.abs(d.tempDX)),q=Math.sign(d.tempDY)*Math.min(10,Math.abs(d.tempDY));d.tempDX=Math.sign(d.tempDX)*Math.max(0,Math.abs(d.tempDX)-10);d.tempDY=Math.sign(d.tempDY)*Math.max(0,Math.abs(d.tempDY)-10);d.userX=J(d.userX-(1E3*d.tempVX/30/a-k),b,h);d.userY=J(d.userY-
 (1E3*d.tempVY/30/a-q),c,f);d.userX-d.ox/a<b||d.userX-d.ox/a>h||d.userY-d.oy/a<c||d.userY-d.oy/a>f?(d.userX=J(J(d.userX-d.ox/a,b,h)+d.ox/a,b,h),d.userY=J(J(d.userY-d.oy/a,c,f)+d.oy/a,c,f),d.rematrix(),d.relayout(),d.setRenderFlag(!0),e.push(g),delete d.tempVX,delete d.tempVY):(d.rematrix(),d.relayout(),d.setRenderFlag(!0),a=Math.sqrt(d.tempVX*d.tempVX+d.tempVY*d.tempVY),b=Math.max(0,a-.1),0!=a&&(d.tempVX=d.tempVX/a*b,d.tempVY=d.tempVY/a*b))}else{if(d.userX-d.ox/a<b||d.userX-d.ox/a>h||d.userY-d.oy/
 a<c||d.userY-d.oy/a>f)d.userX=J(J(d.userX-d.ox/a,b,h)+d.ox/a,b,h),d.userY=J(J(d.userY-d.oy/a,c,f)+d.oy/a,c,f),d.rematrix(),d.relayout(),d.setRenderFlag(!0);e.push(g);delete d.tempVX;delete d.tempVY}g++}for(C.renderAll();e.length;)X.splice(e.pop(),1);0<X.length&&C.setRenderFlag(!0);if(ra){l.viewport(0,0,x.width,x.height);l.disable(l.SCISSOR_TEST);l.useProgram(z);l.bindBuffer(l.ARRAY_BUFFER,ka);d=l.getAttribLocation(z,"aVertexPosition");l.vertexAttribPointer(d,2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(d);
 l.enable(l.BLEND);l.uniform4fv(l.getUniformLocation(z,"uVertexColor"),new Float32Array([1,1,1,1]));l.uniformMatrix4fv(l.getUniformLocation(z,"uProjectionMatrix"),!1,U);d=mat4.create();if(ia){a=[];for(var [,n]of Object.entries(t))if(n.hitList){e=n.hitList.getActionableGads(vp.GAF_ALL);for(const m of e)a.includes(m)||a.push(m)}for(const m of a)if(m.ownedBy){n=m.convexHull;for(p=0;p<n.length;p+=2)mat4.fromTranslation(d,[m.viewport.x,m.viewport.y,0]),mat4.mul(d,d,m.viewport.userMat),mat4.scale(d,d,[m.viewport.getScale(),
@@ -219,11 +219,18 @@ function main() {
 
 	const GENERIC = 0;
 	const PARAGUAY = 1;
-	const style = Math.round(Math.random() * 1);
+	var style = Math.round(Math.random() * 1);
 
-	const lcode = Math.random() > 0.5?
+	var lcode = Math.random() > 0.5?
 		(Math.random() > 0.5?'gn-PY':'es-PY'):
 		(Math.random() > 0.5?'en-US':'de-DE');
+
+	var enabledCustomerLangs = ['gn-PY', 'es-PY', 'en-US', 'de-DE'];
+	for (var i=enabledCustomerLangs.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledCustomerLangs.splice(i,1);
+	if (enabledCustomerLangs.length == 0) enabledCustomerLangs.push('es-PY');
+	var defaultCustomerLang = enabledCustomerLangs[
+		Math.floor(enabledCustomerLangs.length * Math.random())];
 
 	const enabledVendorCurrencies = ['₿','₲','$','€'];
 	const enabledCustomerCurrencies = ['₿','₲','$','€'];
@@ -233,11 +240,50 @@ function main() {
 		if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
 	if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
 	if (enabledCustomerCurrencies.length == 0) enabledCustomerCurrencies.push('₲');
-	const defaultVendorCurrency = enabledVendorCurrencies[
+	var defaultVendorCurrency = enabledVendorCurrencies[
 		Math.floor(enabledVendorCurrencies.length * Math.random())];
-	const defaultCustomerCurrency = enabledCustomerCurrencies[
+	var defaultCustomerCurrency = enabledCustomerCurrencies[
 		Math.floor(enabledCustomerCurrencies.length * Math.random())];
-	console.log(enabledVendorCurrencies, enabledCustomerCurrencies);
+
+  // DEMO MODES
+	if (0) { // USD
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'₿','$');
+		enabledCustomerCurrencies.splice(0,4,'₿','$');
+		defaultVendorCurrency = '$';
+		defaultCustomerCurrency = '$';
+	}
+	if (0) { // EUR
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'₿','€');
+		enabledCustomerCurrencies.splice(0,4,'₿','€');
+		defaultVendorCurrency = '€';
+		defaultCustomerCurrency = '€';
+	}
+	if (0) { // USD
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'$');
+		enabledCustomerCurrencies.splice(0,4,'$');
+		defaultVendorCurrency = '$';
+		defaultCustomerCurrency = '$';
+	}
+
+	conversionRates = {};
+	conversionRates['₿'] = {
+		'₿': 1.0, // calculated in sats
+		'₲': 1.5 + Math.random(),
+		'$': 1/(40 + 10 * Math.random()), // calculated in cents
+		'€': 1/(45 + 10 * Math.random()), // calculated in cents
+	};
+	for (var i=1; i<Object.keys(conversionRates['₿']).length; i++) {
+		var cur = Object.keys(conversionRates['₿'])[i];
+		conversionRates[cur] = {
+			'₿': 1/conversionRates['₿'][cur],
+			'₲': 1/conversionRates['₿'][cur] * conversionRates['₿']['₲'],
+			'$': 1/conversionRates['₿'][cur] * conversionRates['₿']['$'],
+			'€': 1/conversionRates['₿'][cur] * conversionRates['₿']['€'],
+		};
+	}
 
 	function toFiat(s) {
 		return style == PARAGUAY? s * 2: s / 3600;
@@ -263,9 +309,11 @@ function main() {
 
   clickTapActive = ['begin-click','recover-click','begin-tap'];
 
+	console.log(enabledVendorCurrencies, enabledCustomerCurrencies, enabledCustomerLangs);
+
 	var v, g;
 const trs = {};
- function tr(s) {
+ function tr(s, l = lcode) {
 	if (!(s in trs)) {
 		trs[s] = {'source': s};
 		switch(s) {
@@ -284,13 +332,13 @@ const trs = {};
 		case 'pay':
 			trs[s]['en-US'] = 'PAYMENT';
 			trs[s]['es-PY'] = 'PAGO';
-			trs[s]['gn-PY'] = 'HEPYME\'Ẽ';
+			trs[s]['gn-PY'] = "HEPYME'Ẽ";
 			trs[s]['de-DE'] = 'ZAHLUNG';
 			break;
 		case 'item':
 			trs[s]['en-US'] = 'ITEM';
 			trs[s]['es-PY'] = 'ARTÍCULO';
-			trs[s]['gn-PY'] = 'MBA\'E';
+			trs[s]['gn-PY'] = "MBA'E";
 			trs[s]['de-DE'] = 'ARTIKEL';
 			break;
 		case 'tax':
@@ -317,11 +365,48 @@ const trs = {};
 			trs[s]['gn-PY'] = 'HETAKUE';
 			trs[s]['de-DE'] = 'QUANT.'; // QUANTITÄT
 			break;
+		case 'subtotal':
+			trs[s]['en-US'] = 'SUBTOTAL';
+			trs[s]['es-PY'] = 'IMPORTE TOTAL';
+			trs[s]['gn-PY'] = 'OPAITE';
+			trs[s]['de-DE'] = 'ZWISCHENSUMME';
+			break;
+		case 'language':
+			trs[s]['en-US'] = 'LANGUAGE';
+			trs[s]['es-PY'] = 'IDIOMA';
+			trs[s]['gn-PY'] = "ÑE'Ẽ";
+			trs[s]['de-DE'] = 'SPRACHE';
+			break;
+		case 'en-US':
+			trs[s]['en-US'] = 'ENGLISH';
+			trs[s]['es-PY'] = 'INGLÉS';
+			trs[s]['gn-PY'] = "INGLÉS";
+			trs[s]['de-DE'] = 'ENGLISCH';
+			break;
+		case 'es-PY':
+			trs[s]['en-US'] = 'SPANISH';
+			trs[s]['es-PY'] = 'ESPAÑOL';
+			trs[s]['gn-PY'] = "ESPAÑOL";
+			trs[s]['de-DE'] = 'SPANISCH';
+			break;
+		case 'gn-PY':
+			trs[s]['en-US'] = 'GUARANÍ';
+			trs[s]['es-PY'] = 'GUARANÍ';
+			trs[s]['gn-PY'] = "GUARANÍ";
+			trs[s]['de-DE'] = 'GUARANÍ';
+			break;
+		case 'de-DE':
+			trs[s]['en-US'] = 'GERMAN';
+			trs[s]['es-PY'] = 'ALEMÁN';
+			trs[s]['gn-PY'] = "ALEMÁN";
+			trs[s]['de-DE'] = 'DEUTSCH';
+			break;
 		case 'Discard this invoice?':
 			trs[s]['en-US'] = 'Discard this invoice?';
 			trs[s]['es-PY'] = '¿Descartar esta factura?';
 			trs[s]['gn-PY'] = '¿Emboyke ko factura?';
 			trs[s]['de-DE'] = 'Diese Rechnung verwerfen?';
+			break;
 		}
 		if(	!('en-US' in trs[s])
 		||	!('es-PY' in trs[s])
@@ -329,8 +414,8 @@ const trs = {};
 			console.log("Translation(s) missing for", trs[s]);
 		}
 	}
-	if (lcode in trs[s]) {
-		return trs[s][lcode];
+	if (l in trs[s]) {
+		return trs[s][l];
 	} else {
 		//console.log("Translation missing for", trs[s]);
 		for(var v in trs[s]) {
@@ -937,7 +1022,14 @@ class LineItem {
 			this.viewport.setRenderFlag(true);
 		}
 		g.textNextFunc = function() {
-			vp.beginInput(this.viewport.qty);
+			var g = this, v = g.viewport;
+			if ((v.item.text.trim() != '' || v.qty.text.trim() != ''
+			|| v.taxrate.text.trim() != '') && this.text.trim() == '') {
+				vp.beep();
+				vp.beginInput(v.unitprice);
+			} else {
+				vp.beginInput(v.qty);
+			}
 		}
 		g.specialFunc = function(e) {
 			switch (e.key) {
@@ -970,7 +1062,14 @@ class LineItem {
 			this.viewport.setRenderFlag(true);
 		}
 		g.textNextFunc = function() {
-			vp.beginInput(this.viewport.taxrate);
+			var g = this, v = g.viewport;
+			if ((v.item.text.trim() != '' || v.unitprice.text.trim() != ''
+			|| v.taxrate.text.trim() != '') && (+this.text) == 0) {
+				vp.beep();
+				vp.beginInput(v.qty);
+			} else {
+				vp.beginInput(v.taxrate);
+			}
 		}
 	v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 		g.x = 200; g.y = 55; g.w = 35; g.h = 20;
@@ -994,23 +1093,41 @@ class LineItem {
 		}
 		g.textNextFunc = function() {
 			var g = this, v = g.viewport;
-			var li = new LineItem(
-				v.item.text, v.currency.icon, v.unitprice.text, v.qty.text, v.taxrate.text);
-			if (!li.isEmpty()) {
-				if ((+li.qty) == 0) {
-					vp.beep();
-					vp.beginInput(v.qty);
-				} else {
-					if (li.unitprice == '') li.unitprice = '0';
+			if ((v.item.text.trim() != '' || v.unitprice.text.trim() != ''
+			|| v.qty.text.trim() != '') && this.text.trim() == '') {
+				vp.beep();
+				vp.beginInput(v.taxrate);
+			} else if ((v.qty.text.trim() != '' || v.taxrate.text.trim() != '')
+			&& v.unitprice.text.trim() == '') {
+				vp.beep();
+				vp.beginInput(v.unitprice);
+			}else {
+				var value = v.unitprice.text.trim();
+				if (value != '' && ['$', '€'].includes(v.currency.icon)) {
+					value = (v.unitprice.text * 100).toString();
+				}
+				var li = new LineItem(
+					v.item.text.trim(),
+					v.currency.icon, value,
+					v.qty.text.trim(),
+					v.taxrate.text.trim());
+				if (!li.isEmpty()) {
+					v.setConversionRates();
 					invoicepane.invoiceitems.unshift(li);
 					invoicepane.setRenderFlag(true);
 					v.clearDataEntry();
 					vp.beginInput(v.item);
+				} else {
+					vp.endInput();
 				}
-			} else {
-				vp.endInput();
 			}
 		}
+	v.setConversionRates = function() {
+		this.conv = JSON.parse(JSON.stringify(conversionRates));
+	}
+	v.cconv = function(a, f, t) {
+		return Math.ceil(a * this.conv[f][t]);
+	}
 	v.clearDataEntry = function() {
 		this.item.text = '';
 		this.currency.icon = defaultVendorCurrency;
@@ -1167,13 +1284,12 @@ v.renderFunc = function(flip = false) {
   var m = mat4.create();
 	for (const li of invoicepane.invoiceitems) {
 		if (skip > 0) { skip -= 1; continue; }
-		s = li.currency;
-		if (this === customerinvoice && li.currency != customertotal.currency.icon)
-			s = customertotal.currency.icon;
-		c = s=='₿' ? uiLightningYellow : uiFiatGreen;
-		if (s == '₿') s = '🗲';
-		if (this === customerinvoice && li.currency != customertotal.currency.icon)
-			s = '⃀'+s;
+		var cust = (this === customerinvoice);
+		lang = cust ? customertotal.language.lang : lcode;
+		s = cust? customertotal.currency.icon : li.currency;
+		d = s; if (d == '₿') d = '🗲';
+		c = (s == '₿')? uiLightningYellow : uiFiatGreen;
+		//	'⃀' temporary approximately equal sign
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		defaultFont.draw(0,0, li.item.toUpperCase(), uiText, this.mat, m);
 		y += 16;
@@ -1181,18 +1297,30 @@ v.renderFunc = function(flip = false) {
 		t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
 		defaultFont.draw(36-w,0, t + ' ×', uiText, this.mat, m);
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		t = (+li.unitprice).toString(); w = defaultFont.calcWidth(t);
+		t = (+dataentry.cconv(li.unitprice, li.currency, s)).toString();
+		if (['$', '€'].includes(s)) {
+			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
+		} else {
+			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
+		}
+		w = defaultFont.calcWidth(t);
 		defaultFont.draw(180-w,0, t, uiText, this.mat, m);
 		if (currencies.length > 1) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-			defaultFont.draw(180-w-3-defaultFont.calcWidth(s),0, s, c, this.mat, m);
+			defaultFont.draw(180-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
 		}
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		t = ((li.unitprice * li.qty).toString()); w = defaultFont.calcWidth(t);
+		t = (dataentry.cconv(li.unitprice * li.qty, li.currency, s).toString());
+		if (['$', '€'].includes(s)) {
+			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
+		} else {
+			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
+		}
+		w = defaultFont.calcWidth(t);
 		defaultFont.draw(340-w,0, t, uiText, this.mat, m);
 		if (currencies.length > 1) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-			defaultFont.draw(340-w-3-defaultFont.calcWidth(s),0, s, c, this.mat, m);
+			defaultFont.draw(340-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
 		}
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = +li.taxrate + '%'; w = defaultFont.calcWidth(t);
@@ -1221,14 +1349,18 @@ v.renderFunc = function() {
 
 var customertotal = v = new vp.View(null);
 v.name = Object.keys({customertotal}).pop();
-v.designFit = [240,30];
+v.designFit = [240,32];
 v.gadgets.push(v.currency = g = new vp.Gadget(v));
 	g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = 4; g.y = 10;
+	g.x = 4; g.y = 19;
 	g.autoHull();
 	g.label = tr('currency');
 	g.icon = defaultCustomerCurrency;
-	g.renderFunc = dataentry.currency.renderFunc;
+	g.renderFunc = function() {
+		var g = this;
+		g.label = tr('currency', g.viewport.language.lang);
+		dataentry.currency.renderFunc.call(g);
+	}
 	g.clickFunc = function() {
 		var g = this;
 		var i = enabledCustomerCurrencies.indexOf(g.icon);
@@ -1236,6 +1368,94 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 		if (i >= enabledCustomerCurrencies.length) i = 0;
 		g.icon = enabledCustomerCurrencies[i];
 		invoicepane.setRenderFlag(true);
+	}
+v.gadgets.push(v.language = g = new vp.Gadget(v));
+	g.w = 45; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 51; g.y = 19;
+	g.autoHull();
+	g.label = tr('language');
+	g.lang = defaultCustomerLang;
+	g.text = tr(g.lang);
+	g.renderFunc = function() {
+		var g = this;
+		g.label = tr('language', g.lang);
+		g.text = tr(g.lang, g.lang);
+		var sel = clickTapActive.includes(g.gestureState);
+		useProg5();
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w, g.h, 1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(sel?uiButtonSel:uiTextLabelArea));
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x, g.y, 0]);
+			mat4.scale(mat, mat, [0.6, 0.6, 1]);
+		centerText(0,0, g.w/0.6, g.h/0.6, g.text, uiText, g.viewport.mat, mat);
+	}
+	g.clickFunc = function() {
+		var g = this;
+		var i = enabledCustomerLangs.indexOf(g.lang);
+		i += 1;
+		if (i >= enabledCustomerLangs.length) i = 0;
+		g.lang = enabledCustomerLangs[i];
+		customerpane.setRenderFlag(true);
+	}
+v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
+	g.x = 101; g.y = 19; g.w = 240 - g.x - 4; g.h = 20;
+	g.text = '0'; g.label = tr('subtotal');
+	g.align = 'r';
+	g.autoHull();
+	g.renderFunc = function() {
+		var g = this, v = g.viewport;
+		g.label = tr('subtotal', v.language.lang);
+		var subtotal = 0;
+		var lang = customertotal.language.lang;
+		var s = customertotal.currency.icon;
+		var d = s; if (d == '₿') d = '🗲';
+		var c = (s == '₿')? uiLightningYellow : uiFiatGreen;
+		for (const li of invoicepane.invoiceitems) {
+			//	'⃀' temporary approximately equal sign
+			subtotal += dataentry.cconv(li.qty * li.unitprice, li.currency, s);
+/*
+			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
+			t = (dataentry.cconv(li.unitprice * li.qty, li.currency, s).toString());
+			if (['$', '€'].includes(s)) {
+				t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
+			} else {
+				t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
+			}
+			w = defaultFont.calcWidth(t);
+			defaultFont.draw(340-w,0, t, uiText, this.mat, m);
+			if (currencies.length > 1) {
+				mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
+				defaultFont.draw(340-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
+			}
+			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
+			t = +li.taxrate + '%'; w = defaultFont.calcWidth(t);
+			defaultFont.draw(380-w,0, t, uiText, this.mat, m);
+			y -= 16;
+			y += 32 * dir;
+			h += 32;
+*/
+		}
+
+		var t = subtotal, w, m = mat4.create();
+		if (['$', '€'].includes(s)) {
+			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
+		} else {
+			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
+		}
+		g.text = '';
+		dataentry.item.renderFunc.call(g);
+
+		w = defaultFont.calcWidth(t);
+		mat4.identity(m); mat4.translate(m, m, [g.x + g.w - 2, g.y + 16, 0]);
+		defaultFont.draw(-w,0, t, uiText, v.mat, m);
+		mat4.identity(m); mat4.translate(m, m, [g.x + g.w - 2, g.y + 16, 0]);
+		defaultFont.draw(-w-3-defaultFont.calcWidth(d),0, d, c, v.mat, m);
 	}
 v.layoutFunc = function() {
 };
@@ -1250,7 +1470,7 @@ v.getHits = function(hitList, radius) {
 	while (hl.hits.length) hitList.hits.push(hl.hits.pop());
 }
 
-var customerpane = v = new vp.ViewSlice(null, 't', 0.125);
+var customerpane = v = new vp.ViewSlice(null, 't', 50/240);
 v.name = Object.keys({customerpane}).pop();
 v.prop = true;
 v.a = customertotal; customertotal.parent = v;
