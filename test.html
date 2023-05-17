@@ -126,7 +126,7 @@ var vp = (function() {
 
   // for debug purposes
   var plainProgram;
-	var debug1 = false; // layout and rendering console messages
+	var debug1 = true; // layout and rendering console messages
 
   const touchRadius = 85, clickRadius = 5;
   function getPointerRadius() { return (navigator.maxTouchPoints>0 ? touchRadius : clickRadius); }
@@ -637,7 +637,11 @@ class ViewPages extends View {
 				otherY = this.userY + (this.type=='v'?this.h:0);
 			}
 
-
+			console.log('follupUp', this.swipeGad.followUp);
+			if (this.swipeGad.followUp && this.swipeGad.followUpFunc) {
+				this.swipeGad.followUpFunc.call(this.swipeGad);
+				if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+			}
 /*
 			if (this.indexNew != this.index || this.indexProg > 0) {
 				if (this.indexNew != this.index) {
@@ -1205,6 +1209,7 @@ class SwipeGadget extends Gadget {
 	constructor(viewport) {
 		super(viewport);
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+		this.followUp = false;
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
@@ -1286,13 +1291,91 @@ class SwipeGadget extends Gadget {
 			if (v.snaps && v.snaps.length > 0) {
 				var xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
 				var nxy = findNearest(xy, v.snaps);
-console.log(xy[0], nxy[0], v.snaps);
+				this.targetRest = nxy;
 				if (!outOfBounds(xy, v)) {
 					v.tempDX = nxy[0] - xy[0];
 					v.tempDY = nxy[1] - xy[1];
-			}	}
+				}
+				if (v.tempDX > 0 && v.userX - v.tempDX < this.targetRest[0]
+				||  v.tempDX < 0 && v.userX - v.tempDX > this.targetRest[0]) {
+					v.tempDX = -v.tempDX;
+				}
+				if (v.tempDY > 0 && v.userY - v.tempDY < this.targetRest[1]
+				||  v.tempDY < 0 && v.userY - v.tempDY > this.targetRest[1]) {
+					v.tempDY = -v.tempDY;
+				}
+			}
+			this.followUp = true;
 			if (!animViews.includes(v)) animViews.push(v);
 			v.setRenderFlag(true);
+		}
+		this.followUpFunc = function() {
+			var v = this.viewport;
+			if (this.targetRest) {
+				var a = v;
+				v.tempDX *= 1.1;
+				v.tempDY *= 1.1;
+console.log(v.tempDX, v.userX, this.targetRest[0]);
+				if (v.tempDX > 0 && v.userX - v.tempDX < this.targetRest[0]
+				||  v.tempDX < 0 && v.userX - v.tempDX > this.targetRest[0]) {
+					v.userX = this.targetRest[0]; v.tempDX = 0;
+				} else {
+					v.userX -= v.tempDX;
+				}
+				if (v.tempDY > 0 && v.userY - v.tempDY < this.targetRest[1]
+				||  v.tempDY < 0 && v.userY - v.tempDY > this.targetRest[1]) {
+					v.userY = this.targetRest[1]; v.tempDY = 0;
+				} else {
+					v.userY -= v.tempDY;
+				}
+				if (v.tempDX == 0 && v.tempDY == 0) {
+					this.followUp = false;
+				}	else {
+					this.followUp = true;
+				}
+				//a.rematrix(); a.relayout(); 
+				a.setRenderFlag(true);
+/*
+          if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
+            var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
+            var fy = Math.sign(a.tempDY) * Math.min(10, Math.abs(a.tempDY));
+            a.tempDX = Math.sign(a.tempDX) * Math.max(0, Math.abs(a.tempDX) - 10);
+            a.tempDY = Math.sign(a.tempDY) * Math.max(0, Math.abs(a.tempDY) - 10);
+            a.userX = clamp(a.userX - (a.tempVX * 1000/30 / s - fx), minX, maxX);
+            a.userY = clamp(a.userY - (a.tempVY * 1000/30 / s - fy), minY, maxY);
+            //a.userX -= a.tempVX * 1000/30 / s - fx;
+            //a.userY -= a.tempVY * 1000/30 / s - fy;
+            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
+							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
+							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
+              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
+              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+              todo.push(i); delete a.tempVX; delete a.tempVY;
+            } else {
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+              var m = Math.sqrt(a.tempVX*a.tempVX + a.tempVY*a.tempVY);
+              var n = Math.max(0, m - 0.1);
+              if (m != 0) {
+                a.tempVX = a.tempVX / m * n;
+                a.tempVY = a.tempVY / m * n;
+              }
+            }
+          } else {
+            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
+							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
+							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
+              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
+              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+            }
+            delete a.tempVX; delete a.tempVY;
+						this.followUp = false;
+          }
+//			if (!animViews.includes(v)) animViews.push(v);
+//			v.setRenderFlag(true);
+*/
+			}
 		}
 	}
 	layout() {
@@ -1392,6 +1475,7 @@ function refresher(timeStamp) {
         }
         if (windSound) windSound.setValueAtTime(windspeed, ac.currentTime);
 
+/*
         var todo = [], i = 0;
         for (const a of animViews) {
           var s = a.getScale();
@@ -1438,6 +1522,7 @@ function refresher(timeStamp) {
           }
           i++;
         }
+*/
 
 				if (debug1 && !continuous) {
 					if (nframes)
@@ -1446,10 +1531,12 @@ function refresher(timeStamp) {
 						console.log('rootViewport.renderAll()');
 				}
         rootViewport.renderAll();
+/*
         while (todo.length) {
           animViews.splice(todo.pop(), 1);
         }
         if (animViews.length > 0) rootViewport.setRenderFlag(true);
+*/
 
 if (showdebug) {
         gl.viewport(0, 0, canvas.width, canvas.height);
