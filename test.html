@@ -573,6 +573,7 @@ class ViewPages extends View {
 		this.type = type; this.index = 0; this.indexNew = 0; this.indexProg = 0;
 		this.a = undefined; this.b = undefined;
 		this.pages = [];
+		this.snaps = [];
 		this.prevTime = 0;
 	}
 	layoutAll(s) {
@@ -585,6 +586,12 @@ class ViewPages extends View {
 			if (this.prevTime != 0) delta = thisTime - this.prevTime;
 			this.prevTime = thisTime;
 			if (delta > 17) delta = 17;
+
+			this.snaps = [];
+			for (var i = 0; i < this.pages.length + 1; i++) {
+				this.snaps.push([this.w * i, this.h * i]);
+			}
+
 			var curPage = this.pages[this.index];
 			var otherPage = undefined;
 			this.a = curPage; curPage.parent = this;
