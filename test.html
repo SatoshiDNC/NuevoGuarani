@@ -607,6 +607,12 @@ class ViewPages extends View {
 					this.h * i * (this.type=='v'?1:0)]);
 			}
 
+			if (this.swipeGad.followUpFunc) this.swipeGad.followUpFunc.call(this.swipeGad);
+//			console.log('follupUp', this.swipeGad.followUp);
+//			if (this.swipeGad.followUp) {
+//				if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+//			}
+
 			var curPage = this.pages[this.index];
 			var otherPage = undefined;
 			this.a = curPage; curPage.parent = this;
@@ -635,12 +641,6 @@ class ViewPages extends View {
 				this.b = otherPage; otherPage.parent = this;
 				otherX = this.userX + (this.type=='h'?this.w:0);
 				otherY = this.userY + (this.type=='v'?this.h:0);
-			}
-
-			console.log('follupUp', this.swipeGad.followUp);
-			if (this.swipeGad.followUp && this.swipeGad.followUpFunc) {
-				this.swipeGad.followUpFunc.call(this.swipeGad);
-				if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
 			}
 /*
 			if (this.indexNew != this.index || this.indexProg > 0) {
@@ -1306,16 +1306,19 @@ class SwipeGadget extends Gadget {
 				}
 			}
 			this.followUp = true;
-			if (!animViews.includes(v)) animViews.push(v);
+			if (layoutViews.indexOf(this.viewport) === -1) layoutViews.push(this.viewport);
+//			if (!animViews.includes(v)) animViews.push(v);
 			v.setRenderFlag(true);
 		}
 		this.followUpFunc = function() {
 			var v = this.viewport;
-			if (this.targetRest) {
+			this.followUp = false;
+console.log(v.tempDX, v.userX, this.targetRest ? this.targetRest[0] : undefined);
+			if (this.targetRest
+			&& (v.userX != this.targetRest[0] || v.userY != this.targetRest[1])) {
 				var a = v;
 				v.tempDX *= 1.1;
 				v.tempDY *= 1.1;
-console.log(v.tempDX, v.userX, this.targetRest[0]);
 				if (v.tempDX > 0 && v.userX - v.tempDX < this.targetRest[0]
 				||  v.tempDX < 0 && v.userX - v.tempDX > this.targetRest[0]) {
 					v.userX = this.targetRest[0]; v.tempDX = 0;
@@ -1328,13 +1331,9 @@ console.log(v.tempDX, v.userX, this.targetRest[0]);
 				} else {
 					v.userY -= v.tempDY;
 				}
-				if (v.tempDX == 0 && v.tempDY == 0) {
-					this.followUp = false;
-				}	else {
-					this.followUp = true;
-				}
 				//a.rematrix(); a.relayout(); 
 				a.setRenderFlag(true);
+				this.followUp = true;
 /*
           if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
             var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
@@ -1375,6 +1374,7 @@ console.log(v.tempDX, v.userX, this.targetRest[0]);
 //			if (!animViews.includes(v)) animViews.push(v);
 //			v.setRenderFlag(true);
 */
+				if (layoutViews.indexOf(this.viewport) === -1) layoutViews.push(this.viewport);
 			}
 		}
 	}
