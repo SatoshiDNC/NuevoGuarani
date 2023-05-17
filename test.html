@@ -1904,10 +1904,10 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'swipe'; p.swiping = true;
                     g.viewport.setRenderFlag(true);
-                    for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+										DisownAllOtherGads(p, g);
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
                     if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
-     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+     if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
                   }
                 }
               }
@@ -3280,7 +3280,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 	g.text = ''; g.label = tr('item'); g.autoHull();
 	g.renderFunc = function() {
 		var g = this;
-		var sel = ['begin-input'].includes(g.gestureState) || vp.getInputGad() === g;
+		var sel = vp.getInputGad() === g;
 		const mat = mat4.create();
 		useProg5();
 		mat4.identity(mat);
