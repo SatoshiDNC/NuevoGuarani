@@ -2106,7 +2106,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
         for (const h of p.hitList.hits) {
           const g = h.gad;
           if (!skipflag && !g.ownedBy) {
-            if (!!(g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN))) {
+            if (!!(g.actionFlags & vp.GAF_SCROLLABLE_UPDOWN)) {
               p = pointers[index]; p.e = e;
               p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
               p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
@@ -2116,8 +2116,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
               if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
               if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
               skipflag=1;
-            } else if (!!(g.actionFlags
-						& (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT))) {
+            } else if (!!(g.actionFlags & vp.GAF_SCROLLABLE_LEFTRIGHT)) {
               p = pointers[index]; p.e = e;
               p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
               p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
