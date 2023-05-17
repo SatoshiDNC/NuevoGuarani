@@ -741,36 +741,552 @@ class ViewPicker extends View {
     }
   }
 }
-const GF_RELX=1,GF_RELY=2,GF_RELW=4,GF_RELH=8;
-var GAF_CLICKABLE=1,GAF_HOLDABLE=2,GAF_CONTEXTMENU=4,GAF_STRETCHABLE=8,GAF_DRAGGABLE_UPDOWN=16,GAF_DRAGGABLE_LEFTRIGHT=32,GAF_SWIPEABLE_UPDOWN=64,GAF_SWIPEABLE_LEFTRIGHT=128,GAF_SCROLLABLE_UPDOWN=256,GAF_SCROLLABLE_LEFTRIGHT=512,GAF_SCALABLE=1024,GAF_ROTATABLE=2048,GAF_DRAGGABLE=GAF_DRAGGABLE_UPDOWN|GAF_DRAGGABLE_LEFTRIGHT,GAF_SWIPEABLE=GAF_SWIPEABLE_UPDOWN|GAF_SWIPEABLE_LEFTRIGHT,GAF_SCROLLABLE=GAF_SCROLLABLE_UPDOWN|GAF_SCROLLABLE_LEFTRIGHT,GAF_PINCHABLE=GAF_SCALABLE|GAF_ROTATABLE,GAF_ALL=GAF_CLICKABLE|
-GAF_CONTEXTMENU|GAF_STRETCHABLE|GAF_DRAGGABLE|GAF_SCROLLABLE|GAF_PINCHABLE,GAF_NUMINPUT=4096,GAF_TEXTINPUT=8192,GAF_GONEXT=16384;
-class Gadget{constructor(h){this.viewport=h;this.mat=mat4.create();mat4.identity(this.mat);this.H=this.h=this.w=this.y=this.x=0;this.convexHull=[];this.extendedHulls={};this.boundingBoxes={};this.yo=this.xo=0;this.enabled=!0;this.selected=!1;this.actionFlags=0}getHits(h,a){if(this.enabled&&0!=this.convexHull.length){var d=this.viewport,c=vec3.create();mat4.getScaling(c,d.userMat);a=a/d.getScale()/c[0];c=""+a;c in this.extendedHulls||(this.computeExtendedHull(a),this.computeBoundingBox(a));a=this.extendedHulls[c];
-var e=this.boundingBoxes[c];c=1/d.getScale();var b=vec3.create();b[0]=h.x-d.x-this.x/c;b[1]=h.y-d.y-this.y/c;var f=mat4.create();mat4.invert(f,d.userMat);vec3.transformMat4(b,b,f);d=b[0]*c;c*=b[1];if(!(d<e.x1||d>=e.x2||c<e.y1||c>=e.y2)){b=a.length;e=!0;for(f=0;f<b;f+=2){var k=a[f+0];var g=a[f+1];k=(a[(f+2)%b]-k)*(c-g)-(a[(f+3)%b]-g)*(d-k);0>k&&(e=!1)}if(e){b=this.convexHull.length;e=!0;for(f=0;f<b;f+=2)a=this.convexHull[f+0],k=this.convexHull[f+1],k=(this.convexHull[(f+2)%b]-a)*(c-k)-(this.convexHull[(f+
-3)%b]-k)*(d-a),0>k&&(e=!1);a=0;e||(a=this.distToHull(d,c));h.hits.push({gad:this,dist:a})}}}}autoHull(){this.convexHull=this.computeHull([0,0,this.w,0,this.w,this.h,0,this.h]);this.extendedHulls={};this.boundingBoxes={}}computeHull(h){function a(m,p,t,u,x,y){return(t-m)*(y-p)-(u-p)*(x-m)}function d(m){return m*m}function c(m,p,t,u,x,y){var w=d(t-x)+d(u-y);if(0==w)return d(m-t)+d(p-u);w=Math.max(0,Math.min(1,((m-t)*(x-t)+(p-u)*(y-u))/w));u+=w*(y-u);return d(m-(t+w*(x-t)))+d(p-u)}function e(m,p,t,u,
-x,y){if(!(2>p.length)){for(var w=0,z=0,r=0;r<~~(p.length/2);r++){var A=Math.sqrt(c(p[2*r],p[2*r+1],t,u,x,y));A>z&&(z=A,w=r)}z=p[2*w];A=p[2*w+1];p.splice(2*w,2);for(r=0;r<~~(m.length/2);r++)if(m[2*r]==t&&m[2*r+1]==u&&m[(2*r+2)%m.length]==x&&m[(2*r+3)%m.length]==y||m[2*r]==x&&m[2*r+1]==y&&m[(2*r+2)%m.length]==t&&m[(2*r+3)%m.length]==u){m.splice(2*r+2,0,z,A);break}w=[];var B=[];for(r=0;r<~~(p.length/2);r++)0>a(t,u,z,A,p[2*r],p[2*r+1])&&(w[w.length]=p[2*r],w[w.length]=p[2*r+1]),0>a(z,A,x,y,p[2*r],p[2*
-r+1])&&(B[B.length]=p[2*r],B[B.length]=p[2*r+1]);e(m,w,t,u,z,A);e(m,B,z,A,x,y)}}for(var b=[...h],f=[],k=0,g=0,q=b[0],n=b[0],l=0;l<~~(b.length/2);l++)b[2*l]<q&&(q=b[2*l],k=l),b[2*l]>n&&(n=b[2*l],g=l);f[f.length]=b[2*k];f[f.length]=b[2*k+1];f[f.length]=b[2*g];f[f.length]=b[2*g+1];b.splice(2*k,2);g<k?b.splice(2*g,2):b.splice(2*g-2,2);q=[];n=[];for(l=0;l<~~(b.length/2);l++)0>a(h[2*k],h[2*k+1],h[2*g],h[2*g+1],b[2*l],b[2*l+1])?(q[q.length]=b[2*l],q[q.length]=b[2*l+1]):(n[n.length]=b[2*l],n[n.length]=b[2*
-l+1]);e(f,q,h[2*k],h[2*k+1],h[2*g],h[2*g+1]);e(f,n,h[2*g],h[2*g+1],h[2*k],h[2*k+1]);for(h=1;h;)for(l=h=0;l<~~(f.length/2);l++)if(.01>Math.sqrt(c(f[(2*l+2)%f.length],f[(2*l+3)%f.length],f[2*l],f[2*l+1],f[(2*l+4)%f.length],f[(2*l+5)%f.length]))){f.splice(2*l+2,2);h=1;break}return this.sortHull(f)}sortHull(h){function a(n){for(n=Math.atan2(h[n+1]-e,h[n+0]-c)-Math.atan2(g-e,k-c);n>Math.PI;)n-=2*Math.PI;for(;n<-Math.PI;)n+=2*Math.PI;return n}for(var d=[],c=0,e=0,b=h.length,f=0;f<b;f+=2)c+=h[f+0],e+=h[f+
-1];c/=b/2;e/=b/2;for(var k=c+102,g=e+1;0<h.length;){b=0;var q=a(0);for(f=0;f<h.length;f+=2)a(f)<q&&(b=f,q=a(f));d.push(h[b+0]);d.push(h[b+1]);h.splice(b,2)}return d}computeExtendedHull(h){for(var a=[],d=0,c=this.convexHull.length,e=0;e<c;e+=2){var b=this.convexHull[(e+3)%c]-this.convexHull[e+1],f=-(this.convexHull[(e+2)%c]-this.convexHull[e+0]),k=h/Math.sqrt(b*b+f*f);a[d+0]=this.convexHull[e+0]+b*k;a[d+1]=this.convexHull[e+1]+f*k;d+=2;a[d+0]=this.convexHull[(e+2)%c]+b*k;a[d+1]=this.convexHull[(e+
-3)%c]+f*k;d+=2}for(e=0;e<c;e+=2){b=this.convexHull[(e+2)%c]-this.convexHull[e+0];f=this.convexHull[(e+3)%c]-this.convexHull[e+1];d=this.convexHull[(e-2+c)%c]-this.convexHull[e+0];var g=this.convexHull[(e-1+c)%c]-this.convexHull[e+1];k=Math.sqrt(b*b+f*f);g=Math.tan((Math.PI-Math.acos((b*d+f*g)/(k*Math.sqrt(d*d+g*g))))/4)*h;d=2*e;b=a[d+0]-a[d+2];f=a[d+1]-a[d+3];k=Math.sqrt(b*b+f*f);b=b*(k+g)/k;f=f*(k+g)/k;a[d+0]=b+a[d+2];a[d+1]=f+a[d+3];d=(e-2+c)%c*2;b=a[d+2]-a[d+0];f=a[d+3]-a[d+1];k=Math.sqrt(b*b+
-f*f);b=b*(k+g)/k;f=f*(k+g)/k;a[d+2]=b+a[d+0];a[d+3]=f+a[d+1]}this.extendedHulls[""+h]=a}computeBoundingBox(h){this.boundingBoxes[""+h]={};var a=this.extendedHulls[""+h];h=this.boundingBoxes[""+h];if(!(2>a.length)){h.x1=a[0];h.x2=a[0];h.y1=a[1];h.y2=a[1];for(var d=2;d<a.length;d+=2)a[d+0]<h.x1&&(h.x1=a[d+0]),a[d+0]>h.x2&&(h.x2=a[d+0]),a[d+1]<h.y1&&(h.y1=a[d+1]),a[d+1]>h.y2&&(h.y2=a[d+1])}}distToHull(h,a){function d(g){return g*g}function c(g,q,n,l,m,p){var t=d(n-m)+d(l-p);if(0==t)return d(g-n)+d(q-
-l);t=Math.max(0,Math.min(1,((g-n)*(m-n)+(q-l)*(p-l))/t));l+=t*(p-l);return d(g-(n+t*(m-n)))+d(q-l)}for(var e=this.convexHull,b=Math.sqrt(c(h,a,e[0],e[1],e[2],e[3])),f=2;f<e.length;f+=2){var k=Math.sqrt(c(h,a,e[f+0],e[f+1],e[(f+2)%e.length],e[(f+3)%e.length]));k<b&&(b=k)}return b}}
-class MiddleDividerGadget extends Gadget{constructor(h){super(h);this.dragBeginFunc=function(a){this.tempX=a.ox-this.viewport.x;this.tempY=a.oy-this.viewport.y};this.dragMoveFunc=function(a){var d=this.viewport.parent,c="h"==d.state,e=c?a.y-this.tempY-d.a.y:a.x-this.tempX-d.a.x;d.ratio=Math.max(0,Math.min(1,e/(e+(c?d.y+d.h-(a.y-this.tempY+this.viewport.h):d.x+d.w-(a.x-this.tempX+this.viewport.w)))));d.setPoint||(d.setPoint={});d.setPoint[d.state]=d.ratio;-1===layoutViews.indexOf(this.viewport.parent)&&
-layoutViews.push(this.viewport.parent)};this.dragEndFunc=function(a){delete this.tempX;delete this.tempY}}layout(){var h=this.viewport,a=h.getScale(),d=h.parent.size,c="h"==h.parent.state;var e=c?Math.max(1,h.w)/a:d;h=c?d:Math.max(1,h.h)/a;this.actionFlags=c?vp.GAF_DRAGGABLE_UPDOWN:vp.GAF_DRAGGABLE_LEFTRIGHT;this.convexHull=this.computeHull([0,0,0,h,e,h,e,0]);this.extendedHulls={};this.boundingBoxes={}}}
-class MatrixGadget extends Gadget{getTargetMat(){return this.targetGad?this.targetGad.mat:this.targetView.userMat}constructor(h){super(h);this.targetView=h;this.targetGad=void 0;this.dragBeginFunc=function(a){var d=this.targetView;this.grab1b=vec3.create();this.grab1b[0]=a.x-d.x;this.grab1b[1]=a.y-d.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,d.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(this.grab1b,
-this.grab1b,a);this.targetGad&&(a=mat4.create(),mat4.invert(a,this.grabMat),vec3.transformMat4(this.grab1b,this.grab1b,a))};this.dragMoveFunc=function(a){var d=this.targetView,c=vec3.create();c[0]=a.x-d.x;c[1]=a.y-d.y;a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(c,c,a);this.targetGad&&(a=mat4.create(),mat4.invert(a,this.grabMat),vec3.transformMat4(c,c,a));a=vec3.create();vec3.subtract(a,c,this.grab1b);this.targetGad&&vec3.scale(a,a,1/d.getScale());mat4.translate(this.getTargetMat(),
-this.grabMat,a);d.rematrix();d.setRenderFlag(!0)};this.dragEndFunc=function(a){a=this.targetView;delete this.grab1b;delete this.viewMat;delete this.grabMat;a.setRenderFlag(!0)};this.pinchBeginFunc=function(a,d){var c=this.targetView;this.grab1=vec3.create();this.grab1[0]=a.x-c.x;this.grab1[1]=a.y-c.y;this.grab2=vec3.create();this.grab2[0]=d.x-c.x;this.grab2[1]=d.y-c.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,c.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());
-this.grabC=vec3.create();this.grab1b=vec3.create();vec3.copy(this.grab1b,this.grab1);this.grab2b=vec3.create();vec3.copy(this.grab2b,this.grab2);this.grabCb=vec3.create();a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(this.grab1b,this.grab1b,a);vec3.transformMat4(this.grab2b,this.grab2b,a);this.targetGad&&(a=mat4.create(),mat4.copy(a,this.grabMat),vec3.transformMat4(this.grab1b,this.grab1b,a),vec3.transformMat4(this.grab2b,this.grab2b,a));for(a=0;3>a;a++)this.grabC[a]=(this.grab1[a]+
-this.grab2[a])/2,this.grabCb[a]=(this.grab1b[a]+this.grab2b[a])/2;a=this.grab2[0]-this.grab1[0];d=this.grab2[1]-this.grab1[1];this.grabA=Math.atan2(d,a);this.grabM=Math.sqrt(a*a+d*d)};this.pinchMoveFunc=function(a,d){var c=this.targetView,e=vec3.create();e[0]=a.x-c.x;e[1]=a.y-c.y;a=vec3.create();a[0]=d.x-c.x;a[1]=d.y-c.y;var b=vec3.create(),f=vec3.create(),k=vec3.create();d=vec3.create();vec3.copy(f,e);vec3.copy(k,a);var g=mat4.create();mat4.invert(g,this.viewMat);vec3.transformMat4(f,f,g);vec3.transformMat4(k,
-k,g);this.targetGad&&(g=mat4.create(),mat4.copy(g,this.grabMat),vec3.transformMat4(f,f,g),vec3.transformMat4(k,k,g));for(g=0;3>g;g++)b[g]=(e[g]+a[g])/2,d[g]=(f[g]+k[g])/2;b=a[0]-e[0];a=a[1]-e[1];e=Math.atan2(a,b);a=Math.sqrt(b*b+a*a);b=mat4.create();mat4.copy(b,this.grabMat);this.targetGad?(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(b,b,[d[0]/c.getScale(),d[1]/c.getScale(),0]):mat4.translate(b,b,[this.grabCb[0]/c.getScale(),this.grabCb[1]/c.getScale(),0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(b,
-b,[a/this.grabM,a/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(b,b,e-this.grabA,[0,0,1]),mat4.translate(b,b,[-this.grabCb[0]/c.getScale(),-this.grabCb[1]/c.getScale(),0])):(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(b,b,[d[0],d[1],0]):mat4.translate(b,b,[this.grabCb[0],this.grabCb[1],0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(b,b,[a/this.grabM,a/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(b,b,e-this.grabA,[0,0,1]),mat4.translate(b,b,[-this.grabCb[0],
--this.grabCb[1],0]));c.rematrix();c.setRenderFlag(!0);mat4.copy(this.getTargetMat(),b)};this.pinchEndFunc=function(a,d){delete this.grab1;delete this.grab1b;delete this.grab2;delete this.grab2b;delete this.grabC;delete this.grabCb;delete this.grabA;delete this.grabM;delete this.grabMat};this.zoomFunc=function(a,d){const c=this.targetView,e=this.getTargetMat(),b=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(b[0]=a.x-c.x,b[1]=a.y-c.y):mat4.getTranslation(b,e);a=mat4.create();mat4.invert(a,e);vec3.transformMat4(b,
-b,a);mat4.translate(e,e,[b[0],b[1],0]);mat4.scale(e,e,[Math.exp(d/10),Math.exp(d/10),1]);mat4.translate(e,e,[-b[0],-b[1],0]);c.rematrix();c.setRenderFlag(!0)};this.rotateFunc=function(a,d){const c=this.targetView,e=this.getTargetMat(),b=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(b[0]=a.x-c.x,b[1]=a.y-c.y):mat4.getTranslation(b,e);a=mat4.create();mat4.invert(a,e);vec3.transformMat4(b,b,a);mat4.translate(e,e,[b[0],b[1],0]);mat4.rotate(e,e,-Math.PI/18*d,[0,0,1]);mat4.translate(e,e,[-b[0],-b[1],
-0]);c.rematrix();c.setRenderFlag(!0)}}getHits(h,a){this.enabled&&(0==this.convexHull.length?h.hits.push({gad:this,dist:0}):super.getHits(h,a))}layout(){v=this.viewport;console.log("MatrixGadget::layout()")}}
-class SwipeGadget extends Gadget{constructor(h){super(h);this.actionFlags=vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SCROLLABLE_UPDOWN;this.swipeBeginFunc=function(a){console.log("swipeBegin");var d=this.viewport,c=d.getScale();this.tempX=(a.ox-d.x-d.ox)/c+d.userX;this.tempY=(a.oy-d.y-d.oy)/c+d.userY};this.swipeMoveFunc=function(a){console.log("swipeMove");const d=(l,m,p)=>Math.min(Math.max(l,m),p);var c=this.viewport,e=c.getScale(),b=0,f=0,k=c.minX,g=Math.max(c.maxX-c.w/e,k),q=c.minY,n=Math.max(c.maxY-c.h/e,
-q);switch(this.actionFlags&vp.GAF_SWIPEABLE){case vp.GAF_SWIPEABLE_UPDOWN:f=(a.y-c.y-c.oy)/e+c.userY-this.tempY;c.userY=d(d(c.userY-f-c.oy/e,q,n)+c.oy/e,q,n);c.rematrix();this.layout();c.tempVX=0;c.tempVY=a.dy;break;case vp.GAF_SWIPEABLE_LEFTRIGHT:b=(a.x-c.x-c.ox)/e+c.userX-this.tempX;c.userX=d(d(c.userX-b-c.ox/e,k,g)+c.ox/e,k,g);console.log(c.userX);c.rematrix();this.layout();c.tempVX=a.dx;c.tempVY=0;break;case vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SWIPEABLE_LEFTRIGHT:b=(a.x-c.x-c.ox)/e+c.userX-this.tempX,
-f=(a.y-c.y-c.oy)/e+c.userY-this.tempY,c.userX=d(d(c.userX-b-c.ox/e,k,g)+c.ox/e,k,g),c.userY=d(d(c.userY-f-c.oy/e,q,n)+c.oy/e,q,n),c.rematrix(),this.layout(),c.tempVX=a.dx,c.tempVY=a.dy}};this.swipeEndFunc=function(a){function d(k,g){var q=b.getScale(),n=k[0];k=k[1];var l=g[0];g=g[1];var m=Math.sqrt(l*l+g*g);var p=Math.floor(10*m);var t=(10*m-p)/10,u=(p+1)*p/2;0<m&&(n-=l/m*(u/10+t*p)*1E3/30/q,k-=g/m*(u/10+t*p)*1E3/30/q);return[n,k]}function c(k,g){var q="unset",n;if(g)for(n of g)if(g=Math.sqrt((k[0]-
-n[0])**2+(k[1]-n[1])**2),"unset"==q||g<q){q=g;var l=n}return l}function e(k,g){var q=g.getScale(),n=Math.max(g.minX+g.w/q,g.maxX)-g.w/q,l=Math.min(g.maxX-g.w/q,g.minX),m=Math.max(g.minY+g.h/q,g.maxY)-g.h/q,p=Math.min(g.maxY-g.h/q,g.minY);if(l<n){var t=n;n=l;l=t}p<m&&(t=m,m=p,p=t);return k[0]-g.ox/q<n||k[0]-g.ox/q>l||k[1]-g.oy/q<m||k[1]-g.oy/q>p}console.log("swipeEnd");var b=this.viewport;delete this.tempX;delete this.tempY;b.tempDX=0;b.tempDY=0;if(b.snaps&&0<b.snaps.length){a=d([b.userX,b.userY],
-[b.tempVX,b.tempVY]);var f=c(a,b.snaps);e(a,b)||(b.tempDX=f[0]-a[0],b.tempDY=f[1]-a[1])}animViews.includes(b)||animViews.push(b);b.setRenderFlag(!0)}}layout(){var h=this.viewport;this.convexHull=this.computeHull([h.minX,h.minY,h.minX,h.maxY,h.maxX,h.maxY,h.maxX,h.minY]);this.extendedHulls={};this.boundingBoxes={}}};
+    // Gadget Flags
+    const GF_RELX = 1; // left edge of gadget is relative to right edge of viewport
+    const GF_RELY = 2; // top edge of gadget is relative to bottom edge of viewport
+    const GF_RELW = 4; // width is relative to viewport width
+    const GF_RELH = 8; // height is relative to viewport height
+
+    // Gadget Action Flags
+    var GAF_CLICKABLE = 1; // whether this gadget can be clicked or tapped
+    var GAF_HOLDABLE = 2; // whether it can be held down (invalid with GAF_CONTEXT_MENU)
+    var GAF_CONTEXTMENU = 4; // whether this gadget can show a context menu
+    var GAF_STRETCHABLE = 8; // whether this gadget can be stretched
+    var GAF_DRAGGABLE_UPDOWN = 16; // whether this gadget can be dragged up or down
+    var GAF_DRAGGABLE_LEFTRIGHT = 32; // whether this gadget can be dragged left or right
+    var GAF_SWIPEABLE_UPDOWN = 64;
+    var GAF_SWIPEABLE_LEFTRIGHT = 128;
+    var GAF_SCROLLABLE_UPDOWN = 256;
+    var GAF_SCROLLABLE_LEFTRIGHT = 512;
+    var GAF_SCALABLE = 1024;
+    var GAF_ROTATABLE = 2048;
+    var GAF_DRAGGABLE = GAF_DRAGGABLE_UPDOWN | GAF_DRAGGABLE_LEFTRIGHT;
+    var GAF_SWIPEABLE = GAF_SWIPEABLE_UPDOWN | GAF_SWIPEABLE_LEFTRIGHT;
+    var GAF_SCROLLABLE = GAF_SCROLLABLE_UPDOWN | GAF_SCROLLABLE_LEFTRIGHT;
+    var GAF_PINCHABLE = GAF_SCALABLE | GAF_ROTATABLE;
+    var GAF_ALL = GAF_CLICKABLE | GAF_CONTEXTMENU | GAF_STRETCHABLE | GAF_DRAGGABLE | GAF_SCROLLABLE | GAF_PINCHABLE;
+    var GAF_NUMINPUT = 4096;
+    var GAF_TEXTINPUT = 8192;
+    var GAF_GONEXT = 16384;
+    class Gadget {
+      constructor(viewport) {
+        this.viewport = viewport;
+        this.mat = mat4.create(); mat4.identity(this.mat);
+        this.x = 0; this.y = 0; this.w = 0; this.h = 0; this.H = 0;
+        this.convexHull = []; this.extendedHulls = {}; this.boundingBoxes = {};
+        this.xo = 0; this.yo = 0;
+        this.enabled = true;
+        this.selected = false;
+        this.actionFlags = 0;
+      }
+      getHits(hitList, radius) {
+        if (!this.enabled || this.convexHull.length == 0) return;
+        var v = this.viewport, matS = vec3.create(); mat4.getScaling(matS, v.userMat);
+        var r = radius/v.getScale()/matS[0], key = ''+r;
+        if (!(key in this.extendedHulls)) { this.computeExtendedHull(r); this.computeBoundingBox(r); }
+        var h = this.extendedHulls[key], bb = this.boundingBoxes[key];
+
+        // bounding box check
+        var ss = 1/v.getScale();
+        var rxy = vec3.create();
+        rxy[0] = (hitList.x - v.x - this.x / ss);
+        rxy[1] = (hitList.y - v.y - this.y / ss);
+        var inv = mat4.create(); mat4.invert(inv, v.userMat);
+        vec3.transformMat4(rxy, rxy, inv);
+        var rx = rxy[0] * ss, ry = rxy[1] * ss;
+        //var rx = (hitList.x - v.x - v.ox) * ss + v.userX - this.x - this.xo, ry = (hitList.y - v.y - v.oy) * ss + v.userY - this.y - this.yo;
+        if (rx < bb.x1 || rx >= bb.x2 || ry < bb.y1 || ry >= bb.y2) return;
+
+        // extended hull check
+        function orient(ax,ay, bx,by, px,py) { return (bx-ax)*(py-ay) - (by-ay)*(px-ax); }
+        var n = h.length;
+        var flag = true;
+        for (var i=0; i<n; i+=2) {
+          var o = orient(h[i+0],h[i+1], h[(i+2)%n],h[(i+3)%n], rx,ry);
+          if (o<0) flag = false;
+        }
+        if (!flag) return;
+
+        // convex hull check
+        var n = this.convexHull.length;
+        var flag = true;
+        for (var i=0; i<n; i+=2) {
+          var o = orient(this.convexHull[i+0],this.convexHull[i+1], this.convexHull[(i+2)%n],this.convexHull[(i+3)%n], rx,ry);
+          if (o<0) flag = false;
+        }
+        var d = 0; if (!flag) d = this.distToHull(rx, ry);
+        hitList.hits.push({ gad: this, dist: d });
+      }
+			autoHull() {
+				var g = this;
+				g.convexHull = g.computeHull([0,0, g.w,0, g.w,g.h, 0,g.h]);
+				g.extendedHulls = {}; g.boundingBoxes = {};
+			}
+      computeHull(points) {
+        var S = [...points];
+        var T = [];
+        var a = 0, b = 0, ax = S[0], bx = S[0];
+        for (var i = 0; i < ~~(S.length / 2); i++) {
+          if (S[i*2] < ax) { ax = S[i*2]; a = i; }
+          if (S[i*2] > bx) { bx = S[i*2]; b = i; }
+        }
+        T[T.length] = S[a*2+0]; T[T.length] = S[a*2+1];
+        T[T.length] = S[b*2+0]; T[T.length] = S[b*2+1];
+        S.splice(a*2, 2); if (b < a) S.splice(b*2, 2); else S.splice(b*2-2, 2);
+        var S1 = [], S2 = [];
+        function orient(ax,ay, bx,by, px,py) { return (bx-ax)*(py-ay) - (by-ay)*(px-ax); }
+        for (var i = 0; i < ~~(S.length / 2); i++) {
+          if (orient(points[a*2+0],points[a*2+1], points[b*2+0],points[b*2+1], S[i*2+0],S[i*2+1]) < 0) {
+            S1[S1.length] = S[i*2+0]; S1[S1.length] = S[i*2+1]; } else { S2[S2.length] = S[i*2+0]; S2[S2.length] = S[i*2+1];
+          }
+        }
+        function sqr(x) { return x * x }
+        function dist2(vx,vy, wx,wy) { return sqr(vx - wx) + sqr(vy - wy) }
+        function distToSegmentSquared(px,py, vx,vy, wx,wy) {
+          var l2 = dist2(vx,vy, wx,wy);
+          if (l2 == 0) return dist2(px,py, vx,vy);
+          var t = ((px - vx) * (wx - vx) + (py - vy) * (wy - vy)) / l2;
+          t = Math.max(0, Math.min(1, t));
+          return dist2(px,py, vx + t * (wx - vx), vy + t * (wy - vy));
+        }
+        function distToSegment(px,py, vx,vy, wx,wy, ddd) { return Math.sqrt(distToSegmentSquared(px,py, vx,vy, wx,wy)); }
+        function recurse(T, Sk, Px,Py, Qx,Qy) {
+          if (Sk.length < 2) return;
+          var p = 0, pd = 0;
+          for (var i = 0; i < ~~(Sk.length/2); i++) {
+            var d = distToSegment(Sk[i*2+0],Sk[i*2+1], Px,Py, Qx,Qy);
+            if (d > pd) { pd = d; p = i; }
+          }
+          var Cx = Sk[p*2+0], Cy = Sk[p*2+1];
+          Sk.splice(p*2, 2);
+          for (i = 0; i < ~~(T.length/2); i++) {
+            if ((T[i*2+0] == Px && T[i*2+1] == Py && T[(i*2+2)%T.length] == Qx && T[(i*2+3)%T.length] == Qy)
+            ||  (T[i*2+0] == Qx && T[i*2+1] == Qy && T[(i*2+2)%T.length] == Px && T[(i*2+3)%T.length] == Py)) {
+              T.splice(i*2+2, 0, Cx,Cy); break;
+            }
+          }
+          var S1 = [], S2 = [];
+          for (var i = 0; i < ~~(Sk.length / 2); i++) {
+            if (orient(Px,Py, Cx,Cy, Sk[i*2+0],Sk[i*2+1]) < 0) {
+              S1[S1.length] = Sk[i*2+0]; S1[S1.length] = Sk[i*2+1];
+            } // else { S2[S2.length] = Sk[i*2+0]; S2[S2.length] = Sk[i*2+1]; }
+            if (orient(Cx,Cy, Qx,Qy, Sk[i*2+0],Sk[i*2+1]) < 0) {
+              S2[S2.length] = Sk[i*2+0]; S2[S2.length] = Sk[i*2+1];
+            } // else { S2[S2.length] = Sk[i*2+0]; S2[S2.length] = Sk[i*2+1]; }
+          }
+          recurse(T, S1, Px,Py, Cx,Cy);
+          recurse(T, S2, Cx,Cy, Qx,Qy);
+        }
+        recurse(T, S1, points[a*2+0],points[a*2+1], points[b*2+0],points[b*2+1]);
+        recurse(T, S2, points[b*2+0],points[b*2+1], points[a*2+0],points[a*2+1]);
+        var flag = 1;
+        while(flag) {
+          flag = 0;
+          for (var i = 0; i < ~~(T.length/2); i++) {
+            if (distToSegment(T[(i*2+2)%T.length],T[(i*2+3)%T.length], T[i*2+0],T[i*2+1], T[(i*2+4)%T.length],T[(i*2+5)%T.length]) < 0.01) {
+              T.splice(i*2+2, 2); flag = 1; break;
+            }
+          }
+        }
+        var newPoints = this.sortHull(T);
+        return newPoints;
+      }
+      sortHull(points) {
+        var r = [];
+        var cx = 0,cy = 0, l = points.length; for (var i = 0; i < l; i+=2) { cx += points[i+0]; cy += points[i+1]; } cx /= l/2; cy /= l/2;
+        var ax = cx+102, ay = cy + 1;
+        function angle(i) {
+          var bx = points[i+0], by = points[i+1];
+          var a = Math.atan2(by - cy, bx - cx) - Math.atan2(ay - cy, ax - cx);
+          while (a >  Math.PI) a -= 2*Math.PI;
+          while (a < -Math.PI) a += 2*Math.PI;
+          return a;
+        }
+        while (points.length > 0) {
+          var best = 0, a = angle(0);
+          for (var i = 0; i < points.length; i+=2) {
+            if (angle(i) < a) { best = i; a = angle(i); }
+          }
+          r.push(points[best+0]); r.push(points[best+1]); points.splice(best, 2);
+        }
+        return r;
+      }
+      computeExtendedHull(radius) {
+        var hull = [];
+        var j=0, n=this.convexHull.length;
+        for (var i=0; i<n; i+=2) {
+          var ex = (this.convexHull[(i+3)%n]-this.convexHull[i+1]); // perpendicular extension vector
+          var ey =-(this.convexHull[(i+2)%n]-this.convexHull[i+0]);
+          var s = radius / Math.sqrt(ex*ex + ey*ey); // amount of side extension
+          hull[j+0] = this.convexHull[i+0] + ex*s;
+          hull[j+1] = this.convexHull[i+1] + ey*s;
+          j+=2;
+          hull[j+0] = this.convexHull[(i+2)%n] + ex*s;
+          hull[j+1] = this.convexHull[(i+3)%n] + ey*s;
+          j+=2;
+        }
+        for (var i=0; i<n; i+=2) {
+          var v1x = this.convexHull[(i+2)%n] - this.convexHull[i+0], v1y = this.convexHull[(i+3)%n] - this.convexHull[i+1]; // corner edge vectors
+          var v2x = this.convexHull[(i-2+n)%n] - this.convexHull[i+0], v2y = this.convexHull[(i-1+n)%n] - this.convexHull[i+1];
+          var d = v1x * v2x + v1y * v2y;
+          var m1 = Math.sqrt(v1x*v1x + v1y*v1y);
+          var m2 = Math.sqrt(v2x*v2x + v2y*v2y);
+          var a = Math.acos(d / (m1 * m2)); // corner angle
+          var b = (Math.PI - a) / 4;
+          var o = Math.tan(b) * radius // amount of corner extension
+
+          j = i*2;
+          v1x = hull[j+0] - hull[j+2];
+          v1y = hull[j+1] - hull[j+3];
+          m1 = Math.sqrt(v1x*v1x + v1y*v1y);
+          v1x = v1x * (m1 + o) / m1;
+          v1y = v1y * (m1 + o) / m1;
+          hull[j+0] = v1x + hull[j+2];
+          hull[j+1] = v1y + hull[j+3];
+
+          j = ((i-2+n)%n)*2;
+          v1x = hull[j+2] - hull[j+0];
+          v1y = hull[j+3] - hull[j+1];
+          m1 = Math.sqrt(v1x*v1x + v1y*v1y);
+          v1x = v1x * (m1 + o) / m1;
+          v1y = v1y * (m1 + o) / m1;
+          hull[j+2] = v1x + hull[j+0];
+          hull[j+3] = v1y + hull[j+1];
+        }
+        this.extendedHulls[''+radius] = hull;
+      }
+      computeBoundingBox(radius) {
+        this.boundingBoxes[''+radius] = { };
+        var h = this.extendedHulls[''+radius], bb = this.boundingBoxes[''+radius];
+        if (h.length < 2) return;
+        bb.x1 = h[0]; bb.x2 = h[0];
+        bb.y1 = h[1]; bb.y2 = h[1];
+        for (var i=2; i<h.length; i+=2) {
+          if (h[i+0] < bb.x1) bb.x1 = h[i+0];
+          if (h[i+0] > bb.x2) bb.x2 = h[i+0];
+          if (h[i+1] < bb.y1) bb.y1 = h[i+1];
+          if (h[i+1] > bb.y2) bb.y2 = h[i+1];
+        }
+      }
+      distToHull(x,y) {
+        function sqr(x) { return x * x }
+        function dist2(vx,vy, wx,wy) { return sqr(vx - wx) + sqr(vy - wy) }
+        function distToSegmentSquared(px,py, vx,vy, wx,wy) {
+          var l2 = dist2(vx,vy, wx,wy);
+          if (l2 == 0) return dist2(px,py, vx,vy);
+          var t = ((px - vx) * (wx - vx) + (py - vy) * (wy - vy)) / l2;
+          t = Math.max(0, Math.min(1, t));
+          return dist2(px,py, vx + t * (wx - vx), vy + t * (wy - vy));
+        }
+        function distToSegment(px,py, vx,vy, wx,wy) { return Math.sqrt(distToSegmentSquared(px,py, vx,vy, wx,wy)); }
+        var h = this.convexHull;
+        var d = distToSegment(x,y, h[0],h[1], h[2],h[3]);
+        for (var i=2; i<h.length; i+=2) {
+          var t = distToSegment(x,y, h[i+0],h[i+1], h[(i+2)%h.length],h[(i+3)%h.length]);
+          if (t<d) d=t;
+        }
+        return d;
+      }
+    }
+class MiddleDividerGadget extends Gadget {
+	constructor(viewport) {
+		super(viewport);
+		this.dragBeginFunc = function(p) {
+			this.tempX = p.ox - this.viewport.x;
+			this.tempY = p.oy - this.viewport.y;
+		}
+		this.dragMoveFunc = function(p) {
+			var v = this.viewport.parent, h=(v.state == 'h');
+			var a = h?
+				p.y - this.tempY - v.a.y:
+				p.x - this.tempX - v.a.x;
+			var b = h?
+				v.y + v.h - (p.y - this.tempY + this.viewport.h):
+				v.x + v.w - (p.x - this.tempX + this.viewport.w);
+			v.ratio = Math.max(0, Math.min(1, a/(a+b)));
+			if (!v.setPoint) v.setPoint = {};
+			v.setPoint[v.state] = v.ratio;
+			if (layoutViews.indexOf(this.viewport.parent) === -1)
+				layoutViews.push(this.viewport.parent);
+		}
+		this.dragEndFunc = function(p) { delete this.tempX; delete this.tempY; }
+	}
+	layout() {
+		var g = this, v=this.viewport, x,y, s=v.getScale(), t=v.parent.size;
+		var h=(v.parent.state == 'h');
+		x = h?Math.max(1,v.w)/s:t;
+		y = h?t:Math.max(1,v.h)/s;
+		g.actionFlags = h?vp.GAF_DRAGGABLE_UPDOWN:vp.GAF_DRAGGABLE_LEFTRIGHT;
+		g.convexHull = g.computeHull([0,0, 0,y, x,y, x,0]); g.extendedHulls = {}; g.boundingBoxes = {};
+	}
+}
+    class MatrixGadget extends Gadget {
+      getTargetMat() {
+        return this.targetGad? this.targetGad.mat: this.targetView.userMat;
+      }
+      constructor(viewport) {
+        super(viewport);
+        this.targetView = viewport;
+        this.targetGad = undefined;
+
+        /** DRAG **/
+        this.dragBeginFunc = function(p) {
+          var g = this, v = g.targetView;
+          g.grab1b = vec3.create(); g.grab1b[0] = p.x-v.x; g.grab1b[1] = p.y-v.y;
+          g.viewMat = mat4.create(); mat4.copy(g.viewMat, v.userMat);
+          g.grabMat = mat4.create(); mat4.copy(g.grabMat, g.getTargetMat());
+          if (1) {
+            const vi = mat4.create(); mat4.invert(vi, g.viewMat);
+            vec3.transformMat4(g.grab1b, g.grab1b, vi);
+          }
+          if (this.targetGad) {
+            const gi = mat4.create(); mat4.invert(gi, g.grabMat);
+            vec3.transformMat4(g.grab1b, g.grab1b, gi);
+          }
+        }
+        this.dragMoveFunc = function(p) {
+          var g = this, v = g.targetView;
+          var g1b = vec3.create(); g1b[0] = p.x-v.x; g1b[1] = p.y-v.y;
+          if (1) {
+            const vi = mat4.create(); mat4.invert(vi, g.viewMat);
+            vec3.transformMat4(g1b, g1b, vi);
+          }
+          if (this.targetGad) {
+            const gi = mat4.create(); mat4.invert(gi, g.grabMat);
+            vec3.transformMat4(g1b, g1b, gi);
+          }
+          var delta = vec3.create(); vec3.subtract(delta, g1b, g.grab1b);
+          if (this.targetGad) vec3.scale(delta, delta, 1/v.getScale());
+          mat4.translate(g.getTargetMat(), g.grabMat, delta);
+          v.rematrix(); v.setRenderFlag(true);
+        }
+        this.dragEndFunc = function(p) {
+          var g = this, v = g.targetView;
+          delete g.grab1b;
+          delete g.viewMat; delete g.grabMat;
+          v.setRenderFlag(true);
+        }
+
+        /** PINCH **/
+        this.pinchBeginFunc = function(p1, p2) {
+          var g = this, v = g.targetView;
+          g.grab1 = vec3.create(); g.grab1[0] = p1.x-v.x; g.grab1[1] = p1.y-v.y;
+          g.grab2 = vec3.create(); g.grab2[0] = p2.x-v.x; g.grab2[1] = p2.y-v.y;
+          g.viewMat = mat4.create(); mat4.copy(g.viewMat, v.userMat);
+          g.grabMat = mat4.create(); mat4.copy(g.grabMat, g.getTargetMat());
+          //vec3.scale(g.grab1, g.grab1, 1/v.getScale());
+          //vec3.scale(g.grab2, g.grab2, 1/v.getScale());
+          g.grabC = vec3.create();
+          g.grab1b = vec3.create(); vec3.copy(g.grab1b, g.grab1);
+          g.grab2b = vec3.create(); vec3.copy(g.grab2b, g.grab2);
+          g.grabCb = vec3.create();
+          if (1) {
+            const vi = mat4.create(); mat4.invert(vi, g.viewMat);
+            vec3.transformMat4(g.grab1b, g.grab1b, vi);
+            vec3.transformMat4(g.grab2b, g.grab2b, vi);
+          }
+          if (this.targetGad) {
+            const gi = mat4.create(); mat4.copy(gi, g.grabMat); //mat4.invert(gi, g.grabMat);
+            vec3.transformMat4(g.grab1b, g.grab1b, gi);
+            vec3.transformMat4(g.grab2b, g.grab2b, gi);
+          }
+          for (var i=0; i<3; i++) { g.grabC[i] = (g.grab1[i] + g.grab2[i]) / 2; g.grabCb[i] = (g.grab1b[i] + g.grab2b[i]) / 2; }
+          var x = g.grab2[0]-g.grab1[0], y = g.grab2[1]-g.grab1[1];
+          g.grabA = Math.atan2(y, x);
+          g.grabM = Math.sqrt(x*x + y*y);
+        }
+        this.pinchMoveFunc = function(p1, p2) {
+          var g = this, v = g.targetView;
+          var g1 = vec3.create(); g1[0] = p1.x-v.x; g1[1] = p1.y-v.y;
+          var g2 = vec3.create(); g2[0] = p2.x-v.x; g2[1] = p2.y-v.y;
+          //vec3.scale(g1, g1, 1/v.getScale());
+          //vec3.scale(g2, g2, 1/v.getScale());
+          var gC = vec3.create();
+          var g1b = vec3.create(), g2b = vec3.create(), gCb = vec3.create();
+          vec3.copy(g1b, g1); vec3.copy(g2b, g2);
+          if (1) {
+            const vi = mat4.create(); mat4.invert(vi, g.viewMat);
+            vec3.transformMat4(g1b, g1b, vi);
+            vec3.transformMat4(g2b, g2b, vi);
+          }
+          if (this.targetGad) {
+            const gi = mat4.create(); mat4.copy(gi, g.grabMat); //mat4.invert(gi, g.grabMat);
+            vec3.transformMat4(g1b, g1b, gi);
+            vec3.transformMat4(g2b, g2b, gi);
+          }
+          for (var i=0; i<3; i++) { gC[i] = (g1[i] + g2[i]) / 2; gCb[i] = (g1b[i] + g2b[i]) / 2; }
+          var x = g2[0]-g1[0], y = g2[1]-g1[1];
+          var gA = Math.atan2(y, x);
+          var gM = Math.sqrt(x*x + y*y);
+
+          //const vi = mat4.create(); mat4.invert(vi, v.userMat);
+
+          const m = mat4.create(); mat4.copy(m, g.grabMat);
+          if (!this.targetGad) {
+            if (g.actionFlags & vp.GAF_DRAGGABLE) mat4.translate(m, m, [gCb[0], gCb[1], 0]);
+            else mat4.translate(m, m, [g.grabCb[0], g.grabCb[1], 0]);
+            if (g.actionFlags & vp.GAF_SCALABLE) mat4.scale(m, m, [gM/g.grabM,gM/g.grabM,1]);
+            if (g.actionFlags & vp.GAF_ROTATABLE) mat4.rotate(m, m, gA-g.grabA, [0,0,1]);
+            mat4.translate(m, m, [-g.grabCb[0], -g.grabCb[1], 0]);
+            v.rematrix(); v.setRenderFlag(true);
+          } else {
+            if (g.actionFlags & vp.GAF_DRAGGABLE) mat4.translate(m, m, [gCb[0]/v.getScale(), gCb[1]/v.getScale(), 0]);
+            else mat4.translate(m, m, [g.grabCb[0]/v.getScale(), g.grabCb[1]/v.getScale(), 0]);
+            if (g.actionFlags & vp.GAF_SCALABLE) mat4.scale(m, m, [gM/g.grabM,gM/g.grabM,1]);
+            if (g.actionFlags & vp.GAF_ROTATABLE) mat4.rotate(m, m, gA-g.grabA, [0,0,1]);
+            mat4.translate(m, m, [-g.grabCb[0]/v.getScale(), -g.grabCb[1]/v.getScale(), 0]);
+            v.rematrix(); v.setRenderFlag(true);
+          }
+          mat4.copy(g.getTargetMat(), m);
+        }
+        this.pinchEndFunc = function(p1, p2) {
+          var g = this, v = g.targetView;
+          delete g.grab1; delete g.grab1b;
+          delete g.grab2; delete g.grab2b;
+          delete g.grabC; delete g.grabCb;
+          delete g.grabA; delete g.grabM; delete g.grabMat;
+        }
+        this.zoomFunc = function(p, z) {
+          const g = this, v = g.targetView, m = this.getTargetMat();
+          const q = vec3.create(); if (!!(g.actionFlags & vp.GAF_DRAGGABLE)) { q[0] = p.x-v.x; q[1] = p.y-v.y; }
+          else { mat4.getTranslation(q, m); }
+          const ui = mat4.create(); mat4.invert(ui, m);
+          vec3.transformMat4(q, q, ui);
+          mat4.translate(m, m, [q[0], q[1], 0]);
+          mat4.scale(m, m, [Math.exp(z/10), Math.exp(z/10), 1]);
+          mat4.translate(m, m, [-q[0], -q[1], 0]);
+          v.rematrix(); v.setRenderFlag(true);
+        }
+        this.rotateFunc = function(p, z) {
+          const g = this, v = g.targetView, m = this.getTargetMat();
+          const q = vec3.create(); if (!!(g.actionFlags & vp.GAF_DRAGGABLE)) { q[0] = p.x-v.x; q[1] = p.y-v.y; }
+          else { mat4.getTranslation(q, m); }
+          const ui = mat4.create(); mat4.invert(ui, m);
+          vec3.transformMat4(q, q, ui);
+          mat4.translate(m, m, [q[0], q[1], 0]);
+          mat4.rotate(m, m, -Math.PI/18*z, [0, 0, 1]);
+          mat4.translate(m, m, [-q[0], -q[1], 0]);
+          v.rematrix(); v.setRenderFlag(true);
+        }
+      }
+      getHits(hitList, radius) {
+        if (!this.enabled) return;
+        if (this.convexHull.length == 0)
+          hitList.hits.push({ gad: this, dist: 0 });
+        else super.getHits(hitList, radius);
+      }
+      layout() {
+        var g = this; v = g.viewport;
+        console.log('MatrixGadget::layout()');
+      }
+    }
+class SwipeGadget extends Gadget {
+	constructor(viewport) {
+		super(viewport);
+		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+		this.swipeBeginFunc = function(p) {
+console.log('swipeBegin');
+			var v = this.viewport, s = v.getScale();
+			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
+			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
+		}
+		this.swipeMoveFunc = function(p) {
+console.log('swipeMove');
+			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
+			var minX = v.minX, maxX = Math.max(v.maxX - v.w/s, minX);
+			var minY = v.minY, maxY = Math.max(v.maxY - v.h/s, minY);
+			//var minX = Math.max(v.minX + v.w/s, v.maxX) - v.w/s, maxX = Math.min(v.maxX - v.w/s, v.minX);
+			//var minY = Math.max(v.minY + v.h/s, v.maxY) - v.h/s, maxY = Math.min(v.maxY - v.h/s, v.minY);
+			//if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
+			//if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
+			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
+			case vp.GAF_SWIPEABLE_UPDOWN:
+				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
+				v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				v.rematrix(); this.layout();
+				v.tempVX = 0; v.tempVY = p.dy;
+				break;
+			case vp.GAF_SWIPEABLE_LEFTRIGHT:
+				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
+				v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
+console.log(v.userX);
+				v.rematrix(); this.layout();
+				v.tempVX = p.dx; v.tempVY = 0;
+				break;
+			case vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SWIPEABLE_LEFTRIGHT:
+				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
+				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
+				v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
+				v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				v.rematrix(); this.layout();
+				v.tempVX = p.dx; v.tempVY = p.dy;
+				break;
+			}
+			v.setRenderFlag(true);
+		}
+		this.swipeEndFunc = function(p) {
+console.log('swipeEnd');
+			var v = this.viewport;
+			function calcRestingPoint(o, r) {
+				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
+				m = Math.sqrt(dx*dx + dy*dy);
+				n = Math.floor(m * 10);
+				var rem = (m * 10 - n) / 10;
+				var sum = (n+1)*n / 2;
+				if (m > 0) {
+					x -= dx / m * (sum/10 + rem*n) * 1000/30 / s;
+					y -= dy / m * (sum/10 + rem*n) * 1000/30 / s;
+				}
+				return [x, y];
+			}
+			function calcNeededVelocity(d) {
+				var s = v.getScale(), x, y;
+				var f = d[0]<0? 1: -1;
+				x = (-0.5 + f * Math.sqrt(0.25 - f * 4*5*d[0] * s * 30/1000) / 2/5);
+				y = 0;//(-0.5 + Math.sqrt(0.25 - 4*5*d[0] * s * 30/1000) / 2/5);
+				return [x, y];
+			}
+			function findNearest(s, t) {
+				var b = 'unset', best, snap;
+				if (t) for (snap of t) {
+					var d = Math.sqrt((s[0]-snap[0])**2 + (s[1]-snap[1])**2);
+					if (b == 'unset' || d < b) { b = d; best = snap; }
+				}
+				return best;
+			}
+			function outOfBounds(p, a) {
+				var s = a.getScale();
+				var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
+				var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
+				if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
+				if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
+				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
+			}
+			delete this.tempX; delete this.tempY;
+			v.tempDX = 0; v.tempDY = 0;
+			if (v.snaps && v.snaps.length > 0) {
+				var xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
+				var nxy = findNearest(xy, v.snaps);
+				if (!outOfBounds(xy, v)) {
+					v.tempDX = nxy[0] - xy[0];
+					v.tempDY = nxy[1] - xy[1];
+			}	}
+			if (!animViews.includes(v)) animViews.push(v);
+			v.setRenderFlag(true);
+		}
+	}
+	layout() {
+		var g=this, v=g.viewport; //, s=v.getScale();
+		g.convexHull = g.computeHull([
+			v.minX,v.minY, v.minX,v.maxY, v.maxX,v.maxY, v.maxX,v.minY]);
+		g.extendedHulls = {}; g.boundingBoxes = {};
+/*
+		var g = this, v=this.viewport, s=v.getScale();
+		g.convexHull = g.computeHull([v.userX-v.ox/s,v.userY-v.oy/s, v.userX-v.ox/s,v.h/s+v.userY-v.oy/s, v.w/s+v.userX-v.ox/s,v.h/s+v.userY-v.oy/s, v.w/s+v.userX-v.ox/s,v.userY-v.oy/s]); g.extendedHulls = {}; g.boundingBoxes = {};
+*/
+	}
+}
 function endInput() {
 	if (!inputGad) return;
 	var g = inputGad;
