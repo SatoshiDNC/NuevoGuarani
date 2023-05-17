@@ -576,9 +576,9 @@ class ViewPages extends View {
 		this.snaps = [];
 		this.prevTime = 0;
 
-		this.gadgets.push(this.swipeGad = new vp.SwipeGadget(v));
+		this.gadgets.push(this.swipeGad = new vp.SwipeGadget(this));
 		switch (this.type) {
-		case 'h': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT; break;
+		case 'h': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT; break;
 		case 'v': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN; break;
 		default: this.swipeGad.actionFlags = 0;
 		}
