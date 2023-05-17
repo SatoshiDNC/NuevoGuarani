@@ -126,7 +126,7 @@ var vp = (function() {
 
   // for debug purposes
   var plainProgram;
-	var debug1 = true; // layout and rendering console messages
+	var debug1 = false; // layout and rendering console messages
 
   const touchRadius = 85, clickRadius = 5;
   function getPointerRadius() { return (navigator.maxTouchPoints>0 ? touchRadius : clickRadius); }
@@ -603,8 +603,8 @@ class ViewPages extends View {
 			this.snaps = [];
 			for (var i = 0; i < this.pages.length + 1; i++) {
 				this.snaps.push([
-					this.w * i * this.type=='h'?1:0,
-					this.h * i * this.type=='v'?1:0]);
+					this.w * i * (this.type=='h'?1:0),
+					this.h * i * (this.type=='v'?1:0)]);
 			}
 
 			var curPage = this.pages[this.index];
@@ -1286,6 +1286,7 @@ class SwipeGadget extends Gadget {
 			if (v.snaps && v.snaps.length > 0) {
 				var xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
 				var nxy = findNearest(xy, v.snaps);
+console.log(xy[0], nxy[0], v.snaps);
 				if (!outOfBounds(xy, v)) {
 					v.tempDX = nxy[0] - xy[0];
 					v.tempDY = nxy[1] - xy[1];
