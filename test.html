@@ -1218,6 +1218,7 @@ class SwipeGadget extends Gadget {
 				v.tempVX = p.dx; v.tempVY = p.dy;
 				break;
 			}
+			v.relayout();
 			v.setRenderFlag(true);
 		}
 		this.swipeEndFunc = function(p) {
@@ -3277,7 +3278,6 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
 	g.text = ''; g.label = tr('item'); g.autoHull();
 	g.renderFunc = function() {
-console.log('a');
 		var g = this;
 		var sel = vp.getInputGad() === g;
 		const mat = mat4.create();
@@ -3296,7 +3296,6 @@ console.log('a');
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array(uiTextField));
 		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
-console.log('b');
 		if (sel) {
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 				new Float32Array(uiTextFocus));
@@ -3316,7 +3315,6 @@ console.log('b');
 				gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			}
 		}
-console.log('c');
 		mat4.identity(mat);
 		if (g.align && g.align == 'r') {
 			var tw = defaultFont.calcWidth(g.text.toUpperCase());
@@ -3324,12 +3322,10 @@ console.log('c');
 		} else {
 			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
 		}
-console.log('d');
 		defaultFont.draw(0,0, g.text.toUpperCase(), uiText, g.viewport.mat, mat);
 		if (g === g.viewport.taxrate && g.text != '') {
 			defaultFont.draw(0,0, '%', uiGhostText, g.viewport.mat, mat);
 		}
-console.log('e.');
 	}
 	g.textBeginFunc = function() {
 		var g = this;
