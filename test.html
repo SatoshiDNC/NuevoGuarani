@@ -105,107 +105,1969 @@ e;l++);m+=this.glyphX2[l]-this.glyphX1[l]}return m}findGlyph(e){var m=-1;"number
 h.LINEAR);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MAG_FILTER,h.LINEAR);h.enableVertexAttribArray(this.vloc);h.bindBuffer(h.ARRAY_BUFFER,this.vertexBuff);h.vertexAttribPointer(this.vloc,2,h.FLOAT,!1,0,0);h.enableVertexAttribArray(this.tloc);h.bindBuffer(h.ARRAY_BUFFER,this.texBuff);h.vertexAttribPointer(this.tloc,2,h.FLOAT,!1,0,0);h.uniformMatrix4fv(this.projMatLoc,!1,d);mat4.translate(b,b,[e,m,0]);e=vec3.create();mat4.getScaling(e,d);d=vec3.create();mat4.getScaling(d,b);h.uniform1f(this.scaleFactorLoc,
 d[0]*e[0]*h.drawingBufferWidth);for(let k of l){d=k.codePointAt(0);for(l=0;l<this.glyphCodes.length&&this.glyphCodes[l]!=d;l++);mat4.translate(b,b,[-this.glyphX1[l],-this.glyphHeights[l]+this.glyphY1[l],0]);l>=this.glyphCodes.length||(d=l,h.uniformMatrix4fv(this.viewMatLoc,!1,b),h.uniform1i(this.layerLoc,~~(f.ZD_DECODE[~~this.glyphSourceZD[l]][0]/2)),h.uniform1i(this.depthLoc,~~f.ZD_DECODE[~~this.glyphSourceZD[l]][1]),e=this.glyphHasColors[l]&&this.glyphColors[l]?this.glyphColors[l].length:0,0==e&&
 h.uniform4fv(this.color1Loc,g),0<e&&h.uniform4fv(this.color1Loc,a(this.glyphColors[l][0])),1<e&&h.uniform4fv(this.color2Loc,a(this.glyphColors[l][1])),2<e&&h.uniform4fv(this.color3Loc,a(this.glyphColors[l][2])),h.drawArrays(h.TRIANGLE_FAN,4*d,4));mat4.translate(b,b,[this.glyphX2[l],this.glyphHeights[l]-this.glyphY2[l],0])}}}return{glSet:function(e){h=e},getProg:function(){return u},GlyphSet:O,ff:f}}();
-var vp=function(){function P(){return 0<navigator.maxTouchPoints?85:5}function ia(){if(G){var a=G;a.actionFlags&vp.GAF_NUMINPUT&&(el=N);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.blur();el.style.display="none";G=void 0}}function ja(a){ia();G=a;a.textBeginFunc&&a.textBeginFunc.call(a);a.actionFlags&vp.GAF_GONEXT&&(da.style.display="inline",ea.style.display="inline");a.actionFlags&vp.GAF_NUMINPUT&&(el=N);a.actionFlags&vp.GAF_TEXTINPUT&&(el=Q);el.value=a.text;el.style.display="inline";el.focus();el.select()}
-function qa(a){if(a!=fa){var e=0;0<fa&&(e=a-fa);fa=a;for(a=[];lv=I.pop();)a.push(lv);if(ka)ka=!1,l.viewport(0,0,x.width,x.height),mat4.identity(U),mat4.translate(U,U,[-1,1,0]),mat4.scale(U,U,[2/x.width,-2/x.height,1]),C&&(a=new vp.LayoutState(x.width,x.height),C.layoutAll(a));else for(;lv=a.pop();)lv.relayout();W&&(--W||C.setRenderFlag(!0));X&&C.setRenderFlag(!0);if(C&&(C.needsRender||C.childRender)){a=0;for(var [,g]of Object.entries(t))g.dx=(g.x-g.px)/e,g.px=g.x,g.dy=(g.y-g.py)/e,g.py=g.y,a+=Math.sqrt(g.dx*
-g.dx+g.dy*g.dy)/ra;la&&la.setValueAtTime(a,B.currentTime);e=[];g=0;for(var c of Z){a=c.getScale();var b=c.minX,h=Math.max(c.maxX-c.w/a,b),f=c.minY,d=Math.max(c.maxY-c.h/a,f);if(c.tempVX||c.tempVY||c.tempDX||c.tempDY){var k=Math.sign(c.tempDX)*Math.min(10,Math.abs(c.tempDX)),q=Math.sign(c.tempDY)*Math.min(10,Math.abs(c.tempDY));c.tempDX=Math.sign(c.tempDX)*Math.max(0,Math.abs(c.tempDX)-10);c.tempDY=Math.sign(c.tempDY)*Math.max(0,Math.abs(c.tempDY)-10);c.userX=J(c.userX-(1E3*c.tempVX/30/a-k),b,h);c.userY=
-J(c.userY-(1E3*c.tempVY/30/a-q),f,d);c.userX-c.ox/a<b||c.userX-c.ox/a>h||c.userY-c.oy/a<f||c.userY-c.oy/a>d?(c.userX=J(J(c.userX-c.ox/a,b,h)+c.ox/a,b,h),c.userY=J(J(c.userY-c.oy/a,f,d)+c.oy/a,f,d),c.rematrix(),c.relayout(),c.setRenderFlag(!0),e.push(g),delete c.tempVX,delete c.tempVY):(c.rematrix(),c.relayout(),c.setRenderFlag(!0),a=Math.sqrt(c.tempVX*c.tempVX+c.tempVY*c.tempVY),b=Math.max(0,a-.1),0!=a&&(c.tempVX=c.tempVX/a*b,c.tempVY=c.tempVY/a*b))}else{if(c.userX-c.ox/a<b||c.userX-c.ox/a>h||c.userY-
-c.oy/a<f||c.userY-c.oy/a>d)c.userX=J(J(c.userX-c.ox/a,b,h)+c.ox/a,b,h),c.userY=J(J(c.userY-c.oy/a,f,d)+c.oy/a,f,d),c.rematrix(),c.relayout(),c.setRenderFlag(!0);e.push(g);delete c.tempVX;delete c.tempVY}g++}X||(W?console.log("rootViewport.renderAll()",W?"n = "+W:""):console.log("rootViewport.renderAll()"));for(C.renderAll();e.length;)Z.splice(e.pop(),1);0<Z.length&&C.setRenderFlag(!0);if(sa){l.viewport(0,0,x.width,x.height);l.disable(l.SCISSOR_TEST);l.useProgram(z);l.bindBuffer(l.ARRAY_BUFFER,ma);
-c=l.getAttribLocation(z,"aVertexPosition");l.vertexAttribPointer(c,2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(c);l.enable(l.BLEND);l.uniform4fv(l.getUniformLocation(z,"uVertexColor"),new Float32Array([1,1,1,1]));l.uniformMatrix4fv(l.getUniformLocation(z,"uProjectionMatrix"),!1,U);c=mat4.create();if(X){a=[];for(var [,n]of Object.entries(t))if(n.hitList){e=n.hitList.getActionableGads(vp.GAF_ALL);for(const m of e)a.includes(m)||a.push(m)}for(const m of a)if(m.ownedBy){n=m.convexHull;for(p=0;p<n.length;p+=
-2)mat4.fromTranslation(c,[m.viewport.x,m.viewport.y,0]),mat4.mul(c,c,m.viewport.userMat),mat4.scale(c,c,[m.viewport.getScale(),m.viewport.getScale(),1]),mat4.translate(c,c,[m.x+n[p+0]-m.viewport.userX,m.y+n[p+1]-m.viewport.userY,0]),mat4.scale(c,c,[n[(p+2)%n.length]-n[p+0],n[(p+3)%n.length]-n[p+1],1]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitLine,F.unitLine);n=vec3.create();mat4.getScaling(n,m.viewport.userMat)}for(const [,m]of Object.entries(t))mat4.identity(c),
-mat4.translate(c,c,[m.x,m.y,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),"mouse"==m.e.pointerType?l.drawArrays(l.LINE_LOOP,y.roundMouse,F.roundMouse):l.drawArrays(l.LINE_LOOP,y.roundTouch,F.roundTouch)}na=(na+1)%16;mat4.identity(c);mat4.translate(c,c,[160,45,0]);mat4.rotate(c,c,Math.PI/8*na,[0,0,1]);mat4.scale(c,c,[40,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);mat4.identity(c);mat4.translate(c,
-c,[10,10,0]);mat4.scale(c,c,[50,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,25,0]);mat4.scale(c,c,[50*window.visualViewport.scale,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,40,0]);mat4.scale(c,c,[50*window.devicePixelRatio,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,
-"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,55,0]);mat4.scale(c,c,[50*window.innerWidth/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);for(const [,m]of Object.entries(t))mat4.identity(c),mat4.translate(c,c,[12,57,0]),mat4.scale(c,c,[46*m.x/D/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,
-y.unitSquare,F.unitSquare);mat4.identity(c);mat4.translate(c,c,[10,70,0]);mat4.scale(c,c,[50*window.innerHeight/1E3,10,0]);l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c);l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare);for(const [,m]of Object.entries(t))mat4.identity(c),mat4.translate(c,c,[12,72,0]),mat4.scale(c,c,[46*m.y/D/1E3,6,0]),l.uniformMatrix4fv(l.getUniformLocation(z,"uModelViewMatrix"),!1,c),l.drawArrays(l.LINE_LOOP,y.unitSquare,F.unitSquare)}}}window.requestAnimationFrame(qa)}
-function oa(){console.log("resizeCanvas()");W=10;var a=window.innerWidth,e=window.innerHeight;x.width=a*window.visualViewport.scale*window.devicePixelRatio;x.height=e*window.visualViewport.scale*window.devicePixelRatio;x.style.width=a*window.visualViewport.scale;x.style.height=e*window.visualViewport.scale;ra=Math.sqrt(x.width*x.width+x.height*x.height);D=window.visualViewport.scale*window.devicePixelRatio;ka=!0;C.resizeFunc&&C.resizeFunc.call(C)}function O(a,e){function g(k,q){for(const n of k.hitList.hits)n.gad!==
-q&&n.gad.ownedBy==h&&(n.gad.gestureState+="-disowned",n.gad.viewport.setRenderFlag(!0),delete n.gad.ownedBy)}function c(k){xdiff=k.x-k.ox;ydiff=k.y-k.oy;return xdiff*xdiff>ydiff*ydiff?0<xdiff?"right":"left":0<ydiff?"down":"up"}if("touches"==e&&a.touches&&0==a.touches.length){a=[];for(var [,b]of Object.entries(t))b.tempIsActive="mouse"==b.e.pointerType;for(const [k,q]of Object.entries(t))q.tempIsActive||a.push(k);for(;a.length;)delete t[a.pop()];for(const [,k]of Object.entries(t))delete k.tempIsActive}else{D!=
-window.visualViewport.scale*window.devicePixelRatio&&oa();var h="p-"+a.pointerId;switch(e){case "down":ia();t.hasOwnProperty(h)||(t[h]={gestureState:"",touching:!1,px:a.layerX*D,py:a.layerY*D});b=t[h];b.e=a;b.touching=!0;b.x=a.layerX*D;b.y=a.layerY*D;b.ox=b.x;b.oy=b.y;b.hitList=new vp.HitList(b.x,b.y);C.getHits(b.hitList,P());b.hitList.sortHits();if("mouse"==a.pointerType){if(1==(a.buttons|1))for(const k of b.hitList.hits){var f=k.gad;!f.ownedBy&&f.actionFlags&vp.GAF_CLICKABLE&&(f.gestureState="begin-click",
-f.ownedBy=h,f.viewport.setRenderFlag(!0));!f.ownedBy&&f.actionFlags&vp.GAF_DRAGGABLE&&(f.gestureState="begin-drag",f.ownedBy=h,f.viewport.setRenderFlag(!0));!f.ownedBy&&f.actionFlags&(vp.GAF_NUMINPUT|vp.GAF_TEXTINPUT)&&(f.gestureState="begin-input",f.ownedBy=h,f.viewport.setRenderFlag(!0));f.gestureTimerId=setTimeout(O,250,a,"drag time reached")}if(2==(a.buttons|2))for(const k of b.hitList.hits)b=k.gad,!b.ownedBy&&b.actionFlags&vp.GAF_CONTEXTMENU&&(b.gestureState="begin-menu",b.ownedBy=h,b.viewport.setRenderFlag(!0),
-A&&A.setValueAtTime(.1,B.currentTime),A&&A.setValueAtTime(0,B.currentTime+.001),console.log("menu down"))}else for(const k of b.hitList.hits)(b=k.gad,b.ownedBy)?b.ownedBy!=h&&("await-pinch"==b.gestureState||b.actionFlags&vp.GAF_PINCHABLE&&("begin-drag"==b.gestureState||"begin-tap"==b.gestureState)?(b.gestureState="pinch",b.secondTouch=h,b.viewport.setRenderFlag(!0),b.pinchBeginFunc&&b.pinchBeginFunc.call(b,t[b.ownedBy],t[b.secondTouch])):"drag"==b.gestureState&&b.actionFlags&vp.GAF_PINCHABLE&&(b.gestureState=
-"pinch",b.secondTouch=h,b.viewport.setRenderFlag(!0),b.dragEndFunc&&b.dragEndFunc.call(b,t[b.ownedBy]),b.pinchBeginFunc&&b.pinchBeginFunc.call(b,t[b.ownedBy],t[b.secondTouch]))):b.actionFlags&vp.GAF_CLICKABLE?(b.gestureState="begin-tap",b.ownedBy=h,b.viewport.setRenderFlag(!0),b.gestureBeginTime=a.timeStamp,0!=(b.actionFlags&(vp.GAF_CONTEXTMENU|vp.GAF_HOLDABLE|vp.GAF_DRAGGABLE))&&(b.gestureTimerId=setTimeout(O,250,a,"tap-and-hold time reached"))):b.actionFlags&(vp.GAF_NUMINPUT|vp.GAF_TEXTINPUT)?(b.gestureState=
-"begin-input",b.ownedBy=h,b.viewport.setRenderFlag(!0),b.gestureBeginTime=a.timeStamp):b.actionFlags&vp.GAF_CONTEXTMENU?(b.gestureState="begin-menu",b.ownedBy=h,b.viewport.setRenderFlag(!0),b.gestureTimerId=setTimeout(O,250,a,"tap-and-hold time reached")):b.actionFlags&vp.GAF_HOLDABLE?(b.gestureState="begin-hold",b.ownedBy=h,b.viewport.setRenderFlag(!0),b.gestureTimerId=setTimeout(O,250,a,"tap-and-hold time reached")):b.actionFlags&vp.GAF_DRAGGABLE?(b.gestureState="begin-drag",b.ownedBy=h,b.viewport.setRenderFlag(!0),
-b.gestureTimerId=setTimeout(O,250,a,"drag time reached")):b.actionFlags&vp.GAF_SWIPEABLE?(b.gestureState="begin-swipe",b.ownedBy=h,b.viewport.setRenderFlag(!0)):b.actionFlags&vp.GAF_PINCHABLE&&(b.gestureState="await-pinch",b.ownedBy=h,b.viewport.setRenderFlag(!0));break;case "move":pa||"mouse"!=a.pointerType||(pa=1,C.enableMouse&&C.enableMouse.call(C));t.hasOwnProperty(h)||(t[h]={gestureState:"mouse"==a.pointerType?"hover":"",touching:"mouse"==a.pointerType?!1:!0});b=t[h];b.e=a;b.px=b.x;b.x=a.layerX*
-D;b.py=b.y;b.y=a.layerY*D;if("mouse"==a.pointerType){if(b.hitList)for(f of b.hitList.hits){var d=f.gad;if(d.ownedBy==h)switch(d.gestureState){case "begin-click":case "recover-click":a=new vp.HitList(b.x,b.y);d.getHits(a,P());0==a.hits.length&&(d.gestureState="abandon-click",d.viewport.setRenderFlag(!0));break;case "begin-input":a=new vp.HitList(b.x,b.y);d.getHits(a,P());0==a.hits.length&&(d.gestureState="abandon-input",d.viewport.setRenderFlag(!0));break;case "hold":a=new vp.HitList(b.x,b.y);d.getHits(a,
-P());0==a.hits.length&&(d.gestureState="abandon-hold",d.viewport.setRenderFlag(!0),d.holdEndFunc&&d.holdEndFunc.call(d,b));break;case "abandon-click":a=new vp.HitList(b.x,b.y);d.getHits(a,P());0!=a.hits.length&&(d.gestureState="recover-click",d.viewport.setRenderFlag(!0));break;case "abandon-hold":a=new vp.HitList(b.x,b.y);d.getHits(a,P());0!=a.hits.length&&(d.gestureState="hold",d.viewport.setRenderFlag(!0),d.holdBeginFunc&&d.holdBeginFunc.call(d,b));break;case "begin-drag":a=c(b);Math.sqrt((b.ox-
-b.x)**2+(b.oy-b.y)**2)>R&&(d.hasOwnProperty("gestureTimerId")&&(clearTimeout(d.gestureTimerId),delete d.gestureTimerId),("up"==a||"down"==a)&&d.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==a||"right"==a)&&d.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT)&&(d.gestureState="drag",d.viewport.setRenderFlag(!0),g(b,d),d.dragBeginFunc&&d.dragBeginFunc.call(d,b),d.dragMoveFunc&&d.dragMoveFunc.call(d,b));break;case "drag":d.dragMoveFunc&&d.dragMoveFunc.call(d,b)}}}else for(d of b.hitList.hits)if(f=d.gad,f.ownedBy==
-h)switch(f.gestureState){case "begin-tap":if(Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.gestureState="invalid-tap",f.viewport.setRenderFlag(!0),!b.swiping))if(a=c(b),("up"==a||"down"==a)&&f.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==a||"right"==a)&&f.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT){f.gestureState="swipe";b.swiping=!0;f.viewport.setRenderFlag(!0);for(const k of b.hitList.hits)k.gad!==f&&k.gad.ownedBy==h&&delete k.gad.ownedBy;f.swipeBeginFunc&&f.swipeBeginFunc.call(f,b);f.swipeMoveFunc&&
-f.swipeMoveFunc.call(f,b);console.log("swipe "+a)}else if(("up"==a||"down"==a)&&f.actionFlags&vp.GAF_DRAGGABLE_UPDOWN||("left"==a||"right"==a)&&f.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT)f.gestureState="drag",b.swiping=!0,f.viewport.setRenderFlag(!0),DisownAllOtherGags(b,f),f.dragBeginFunc&&f.dragBeginFunc.call(f,b),f.dragMoveFunc&&f.dragMoveFunc.call(f,b),console.log("drag "+a);break;case "begin-input":Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),
-delete f.gestureTimerId),f.gestureState="invalid-input",f.viewport.setRenderFlag(!0));break;case "begin-menu":Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId),f.gestureState="invalid-menu",f.viewport.setRenderFlag(!0));break;case "begin-hold":Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId),f.gestureState="invalid-hold",f.viewport.setRenderFlag(!0));
-break;case "begin-swipe":a=c(b);if(Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId),!b.swiping&&(("up"==a||"down"==a)&&f.actionFlags&vp.GAF_SWIPEABLE_UPDOWN||("left"==a||"right"==a)&&f.actionFlags&vp.GAF_SWIPEABLE_LEFTRIGHT))){f.gestureState="swipe";b.swiping=!0;f.viewport.setRenderFlag(!0);for(const k of b.hitList.hits)k.gad!==f&&k.gad.ownedBy==h&&delete k.gad.ownedBy;f.swipeBeginFunc&&f.swipeBeginFunc.call(f,
-b);f.swipeMoveFunc&&f.swipeMoveFunc.call(f,b)}break;case "hold":a=new vp.HitList(b.x,b.y);f.getHits(a,P());0==a.hits.length&&(f.gestureState="abandon-hold",f.viewport.setRenderFlag(!0),f.holdEndFunc&&f.holdEndFunc.call(f,b));break;case "swipe":f.swipeMoveFunc&&f.swipeMoveFunc.call(f,b);break;case "begin-drag":a=c(b);if(Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)>R&&(f.hasOwnProperty("gestureTimerId")&&(clearTimeout(f.gestureTimerId),delete f.gestureTimerId),!b.swiping&&(("up"==a||"down"==a)&&f.actionFlags&
-vp.GAF_DRAGGABLE_UPDOWN||("left"==a||"right"==a)&&f.actionFlags&vp.GAF_DRAGGABLE_LEFTRIGHT))){f.gestureState="drag";b.swiping=!0;f.viewport.setRenderFlag(!0);g(b,f);for(const k of b.hitList.hits)if(k.gad!==f&&k.gad.secondTouch==h)switch(k.gad.gestureState){case "pinch":k.gad.gestureState="drag",delete k.gad.secondTouch,k.gad.viewport.setRenderFlag(!0),k.gad.pinchEndFunc&&k.gad.pinchEndFunc.call(k.gad),k.gad.dragBeginFunc&&k.gad.dragBeginFunc.call(k.gad,t[k.gad.ownedBy])}f.dragBeginFunc&&f.dragBeginFunc.call(f,
-b);f.dragMoveFunc&&f.dragMoveFunc.call(f,b)}break;case "drag":f.dragMoveFunc&&f.dragMoveFunc.call(f,b);break;case "pinch":f.pinchMoveFunc&&f.pinchMoveFunc.call(f,t[f.ownedBy],t[f.secondTouch])}else if(f.secondTouch==h)switch(f.gestureState){case "pinch":f.pinchMoveFunc&&f.pinchMoveFunc.call(f,t[f.ownedBy],t[f.secondTouch])}break;case "up":t.hasOwnProperty(h)||(t[h]={gestureState:"",touching:!1,x:0,y:0,px:0,py:0});b=t[h];b.e=a;b.touching=!1;if("mouse"==a.pointerType){if(1==(a.buttons|1)){f=0;for(const k of b.hitList.hits)if(d=
-k.gad,d.ownedBy==h){if(!f)switch(d.gestureState){case "begin-click":case "recover-click":A&&A.setValueAtTime(.1,B.currentTime);A&&A.setValueAtTime(0,B.currentTime+.001);d.clickFunc&&d.clickFunc.call(d);f=1;break;case "begin-input":A&&A.setValueAtTime(.1,B.currentTime);A&&A.setValueAtTime(0,B.currentTime+.001);ja(d);f=1;break;case "hold":d.holdEndFunc&&d.holdEndFunc.call(d,b);break;case "begin-drag":d.hasOwnProperty("gestureTimerId")&&(clearTimeout(d.gestureTimerId),delete d.gestureTimerId);break;
-case "drag":d.dragMoveFunc&&d.dragMoveFunc.call(d,b),d.dragEndFunc&&d.dragEndFunc.call(d,b)}delete d.gestureState;delete d.ownedBy;d.viewport.setRenderFlag(!0)}}if(2==(a.buttons|2))for(const k of b.hitList.hits)if(f=k.gad,f.ownedBy==h){switch(f.gestureState){case "begin-menu":console.log("menu up")}delete f.gestureState;delete f.ownedBy;f.viewport.setRenderFlag(!0)}delete b.hitList}else{f=0;for(const k of b.hitList.hits)if(d=k.gad,skipDel=0,d.ownedBy==h){d.hasOwnProperty("gestureTimerId")&&(clearTimeout(d.gestureTimerId),
-delete d.gestureTimerId);if(!f)switch(d.gestureState){case "begin-tap":A&&A.setValueAtTime(.1,B.currentTime);A&&A.setValueAtTime(0,B.currentTime+.001);d.clickFunc&&d.clickFunc.call(d);f=1;break;case "begin-input":A&&A.setValueAtTime(.1,B.currentTime);A&&A.setValueAtTime(0,B.currentTime+.001);ja(d);f=1;break;case "hold":d.holdEndFunc&&d.holdEndFunc.call(d,b);break;case "tap-and-hold":console.log("tap-and-hold release");break;case "swipe":d.swipeMoveFunc&&d.swipeMoveFunc.call(d,b);d.swipeEndFunc&&d.swipeEndFunc.call(d,
-b);break;case "drag":d.dragMoveFunc&&d.dragMoveFunc.call(d,b);d.dragEndFunc&&d.dragEndFunc.call(d,b);break;case "pinch":d.gestureState="drag",d.ownedBy=d.secondTouch,delete d.secondTouch,d.viewport.setRenderFlag(!0),d.pinchEndFunc&&d.pinchEndFunc.call(d),d.dragBeginFunc&&d.dragBeginFunc.call(d,t[d.ownedBy]),skipDel=1}skipDel||(delete d.gestureState,delete d.ownedBy,d.viewport.setRenderFlag(!0))}else if(d.secondTouch==h)switch(d.gestureState){case "pinch":d.gestureState="drag",delete d.secondTouch,
-d.viewport.setRenderFlag(!0),d.pinchEndFunc&&d.pinchEndFunc.call(d),d.dragBeginFunc&&d.dragBeginFunc.call(d,t[d.ownedBy])}}"touch"==a.pointerType&&delete t[h];delete b.swiping;break;case "wheel":t.hasOwnProperty(h)||(t[h]={gestureState:"",touching:!1,px:a.layerX*D,py:a.layerY*D});b=t[h];b.e=a;b.touching=!0;b.x=a.layerX*D;b.y=a.layerY*D;b.hitList=new vp.HitList(b.x,b.y);C.getHits(b.hitList,P());b.hitList.sortHits();if("wheel"==a.type){f=0;for(const k of b.hitList.hits)d=k.gad,f||d.ownedBy||(d.actionFlags&
-(vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SCROLLABLE_UPDOWN)?(b=t[h],b.e=a,b.x=a.layerX*D,b.ox=b.x,b.px=b.x,b.y=a.layerY*D,b.oy=b.y,b.py=b.y,d.swipeBeginFunc&&d.swipeBeginFunc.call(d,b),b.dx=0,b.x=b.x,b.dy=.8*Math.sign(a.wheelDelta)*window.devicePixelRatio,b.y+=b.dy,d.swipeMoveFunc&&d.swipeMoveFunc.call(d,b),d.swipeEndFunc&&d.swipeEndFunc.call(d,b),f=1):d.actionFlags&vp.GAF_PINCHABLE&&(b=t[h],b.e=a,b.x=a.layerX*D,b.ox=b.x,b.px=b.x,b.y=a.layerY*D,b.oy=b.y,b.py=b.y,d.actionFlags&vp.GAF_ROTATABLE&&a.altKey&&d.rotateFunc?
-d.rotateFunc.call(d,b,Math.sign(a.wheelDelta)):d.actionFlags&vp.GAF_SCALABLE&&d.zoomFunc&&d.zoomFunc.call(d,b,Math.sign(a.wheelDelta)),f=1))}break;case "drag time reached":t.hasOwnProperty(h)||(t[h]={gestureState:"",touching:!0});b=t[h];b.e=a;if(b.hitList)for(const k of b.hitList.hits)a=k.gad,a.ownedBy==h&&("begin-click"==a.gestureState&&a.actionFlags&vp.GAF_HOLDABLE&&(a.gestureState="hold",a.viewport.setRenderFlag(!0),g(b,a),a.holdBeginFunc&&a.holdBeginFunc.call(a,b)),"begin-drag"!=a.gestureState||
-b.swiping||(a.gestureState="drag",b.swiping=!0,a.viewport.setRenderFlag(!0),g(b,a),a.dragBeginFunc&&a.dragBeginFunc.call(a,b)),a.hasOwnProperty("gestureTimerId")&&delete a.gestureTimerId);break;case "tap-and-hold time reached":t.hasOwnProperty(h)||(t[h]={gestureState:"",touching:!0});b=t[h];b.e=a;for(const k of b.hitList.hits)if(a=k.gad,a.ownedBy==h){if(Math.sqrt((b.ox-b.x)**2+(b.oy-b.y)**2)<=R)switch(a.gestureState){case "begin-tap":case "begin-menu":case "begin-swipe":case "begin-drag":case "begin-hold":if(a.actionFlags&
-vp.GAF_CONTEXTMENU&&!b.swiping)a.gestureState="tap-and-hold",console.log("tap-and-hold"),a.viewport.setRenderFlag(!0);else if(a.actionFlags&vp.GAF_HOLDABLE&&!b.swiping)a.gestureState="hold",console.log("hold"),a.viewport.setRenderFlag(!0),g(b,a),a.holdBeginFunc&&a.holdBeginFunc.call(a,b);else if(a.actionFlags&vp.GAF_DRAGGABLE&&!b.swiping)a.gestureState="drag",b.swiping=!0,a.viewport.setRenderFlag(!0),g(b,a),a.dragBeginFunc&&a.dragBeginFunc.call(a,b);else if(a.actionFlags&vp.GAF_SWIPEABLE&&!b.swiping){a.gestureState=
-"swipe";b.swiping=!0;a.viewport.setRenderFlag(!0);for(const q of b.hitList.hits)q.gad!==a&&q.gad.ownedBy==h&&delete q.gad.ownedBy;a.swipeBeginFunc&&a.swipeBeginFunc.call(a,b)}else a.gestureState="invalid-tap-and-hold",a.viewport.setRenderFlag(!0)}a.hasOwnProperty("gestureTimerId")&&delete a.gestureTimerId}}}}function aa(){ba&&ba.setValueAtTime(1,B.currentTime);ba&&ba.setValueAtTime(0,B.currentTime+.1)}var x,Q,N,da,ea,l;const y={},F={};var B,A,ba,la,ma,ra,D,ka;const I=[];var Z=[];const U=mat4.create();
-var pa=0,z;const J=(a,e,g)=>Math.min(Math.max(a,e),g);var G,ha;class ua{constructor(a,e){this.x=a;this.y=e;this.hits=[]}sortHits(){for(var a=[];0<this.hits.length;){var e=0,g=this.hits[0].dist,c,b=this.hits[0].gad.z?this.hits[0].gad.z:0,h;for(c=0;c<this.hits.length&&(h=this.hits[c].gad.z?this.hits[c].gad.z:0,1);c++)if(h>b||h==b&&this.hits[c].dist<g)e=c,g=this.hits[c].dist,b=h;a.push(this.hits[e]);this.hits.splice(e,1)}this.hits=a}containsAny(a){for(var e=0;e<this.hits.length;e++)if(0!=(this.hits[e].gad.actionFlags&
-a))return!0;return!1}getActionableGads(a){for(var e=[],g=0;g<this.hits.length;g++)0!=(this.hits[g].gad.actionFlags&a)&&e.splice(e.length,0,this.hits[g].gad);return e}click(){for(var a=0;a<this.hits.length;a++)0!=(this.hits[a].gad.actionFlags&vp.GAF_CLICKABLE)&&this.hits[a].gad.click&&this.hits[a].gad.click.call(this.hits[a].gad)}menu(){for(var a=0;a<this.hits.length;a++)0!=(this.hits[a].gad.actionFlags&vp.GAF_CONTEXTMENU)&&this.hits[a].gad.menu&&this.hits[a].gad.menu.call(this.hits[a].gad)}}class K{constructor(a,
-e){this.totalWidth=a;this.totalHeight=e;this.remainingY=this.remainingX=0;this.remainingWidth=a;this.remainingHeight=e}hasArea(){return 0<this.remainingWidth&&0<this.remainingHeight}clear(){this.remainingHeight=this.remainingWidth=this.remainingY=this.remainingX=0}}class V{constructor(a){this.name="unnamed";this.parent=a;this.designFit=void 0;this.H=this.W=this.h=this.w=this.y=this.x=this.designHeight=this.designWidth=this.designScale=this.designSize=0;this.userMat=mat4.create();mat4.identity(this.userMat);
-this.userY=this.userX=this.oy=this.ox=0;this.gadgets=[];this.mat=mat4.create();this.childRender=this.needsRender=!0}insideFit(a,e){this.viewScale=this.w/a<this.h/e?this.w/a:this.h/e}layoutAll(a){!X&&console.log(this.name+"::"+this.layoutAll.name);this.x=a.remainingX;this.y=a.remainingY;this.w=a.remainingWidth;this.h=a.remainingHeight;this.W=a.totalWidth;this.H=a.totalHeight;this.viewScale=this.designFit?this.designFit[0]/this.designFit[1]>this.w/this.h?this.w/this.designFit[0]:this.h/this.designFit[1]:
-this.designSize?Math.sqrt(this.w*this.h/this.designSize):this.designScale?this.designScale:this.designWidth?this.w/this.designWidth:this.designHeight?this.h/this.designHeight:this.parent?this.parent.viewScale:1;this.rematrix();this.layoutFunc&&(this.layoutFunc.call(this),this.rematrix());this.setRenderFlag(!0)}rematrix(){mat4.scale(this.mat,U,[x.width/this.w,x.height/this.h,1]);mat4.multiply(this.mat,this.mat,this.userMat);mat4.translate(this.mat,this.mat,[this.ox,this.oy,0]);mat4.scale(this.mat,
-this.mat,[this.getScale(),this.getScale(),1]);mat4.translate(this.mat,this.mat,[-this.userX,-this.userY,0])}relayout(){var a=new K;a.totalWidth=this.W;a.totalHeight=this.H;a.remainingX=this.x;a.remainingY=this.y;a.remainingWidth=this.w;a.remainingHeight=this.h;this.layoutAll(a)}getScale(){return this.viewScale}setRenderFlag(a){this.needsRender||(this.needsRender=this.needsender||a,this.childRender=!0,this.parent&&this.parent.setRenderFlag(!1),a&&this.a&&this.a.setRenderFlag(!0),a&&this.b&&this.b.setRenderFlag(!0),
-a&&this.c&&this.c.setRenderFlag(!0))}renderAll(a=!0){this.childRender=!1;this.needsRender&&(this.needsRender=!1,0<this.w&&0<this.h&&(!X&&console.log(this.name+"::"+this.renderAll.name,this.w,this.h),this.clip(),a&&(l.clearColor(0,0,0,1),l.clear(l.COLOR_BUFFER_BIT)),this.renderFunc&&this.renderFunc.call(this)))}clip(){l.viewport(this.x,this.H-this.y-this.h,this.w,this.h);l.scissor(this.x,this.H-this.y-this.h,this.w,this.h);l.enable(l.SCISSOR_TEST)}prepMatrix(){vp.projMat&&vp.viewMat&&(mat4.identity(vp.projMat),
-mat4.translate(vp.projMat,vp.projMat,[-1,1,0]),mat4.scale(vp.projMat,vp.projMat,[2/this.w,-2/this.h,1]),mat4.identity(vp.viewMat),mat4.scale(vp.viewMat,vp.viewMat,[this.getScale(),this.getScale(),1]),mat4.translate(vp.viewMat,vp.viewMat,[-this.panX,-this.panY,0]))}getHits(a,e){if(!(0>=this.w||0>=this.h||a.x<this.x-e||a.y<this.y-e||a.x>=this.x+this.w+e||a.y>=this.y+this.h+e))for(const g of this.gadgets)g?g.getHits(a,e):console.log("Bad gadget",this)}}class va extends V{constructor(a,e,g,c){super(a);
-this.type=e;this.stateNew=this.state="";this.stateProg=0;this.size=c;this.ratio=g;this.threshold=1;this.ratioMin={h:0,v:0};this.ratioMax={h:1,v:1};this.c=this.b=this.a=void 0;this.prevTime=0}layoutAll(a){super.layoutAll(a);var e=new K(a.totalWidth,a.totalHeight),g=new K(a.totalWidth,a.totalHeight),c=new K(a.totalWidth,a.totalHeight);if(a.hasArea()){var b=~~(this.size*this.getScale()),h=this.stateNew;if(""==this.stateNew){var f=a.remainingWidth/this.threshold>a.remainingHeight?!0:!1;this.state=this.stateNew=
-"a"==this.type?f?"v":"h":this.type}f=this.ratio;if("a"==this.type){var d=0,k=Date.now();0!=this.prevTime&&(d=k-this.prevTime);this.prevTime=k;17<d&&(d=17);a.remainingWidth/this.threshold>a.remainingHeight+2&&(this.stateNew="v");a.remainingWidth/this.threshold<a.remainingHeight+2&&(this.stateNew="h");if(this.stateNew!=this.state||0<this.stateProg)this.stateNew!=this.state?(this.stateProg+=.008*d,1<=this.stateProg&&(this.stateProg=1,this.state=this.stateNew,this.setPoint&&this.stateNew in this.setPoint&&
-(this.ratio=this.setPoint[this.stateNew])),-1===I.indexOf(this)&&I.push(this)):(this.stateProg-=.008*d,0>this.stateProg&&(this.stateProg=0),0<this.stateProg&&-1===I.indexOf(this)&&I.push(this));d="v"==this.state?"h":"v";this.setPoint&&d in this.setPoint&&(f=this.setPoint[d])}this.layoutFunc&&this.state!=h&&this.layoutFunc.call(this);h=J(this.ratio,this.ratioMin[this.state],this.ratioMax[this.state]);h!=this.ratio&&(this.ratio=h,-1===I.indexOf(this)&&I.push(this));h=1-this.stateProg*(1-f);f=1-this.stateProg*
-(0+f);"v"==this.state?(d=~~((a.remainingWidth-b)*this.ratio),e.remainingWidth=d,e.remainingHeight=~~(a.remainingHeight*h),e.remainingX=a.remainingX,e.remainingY=a.remainingY,g.remainingWidth=a.remainingWidth-b-d,g.remainingHeight=~~(a.remainingHeight*f),g.remainingX=a.remainingX+d+b,g.remainingY=a.remainingY+a.remainingHeight-g.remainingHeight,c.remainingX=a.remainingX+d,c.remainingY=a.remainingY,c.remainingWidth=b,c.remainingHeight=a.remainingHeight):"h"==this.state&&(d=~~((a.remainingHeight-b)*
-this.ratio),e.remainingWidth=~~(a.remainingWidth*h),e.remainingHeight=d,e.remainingX=a.remainingX,e.remainingY=a.remainingY,g.remainingWidth=~~(a.remainingWidth*f),g.remainingHeight=a.remainingHeight-b-d,g.remainingX=a.remainingX+a.remainingWidth-g.remainingWidth,g.remainingY=a.remainingY+d+b,c.remainingX=a.remainingX,c.remainingY=a.remainingY+d,c.remainingWidth=a.remainingWidth,c.remainingHeight=b)}else e.clear(),g.clear(),c.clear();this.a&&this.a.layoutAll(e);this.b&&this.b.layoutAll(g);this.c&&
-this.c.layoutAll(c);this.layoutEndFunc&&this.layoutEndFunc.call(this);h=J(this.ratio,this.ratioMin[this.state],this.ratioMax[this.state]);h!=this.ratio&&(this.ratio=h,-1===I.indexOf(this)&&I.push(this))}renderAll(){super.renderAll();this.a&&(this.a.needsRender||this.a.childRender)&&this.a.renderAll();this.b&&(this.b.needsRender||this.b.childRender)&&this.b.renderAll();this.c&&(this.c.needsRender||this.c.childRender)&&this.c.renderAll()}getHits(a,e){this.a&&this.a.getHits(a,e);this.b&&this.b.getHits(a,
-e);this.c&&this.c.getHits(a,e)}}class wa extends V{constructor(a,e,g,c){super(a);this.type=e;this.stateNew=this.state="";this.stateProg=0;this.sizeH=g;this.sizeV=c?c:g;this.prop=!1;this.threshold=.5;this.b=this.a=void 0;this.prevTime=0;this.tallState=this.wideState=""}layoutAll(a){super.layoutAll(a);var e=new K(a.totalWidth,a.totalHeight),g=new K(a.totalWidth,a.totalHeight);if(a.hasArea()){var c=~~(this.sizeH*(this.prop?this.w:this.getScale())),b=~~(this.sizeV*(this.prop?this.h:this.getScale())),
-h=this.stateNew;if(""==this.stateNew){var f=a.remainingWidth*this.threshold>a.remainingHeight*(1-this.threshold)?!0:!1;"tl"==this.type?(this.wideState="l",this.tallState="t",this.stateNew=f?this.wideState:this.tallState):"tr"==this.type?(this.wideState="r",this.tallState="t",this.stateNew=f?this.wideState:this.tallState):"bl"==this.type?(this.wideState="l",this.tallState="b",this.stateNew=f?this.wideState:this.tallState):"br"==this.type?(this.wideState="r",this.tallState="t",this.stateNew=f?this.wideState:
-this.tallState):this.stateNew=this.type;this.state=this.stateNew}if(1<this.type.length){f=0;var d=Date.now();0!=this.prevTime&&(f=d-this.prevTime);this.prevTime=d;17<f&&(f=17);a.remainingWidth*this.threshold>a.remainingHeight*(1-this.threshold)+2&&(this.stateNew=this.wideState);a.remainingHeight*this.threshold>a.remainingWidth*(1-this.threshold)+2&&(this.stateNew=this.tallState);if(this.stateNew!=this.state||0<this.stateProg)this.stateNew!=this.state?(this.stateProg+=.008*f,1<=this.stateProg&&(this.stateProg=
-1,this.state=this.stateNew),-1===I.indexOf(this)&&I.push(this)):(this.stateProg-=.008*f,0>this.stateProg&&(this.stateProg=0),0<this.stateProg&&-1===I.indexOf(this)&&I.push(this))}this.layoutFunc&&this.state!=h&&0<this.w&&0<this.h&&this.layoutFunc.call(this);f="t"==this.state||"b"==this.state?b/a.remainingWidth:c/a.remainingHeight;h=1-this.stateProg*(1-f);f=1-this.stateProg*(0+f);"l"==this.state?(e.remainingWidth=b,e.remainingHeight=~~(a.remainingHeight*h),e.remainingX=a.remainingX,g.remainingWidth=
-a.remainingWidth-b,g.remainingHeight=~~(a.remainingHeight*f),g.remainingX=a.remainingX+b,"t"==this.tallState?(e.remainingY=a.remainingY,g.remainingY=a.remainingY+a.remainingHeight-g.remainingHeight):(e.remainingY=a.remainingY+a.remainingHeight-e.remainingHeight,g.remainingY=a.remainingY)):"r"==this.state?(e.remainingWidth=b,e.remainingHeight=~~(a.remainingHeight*h),e.remainingX=a.remainingX+a.remainingWidth-b,g.remainingWidth=a.remainingWidth-b,g.remainingHeight=~~(a.remainingHeight*f),g.remainingX=
-a.remainingX,"t"==this.tallState?(e.remainingY=a.remainingY,g.remainingY=a.remainingY+a.remainingHeight-g.remainingHeight):(e.remainingY=a.remainingY+a.remainingHeight-e.remainingHeight,g.remainingY=a.remainingY)):"t"==this.state?(e.remainingWidth=~~(a.remainingWidth*h),e.remainingHeight=c,e.remainingY=a.remainingY,g.remainingWidth=~~(a.remainingWidth*f),g.remainingHeight=a.remainingHeight-c,g.remainingY=a.remainingY+c,"l"==this.wideState?(e.remainingX=a.remainingX,g.remainingX=a.remainingX+a.remainingWidth-
-g.remainingWidth):(e.remainingX=a.remainingX+a.remainingWidth-e.remainingWidth,g.remainingX=a.remainingX)):"b"==this.state&&(e.remainingWidth=~~(a.remainingWidth*h),e.remainingHeight=c,e.remainingY=a.remainingY+a.remainingHeight-c,g.remainingWidth=~~(a.remainingWidth*f),g.remainingHeight=a.remainingHeight-c,g.remainingY=a.remainingY,"l"==this.wideState?(e.remainingX=a.remainingX,g.remainingX=a.remainingX+a.remainingWidth-g.remainingWidth):(e.remainingX=a.remainingX+a.remainingWidth-e.remainingWidth,
-g.remainingX=a.remainingX))}else e.clear(),g.clear();this.a&&this.a.layoutAll(e);this.b&&this.b.layoutAll(g)}renderAll(){super.renderAll();this.a&&(this.a.needsRender||this.a.childRender)&&this.a.renderAll();this.b&&(this.b.needsRender||this.b.childRender)&&this.b.renderAll()}getHits(a,e){this.a&&this.a.getHits(a,e);this.b&&this.b.getHits(a,e)}}class xa extends V{constructor(a,e){super(a);this.type=e;this.indexProg=this.indexNew=this.index=0;this.b=this.a=void 0;this.pages=[];this.prevTime=0}layoutAll(a){super.layoutAll(a);
-var e=new K(a.totalWidth,a.totalHeight),g=new K(a.totalWidth,a.totalHeight);if(a.hasArea()){this.prevTime=Date.now();var c=this.pages[this.index];this.a=c;c.parent=this;e.remainingWidth=a.remainingWidth;e.remainingHeight=a.remainingHeight;e.remainingX=a.remainingX;e.remainingY=a.remainingY;g.remainingWidth=0;g.remainingHeight=0;g.remainingX=a.remainingX;g.remainingY=a.remainingY}else e.clear(),g.clear();this.a&&this.a.layoutAll(e);this.b&&this.b.layoutAll(g)}renderAll(){super.renderAll();this.a&&
-(this.a.needsRender||this.a.childRender)&&this.a.renderAll();this.b&&(this.b.needsRender||this.b.childRender)&&this.b.renderAll()}getHits(a,e){this.a&&this.a.getHits(a,e);this.b&&this.b.getHits(a,e)}}class ya extends V{constructor(a){super(a);this.b=this.a=void 0}layoutAll(a){super.layoutAll(a);this.layoutFunc&&this.layoutFunc.call(this);var e=new K(a.totalWidth,a.totalHeight),g=new K(a.totalWidth,a.totalHeight);e.remainingX=a.remainingX;e.remainingY=a.remainingY;e.remainingWidth=a.remainingWidth;
-e.remainingHeight=a.remainingHeight;g.remainingX=a.remainingX;g.remainingY=a.remainingY;g.remainingWidth=a.remainingWidth;g.remainingHeight=a.remainingHeight;this.a&&this.a.layoutAll(e);this.b&&this.b.layoutAll(g)}setRenderFlag(a){super.setRenderFlag(!0)}renderAll(){super.renderAll();if(this.a&&(this.a.needsRender||this.a.childRender)||this.b&&(this.b.needsRender||this.b.childRender))this.b.renderAll(),this.a.renderAll(!1)}getHits(a,e){this.a&&this.a.getHits(a,e);this.b&&this.b.getHits(a,e)}}class za extends V{constructor(a){super(a);
-this.gadgets.push(a=new Y(this));a.w=10;a.h=1E3;a.convexHull=a.computeHull([50,50,100,200,200,200,200,100]);a.click=function(){}}}class ta extends V{constructor(a){super(a);this.gadgets.push(a=new Y(this));a.w=1E3;a.h=1E3;a.convexHull=a.computeHull([0,0,0,1E3,1E3,1E3,1E3,0]);a.click=function(){}}}class Y{constructor(a){this.viewport=a;this.mat=mat4.create();mat4.identity(this.mat);this.H=this.h=this.w=this.y=this.x=0;this.convexHull=[];this.extendedHulls={};this.boundingBoxes={};this.yo=this.xo=0;
-this.enabled=!0;this.selected=!1;this.actionFlags=0}getHits(a,e){if(this.enabled&&0!=this.convexHull.length){var g=this.viewport,c=vec3.create();mat4.getScaling(c,g.userMat);e=e/g.getScale()/c[0];c=""+e;c in this.extendedHulls||(this.computeExtendedHull(e),this.computeBoundingBox(e));e=this.extendedHulls[c];var b=this.boundingBoxes[c];c=1/g.getScale();var h=vec3.create();h[0]=a.x-g.x-this.x/c;h[1]=a.y-g.y-this.y/c;var f=mat4.create();mat4.invert(f,g.userMat);vec3.transformMat4(h,h,f);g=h[0]*c;c*=
-h[1];if(!(g<b.x1||g>=b.x2||c<b.y1||c>=b.y2)){h=e.length;b=!0;for(f=0;f<h;f+=2){var d=e[f+0],k=e[f+1];d=(e[(f+2)%h]-d)*(c-k)-(e[(f+3)%h]-k)*(g-d);0>d&&(b=!1)}if(b){h=this.convexHull.length;b=!0;for(f=0;f<h;f+=2)e=this.convexHull[f+0],d=this.convexHull[f+1],d=(this.convexHull[(f+2)%h]-e)*(c-d)-(this.convexHull[(f+3)%h]-d)*(g-e),0>d&&(b=!1);e=0;b||(e=this.distToHull(g,c));a.hits.push({gad:this,dist:e})}}}}autoHull(){this.convexHull=this.computeHull([0,0,this.w,0,this.w,this.h,0,this.h]);this.extendedHulls=
-{};this.boundingBoxes={}}computeHull(a){function e(r,u,w,E,L,M){return(w-r)*(M-u)-(E-u)*(L-r)}function g(r){return r*r}function c(r,u,w,E,L,M){var H=g(w-L)+g(E-M);if(0==H)return g(r-w)+g(u-E);H=Math.max(0,Math.min(1,((r-w)*(L-w)+(u-E)*(M-E))/H));E+=H*(M-E);return g(r-(w+H*(L-w)))+g(u-E)}function b(r,u,w,E,L,M){if(!(2>u.length)){for(var H=0,S=0,v=0;v<~~(u.length/2);v++){var T=Math.sqrt(c(u[2*v],u[2*v+1],w,E,L,M));T>S&&(S=T,H=v)}S=u[2*H];T=u[2*H+1];u.splice(2*H,2);for(v=0;v<~~(r.length/2);v++)if(r[2*
-v]==w&&r[2*v+1]==E&&r[(2*v+2)%r.length]==L&&r[(2*v+3)%r.length]==M||r[2*v]==L&&r[2*v+1]==M&&r[(2*v+2)%r.length]==w&&r[(2*v+3)%r.length]==E){r.splice(2*v+2,0,S,T);break}H=[];var ca=[];for(v=0;v<~~(u.length/2);v++)0>e(w,E,S,T,u[2*v],u[2*v+1])&&(H[H.length]=u[2*v],H[H.length]=u[2*v+1]),0>e(S,T,L,M,u[2*v],u[2*v+1])&&(ca[ca.length]=u[2*v],ca[ca.length]=u[2*v+1]);b(r,H,w,E,S,T);b(r,ca,S,T,L,M)}}for(var h=[...a],f=[],d=0,k=0,q=h[0],n=h[0],m=0;m<~~(h.length/2);m++)h[2*m]<q&&(q=h[2*m],d=m),h[2*m]>n&&(n=h[2*
-m],k=m);f[f.length]=h[2*d];f[f.length]=h[2*d+1];f[f.length]=h[2*k];f[f.length]=h[2*k+1];h.splice(2*d,2);k<d?h.splice(2*k,2):h.splice(2*k-2,2);q=[];n=[];for(m=0;m<~~(h.length/2);m++)0>e(a[2*d],a[2*d+1],a[2*k],a[2*k+1],h[2*m],h[2*m+1])?(q[q.length]=h[2*m],q[q.length]=h[2*m+1]):(n[n.length]=h[2*m],n[n.length]=h[2*m+1]);b(f,q,a[2*d],a[2*d+1],a[2*k],a[2*k+1]);b(f,n,a[2*k],a[2*k+1],a[2*d],a[2*d+1]);for(a=1;a;)for(m=a=0;m<~~(f.length/2);m++)if(.01>Math.sqrt(c(f[(2*m+2)%f.length],f[(2*m+3)%f.length],f[2*
-m],f[2*m+1],f[(2*m+4)%f.length],f[(2*m+5)%f.length]))){f.splice(2*m+2,2);a=1;break}return this.sortHull(f)}sortHull(a){function e(n){for(n=Math.atan2(a[n+1]-b,a[n+0]-c)-Math.atan2(k-b,d-c);n>Math.PI;)n-=2*Math.PI;for(;n<-Math.PI;)n+=2*Math.PI;return n}for(var g=[],c=0,b=0,h=a.length,f=0;f<h;f+=2)c+=a[f+0],b+=a[f+1];c/=h/2;b/=h/2;for(var d=c+102,k=b+1;0<a.length;){h=0;var q=e(0);for(f=0;f<a.length;f+=2)e(f)<q&&(h=f,q=e(f));g.push(a[h+0]);g.push(a[h+1]);a.splice(h,2)}return g}computeExtendedHull(a){for(var e=
-[],g=0,c=this.convexHull.length,b=0;b<c;b+=2){var h=this.convexHull[(b+3)%c]-this.convexHull[b+1],f=-(this.convexHull[(b+2)%c]-this.convexHull[b+0]),d=a/Math.sqrt(h*h+f*f);e[g+0]=this.convexHull[b+0]+h*d;e[g+1]=this.convexHull[b+1]+f*d;g+=2;e[g+0]=this.convexHull[(b+2)%c]+h*d;e[g+1]=this.convexHull[(b+3)%c]+f*d;g+=2}for(b=0;b<c;b+=2){h=this.convexHull[(b+2)%c]-this.convexHull[b+0];f=this.convexHull[(b+3)%c]-this.convexHull[b+1];g=this.convexHull[(b-2+c)%c]-this.convexHull[b+0];var k=this.convexHull[(b-
-1+c)%c]-this.convexHull[b+1];d=Math.sqrt(h*h+f*f);k=Math.tan((Math.PI-Math.acos((h*g+f*k)/(d*Math.sqrt(g*g+k*k))))/4)*a;g=2*b;h=e[g+0]-e[g+2];f=e[g+1]-e[g+3];d=Math.sqrt(h*h+f*f);h=h*(d+k)/d;f=f*(d+k)/d;e[g+0]=h+e[g+2];e[g+1]=f+e[g+3];g=(b-2+c)%c*2;h=e[g+2]-e[g+0];f=e[g+3]-e[g+1];d=Math.sqrt(h*h+f*f);h=h*(d+k)/d;f=f*(d+k)/d;e[g+2]=h+e[g+0];e[g+3]=f+e[g+1]}this.extendedHulls[""+a]=e}computeBoundingBox(a){this.boundingBoxes[""+a]={};var e=this.extendedHulls[""+a];a=this.boundingBoxes[""+a];if(!(2>e.length)){a.x1=
-e[0];a.x2=e[0];a.y1=e[1];a.y2=e[1];for(var g=2;g<e.length;g+=2)e[g+0]<a.x1&&(a.x1=e[g+0]),e[g+0]>a.x2&&(a.x2=e[g+0]),e[g+1]<a.y1&&(a.y1=e[g+1]),e[g+1]>a.y2&&(a.y2=e[g+1])}}distToHull(a,e){function g(k){return k*k}function c(k,q,n,m,r,u){var w=g(n-r)+g(m-u);if(0==w)return g(k-n)+g(q-m);w=Math.max(0,Math.min(1,((k-n)*(r-n)+(q-m)*(u-m))/w));m+=w*(u-m);return g(k-(n+w*(r-n)))+g(q-m)}for(var b=this.convexHull,h=Math.sqrt(c(a,e,b[0],b[1],b[2],b[3])),f=2;f<b.length;f+=2){var d=Math.sqrt(c(a,e,b[f+0],b[f+
-1],b[(f+2)%b.length],b[(f+3)%b.length]));d<h&&(h=d)}return h}}class Aa extends Y{constructor(a){super(a);this.dragBeginFunc=function(e){this.tempX=e.ox-this.viewport.x;this.tempY=e.oy-this.viewport.y};this.dragMoveFunc=function(e){var g=this.viewport.parent,c="h"==g.state,b=c?e.y-this.tempY-g.a.y:e.x-this.tempX-g.a.x;g.ratio=Math.max(0,Math.min(1,b/(b+(c?g.y+g.h-(e.y-this.tempY+this.viewport.h):g.x+g.w-(e.x-this.tempX+this.viewport.w)))));g.setPoint||(g.setPoint={});g.setPoint[g.state]=g.ratio;-1===
-I.indexOf(this.viewport.parent)&&I.push(this.viewport.parent)};this.dragEndFunc=function(e){delete this.tempX;delete this.tempY}}layout(){var a=this.viewport,e=a.getScale(),g=a.parent.size,c="h"==a.parent.state,b=c?Math.max(1,a.w)/e:g;a=c?g:Math.max(1,a.h)/e;this.actionFlags=c?vp.GAF_DRAGGABLE_UPDOWN:vp.GAF_DRAGGABLE_LEFTRIGHT;this.convexHull=this.computeHull([0,0,0,a,b,a,b,0]);this.extendedHulls={};this.boundingBoxes={}}}class Ba extends Y{getTargetMat(){return this.targetGad?this.targetGad.mat:
-this.targetView.userMat}constructor(a){super(a);this.targetView=a;this.targetGad=void 0;this.dragBeginFunc=function(e){var g=this.targetView;this.grab1b=vec3.create();this.grab1b[0]=e.x-g.x;this.grab1b[1]=e.y-g.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,g.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());e=mat4.create();mat4.invert(e,this.viewMat);vec3.transformMat4(this.grab1b,this.grab1b,e);this.targetGad&&(e=mat4.create(),mat4.invert(e,this.grabMat),vec3.transformMat4(this.grab1b,
-this.grab1b,e))};this.dragMoveFunc=function(e){var g=this.targetView,c=vec3.create();c[0]=e.x-g.x;c[1]=e.y-g.y;e=mat4.create();mat4.invert(e,this.viewMat);vec3.transformMat4(c,c,e);this.targetGad&&(e=mat4.create(),mat4.invert(e,this.grabMat),vec3.transformMat4(c,c,e));e=vec3.create();vec3.subtract(e,c,this.grab1b);this.targetGad&&vec3.scale(e,e,1/g.getScale());mat4.translate(this.getTargetMat(),this.grabMat,e);g.rematrix();g.setRenderFlag(!0)};this.dragEndFunc=function(e){e=this.targetView;delete this.grab1b;
-delete this.viewMat;delete this.grabMat;e.setRenderFlag(!0)};this.pinchBeginFunc=function(e,g){var c=this.targetView;this.grab1=vec3.create();this.grab1[0]=e.x-c.x;this.grab1[1]=e.y-c.y;this.grab2=vec3.create();this.grab2[0]=g.x-c.x;this.grab2[1]=g.y-c.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,c.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());this.grabC=vec3.create();this.grab1b=vec3.create();vec3.copy(this.grab1b,this.grab1);this.grab2b=vec3.create();vec3.copy(this.grab2b,
-this.grab2);this.grabCb=vec3.create();e=mat4.create();mat4.invert(e,this.viewMat);vec3.transformMat4(this.grab1b,this.grab1b,e);vec3.transformMat4(this.grab2b,this.grab2b,e);this.targetGad&&(e=mat4.create(),mat4.copy(e,this.grabMat),vec3.transformMat4(this.grab1b,this.grab1b,e),vec3.transformMat4(this.grab2b,this.grab2b,e));for(e=0;3>e;e++)this.grabC[e]=(this.grab1[e]+this.grab2[e])/2,this.grabCb[e]=(this.grab1b[e]+this.grab2b[e])/2;e=this.grab2[0]-this.grab1[0];g=this.grab2[1]-this.grab1[1];this.grabA=
-Math.atan2(g,e);this.grabM=Math.sqrt(e*e+g*g)};this.pinchMoveFunc=function(e,g){var c=this.targetView,b=vec3.create();b[0]=e.x-c.x;b[1]=e.y-c.y;e=vec3.create();e[0]=g.x-c.x;e[1]=g.y-c.y;var h=vec3.create(),f=vec3.create(),d=vec3.create();g=vec3.create();vec3.copy(f,b);vec3.copy(d,e);var k=mat4.create();mat4.invert(k,this.viewMat);vec3.transformMat4(f,f,k);vec3.transformMat4(d,d,k);this.targetGad&&(k=mat4.create(),mat4.copy(k,this.grabMat),vec3.transformMat4(f,f,k),vec3.transformMat4(d,d,k));for(k=
-0;3>k;k++)h[k]=(b[k]+e[k])/2,g[k]=(f[k]+d[k])/2;h=e[0]-b[0];e=e[1]-b[1];b=Math.atan2(e,h);e=Math.sqrt(h*h+e*e);h=mat4.create();mat4.copy(h,this.grabMat);this.targetGad?(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(h,h,[g[0]/c.getScale(),g[1]/c.getScale(),0]):mat4.translate(h,h,[this.grabCb[0]/c.getScale(),this.grabCb[1]/c.getScale(),0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(h,h,[e/this.grabM,e/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(h,h,b-this.grabA,[0,0,1]),mat4.translate(h,
-h,[-this.grabCb[0]/c.getScale(),-this.grabCb[1]/c.getScale(),0])):(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(h,h,[g[0],g[1],0]):mat4.translate(h,h,[this.grabCb[0],this.grabCb[1],0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(h,h,[e/this.grabM,e/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(h,h,b-this.grabA,[0,0,1]),mat4.translate(h,h,[-this.grabCb[0],-this.grabCb[1],0]));c.rematrix();c.setRenderFlag(!0);mat4.copy(this.getTargetMat(),h)};this.pinchEndFunc=function(e,g){delete this.grab1;
-delete this.grab1b;delete this.grab2;delete this.grab2b;delete this.grabC;delete this.grabCb;delete this.grabA;delete this.grabM;delete this.grabMat};this.zoomFunc=function(e,g){const c=this.targetView,b=this.getTargetMat(),h=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(h[0]=e.x-c.x,h[1]=e.y-c.y):mat4.getTranslation(h,b);e=mat4.create();mat4.invert(e,b);vec3.transformMat4(h,h,e);mat4.translate(b,b,[h[0],h[1],0]);mat4.scale(b,b,[Math.exp(g/10),Math.exp(g/10),1]);mat4.translate(b,b,[-h[0],-h[1],
-0]);c.rematrix();c.setRenderFlag(!0)};this.rotateFunc=function(e,g){const c=this.targetView,b=this.getTargetMat(),h=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(h[0]=e.x-c.x,h[1]=e.y-c.y):mat4.getTranslation(h,b);e=mat4.create();mat4.invert(e,b);vec3.transformMat4(h,h,e);mat4.translate(b,b,[h[0],h[1],0]);mat4.rotate(b,b,-Math.PI/18*g,[0,0,1]);mat4.translate(b,b,[-h[0],-h[1],0]);c.rematrix();c.setRenderFlag(!0)}}getHits(a,e){this.enabled&&(0==this.convexHull.length?a.hits.push({gad:this,dist:0}):
-super.getHits(a,e))}layout(){console.log("MatrixGadget::layout()")}}class Ca extends Y{constructor(a){super(a);this.actionFlags=vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SCROLLABLE_UPDOWN;this.swipeBeginFunc=function(e){var g=this.viewport,c=g.getScale();this.tempX=(e.ox-g.x-g.ox)/c+g.userX;this.tempY=(e.oy-g.y-g.oy)/c+g.userY};this.swipeMoveFunc=function(e){const g=(m,r,u)=>Math.min(Math.max(m,r),u);var c=this.viewport,b=c.getScale(),h=0,f=0,d=c.minX,k=Math.max(c.maxX-c.w/b,d),q=c.minY,n=Math.max(c.maxY-c.h/
-b,q);switch(this.actionFlags&vp.GAF_SWIPEABLE){case vp.GAF_SWIPEABLE_UPDOWN:f=(e.y-c.y-c.oy)/b+c.userY-this.tempY;c.userY=g(g(c.userY-f-c.oy/b,q,n)+c.oy/b,q,n);c.rematrix();this.layout();c.tempVX=0;c.tempVY=e.dy;break;case vp.GAF_SWIPEABLE_LEFTRIGHT:h=(e.x-c.x-c.ox)/b+c.userX-this.tempX;c.userX=g(g(c.userX-h-c.ox/b,d,k)+c.ox/b,d,k);c.rematrix();this.layout();c.tempVX=e.dx;c.tempVY=0;break;case vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SWIPEABLE_LEFTRIGHT:h=(e.x-c.x-c.ox)/b+c.userX-this.tempX,f=(e.y-c.y-c.oy)/
-b+c.userY-this.tempY,c.userX=g(g(c.userX-h-c.ox/b,d,k)+c.ox/b,d,k),c.userY=g(g(c.userY-f-c.oy/b,q,n)+c.oy/b,q,n),c.rematrix(),this.layout(),c.tempVX=e.dx,c.tempVY=e.dy}};this.swipeEndFunc=function(e){function g(d,k){var q=h.getScale(),n=d[0];d=d[1];var m=k[0];k=k[1];var r=Math.sqrt(m*m+k*k),u=Math.floor(10*r),w=(10*r-u)/10,E=(u+1)*u/2;0<r&&(n-=m/r*(E/10+w*u)*1E3/30/q,d-=k/r*(E/10+w*u)*1E3/30/q);return[n,d]}function c(d,k){var q="unset",n;if(k)for(n of k)if(k=Math.sqrt((d[0]-n[0])**2+(d[1]-n[1])**
-2),"unset"==q||k<q){q=k;var m=n}return m}function b(d,k){var q=k.getScale(),n=Math.max(k.minX+k.w/q,k.maxX)-k.w/q,m=Math.min(k.maxX-k.w/q,k.minX),r=Math.max(k.minY+k.h/q,k.maxY)-k.h/q,u=Math.min(k.maxY-k.h/q,k.minY);if(m<n){var w=n;n=m;m=w}u<r&&(w=r,r=u,u=w);return d[0]-k.ox/q<n||d[0]-k.ox/q>m||d[1]-k.oy/q<r||d[1]-k.oy/q>u}var h=this.viewport;delete this.tempX;delete this.tempY;h.tempDX=0;h.tempDY=0;if(h.snaps&&0<h.snaps.length){e=g([h.userX,h.userY],[h.tempVX,h.tempVY]);var f=c(e,h.snaps);b(e,h)||
-(h.tempDX=f[0]-e[0],h.tempDY=f[1]-e[1])}Z.includes(h)||Z.push(h);h.setRenderFlag(!0)}}layout(){var a=this.viewport;this.convexHull=this.computeHull([a.minX,a.minY,a.minX,a.maxY,a.maxX,a.maxY,a.maxX,a.minY]);this.extendedHulls={};this.boundingBoxes={}}}var C=new ta;var fa=-1,na=0,X=0,W=0,sa=0,t={};const R=15*window.devicePixelRatio;return{initialize:function(a,e,g,c,b){x=a;Q=e;N=g;da=c;ea=b;l=x.getContext("webgl2",{antialias:!0,alpha:!1,desynchronized:!0,preserveDrawingBuffer:!0});var h=l.viewport.bind(l),
-f;l.viewport=function(k,q,n,m){f=[k,q,n,m];h(k,q,n,m)};var d=l.getParameter.bind(l);l.getParameter=function(k){return k==l.VIEWPORT&&f?f:d(k)}},start:function(a){async function e(){if(0==f)B=new AudioContext,f=1;else if(1==f){await B.audioWorklet.addModule("data:application/javascript;base64,"+btoa("\n            class AudioProcessor extends AudioWorkletProcessor {\n              constructor() {\n                super();\n                this.lastClick = 0;\n                this.wave = 0;\n              }\n              process (inputs, outputs, parameters) {\n                const output = outputs[0];\n                output.forEach(channel => {\n                  for (var i = 0; i < channel.length; i++) {\n                    channel[i] =\n                      (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +\n                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +\n                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);\n                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };\n                  }\n                });\n                return true;\n              }\n              static get parameterDescriptors() {\n                return [\n                  {\n                    name: \"windspeed\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"click\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                  {\n                    name: \"beep\",\n                    automationRate: \"a-rate\",\n                    defaultValue: 0,\n                    minValue: 0,\n                    maxValue: 1,\n                  },\n                ];\n              }\n            }\n            registerProcessor('audio-processor', AudioProcessor);\n\t\t\t\t"));
-var d=B.createBufferSource();B.createScriptProcessor(2048);d.start();f=2}else 2==f&&(d=new AudioWorkletNode(B,"audio-processor"),d.connect(B.destination),A=d.parameters.get("click"),ba=d.parameters.get("beep"),la=d.parameters.get("windspeed"),f=3,h=!0)}function g(){Q.style.display="none";N.style.display="none";da.style.display="none";ea.style.display="none"}if(l){var c=l.createShader(l.VERTEX_SHADER);l.shaderSource(c,"\n        attribute vec4 aVertexPosition;\n        uniform vec4 uVertexColor;\n        uniform mat4 uModelViewMatrix;\n        uniform mat4 uProjectionMatrix;\n        varying vec4 v_Color;\n        void main() {\n          gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;\n          v_Color = uVertexColor;\n        }\n\t");
-l.compileShader(c);if(l.getShaderParameter(c,l.COMPILE_STATUS)){var b=l.createShader(l.FRAGMENT_SHADER);l.shaderSource(b,"\n        varying lowp vec4 v_Color;\n        void main() {\n          gl_FragColor = v_Color;\n        }\n\t");l.compileShader(b);if(l.getShaderParameter(b,l.COMPILE_STATUS)&&(z=l.createProgram(),l.attachShader(z,c),l.attachShader(z,b),l.linkProgram(z),l.getProgramParameter(z,l.LINK_STATUS))){ma=l.createBuffer();l.bindBuffer(l.ARRAY_BUFFER,ma);l.vertexAttribPointer(l.getAttribLocation(z,
-"aVertexPosition"),2,l.FLOAT,!1,0,0);l.enableVertexAttribArray(l.getAttribLocation(z,"aVertexPosition"));cum2=[];y.unitLine=cum2.length/2;cum2.splice(cum2.length,0,0,0,1,1);F.unitLine=cum2.length/2-y.unitLine;y.unitSquare=cum2.length/2;cum2.splice(cum2.length,0,1,1,0,1,0,0,1,0);F.unitSquare=cum2.length/2-y.unitSquare;y.roundTouch=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,85*Math.sin(i/18*Math.PI),85*Math.cos(i/18*Math.PI));F.roundTouch=cum2.length/2-y.roundTouch;y.squareTouch=cum2.length/
-2;cum2.splice(cum2.length,0,84.5,84.5,-84.5,84.5,-84.5,-84.5,84.5,-84.5);F.squareTouch=cum2.length/2-y.squareTouch;y.roundMouse=cum2.length/2;for(i=0;36>i;i++)cum2.splice(cum2.length,0,5*Math.sin(i/18*Math.PI),5*Math.cos(i/18*Math.PI));F.roundMouse=cum2.length/2-y.roundMouse;y.squareMouse=cum2.length/2;cum2.splice(cum2.length,0,4.5,4.5,-4.5,4.5,-4.5,-4.5,4.5,-4.5);F.squareMouse=cum2.length/2-y.squareMouse;l.bufferData(l.ARRAY_BUFFER,new Float32Array(cum2),l.STATIC_DRAW);var h=!1,f=0;a&&(C=a);window.addEventListener("resize",
-function(d){oa()},!1);oa();window.requestAnimationFrame(qa);N.addEventListener("keydown",function(d){var k=G;k&&1==d.key.length&&k.limitChars&&!k.limitChars.includes(d.key)&&(d.preventDefault(),aa());k&&1==d.key.length&&k.limitLen&&k.text.length>=k.limitLen&&(d.preventDefault(),aa())},!1);Q.addEventListener("input",function(d){d=G;d.text=Q.value;d.textFunc&&d.textFunc.call(d)},!1);Q.addEventListener("blur",function(d){d=G;Q.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);ha=d;G=void 0},
-!1);N.addEventListener("keydown",function(d){var k=G;k&&1==d.key.length&&k.limitChars&&!k.limitChars.includes(d.key)&&(d.preventDefault(),aa());k&&1==d.key.length&&k.limitLen&&k.text.length>=k.limitLen&&(d.preventDefault(),aa())},!1);N.addEventListener("input",function(d){d=G;d.text=N.value;d.textFunc&&d.textFunc.call(d)},!1);N.addEventListener("blur",function(d){d=G;N.style.display="none";d&&d.textEndFunc&&d.textEndFunc.call(d);ha=d;G=void 0},!1);da.addEventListener("focus",function(d){d=ha;g();
-G=void 0;d&&d.textNextFunc&&d.textNextFunc.call(d)},!1);ea.addEventListener("focus",function(d){d=ha;g();G=void 0;d&&d.textPrevFunc&&d.textPrevFunc.call(d)},!1);x.addEventListener("touchend",function(d){O(d,"touches")},!1);x.addEventListener("pointerdown",function(d){h||e();d.preventDefault();O(d,"down")},!1);x.addEventListener("pointermove",function(d){d.preventDefault();O(d,"move")},!1);x.addEventListener("pointerup",function(d){h||e();d.preventDefault();O(d,"up")},!1);x.addEventListener("contextmenu",
-function(d){d.preventDefault()},!1);x.addEventListener("wheel",function(d){d.preventDefault();O(d,"wheel")},!1);document.addEventListener("keydown",function(d){var k=G;"Enter"==d.key&&k&&k.textNextFunc?(d.preventDefault(),k.textNextFunc.call(k)):k&&k.specialKeys&&k.specialKeys.includes(d.key)?(d.preventDefault(),k.specialFunc&&k.specialFunc.call(k,d)):k&&k.specialCodes&&k.specialCodes.includes(d.code)&&(d.preventDefault(),k.specialFunc&&k.specialFunc.call(k,d))})}}}},setDebugFlags:function(a,e){sa=
-!!a;X=!!e},getContext:function(){return l},getPointerRadius:P,isMouseEnabled:function(){return pa},getInputGad:function(){return G},beginInput:ja,endInput:ia,beep:aa,View:V,ViewDivider:va,ViewSlice:wa,ViewPages:xa,ViewOverlay:ya,ViewMultiverse:za,ViewPicker:ta,Gadget:Y,MatrixGadget:Ba,SwipeGadget:Ca,MiddleDividerGadget:Aa,GAF_CLICKABLE:1,GAF_HOLDABLE:2,GAF_CONTEXTMENU:4,GAF_STRETCHABLE:8,GAF_DRAGGABLE_UPDOWN:16,GAF_DRAGGABLE_LEFTRIGHT:32,GAF_DRAGGABLE:48,GAF_SWIPEABLE_UPDOWN:64,GAF_SWIPEABLE_LEFTRIGHT:128,
-GAF_SWIPEABLE:192,GAF_SCROLLABLE_UPDOWN:256,GAF_SCROLLABLE_LEFTRIGHT:512,GAF_SCROLLABLE:768,GAF_SCALABLE:1024,GAF_ROTATABLE:2048,GAF_PINCHABLE:3072,GAF_NUMINPUT:4096,GAF_TEXTINPUT:8192,GAF_GONEXT:16384,GAF_ALL:3901,HitList:ua,LayoutState:K}}();
+var vp = (function() {
+
+  // set by initialize()
+  var canvas, kbalpha, kbnum, kbnext, kbprev, gl;
+
+  // set by start()
+  const beg2 = {}, len2 = {};
+  var ac, clickSound, beepSound, windSound;
+  var buf2;
+
+  // set by canvasResize()
+  var diagonal, wi2px, px2wi;
+  var layoutSignal; // recalculate all layouts on next frame
+  const layoutViews = []; // specific views to recalculate next frame
+
+  var rootViewport, animViews = [];
+  const pixelPM = mat4.create();
+  var mouseEnabled = 0;
+
+  // for debug purposes
+  var plainProgram;
+	var debug1 = false; // layout and rendering console messages
+
+  const touchRadius = 85, clickRadius = 5;
+  function getPointerRadius() { return (navigator.maxTouchPoints>0 ? touchRadius : clickRadius); }
+  function isMouseEnabled() { return mouseEnabled; }
+  function getContext() { return gl; }
+	const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+	var inputGad, inputGadPrev; function getInputGad() { return inputGad; }
+class HitList {
+  constructor(x,y) {
+    this.x = x; this.y = y;
+    this.hits = []; // { gad: Gadget, dist: number }
+  }
+  sortHits() {
+    var hits = [];
+    while (this.hits.length > 0) {
+      var best = 0, d = this.hits[0].dist, i, bz = this.hits[0].gad.z? this.hits[0].gad.z: 0, z;
+      for (i = 0; i < this.hits.length && (z = this.hits[i].gad.z? this.hits[i].gad.z: 0, 1); i++)
+        if (z > bz || (z == bz && this.hits[i].dist < d)) { best = i; d = this.hits[i].dist; bz = z; }
+      hits.push(this.hits[best]); this.hits.splice(best, 1);
+    }
+    this.hits = hits;
+  }
+  containsAny(actionFlags) {
+    for (var i=0; i<this.hits.length; i++) {
+      if ((this.hits[i].gad.actionFlags & actionFlags) != 0) return true;
+    }
+    return false;
+  }
+  getActionableGads(actionFlags) {
+    var gads = [];
+    for (var i=0; i<this.hits.length; i++) {
+      if ((this.hits[i].gad.actionFlags & actionFlags) != 0) gads.splice(gads.length, 0, this.hits[i].gad);
+    }
+    return gads;
+  }
+  click() {
+    for (var i=0; i<this.hits.length; i++) {
+      if ((this.hits[i].gad.actionFlags & vp.GAF_CLICKABLE) != 0 && this.hits[i].gad.click)
+        this.hits[i].gad.click.call(this.hits[i].gad);
+    }
+  }
+  menu() {
+    for (var i=0; i<this.hits.length; i++) {
+      if ((this.hits[i].gad.actionFlags & vp.GAF_CONTEXTMENU) != 0 && this.hits[i].gad.menu)
+        this.hits[i].gad.menu.call(this.hits[i].gad);
+    }
+  }
+}
+class LayoutState {
+  constructor(width, height) {
+    this.totalWidth = width; this.totalHeight = height;
+    this.remainingX = 0; this.remainingY = 0;
+    this.remainingWidth = width; this.remainingHeight = height;
+  }
+	hasArea() {
+		return this.remainingWidth > 0 && this.remainingHeight > 0;
+	}
+	clear() {
+    this.remainingX = 0; this.remainingY = 0;
+    this.remainingWidth = 0; this.remainingHeight = 0;
+	}
+}
+class View {
+  constructor(parent) {
+		this.name = "unnamed";
+    this.parent = parent;
+    this.designFit = undefined; this.designSize = 0; this.designScale = 0; this.designWidth = 0; this.designHeight = 0;
+    this.x = 0; this.y = 0; this.w = 0; this.h = 0; this.W = 0; this.H = 0;
+    this.userMat = mat4.create(); mat4.identity(this.userMat);
+    this.ox = 0; this.oy = 0; // origin
+    this.userX = 0; this.userY = 0;
+    this.gadgets = [];
+    this.mat = mat4.create();
+    this.needsRender = true; this.childRender = true;
+  }
+  insideFit(w,h) { this.viewScale = (this.w/w < this.h/h)? this.w/w: this.h/h; }
+  layoutAll(s) {
+		if (debug1 && !continuous) console.log(this.name+'::'+this.layoutAll.name);
+    this.x = s.remainingX; this.y = s.remainingY;
+    this.w = s.remainingWidth; this.h = s.remainingHeight;
+    this.W = s.totalWidth; this.H = s.totalHeight;
+    this.viewScale =
+      this.designFit?
+				(this.designFit[0]/this.designFit[1]>this.w/this.h?
+				 this.w/this.designFit[0]:this.h/this.designFit[1]):
+      this.designSize? Math.sqrt(this.w*this.h/this.designSize):
+      this.designScale? this.designScale:// * window.devicePixelRatio:
+      this.designWidth? this.w/this.designWidth:
+      this.designHeight? this.h/this.designHeight:
+      this.parent? this.parent.viewScale: 1;
+    this.rematrix();
+    if (this.layoutFunc) { this.layoutFunc.call(this); this.rematrix(); }
+    this.setRenderFlag(true);
+  }
+  rematrix() {
+    mat4.scale(this.mat, pixelPM, [canvas.width/this.w, canvas.height/this.h, 1]);
+    mat4.multiply(this.mat, this.mat, this.userMat);
+    mat4.translate(this.mat, this.mat, [this.ox, this.oy, 0]);
+    mat4.scale(this.mat, this.mat, [this.getScale(), this.getScale(), 1]);
+    mat4.translate(this.mat, this.mat, [-this.userX, -this.userY, 0]);
+    //this.setRenderFlag(true);
+  }
+  relayout() {
+    var s = new LayoutState();
+    s.totalWidth = this.W; s.totalHeight = this.H;
+    s.remainingX = this.x; s.remainingY = this.y;
+		s.remainingWidth = this.w; s.remainingHeight = this.h;
+    this.layoutAll(s);
+  }
+  getScale() { return this.viewScale; }
+  setRenderFlag(value) {
+    if (this.needsRender) return;
+    this.needsRender = this.needsender || value;
+    this.childRender = true;
+    if (this.parent) this.parent.setRenderFlag(false);
+    if (value && this.a) this.a.setRenderFlag(true);
+    if (value && this.b) this.b.setRenderFlag(true);
+    if (value && this.c) this.c.setRenderFlag(true);
+  }
+  renderAll(clearBackground = true) {
+    this.childRender = false;
+    if (this.needsRender) {
+      this.needsRender = false;
+			if (this.w > 0 && this.h > 0) {
+				if (debug1 && !continuous)
+					console.log(this.name+'::'+this.renderAll.name, this.w, this.h);
+				this.clip();
+		    if (clearBackground) { gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT); }
+		    if (this.renderFunc) { this.renderFunc.call(this); }
+			}
+    }
+  }
+  clip() {
+    gl.viewport(this.x, this.H-this.y-this.h, this.w, this.h);
+    gl.scissor(this.x, this.H-this.y-this.h, this.w, this.h);
+    gl.enable(gl.SCISSOR_TEST);
+  }
+  prepMatrix() {
+    if (vp.projMat && vp.viewMat) {
+      mat4.identity(vp.projMat);
+      mat4.translate(vp.projMat, vp.projMat, [-1, 1, 0]);
+      mat4.scale(vp.projMat, vp.projMat, [2/this.w, -2/this.h, 1]);
+      mat4.identity(vp.viewMat);
+      mat4.scale(vp.viewMat, vp.viewMat, [this.getScale(), this.getScale(), 1]);
+      mat4.translate(vp.viewMat, vp.viewMat, [-this.panX, -this.panY, 0]);
+    }
+  }
+  getHits(hitList, radius) {
+		if (this.w <= 0 || this.h <= 0) return;
+    if (hitList.x < this.x-radius || hitList.y < this.y-radius || hitList.x >= this.x+this.w+radius || hitList.y >= this.y+this.h+radius) return;
+    for (const g of this.gadgets) if (g) g.getHits(hitList, radius); else console.log("Bad gadget", this);
+  }
+}
+class ViewDivider extends View {
+	constructor(parent, type, ratio, dividerSize) {
+		super(parent);
+		this.type = type; this.state = ''; this.stateNew = ''; this.stateProg = 0;
+		this.size = dividerSize;
+		this.ratio = ratio; this.threshold = 1/1;
+		this.ratioMin = {h: 0, v: 0}; this.ratioMax = {h: 1, v: 1};
+		this.a = undefined; this.b = undefined; this.c = undefined;
+		this.prevTime = 0;
+	}
+	layoutAll(s) {
+		super.layoutAll(s);
+		var s1 = new LayoutState(s.totalWidth, s.totalHeight);
+		var s2 = new LayoutState(s.totalWidth, s.totalHeight);
+		var s3 = new LayoutState(s.totalWidth, s.totalHeight);
+		if (s.hasArea()) {
+			var size = ~~(this.size * this.getScale());
+
+			// Horizontal/vertical state init/transitions
+			var oldState = this.stateNew;
+			if (this.stateNew == '') {
+				var wide = (s.remainingWidth / this.threshold > s.remainingHeight)
+					? true : false;
+				if (this.type == 'a') {
+					this.stateNew = wide ? 'v' : 'h';
+				} else {
+					this.stateNew = this.type;
+				}
+				this.state = this.stateNew;
+			}
+			var targetratio = this.ratio;
+			if (this.type == 'a') {
+
+				var delta = 0, thisTime = Date.now();
+				if (this.prevTime != 0) delta = thisTime - this.prevTime;
+				this.prevTime = thisTime;
+				if (delta > 17) delta = 17;
+
+				if (s.remainingWidth / this.threshold > s.remainingHeight + 2)
+					this.stateNew = 'v';
+				if (s.remainingWidth / this.threshold < s.remainingHeight + 2)
+					this.stateNew = 'h';
+				if (this.stateNew != this.state || this.stateProg > 0) {
+					if (this.stateNew != this.state) {
+						this.stateProg += 0.008 * delta;
+						if (this.stateProg >= 1) {
+							this.stateProg = 1;
+							this.state = this.stateNew;
+							if (this.setPoint && this.stateNew in this.setPoint)
+								this.ratio = this.setPoint[this.stateNew];
+						}
+						if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+					} else {
+						this.stateProg -= 0.008 * delta;
+						if (this.stateProg < 0) this.stateProg = 0;
+						if (this.stateProg > 0) {
+							if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+						}
+					}
+				}
+				var stateOther = this.state == 'v'? 'h':'v';
+				if (this.setPoint && stateOther in this.setPoint)
+					targetratio = this.setPoint[stateOther];
+			}
+
+			// View calculations
+			if (this.layoutFunc && this.state != oldState) this.layoutFunc.call(this);
+			var ratio = clamp(this.ratio, this.ratioMin[this.state], this.ratioMax[this.state]);
+			if (ratio != this.ratio) {
+				this.ratio = ratio;
+				if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+			}
+			var f1 = 1 - this.stateProg * (1 - targetratio);
+			var f2 = 1 - this.stateProg * (0 + targetratio);
+			if (this.state == 'v') {
+				var size1 = ~~((s.remainingWidth - size) * this.ratio);
+				s1.remainingWidth = size1;
+				 s1.remainingHeight = ~~(s.remainingHeight * f1);
+					s1.remainingX = s.remainingX; s1.remainingY = s.remainingY;
+				s2.remainingWidth = s.remainingWidth - size - size1;
+				 s2.remainingHeight = ~~(s.remainingHeight * f2);
+					s2.remainingX = s.remainingX + size1 + size;
+					 s2.remainingY = s.remainingY + s.remainingHeight - s2.remainingHeight;
+				s3.remainingX = s.remainingX + size1; s3.remainingY = s.remainingY;
+				 s3.remainingWidth = size; s3.remainingHeight = s.remainingHeight;
+			} else if (this.state == 'h') {
+				var size1 = ~~((s.remainingHeight - size) * this.ratio);
+				s1.remainingWidth = ~~(s.remainingWidth * f1);
+				 s1.remainingHeight = size1;
+					s1.remainingX = s.remainingX; s1.remainingY = s.remainingY;
+				s2.remainingWidth = ~~(s.remainingWidth * f2);
+				 s2.remainingHeight = s.remainingHeight - size - size1;
+					s2.remainingX = s.remainingX + s.remainingWidth - s2.remainingWidth;
+					 s2.remainingY = s.remainingY + size1 + size;
+				s3.remainingX = s.remainingX; s3.remainingY = s.remainingY + size1;
+				 s3.remainingWidth = s.remainingWidth; s3.remainingHeight = size;
+			}
+		} else {
+			s1.clear();
+			s2.clear();
+			s3.clear();
+		}
+		if (this.a) { this.a.layoutAll(s1); }
+		if (this.b) { this.b.layoutAll(s2); }
+		if (this.c) { this.c.layoutAll(s3); }
+		if (this.layoutEndFunc) this.layoutEndFunc.call(this);
+		var ratio = clamp(this.ratio, this.ratioMin[this.state], this.ratioMax[this.state]);
+		if (ratio != this.ratio) {
+			this.ratio = ratio;
+			if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+		}
+	}
+	renderAll() {
+		super.renderAll();
+		if (this.a && (this.a.needsRender || this.a.childRender)) { this.a.renderAll(); }
+		if (this.b && (this.b.needsRender || this.b.childRender)) { this.b.renderAll(); }
+		if (this.c && (this.c.needsRender || this.c.childRender)) { this.c.renderAll(); }
+	}
+	getHits(hitList, radius) {
+		if (this.a) { this.a.getHits(hitList, radius); }
+		if (this.b) { this.b.getHits(hitList, radius); }
+		if (this.c) { this.c.getHits(hitList, radius); }
+	}
+}
+class ViewSlice extends View {
+	constructor(parent, type, size1, size2) {
+		super(parent);
+		this.type = type; this.state = ''; this.stateNew = ''; this.stateProg = 0;
+		this.sizeH = size1; this.sizeV = size2 ? size2 : size1;
+		this.prop = false;
+		this.threshold = 0.5;
+		this.a = undefined; this.b = undefined;
+		this.prevTime = 0;
+		this.wideState = ''; this.tallState = '';
+	}
+	layoutAll(s) {
+		super.layoutAll(s);
+		var s1 = new LayoutState(s.totalWidth, s.totalHeight);
+		var s2 = new LayoutState(s.totalWidth, s.totalHeight);
+		if (s.hasArea()) {
+			var sizeH = ~~(this.sizeH * (this.prop? this.w : this.getScale()));
+			var sizeV = ~~(this.sizeV * (this.prop? this.h : this.getScale()));
+
+			// Horizontal/vertical state init/transitions
+			var oldState = this.stateNew;
+			if (this.stateNew == '') {
+				var wide = (s.remainingWidth * this.threshold
+									> s.remainingHeight * (1 - this.threshold))
+					? true : false;
+				if (this.type == 'tl') {
+					this.wideState = 'l'; this.tallState = 't';
+					this.stateNew = wide ? this.wideState : this.tallState;
+				} else if (this.type == 'tr') {
+					this.wideState = 'r'; this.tallState = 't';
+					this.stateNew = wide ? this.wideState : this.tallState;
+				} else if (this.type == 'bl') {
+					this.wideState = 'l'; this.tallState = 'b';
+					this.stateNew = wide ? this.wideState : this.tallState;
+				} else if (this.type == 'br') {
+					this.wideState = 'r'; this.tallState = 't';
+					this.stateNew = wide ? this.wideState : this.tallState;
+				} else {
+					this.stateNew = this.type;
+				}
+				this.state = this.stateNew;
+			}
+			if (this.type.length > 1) {
+
+				var delta = 0, thisTime = Date.now();
+				if (this.prevTime != 0) delta = thisTime - this.prevTime;
+				this.prevTime = thisTime;
+				if (delta > 17) delta = 17;
+
+				if (s.remainingWidth * this.threshold > s.remainingHeight * (1 - this.threshold) + 2)
+					this.stateNew = this.wideState;
+				if (s.remainingHeight * this.threshold > s.remainingWidth * (1 - this.threshold) + 2)
+					this.stateNew = this.tallState;
+				if (this.stateNew != this.state || this.stateProg > 0) {
+					if (this.stateNew != this.state) {
+						this.stateProg += 0.008 * delta;
+						if (this.stateProg >= 1) {
+							this.stateProg = 1;
+							this.state = this.stateNew;
+						}
+						if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+					} else {
+						this.stateProg -= 0.008 * delta;
+						if (this.stateProg < 0) this.stateProg = 0;
+						if (this.stateProg > 0) {
+							if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+						}
+					}
+				}
+			}
+
+			// View calculations
+			if (this.layoutFunc && this.state != oldState && this.w > 0 && this.h > 0)
+				this.layoutFunc.call(this);
+			var ratio = (this.state == 't' || this.state == 'b')
+								? sizeV / s.remainingWidth
+								: sizeH / s.remainingHeight;
+			var f1 = 1 - this.stateProg * (1 - ratio);
+			var f2 = 1 - this.stateProg * (0 + ratio);
+			if (this.state == 'l') {
+				s1.remainingWidth = sizeV;
+				s1.remainingHeight = ~~(s.remainingHeight * f1);
+				s1.remainingX = s.remainingX;
+				s2.remainingWidth = s.remainingWidth - sizeV;
+				s2.remainingHeight = ~~(s.remainingHeight * f2);
+				s2.remainingX = s.remainingX + sizeV;
+				if (this.tallState == 't') {
+					s1.remainingY = s.remainingY;
+					s2.remainingY = s.remainingY + s.remainingHeight - s2.remainingHeight;
+				} else {
+					s1.remainingY = s.remainingY + s.remainingHeight - s1.remainingHeight;
+					s2.remainingY = s.remainingY;
+				}
+			} else if (this.state == 'r') {
+				s1.remainingWidth = sizeV;
+				s1.remainingHeight = ~~(s.remainingHeight * f1);
+				s1.remainingX = s.remainingX + s.remainingWidth - sizeV;
+				s2.remainingWidth = s.remainingWidth - sizeV;
+				s2.remainingHeight = ~~(s.remainingHeight * f2);
+				s2.remainingX = s.remainingX;
+				if (this.tallState == 't') {
+					s1.remainingY = s.remainingY;
+					s2.remainingY = s.remainingY + s.remainingHeight - s2.remainingHeight;
+				} else {
+					s1.remainingY = s.remainingY + s.remainingHeight - s1.remainingHeight;
+					s2.remainingY = s.remainingY;
+				}
+			} else if (this.state == 't') {
+				s1.remainingWidth = ~~(s.remainingWidth * f1);
+				s1.remainingHeight = sizeH;
+				s1.remainingY = s.remainingY;
+				s2.remainingWidth = ~~(s.remainingWidth * f2);
+				s2.remainingHeight = s.remainingHeight - sizeH;
+				s2.remainingY = s.remainingY + sizeH;
+				if (this.wideState == 'l') {
+					s1.remainingX = s.remainingX;
+					s2.remainingX = s.remainingX + s.remainingWidth - s2.remainingWidth;
+				} else {
+					s1.remainingX = s.remainingX + s.remainingWidth - s1.remainingWidth;
+					s2.remainingX = s.remainingX;
+				}
+			} else if (this.state == 'b') {
+				s1.remainingWidth = ~~(s.remainingWidth * f1);
+				s1.remainingHeight = sizeH;
+				s1.remainingY = s.remainingY + s.remainingHeight - sizeH;
+				s2.remainingWidth = ~~(s.remainingWidth * f2);
+				s2.remainingHeight = s.remainingHeight - sizeH;
+				s2.remainingY = s.remainingY;
+				if (this.wideState == 'l') {
+					s1.remainingX = s.remainingX;
+					s2.remainingX = s.remainingX + s.remainingWidth - s2.remainingWidth;
+				} else {
+					s1.remainingX = s.remainingX + s.remainingWidth - s1.remainingWidth;
+					s2.remainingX = s.remainingX;
+				}
+		  }
+		} else {
+			s1.clear();
+			s2.clear();
+		}
+		if (this.a) { this.a.layoutAll(s1); }
+		if (this.b) { this.b.layoutAll(s2); }
+	}
+	renderAll() {
+		super.renderAll();
+		if (this.a && (this.a.needsRender || this.a.childRender)) { this.a.renderAll(); }
+		if (this.b && (this.b.needsRender || this.b.childRender)) { this.b.renderAll(); }
+	}
+	getHits(hitList, radius) {
+		if (this.a) { this.a.getHits(hitList, radius); }
+		if (this.b) { this.b.getHits(hitList, radius); }
+  }
+/*
+      findGad(s, r) {
+        if (this.a) this.a.findGad(s, r);
+        if (this.b) this.b.findGad(s, r);
+      }
+      findViewport(p) {
+        return (this.a && this.a.findViewport(p)) || (this.b && this.b.findViewport(p));
+      }
+*/
+}
+class ViewPages extends View {
+	constructor(parent, type) {
+		super(parent);
+		this.type = type; this.index = 0; this.indexNew = 0; this.indexProg = 0;
+		this.a = undefined; this.b = undefined;
+		this.pages = [];
+		this.prevTime = 0;
+	}
+	layoutAll(s) {
+		super.layoutAll(s);
+		var s1 = new LayoutState(s.totalWidth, s.totalHeight);
+		var s2 = new LayoutState(s.totalWidth, s.totalHeight);
+		if (s.hasArea()) {
+
+			var delta = 0, thisTime = Date.now();
+			if (this.prevTime != 0) delta = thisTime - this.prevTime;
+			this.prevTime = thisTime;
+			if (delta > 17) delta = 17;
+			var curPage = this.pages[this.index];
+			var otherPage = undefined;
+			this.a = curPage; curPage.parent = this;
+			this.b = undefined;
+			if ((this.userX > 0 && !(this.index + 1 < this.pages.length))
+			||  (this.userX < 0 && !(this.index - 1 >= 0))) {
+				this.userX = 0;
+				//this.tempDX = 0; this.tempDY = 0;
+			}
+			curPage.userX = this.userX;
+			curPage.userY = this.userY;
+			if (curPage.userX > 0 && this.index + 1 < this.pages.length) {
+				otherPage = this.pages[this.index + 1];
+				this.b = otherPage; otherPage.parent = this;
+				otherPage.userX = this.userX - (this.userX?this.w:0);
+				otherPage.userY = this.userY;// + (this.userY?this.h:0);
+//				if (this.actionFlags & vp.GAF_SWIPE_LEFTRIGHT)
+//					otherPage.userX = this.userX + this.width;
+//				else if (this.actionFlags & vp.GAF_SWIPE_UPDOWN)
+//					otherPage.userY = this.userY + this.height;
+			}
+			if (curPage.userX < 0 && this.index - 1 >= 0) {
+				otherPage = this.pages[this.index - 1];
+				this.b = otherPage; otherPage.parent = this;
+				otherPage.userX = this.userX + (this.userX?this.w:0);
+				otherPage.userY = this.userY;// - (this.userY?this.h:0);
+//				if (this.actionFlags & vp.GAF_SWIPE_LEFTRIGHT) {
+//				} else if (this.actionFlags & vp.GAF_SWIPE_UPDOWN) {
+//				}
+			}
+
+
+/*
+			if (this.indexNew != this.index || this.indexProg > 0) {
+				if (this.indexNew != this.index) {
+					this.indexProg += 0.008 * delta;
+					if (this.stateProg >= 1) {
+						this.stateProg = 1;
+						this.state = this.stateNew;
+					}
+					if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+				} else {
+					this.stateProg -= 0.008 * delta;
+					if (this.stateProg < 0) this.stateProg = 0;
+					if (this.stateProg > 0) {
+						if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+					}
+				}
+			}
+*/
+			// View calculations
+			s1.remainingWidth = clamp(s.remainingWidth + curPage.userX,
+				0, s.remainingWidth);
+			s1.remainingHeight = clamp(s.remainingHeight + curPage.userY,
+				0, s.remainingHeight);
+			s1.remainingX = clamp(s.remainingX - curPage.userX,
+				s.remainingX, s.remainingX + s.remainingWidth);
+			s1.remainingY = clamp(s.remainingY - curPage.userY,
+				s.remainingY, s.remainingY + s.remainingHeight);
+console.log('s1', s1, curPage);
+			if (otherPage) {
+				s2.remainingWidth = clamp(s.remainingWidth - otherPage.userX,
+					0, s.remainingWidth);
+				s2.remainingHeight = clamp(s.remainingHeight - otherPage.userY,
+					0, s.remainingHeight);
+				s2.remainingX = clamp(s.remainingX - otherPage.userX,
+					s.remainingX, s.remainingX + s.remainingWidth);
+				s2.remainingY = clamp(s.remainingY - otherPage.userY,
+					s.remainingY, s.remainingY + s.remainingHeight);
+console.log('s2', s2, otherPage);
+			} else {
+				s2.clear();
+			}
+		} else {
+			s1.clear();
+			s2.clear();
+		}
+		if (this.a) { this.a.layoutAll(s1); }
+		if (this.b) { this.b.layoutAll(s2); }
+	}
+	renderAll() {
+		super.renderAll();
+		if (this.a && (this.a.needsRender || this.a.childRender)) { this.a.renderAll(); }
+		if (this.b && (this.b.needsRender || this.b.childRender)) { this.b.renderAll(); }
+	}
+	getHits(hitList, radius) {
+		super.getHits(hitList, radius);
+		if (this.a) { this.a.getHits(hitList, radius); }
+		if (this.b) { this.b.getHits(hitList, radius); }
+  }
+}
+class ViewOverlay extends View {
+  constructor(parent) {
+    super(parent);
+    this.a = undefined; this.b = undefined;
+  }
+  layoutAll(s) {
+    super.layoutAll(s);
+    if (this.layoutFunc) this.layoutFunc.call(this);
+    var s1 = new LayoutState(s.totalWidth, s.totalHeight);
+    var s2 = new LayoutState(s.totalWidth, s.totalHeight);
+    s1.remainingX = s.remainingX; s1.remainingY = s.remainingY;
+    s1.remainingWidth = s.remainingWidth; s1.remainingHeight = s.remainingHeight;
+    s2.remainingX = s.remainingX; s2.remainingY = s.remainingY;
+    s2.remainingWidth = s.remainingWidth; s2.remainingHeight = s.remainingHeight;
+    if (this.a) { this.a.layoutAll(s1); }
+    if (this.b) { this.b.layoutAll(s2); }
+  }
+  setRenderFlag(value) {
+    super.setRenderFlag(true);
+  }
+  renderAll() {
+    super.renderAll();
+    if ((this.a && (this.a.needsRender || this.a.childRender)) || (this.b && (this.b.needsRender || this.b.childRender))) {
+      this.b.renderAll(); this.a.renderAll(false);
+    }
+  }
+  getHits(hitList, radius) {
+    if (this.a) { this.a.getHits(hitList, radius); }
+    if (this.b) { this.b.getHits(hitList, radius); }
+  }
+}
+    class ViewMultiverse extends View {
+      constructor(parent) {
+        super(parent);
+/*
+        var g = this.gadgets = new Gadget(this);
+        g.w = 10; g.h = 1000; //g.f = GF_RELH;
+       // g.convexHull = g.computeHull([0,0, 0,1000, 10,1000, 10,0]);
+        g.click = function() {
+//console.log('click', this);
+        }
+        this.layoutFunc = function() {
+          g.convexHull = g.computeHull([0,0, 0,this.h, 0,this.h, 0,0]);
+        }
+*/
+        var g; this.gadgets.push(g = new Gadget(this));
+        g.w = 10; g.h = 1000; //g.f = GF_RELH;
+        g.convexHull = g.computeHull([50,50, 100,200, 200,200, 200,100]);
+        g.click = function() {
+//console.log('click', this);
+        }
+
+      }
+     // layoutFunc() {
+     // }
+    }
+class ViewPicker extends View {
+  constructor(parent) {
+    super(parent);
+    var g; this.gadgets.push(g = new Gadget(this));
+    g.w = 1000; g.h = 1000;
+    g.convexHull = g.computeHull([0,0, 0,1000, 1000,1000, 1000,0]);
+    g.click = function() {
+//console.log('click', this);
+    }
+  }
+}
+const GF_RELX=1,GF_RELY=2,GF_RELW=4,GF_RELH=8;
+var GAF_CLICKABLE=1,GAF_HOLDABLE=2,GAF_CONTEXTMENU=4,GAF_STRETCHABLE=8,GAF_DRAGGABLE_UPDOWN=16,GAF_DRAGGABLE_LEFTRIGHT=32,GAF_SWIPEABLE_UPDOWN=64,GAF_SWIPEABLE_LEFTRIGHT=128,GAF_SCROLLABLE_UPDOWN=256,GAF_SCROLLABLE_LEFTRIGHT=512,GAF_SCALABLE=1024,GAF_ROTATABLE=2048,GAF_DRAGGABLE=GAF_DRAGGABLE_UPDOWN|GAF_DRAGGABLE_LEFTRIGHT,GAF_SWIPEABLE=GAF_SWIPEABLE_UPDOWN|GAF_SWIPEABLE_LEFTRIGHT,GAF_SCROLLABLE=GAF_SCROLLABLE_UPDOWN|GAF_SCROLLABLE_LEFTRIGHT,GAF_PINCHABLE=GAF_SCALABLE|GAF_ROTATABLE,GAF_ALL=GAF_CLICKABLE|
+GAF_CONTEXTMENU|GAF_STRETCHABLE|GAF_DRAGGABLE|GAF_SCROLLABLE|GAF_PINCHABLE,GAF_NUMINPUT=4096,GAF_TEXTINPUT=8192,GAF_GONEXT=16384;
+class Gadget{constructor(h){this.viewport=h;this.mat=mat4.create();mat4.identity(this.mat);this.H=this.h=this.w=this.y=this.x=0;this.convexHull=[];this.extendedHulls={};this.boundingBoxes={};this.yo=this.xo=0;this.enabled=!0;this.selected=!1;this.actionFlags=0}getHits(h,a){if(this.enabled&&0!=this.convexHull.length){var d=this.viewport,c=vec3.create();mat4.getScaling(c,d.userMat);a=a/d.getScale()/c[0];c=""+a;c in this.extendedHulls||(this.computeExtendedHull(a),this.computeBoundingBox(a));a=this.extendedHulls[c];
+var e=this.boundingBoxes[c];c=1/d.getScale();var b=vec3.create();b[0]=h.x-d.x-this.x/c;b[1]=h.y-d.y-this.y/c;var f=mat4.create();mat4.invert(f,d.userMat);vec3.transformMat4(b,b,f);d=b[0]*c;c*=b[1];if(!(d<e.x1||d>=e.x2||c<e.y1||c>=e.y2)){b=a.length;e=!0;for(f=0;f<b;f+=2){var k=a[f+0];var g=a[f+1];k=(a[(f+2)%b]-k)*(c-g)-(a[(f+3)%b]-g)*(d-k);0>k&&(e=!1)}if(e){b=this.convexHull.length;e=!0;for(f=0;f<b;f+=2)a=this.convexHull[f+0],k=this.convexHull[f+1],k=(this.convexHull[(f+2)%b]-a)*(c-k)-(this.convexHull[(f+
+3)%b]-k)*(d-a),0>k&&(e=!1);a=0;e||(a=this.distToHull(d,c));h.hits.push({gad:this,dist:a})}}}}autoHull(){this.convexHull=this.computeHull([0,0,this.w,0,this.w,this.h,0,this.h]);this.extendedHulls={};this.boundingBoxes={}}computeHull(h){function a(m,p,t,u,x,y){return(t-m)*(y-p)-(u-p)*(x-m)}function d(m){return m*m}function c(m,p,t,u,x,y){var w=d(t-x)+d(u-y);if(0==w)return d(m-t)+d(p-u);w=Math.max(0,Math.min(1,((m-t)*(x-t)+(p-u)*(y-u))/w));u+=w*(y-u);return d(m-(t+w*(x-t)))+d(p-u)}function e(m,p,t,u,
+x,y){if(!(2>p.length)){for(var w=0,z=0,r=0;r<~~(p.length/2);r++){var A=Math.sqrt(c(p[2*r],p[2*r+1],t,u,x,y));A>z&&(z=A,w=r)}z=p[2*w];A=p[2*w+1];p.splice(2*w,2);for(r=0;r<~~(m.length/2);r++)if(m[2*r]==t&&m[2*r+1]==u&&m[(2*r+2)%m.length]==x&&m[(2*r+3)%m.length]==y||m[2*r]==x&&m[2*r+1]==y&&m[(2*r+2)%m.length]==t&&m[(2*r+3)%m.length]==u){m.splice(2*r+2,0,z,A);break}w=[];var B=[];for(r=0;r<~~(p.length/2);r++)0>a(t,u,z,A,p[2*r],p[2*r+1])&&(w[w.length]=p[2*r],w[w.length]=p[2*r+1]),0>a(z,A,x,y,p[2*r],p[2*
+r+1])&&(B[B.length]=p[2*r],B[B.length]=p[2*r+1]);e(m,w,t,u,z,A);e(m,B,z,A,x,y)}}for(var b=[...h],f=[],k=0,g=0,q=b[0],n=b[0],l=0;l<~~(b.length/2);l++)b[2*l]<q&&(q=b[2*l],k=l),b[2*l]>n&&(n=b[2*l],g=l);f[f.length]=b[2*k];f[f.length]=b[2*k+1];f[f.length]=b[2*g];f[f.length]=b[2*g+1];b.splice(2*k,2);g<k?b.splice(2*g,2):b.splice(2*g-2,2);q=[];n=[];for(l=0;l<~~(b.length/2);l++)0>a(h[2*k],h[2*k+1],h[2*g],h[2*g+1],b[2*l],b[2*l+1])?(q[q.length]=b[2*l],q[q.length]=b[2*l+1]):(n[n.length]=b[2*l],n[n.length]=b[2*
+l+1]);e(f,q,h[2*k],h[2*k+1],h[2*g],h[2*g+1]);e(f,n,h[2*g],h[2*g+1],h[2*k],h[2*k+1]);for(h=1;h;)for(l=h=0;l<~~(f.length/2);l++)if(.01>Math.sqrt(c(f[(2*l+2)%f.length],f[(2*l+3)%f.length],f[2*l],f[2*l+1],f[(2*l+4)%f.length],f[(2*l+5)%f.length]))){f.splice(2*l+2,2);h=1;break}return this.sortHull(f)}sortHull(h){function a(n){for(n=Math.atan2(h[n+1]-e,h[n+0]-c)-Math.atan2(g-e,k-c);n>Math.PI;)n-=2*Math.PI;for(;n<-Math.PI;)n+=2*Math.PI;return n}for(var d=[],c=0,e=0,b=h.length,f=0;f<b;f+=2)c+=h[f+0],e+=h[f+
+1];c/=b/2;e/=b/2;for(var k=c+102,g=e+1;0<h.length;){b=0;var q=a(0);for(f=0;f<h.length;f+=2)a(f)<q&&(b=f,q=a(f));d.push(h[b+0]);d.push(h[b+1]);h.splice(b,2)}return d}computeExtendedHull(h){for(var a=[],d=0,c=this.convexHull.length,e=0;e<c;e+=2){var b=this.convexHull[(e+3)%c]-this.convexHull[e+1],f=-(this.convexHull[(e+2)%c]-this.convexHull[e+0]),k=h/Math.sqrt(b*b+f*f);a[d+0]=this.convexHull[e+0]+b*k;a[d+1]=this.convexHull[e+1]+f*k;d+=2;a[d+0]=this.convexHull[(e+2)%c]+b*k;a[d+1]=this.convexHull[(e+
+3)%c]+f*k;d+=2}for(e=0;e<c;e+=2){b=this.convexHull[(e+2)%c]-this.convexHull[e+0];f=this.convexHull[(e+3)%c]-this.convexHull[e+1];d=this.convexHull[(e-2+c)%c]-this.convexHull[e+0];var g=this.convexHull[(e-1+c)%c]-this.convexHull[e+1];k=Math.sqrt(b*b+f*f);g=Math.tan((Math.PI-Math.acos((b*d+f*g)/(k*Math.sqrt(d*d+g*g))))/4)*h;d=2*e;b=a[d+0]-a[d+2];f=a[d+1]-a[d+3];k=Math.sqrt(b*b+f*f);b=b*(k+g)/k;f=f*(k+g)/k;a[d+0]=b+a[d+2];a[d+1]=f+a[d+3];d=(e-2+c)%c*2;b=a[d+2]-a[d+0];f=a[d+3]-a[d+1];k=Math.sqrt(b*b+
+f*f);b=b*(k+g)/k;f=f*(k+g)/k;a[d+2]=b+a[d+0];a[d+3]=f+a[d+1]}this.extendedHulls[""+h]=a}computeBoundingBox(h){this.boundingBoxes[""+h]={};var a=this.extendedHulls[""+h];h=this.boundingBoxes[""+h];if(!(2>a.length)){h.x1=a[0];h.x2=a[0];h.y1=a[1];h.y2=a[1];for(var d=2;d<a.length;d+=2)a[d+0]<h.x1&&(h.x1=a[d+0]),a[d+0]>h.x2&&(h.x2=a[d+0]),a[d+1]<h.y1&&(h.y1=a[d+1]),a[d+1]>h.y2&&(h.y2=a[d+1])}}distToHull(h,a){function d(g){return g*g}function c(g,q,n,l,m,p){var t=d(n-m)+d(l-p);if(0==t)return d(g-n)+d(q-
+l);t=Math.max(0,Math.min(1,((g-n)*(m-n)+(q-l)*(p-l))/t));l+=t*(p-l);return d(g-(n+t*(m-n)))+d(q-l)}for(var e=this.convexHull,b=Math.sqrt(c(h,a,e[0],e[1],e[2],e[3])),f=2;f<e.length;f+=2){var k=Math.sqrt(c(h,a,e[f+0],e[f+1],e[(f+2)%e.length],e[(f+3)%e.length]));k<b&&(b=k)}return b}}
+class MiddleDividerGadget extends Gadget{constructor(h){super(h);this.dragBeginFunc=function(a){this.tempX=a.ox-this.viewport.x;this.tempY=a.oy-this.viewport.y};this.dragMoveFunc=function(a){var d=this.viewport.parent,c="h"==d.state,e=c?a.y-this.tempY-d.a.y:a.x-this.tempX-d.a.x;d.ratio=Math.max(0,Math.min(1,e/(e+(c?d.y+d.h-(a.y-this.tempY+this.viewport.h):d.x+d.w-(a.x-this.tempX+this.viewport.w)))));d.setPoint||(d.setPoint={});d.setPoint[d.state]=d.ratio;-1===layoutViews.indexOf(this.viewport.parent)&&
+layoutViews.push(this.viewport.parent)};this.dragEndFunc=function(a){delete this.tempX;delete this.tempY}}layout(){var h=this.viewport,a=h.getScale(),d=h.parent.size,c="h"==h.parent.state;var e=c?Math.max(1,h.w)/a:d;h=c?d:Math.max(1,h.h)/a;this.actionFlags=c?vp.GAF_DRAGGABLE_UPDOWN:vp.GAF_DRAGGABLE_LEFTRIGHT;this.convexHull=this.computeHull([0,0,0,h,e,h,e,0]);this.extendedHulls={};this.boundingBoxes={}}}
+class MatrixGadget extends Gadget{getTargetMat(){return this.targetGad?this.targetGad.mat:this.targetView.userMat}constructor(h){super(h);this.targetView=h;this.targetGad=void 0;this.dragBeginFunc=function(a){var d=this.targetView;this.grab1b=vec3.create();this.grab1b[0]=a.x-d.x;this.grab1b[1]=a.y-d.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,d.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(this.grab1b,
+this.grab1b,a);this.targetGad&&(a=mat4.create(),mat4.invert(a,this.grabMat),vec3.transformMat4(this.grab1b,this.grab1b,a))};this.dragMoveFunc=function(a){var d=this.targetView,c=vec3.create();c[0]=a.x-d.x;c[1]=a.y-d.y;a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(c,c,a);this.targetGad&&(a=mat4.create(),mat4.invert(a,this.grabMat),vec3.transformMat4(c,c,a));a=vec3.create();vec3.subtract(a,c,this.grab1b);this.targetGad&&vec3.scale(a,a,1/d.getScale());mat4.translate(this.getTargetMat(),
+this.grabMat,a);d.rematrix();d.setRenderFlag(!0)};this.dragEndFunc=function(a){a=this.targetView;delete this.grab1b;delete this.viewMat;delete this.grabMat;a.setRenderFlag(!0)};this.pinchBeginFunc=function(a,d){var c=this.targetView;this.grab1=vec3.create();this.grab1[0]=a.x-c.x;this.grab1[1]=a.y-c.y;this.grab2=vec3.create();this.grab2[0]=d.x-c.x;this.grab2[1]=d.y-c.y;this.viewMat=mat4.create();mat4.copy(this.viewMat,c.userMat);this.grabMat=mat4.create();mat4.copy(this.grabMat,this.getTargetMat());
+this.grabC=vec3.create();this.grab1b=vec3.create();vec3.copy(this.grab1b,this.grab1);this.grab2b=vec3.create();vec3.copy(this.grab2b,this.grab2);this.grabCb=vec3.create();a=mat4.create();mat4.invert(a,this.viewMat);vec3.transformMat4(this.grab1b,this.grab1b,a);vec3.transformMat4(this.grab2b,this.grab2b,a);this.targetGad&&(a=mat4.create(),mat4.copy(a,this.grabMat),vec3.transformMat4(this.grab1b,this.grab1b,a),vec3.transformMat4(this.grab2b,this.grab2b,a));for(a=0;3>a;a++)this.grabC[a]=(this.grab1[a]+
+this.grab2[a])/2,this.grabCb[a]=(this.grab1b[a]+this.grab2b[a])/2;a=this.grab2[0]-this.grab1[0];d=this.grab2[1]-this.grab1[1];this.grabA=Math.atan2(d,a);this.grabM=Math.sqrt(a*a+d*d)};this.pinchMoveFunc=function(a,d){var c=this.targetView,e=vec3.create();e[0]=a.x-c.x;e[1]=a.y-c.y;a=vec3.create();a[0]=d.x-c.x;a[1]=d.y-c.y;var b=vec3.create(),f=vec3.create(),k=vec3.create();d=vec3.create();vec3.copy(f,e);vec3.copy(k,a);var g=mat4.create();mat4.invert(g,this.viewMat);vec3.transformMat4(f,f,g);vec3.transformMat4(k,
+k,g);this.targetGad&&(g=mat4.create(),mat4.copy(g,this.grabMat),vec3.transformMat4(f,f,g),vec3.transformMat4(k,k,g));for(g=0;3>g;g++)b[g]=(e[g]+a[g])/2,d[g]=(f[g]+k[g])/2;b=a[0]-e[0];a=a[1]-e[1];e=Math.atan2(a,b);a=Math.sqrt(b*b+a*a);b=mat4.create();mat4.copy(b,this.grabMat);this.targetGad?(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(b,b,[d[0]/c.getScale(),d[1]/c.getScale(),0]):mat4.translate(b,b,[this.grabCb[0]/c.getScale(),this.grabCb[1]/c.getScale(),0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(b,
+b,[a/this.grabM,a/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(b,b,e-this.grabA,[0,0,1]),mat4.translate(b,b,[-this.grabCb[0]/c.getScale(),-this.grabCb[1]/c.getScale(),0])):(this.actionFlags&vp.GAF_DRAGGABLE?mat4.translate(b,b,[d[0],d[1],0]):mat4.translate(b,b,[this.grabCb[0],this.grabCb[1],0]),this.actionFlags&vp.GAF_SCALABLE&&mat4.scale(b,b,[a/this.grabM,a/this.grabM,1]),this.actionFlags&vp.GAF_ROTATABLE&&mat4.rotate(b,b,e-this.grabA,[0,0,1]),mat4.translate(b,b,[-this.grabCb[0],
+-this.grabCb[1],0]));c.rematrix();c.setRenderFlag(!0);mat4.copy(this.getTargetMat(),b)};this.pinchEndFunc=function(a,d){delete this.grab1;delete this.grab1b;delete this.grab2;delete this.grab2b;delete this.grabC;delete this.grabCb;delete this.grabA;delete this.grabM;delete this.grabMat};this.zoomFunc=function(a,d){const c=this.targetView,e=this.getTargetMat(),b=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(b[0]=a.x-c.x,b[1]=a.y-c.y):mat4.getTranslation(b,e);a=mat4.create();mat4.invert(a,e);vec3.transformMat4(b,
+b,a);mat4.translate(e,e,[b[0],b[1],0]);mat4.scale(e,e,[Math.exp(d/10),Math.exp(d/10),1]);mat4.translate(e,e,[-b[0],-b[1],0]);c.rematrix();c.setRenderFlag(!0)};this.rotateFunc=function(a,d){const c=this.targetView,e=this.getTargetMat(),b=vec3.create();this.actionFlags&vp.GAF_DRAGGABLE?(b[0]=a.x-c.x,b[1]=a.y-c.y):mat4.getTranslation(b,e);a=mat4.create();mat4.invert(a,e);vec3.transformMat4(b,b,a);mat4.translate(e,e,[b[0],b[1],0]);mat4.rotate(e,e,-Math.PI/18*d,[0,0,1]);mat4.translate(e,e,[-b[0],-b[1],
+0]);c.rematrix();c.setRenderFlag(!0)}}getHits(h,a){this.enabled&&(0==this.convexHull.length?h.hits.push({gad:this,dist:0}):super.getHits(h,a))}layout(){v=this.viewport;console.log("MatrixGadget::layout()")}}
+class SwipeGadget extends Gadget{constructor(h){super(h);this.actionFlags=vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SCROLLABLE_UPDOWN;this.swipeBeginFunc=function(a){console.log("swipeBegin");var d=this.viewport,c=d.getScale();this.tempX=(a.ox-d.x-d.ox)/c+d.userX;this.tempY=(a.oy-d.y-d.oy)/c+d.userY};this.swipeMoveFunc=function(a){console.log("swipeMove");const d=(l,m,p)=>Math.min(Math.max(l,m),p);var c=this.viewport,e=c.getScale(),b=0,f=0,k=c.minX,g=Math.max(c.maxX-c.w/e,k),q=c.minY,n=Math.max(c.maxY-c.h/e,
+q);switch(this.actionFlags&vp.GAF_SWIPEABLE){case vp.GAF_SWIPEABLE_UPDOWN:f=(a.y-c.y-c.oy)/e+c.userY-this.tempY;c.userY=d(d(c.userY-f-c.oy/e,q,n)+c.oy/e,q,n);c.rematrix();this.layout();c.tempVX=0;c.tempVY=a.dy;break;case vp.GAF_SWIPEABLE_LEFTRIGHT:b=(a.x-c.x-c.ox)/e+c.userX-this.tempX;c.userX=d(d(c.userX-b-c.ox/e,k,g)+c.ox/e,k,g);console.log(c.userX);c.rematrix();this.layout();c.tempVX=a.dx;c.tempVY=0;break;case vp.GAF_SWIPEABLE_UPDOWN|vp.GAF_SWIPEABLE_LEFTRIGHT:b=(a.x-c.x-c.ox)/e+c.userX-this.tempX,
+f=(a.y-c.y-c.oy)/e+c.userY-this.tempY,c.userX=d(d(c.userX-b-c.ox/e,k,g)+c.ox/e,k,g),c.userY=d(d(c.userY-f-c.oy/e,q,n)+c.oy/e,q,n),c.rematrix(),this.layout(),c.tempVX=a.dx,c.tempVY=a.dy}};this.swipeEndFunc=function(a){function d(k,g){var q=b.getScale(),n=k[0];k=k[1];var l=g[0];g=g[1];var m=Math.sqrt(l*l+g*g);var p=Math.floor(10*m);var t=(10*m-p)/10,u=(p+1)*p/2;0<m&&(n-=l/m*(u/10+t*p)*1E3/30/q,k-=g/m*(u/10+t*p)*1E3/30/q);return[n,k]}function c(k,g){var q="unset",n;if(g)for(n of g)if(g=Math.sqrt((k[0]-
+n[0])**2+(k[1]-n[1])**2),"unset"==q||g<q){q=g;var l=n}return l}function e(k,g){var q=g.getScale(),n=Math.max(g.minX+g.w/q,g.maxX)-g.w/q,l=Math.min(g.maxX-g.w/q,g.minX),m=Math.max(g.minY+g.h/q,g.maxY)-g.h/q,p=Math.min(g.maxY-g.h/q,g.minY);if(l<n){var t=n;n=l;l=t}p<m&&(t=m,m=p,p=t);return k[0]-g.ox/q<n||k[0]-g.ox/q>l||k[1]-g.oy/q<m||k[1]-g.oy/q>p}console.log("swipeEnd");var b=this.viewport;delete this.tempX;delete this.tempY;b.tempDX=0;b.tempDY=0;if(b.snaps&&0<b.snaps.length){a=d([b.userX,b.userY],
+[b.tempVX,b.tempVY]);var f=c(a,b.snaps);e(a,b)||(b.tempDX=f[0]-a[0],b.tempDY=f[1]-a[1])}animViews.includes(b)||animViews.push(b);b.setRenderFlag(!0)}}layout(){var h=this.viewport;this.convexHull=this.computeHull([h.minX,h.minY,h.minX,h.maxY,h.maxX,h.maxY,h.maxX,h.minY]);this.extendedHulls={};this.boundingBoxes={}}};
+function endInput() {
+	if (!inputGad) return;
+	var g = inputGad;
+	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
+	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
+	el.blur();
+	el.style.display = 'none';
+	inputGad = undefined;
+}
+
+function beginInput(g) {
+	endInput();
+	inputGad = g;
+	if (g.textBeginFunc) g.textBeginFunc.call(g);
+	if (g.actionFlags & vp.GAF_GONEXT) {
+		kbnext.style.display = 'inline';
+		kbprev.style.display = 'inline';
+	}
+	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
+	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
+	el.value = g.text;
+	el.style.display = 'inline';
+	el.focus();
+	el.select();
+}
+
+  function useProg() {
+    gl.useProgram(plainProgram);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+    var a = gl.getAttribLocation(plainProgram, 'aVertexPosition')
+    gl.vertexAttribPointer(
+	a,
+	2, // numComponents
+	gl.FLOAT, // type
+	false, // normalize
+	0, // stride
+	0); // offset
+    gl.enableVertexAttribArray(a);
+  }
+
+
+rootViewport = new ViewPicker();
+var refresherTimeStamp = -1, refresherFrame = 0;
+var v=0, continuous=0, nframes=0, showdebug=0;
+function refresher(timeStamp) {
+	if (timeStamp != refresherTimeStamp) {
+		var delta=0;
+		if (refresherTimeStamp > 0) delta = timeStamp - refresherTimeStamp;
+		refresherTimeStamp = timeStamp;
+
+//if (delta < 10) console.log(delta);
+
+		const todoViews = [];
+		while (lv = layoutViews.pop()) todoViews.push(lv);
+		if (layoutSignal) {
+			layoutSignal = false;
+			gl.viewport(0, 0, canvas.width, canvas.height);
+			mat4.identity(pixelPM);
+			mat4.translate(pixelPM, pixelPM, [-1, 1, 0]);
+			mat4.scale(pixelPM, pixelPM, [2/canvas.width, -2/canvas.height, 1]);
+			if (rootViewport) {
+				var s = new vp.LayoutState(canvas.width, canvas.height);
+				rootViewport.layoutAll(s);
+			}
+		} else while (lv = todoViews.pop()) lv.relayout();
+
+      if (nframes) {
+				nframes -= 1;
+				if (!nframes) rootViewport.setRenderFlag(true);
+			}
+      if (continuous) rootViewport.setRenderFlag(true);
+      if (rootViewport && (rootViewport.needsRender || rootViewport.childRender)) {
+        //gl.viewport(0, 0, canvas.width, canvas.height);
+        //gl.disable(gl.SCISSOR_TEST);
+        //gl.clearColor(v,0,0,1); v+=delta*0.001; if(v>1) v=0;
+        //gl.clear(gl.COLOR_BUFFER_BIT);
+
+
+        var windspeed = 0;
+        for (const [key, pointer] of Object.entries(pointers)) {
+          pointer.dx = (pointer.x - pointer.px)/delta; pointer.px = pointer.x;
+          pointer.dy = (pointer.y - pointer.py)/delta; pointer.py = pointer.y;
+          windspeed += Math.sqrt(pointer.dx*pointer.dx + pointer.dy*pointer.dy)/diagonal;
+        }
+        if (windSound) windSound.setValueAtTime(windspeed, ac.currentTime);
+
+        var todo = [], i = 0;
+        for (const a of animViews) {
+          var s = a.getScale();
+					var minX = a.minX, maxX = Math.max(a.maxX - a.w/s, minX);
+					var minY = a.minY, maxY = Math.max(a.maxY - a.h/s, minY);
+          //var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
+          //var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
+          //if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
+          //if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
+          if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
+            var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
+            var fy = Math.sign(a.tempDY) * Math.min(10, Math.abs(a.tempDY));
+            a.tempDX = Math.sign(a.tempDX) * Math.max(0, Math.abs(a.tempDX) - 10);
+            a.tempDY = Math.sign(a.tempDY) * Math.max(0, Math.abs(a.tempDY) - 10);
+            a.userX = clamp(a.userX - (a.tempVX * 1000/30 / s - fx), minX, maxX);
+            a.userY = clamp(a.userY - (a.tempVY * 1000/30 / s - fy), minY, maxY);
+            //a.userX -= a.tempVX * 1000/30 / s - fx;
+            //a.userY -= a.tempVY * 1000/30 / s - fy;
+            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
+							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
+							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
+              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
+              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+              todo.push(i); delete a.tempVX; delete a.tempVY;
+            } else {
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+              var m = Math.sqrt(a.tempVX*a.tempVX + a.tempVY*a.tempVY);
+              var n = Math.max(0, m - 0.1);
+              if (m != 0) {
+                a.tempVX = a.tempVX / m * n;
+                a.tempVY = a.tempVY / m * n;
+              }
+            }
+          } else {
+            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
+							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
+							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
+              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
+              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
+              a.rematrix(); a.relayout(); a.setRenderFlag(true);
+            }
+            todo.push(i); delete a.tempVX; delete a.tempVY;
+          }
+          i++;
+        }
+
+				if (debug1 && !continuous) {
+					if (nframes)
+						console.log('rootViewport.renderAll()', nframes? 'n = '+nframes:'');
+					else
+						console.log('rootViewport.renderAll()');
+				}
+        rootViewport.renderAll();
+        while (todo.length) {
+          animViews.splice(todo.pop(), 1);
+        }
+        if (animViews.length > 0) rootViewport.setRenderFlag(true);
+
+if (showdebug) {
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.disable(gl.SCISSOR_TEST);
+        useProg();
+        gl.enable(gl.BLEND);
+
+        gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([1, 1, 1, 1]));
+        gl.uniformMatrix4fv(gl.getUniformLocation(plainProgram, 'uProjectionMatrix'), false, pixelPM);
+
+        const mat = mat4.create();
+
+        if (continuous) {
+
+        // Get a list of active gadgets.
+        var gads = [];
+        for (const [key, pointer] of Object.entries(pointers)) if (pointer.hitList) {
+          var gs = pointer.hitList.getActionableGads(vp.GAF_ALL);
+          for (const g of gs) {
+            if (!gads.includes(g)) gads.push(g);
+          }
+        }
+
+        // Show active gadgets.
+        for (const g of gads) {
+          /*
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [g.x, g.y, 0]);
+          mat4.scale(mat, mat, [g.w, g.h, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+          */
+          if (g.ownedBy) switch (g.gestureState) {
+          //case 'begin-tap':
+          //case 'begin-click':
+          //case 'recover-click':
+          //case 'drag':
+          default:
+            var h = g.convexHull;
+            for (p = 0; p < h.length; p += 2) {
+              mat4.fromTranslation(mat, [g.viewport.x, g.viewport.y, 0]);
+              mat4.mul(mat, mat, g.viewport.userMat);
+             // mat4.translate(mat, mat, [g.viewport.x + g.viewport.ox, g.viewport.y + g.viewport.oy, 0]);
+              mat4.scale(mat, mat, [g.viewport.getScale(), g.viewport.getScale(), 1]);
+              mat4.translate(mat, mat, [g.x+h[p+0] - g.viewport.userX, g.y+h[p+1] - g.viewport.userY, 0]);
+              mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 1]);
+              gl.uniformMatrix4fv(
+                gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+                false, mat);
+              gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
+            }
+            var matS = vec3.create(); mat4.getScaling(matS, g.viewport.userMat);
+/*
+            for (const k in g.extendedHulls) if (k == ''+(getPointerRadius()/g.viewport.getScale()/matS[0])) {
+              var h=g.extendedHulls[k];
+              for (p = 0; p < h.length; p += 2) {
+                mat4.fromTranslation(mat, [g.viewport.x, g.viewport.y, 0]);
+                mat4.mul(mat, mat, g.viewport.userMat);
+              //  mat4.translate(mat, mat, [g.viewport.x + g.viewport.ox, g.viewport.y + g.viewport.oy, 0]);
+                mat4.scale(mat, mat, [g.viewport.getScale(), g.viewport.getScale(), 1]);
+                mat4.translate(mat, mat, [g.x+h[p+0] - g.viewport.userX, g.y+h[p+1] - g.viewport.userY, 0]);
+                mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);
+                gl.uniformMatrix4fv(
+                  gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+                  false, mat);
+                gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
+              }
+            }
+*/
+            break;
+          }
+
+        }
+
+        for (const [key, pointer] of Object.entries(pointers)) {
+          // pointer circle
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [pointer.x, pointer.y, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          if (pointer.e.pointerType == 'mouse') {
+            gl.drawArrays(gl.LINE_LOOP, beg2.roundMouse, len2.roundMouse);
+          } else {
+            gl.drawArrays(gl.LINE_LOOP, beg2.roundTouch, len2.roundTouch);
+          }
+        }
+
+
+        } // continuous
+
+          refresherFrame = (refresherFrame + 1) % 16;
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [160, 45, 0]);
+          mat4.rotate(mat, mat, Math.PI/8 * refresherFrame, [0, 0, 1]);
+          mat4.scale(mat, mat, [40, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [10, 10, 0]);
+          mat4.scale(mat, mat, [50, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [10, 25, 0]);
+          mat4.scale(mat, mat, [50 * window.visualViewport.scale, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [10, 40, 0]);
+          mat4.scale(mat, mat, [50 * window.devicePixelRatio, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [10, 55, 0]);
+          mat4.scale(mat, mat, [50 * window.innerWidth/1000, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+        for (const [key, p] of Object.entries(pointers)) {
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [12, 57, 0]);
+          mat4.scale(mat, mat, [46 * p.x/wi2px/1000, 6, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+        }
+
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [10, 70, 0]);
+          mat4.scale(mat, mat, [50 * window.innerHeight/1000, 10, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+        for (const [key, p] of Object.entries(pointers)) {
+          mat4.identity(mat);
+          mat4.translate(mat, mat, [12, 72, 0]);
+          mat4.scale(mat, mat, [46 * p.y/wi2px/1000, 6, 0]);
+          gl.uniformMatrix4fv(
+            gl.getUniformLocation(plainProgram, 'uModelViewMatrix'),
+            false, mat);
+          gl.drawArrays(gl.LINE_LOOP, beg2.unitSquare, len2.unitSquare);
+        }
+
+}
+
+
+
+      }
+	} // refresher time stamp changed
+	window.requestAnimationFrame(refresher);
+};
+
+function resizeCanvas() {
+	if (debug1) console.log('resizeCanvas()');
+	nframes = 10;
+	var w = window.innerWidth, h = window.innerHeight;
+	if (1) {
+		canvas.width = w * window.visualViewport.scale * window.devicePixelRatio;
+		canvas.height = h * window.visualViewport.scale * window.devicePixelRatio;
+		canvas.style.width = w * window.visualViewport.scale;
+		canvas.style.height = h * window.visualViewport.scale;
+	}
+	diagonal = Math.sqrt(canvas.width*canvas.width + canvas.height*canvas.height);
+	wi2px = window.visualViewport.scale * window.devicePixelRatio;
+	px2wi = 1/wi2px;
+	layoutSignal = true;
+	if (rootViewport.resizeFunc) rootViewport.resizeFunc.call(rootViewport);
+}
+
+  var pointers = {};
+  const TAP_WINDOW = 250; // ms
+  const TAP_WIGGLE = 15 * window.devicePixelRatio;
+  function eventHandler(e, action) {
+
+    var index;
+
+		// Helper: On commitment to drag, disown ambiguously selected click gadgets.
+		function DisownAllOtherGads(p, g) {
+      for (const o of p.hitList.hits) if (o.gad !== g) {
+				if (o.gad.ownedBy == index) {
+					o.gad.gestureState = o.gad.gestureState + '-disowned';
+					o.gad.viewport.setRenderFlag(true);
+          delete o.gad.ownedBy;
+				}
+			}
+    }
+
+    if (action == 'touches' && e.touches && e.touches.length == 0) {
+   //   window.speechSynthesis.speak(new SpeechSynthesisUtterance(' '+e.touches.length));
+      var toDel = [];
+      for (const [key, p] of Object.entries(pointers)) p.tempIsActive = !!(p.e.pointerType == 'mouse');
+   //   for (var i = 0; i < e.touches.length; i++) if (pointers['p-'+e.touches[i].identifier]) pointers['p-'+e.touches[i].identifier].tempIsActive = 1;
+      for (const [key, p] of Object.entries(pointers)) if (!p.tempIsActive) toDel.push(key);
+      while (toDel.length) delete pointers[toDel.pop()];
+      for (const [key, p] of Object.entries(pointers)) delete p.tempIsActive;
+      return;
+    }
+    if (wi2px != window.visualViewport.scale * window.devicePixelRatio) resizeCanvas();
+var speak = 0;
+    index = 'p-'+e.pointerId;
+/*
+    var numTouches;
+    var touches = [];
+    function recalc() {
+      var n = 0, t = [];
+      for (const [key, pointer] of Object.entries(pointers)) {
+        if (pointer.touching && pointer.e.pointerType!='mouse') { t[n] = pointer; n += 1; }
+      }
+      numTouches = n;
+      touches = t;
+    }
+*/
+    var dir;
+    function calcSwipeDir(p) {
+      xdiff = p.x - p.ox;
+      ydiff = p.y - p.oy;
+      if (xdiff*xdiff > ydiff*ydiff) {
+        if (xdiff > 0) return 'right'; else return 'left';
+      } else {
+        if (ydiff > 0) return 'down'; else return 'up';
+      }
+    }
+    var p, hl;
+    switch (action) {
+    case 'down':
+			endInput();
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: false, px: e.layerX * wi2px, py: e.layerY * wi2px };
+      p = pointers[index]; p.e = e; p.touching = true;
+      p.x = e.layerX * wi2px;
+      p.y = e.layerY * wi2px;
+      p.ox = p.x;
+      p.oy = p.y;
+    //  recalc();
+      p.hitList = new vp.HitList(p.x, p.y);
+      rootViewport.getHits(p.hitList, getPointerRadius());
+      p.hitList.sortHits();
+      if (e.pointerType=='mouse') {
+        if ((e.buttons | 1)==1) {
+          for (const h of p.hitList.hits) {
+            const g = h.gad;
+            if (!g.ownedBy && !!(g.actionFlags & vp.GAF_CLICKABLE)) {
+              g.gestureState = 'begin-click'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+            }
+            if (!g.ownedBy && !!(g.actionFlags & vp.GAF_DRAGGABLE)) {
+              g.gestureState = 'begin-drag'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+            }
+            if (!g.ownedBy && !!(g.actionFlags & (vp.GAF_NUMINPUT | vp.GAF_TEXTINPUT))) {
+              g.gestureState = 'begin-input'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+            }
+            g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'drag time reached');
+          }
+        }
+        if ((e.buttons | 2)==2) {
+          for (const h of p.hitList.hits) {
+            const g = h.gad;
+            if (!g.ownedBy && !!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
+              g.gestureState = 'begin-menu'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+console.log('menu down');
+            }
+          }
+        }
+      } else { // not mouse (down)
+        for (const h of p.hitList.hits) {
+          const g = h.gad;
+          if (!g.ownedBy) {
+            if (!!(g.actionFlags & vp.GAF_CLICKABLE)) {
+              g.gestureState = 'begin-tap'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureBeginTime = e.timeStamp;
+              if ((g.actionFlags & (
+								vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE)) != 0) {
+                g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap hold'));
+              } else
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '+g.actionFlags));
+            } else if (!!(g.actionFlags & (vp.GAF_NUMINPUT | vp.GAF_TEXTINPUT))) {
+              g.gestureState = 'begin-input'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureBeginTime = e.timeStamp;
+            } else if (!!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
+              g.gestureState = 'begin-menu'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
+            } else if (!!(g.actionFlags & vp.GAF_HOLDABLE)) {
+              g.gestureState = 'begin-hold'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
+            } else if (!!(g.actionFlags & vp.GAF_DRAGGABLE)) {
+              g.gestureState = 'begin-drag'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'drag time reached');
+            } else if (!!(g.actionFlags & vp.GAF_SWIPEABLE)) {
+              g.gestureState = 'begin-swipe'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+ // if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin swipe'));
+            } else if (!!(g.actionFlags & vp.GAF_PINCHABLE)) {
+              g.gestureState = 'await-pinch'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+            }
+          } else if (g.ownedBy != index) {
+            if (g.gestureState == 'await-pinch' || (!!(g.actionFlags & vp.GAF_PINCHABLE) && (g.gestureState == 'begin-drag' || g.gestureState == 'begin-tap'))) {
+              g.gestureState = 'pinch'; g.secondTouch = index;
+              g.viewport.setRenderFlag(true);
+              if (g.pinchBeginFunc) g.pinchBeginFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
+            } else if (g.gestureState == 'drag' && !!(g.actionFlags & vp.GAF_PINCHABLE)) {
+              g.gestureState = 'pinch'; g.secondTouch = index;
+              g.viewport.setRenderFlag(true);
+              if (g.dragEndFunc) g.dragEndFunc.call(g, pointers[g.ownedBy]);
+              if (g.pinchBeginFunc) g.pinchBeginFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
+            }
+          }
+        }
+      }
+      break;
+    case 'move':
+      if (!mouseEnabled && e.pointerType=='mouse') { mouseEnabled = 1; if (rootViewport.enableMouse) rootViewport.enableMouse.call(rootViewport); }
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: e.pointerType=='mouse'?'hover':'', touching: e.pointerType=='mouse'?false:true };
+      p = pointers[index]; p.e = e;
+      p.px = p.x; p.x = e.layerX * wi2px;
+      p.py = p.y; p.y = e.layerY * wi2px;
+      if (e.pointerType=='mouse') {
+        if (p.hitList) for (const h of p.hitList.hits) {
+          const g = h.gad;
+          if (g.ownedBy == index) {
+            switch (g.gestureState) {
+            case 'begin-click':
+            case 'recover-click':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-click';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-input':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-input';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+              }
+              break;
+            case 'abandon-click':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length != 0) {
+                g.gestureState = 'recover-click';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'abandon-hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length != 0) {
+                g.gestureState = 'hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+              }
+              break;
+            case 'begin-drag':
+              dir = calcSwipeDir(p);
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
+                  || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
+                  g.gestureState = 'drag';
+                  g.viewport.setRenderFlag(true);
+									DisownAllOtherGads(p, g);
+                  if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
+                  if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+                }
+              }
+              break;
+            case 'drag':
+              if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+              break;
+            }
+          }
+        }
+      } else { // not mouse (move)
+        for (const h of p.hitList.hits) {
+          const g = h.gad;
+          if (g.ownedBy == index) {
+            switch (g.gestureState) {
+            case 'begin-tap':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                g.gestureState = 'invalid-tap';
+                g.viewport.setRenderFlag(true);
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('invalid'));
+                if (!p.swiping) {
+                  dir = calcSwipeDir(p);
+                  if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
+                    || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT)) ) {
+                    g.gestureState = 'swipe'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
+                    for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+                    if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+  console.log('swipe '+dir);
+  if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+                  } else
+                  if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
+                    || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
+                    g.gestureState = 'drag'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
+										DisownAllOtherGags(p, g);
+                    if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
+                    if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+  console.log('drag '+dir);
+  if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('drag '+dir));
+                  }
+                }
+              }
+              break;
+            case 'begin-input':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                g.gestureState = 'invalid-input';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-menu':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                g.gestureState = 'invalid-menu';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-hold':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                g.gestureState = 'invalid-hold';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-swipe':
+              dir = calcSwipeDir(p);
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                if (!p.swiping) {
+                  if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
+                    || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT)) ) {
+                    g.gestureState = 'swipe'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
+                    for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+                    if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+                  }
+                }
+              }
+              break;
+            case 'hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+              }
+              break;
+            case 'swipe':
+              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+              break;
+            case 'begin-drag':
+              dir = calcSwipeDir(p);
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                if (!p.swiping) {
+                  if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
+                    || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
+                    g.gestureState = 'drag'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
+										DisownAllOtherGads(p, g);
+                    for (const o of p.hitList.hits) if (o.gad !== g) {
+                      if (o.gad.secondTouch == index) {
+                        switch (o.gad.gestureState) {
+                        case 'pinch':
+                          o.gad.gestureState = 'drag'; delete o.gad.secondTouch;
+                          o.gad.viewport.setRenderFlag(true);
+                          if (o.gad.pinchEndFunc) o.gad.pinchEndFunc.call(o.gad);
+                          if (o.gad.dragBeginFunc) o.gad.dragBeginFunc.call(o.gad, pointers[o.gad.ownedBy]);
+                          break;
+                        }
+                      }
+                    }
+                    if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
+                    if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+                  }
+                }
+              }
+              break;
+            case 'drag':
+              if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+              break;
+            case 'pinch':
+              if (g.pinchMoveFunc) g.pinchMoveFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
+              break; 
+            }
+          } else if (g.secondTouch == index) {
+            switch (g.gestureState) {
+            case 'pinch':
+              if (g.pinchMoveFunc) g.pinchMoveFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
+              break;
+            } 
+          }
+        }
+      }
+      break;
+    case 'up':
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: false, x: 0, y: 0, px: 0, py: 0 };
+      p = pointers[index]; p.e = e; p.touching = false;
+     // recalc();
+      if (e.pointerType=='mouse') {
+        if ((e.buttons | 1) == 1) {
+          var skipflag = 0;
+          for (const h of p.hitList.hits) {
+            const g = h.gad;
+            if (g.ownedBy == index) {
+              if (!skipflag) switch (g.gestureState) {
+              case 'begin-click':
+              case 'recover-click':
+                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+                if (g.clickFunc) g.clickFunc.call(g);
+                skipflag=1;
+                break;
+              case 'begin-input':
+                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+								beginInput(g);
+                skipflag=1;
+                break;
+							case 'hold':
+                if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+								break;
+              case 'abandon-click':
+                break;
+              case 'begin-drag':
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                break;
+              case 'drag':
+                if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+                if (g.dragEndFunc) g.dragEndFunc.call(g, p);
+                break;
+              }
+              delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
+            }
+          }
+        }
+        if ((e.buttons | 2) == 2) {
+          for (const h of p.hitList.hits) {
+            const g = h.gad;
+            if (g.ownedBy == index) {
+              switch (g.gestureState) {
+              case 'begin-menu':
+console.log('menu up');
+                break;
+              }
+              delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
+            }
+          }
+        }
+        delete p.hitList;
+      } else { // not mouse (up)
+        var skipflag = 0;
+        for (const h of p.hitList.hits) {
+          const g = h.gad;
+          skipDel = 0;
+          if (g.ownedBy == index) {
+            if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+            if (!skipflag) switch (g.gestureState) {
+            case 'begin-tap':
+              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+              if (g.clickFunc) g.clickFunc.call(g);
+              skipflag=1;
+              break;
+            case 'begin-input':
+              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+							beginInput(g);
+              skipflag=1;
+              break;
+						case 'hold':
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('end hold'));
+              if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+							break;
+            case 'tap-and-hold':
+console.log('tap-and-hold release');
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('release'));
+              break;
+            case 'swipe':
+              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+              break;
+            case 'drag':
+              if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+              if (g.dragEndFunc) g.dragEndFunc.call(g, p);
+              break;
+            case 'pinch':
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing'));
+              g.gestureState = 'drag'; g.ownedBy = g.secondTouch; delete g.secondTouch;
+              g.viewport.setRenderFlag(true);
+              if (g.pinchEndFunc) g.pinchEndFunc.call(g);
+              if (g.dragBeginFunc) g.dragBeginFunc.call(g, pointers[g.ownedBy]);
+              skipDel = 1;
+              break;
+            }
+            if (!skipDel) {
+              delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
+            }
+          } else if (g.secondTouch == index) {
+            switch (g.gestureState) {
+            case 'pinch':
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing'));
+              g.gestureState = 'drag'; delete g.secondTouch;
+              g.viewport.setRenderFlag(true);
+              if (g.pinchEndFunc) g.pinchEndFunc.call(g);
+              if (g.dragBeginFunc) g.dragBeginFunc.call(g, pointers[g.ownedBy]);
+              break;
+            } 
+          }
+        }
+      }
+      if (e.pointerType == 'touch') delete pointers[index];
+      delete p.swiping;
+      break;
+    case 'wheel':
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: false, px: e.layerX * wi2px, py: e.layerY * wi2px };
+      p = pointers[index]; p.e = e; p.touching = true;
+      p.x = e.layerX * wi2px;
+      p.y = e.layerY * wi2px;
+      //p.ox = p.x;
+      //p.oy = p.y;
+     // recalc();
+      p.hitList = new vp.HitList(p.x, p.y);
+      rootViewport.getHits(p.hitList, getPointerRadius());
+      p.hitList.sortHits();
+      if (e.type=='wheel') {
+        var skipflag = 0;
+        for (const h of p.hitList.hits) {
+          const g = h.gad;
+          if (!skipflag && !g.ownedBy) {
+            if (!!(g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN))) {
+              p = pointers[index]; p.e = e;
+              p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
+              p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+              if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+              p.dx = 0; p.x = p.x;
+              p.dy = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.y = p.y + p.dy;
+              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+              skipflag=1;
+            } else if (!!(g.actionFlags
+						& (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT))) {
+              p = pointers[index]; p.e = e;
+              p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
+              p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+              if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+              p.dx = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.x = p.x + p.dx;
+              p.dy = 0; p.y = p.y;
+              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+              skipflag=1;
+            } else if (!!(g.actionFlags & vp.GAF_PINCHABLE)) {
+              p = pointers[index]; p.e = e;
+              p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
+              p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+              if (!!(g.actionFlags & vp.GAF_ROTATABLE) && e.altKey && g.rotateFunc)
+                g.rotateFunc.call(g, p, Math.sign(e.wheelDelta));
+              else if (!!(g.actionFlags & vp.GAF_SCALABLE) && g.zoomFunc)
+                g.zoomFunc.call(g, p, Math.sign(e.wheelDelta));
+              skipflag=1;
+            }
+          }
+	       }
+      }
+      break;
+    case 'drag time reached':
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: true };
+      p = pointers[index]; p.e = e;
+      if (p.hitList) for (const h of p.hitList.hits) {
+        const g = h.gad;
+        if (g.ownedBy == index) {
+          if (g.gestureState == 'begin-click' && (g.actionFlags & vp.GAF_HOLDABLE)) {
+            g.gestureState = 'hold';
+            g.viewport.setRenderFlag(true);
+						DisownAllOtherGads(p, g);
+            if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+					}
+          if (g.gestureState == 'begin-drag' && !p.swiping) {
+            g.gestureState = 'drag'; p.swiping = true;
+            g.viewport.setRenderFlag(true);
+						DisownAllOtherGads(p, g);
+            if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
+          }
+          if (g.hasOwnProperty('gestureTimerId')) { delete g.gestureTimerId; }
+        }
+      }
+      break;
+    case 'tap-and-hold time reached':
+      if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: true };
+      p = pointers[index]; p.e = e;
+      for (const h of p.hitList.hits) {
+        const g = h.gad;
+        if (g.ownedBy == index) {
+          if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) <= TAP_WIGGLE)
+          switch (g.gestureState) {
+          case 'begin-tap':
+          case 'begin-menu':
+          case 'begin-swipe':
+          case 'begin-drag':
+          case 'begin-hold':
+            if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
+              g.gestureState = 'tap-and-hold';
+console.log('tap-and-hold');
+              g.viewport.setRenderFlag(true);
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hold'));
+            } else if (!!(g.actionFlags & vp.GAF_HOLDABLE) && !p.swiping) {
+              g.gestureState = 'hold';
+console.log('hold');
+              g.viewport.setRenderFlag(true);
+							DisownAllOtherGads(p, g);
+		          if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('hold'));
+            } else if (!!(g.actionFlags & vp.GAF_DRAGGABLE) && !p.swiping) {
+              g.gestureState = 'drag'; p.swiping = true;
+              g.viewport.setRenderFlag(true);
+							DisownAllOtherGads(p, g);
+              if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
+            } else if (!!(g.actionFlags & vp.GAF_SWIPEABLE) && !p.swiping) {
+              g.gestureState = 'swipe'; p.swiping = true;
+              g.viewport.setRenderFlag(true);
+              for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+              if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+            } else {
+              g.gestureState = 'invalid-tap-and-hold';
+              g.viewport.setRenderFlag(true);
+            }
+            break;
+          }
+          if (g.hasOwnProperty('gestureTimerId')) { delete g.gestureTimerId; }
+        }
+      }
+      break;
+    }
+  }
+
+function initialize(c, inputalpha, inputnum, inputnext, inputprev) {
+	canvas = c;
+	kbalpha = inputalpha;
+	kbnum = inputnum;
+	kbnext = inputnext;
+	kbprev = inputprev;
+	gl = canvas.getContext('webgl2', {
+		antialias: true,
+		alpha: false,
+		desynchronized: true,
+		preserveDrawingBuffer: true,
+	});
+	var viewportOrigFunc = gl.viewport.bind(gl), curDims;
+	gl.viewport = function(x,y,w,h) {
+		curDims = [x,y,w,h];
+		viewportOrigFunc(x,y,w,h);
+	}
+	var getParameterOrigFunc = gl.getParameter.bind(gl);
+	gl.getParameter = function(pname) {
+		return (pname == gl.VIEWPORT && !!curDims)?
+			curDims:
+			getParameterOrigFunc(pname);
+	}
+}
+
+function start(root) {
+
+	// WEBGL INITIALIZATION
+
+	if (!gl) return;
+
+	const plainVertexShader = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(plainVertexShader, `
+        attribute vec4 aVertexPosition;
+        uniform vec4 uVertexColor;
+        uniform mat4 uModelViewMatrix;
+        uniform mat4 uProjectionMatrix;
+        varying vec4 v_Color;
+        void main() {
+          gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+          v_Color = uVertexColor;
+        }
+	`);
+	gl.compileShader(plainVertexShader);
+	if (!gl.getShaderParameter(plainVertexShader, gl.COMPILE_STATUS)) return;
+
+	const plainFragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(plainFragmentShader, `
+        varying lowp vec4 v_Color;
+        void main() {
+          gl_FragColor = v_Color;
+        }
+	`);
+	gl.compileShader(plainFragmentShader);
+	if (!gl.getShaderParameter(plainFragmentShader, gl.COMPILE_STATUS)) return;
+
+	plainProgram = gl.createProgram();
+	gl.attachShader(plainProgram, plainVertexShader);
+	gl.attachShader(plainProgram, plainFragmentShader);
+	gl.linkProgram(plainProgram);
+	if (!gl.getProgramParameter(plainProgram, gl.LINK_STATUS)) return;
+
+	buf2 = gl.createBuffer(); // buffer for 2-value vertices
+	gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+	gl.vertexAttribPointer(
+		gl.getAttribLocation(plainProgram, 'aVertexPosition'),
+		2, // numComponents
+		gl.FLOAT, // type
+		false, // normalize
+		0, // stride
+		0); // offset
+	gl.enableVertexAttribArray(
+		gl.getAttribLocation(plainProgram, 'aVertexPosition'));
+
+	cum2 = []; // accumulator to build data for buffer
+
+	beg2.unitLine = cum2.length/2; cum2.splice(cum2.length, 0,
+		0,0, 1,1,
+	); len2.unitLine = cum2.length/2 - beg2.unitLine;
+
+	beg2.unitSquare = cum2.length/2; cum2.splice(cum2.length, 0,
+		1,1, 0,1, 0,0, 1,0,
+	); len2.unitSquare = cum2.length/2 - beg2.unitSquare;
+
+	beg2.roundTouch = cum2.length/2;
+	for (i = 0; i < 36; i++) {
+		cum2.splice(cum2.length, 0,
+			touchRadius*Math.sin(i/18*Math.PI),
+			touchRadius*Math.cos(i/18*Math.PI));
+	}
+	len2.roundTouch = cum2.length/2 - beg2.roundTouch;
+
+	beg2.squareTouch = cum2.length/2; cum2.splice(cum2.length, 0,
+		 touchRadius-.5,  touchRadius-.5,
+		-touchRadius+.5,  touchRadius-.5,
+		-touchRadius+.5, -touchRadius+.5,
+		 touchRadius-.5, -touchRadius+.5,
+	); len2.squareTouch = cum2.length/2 - beg2.squareTouch;
+
+	beg2.roundMouse = cum2.length/2;
+	for (i = 0; i < 36; i++) {
+		cum2.splice(cum2.length, 0,
+			clickRadius*Math.sin(i/18*Math.PI),
+			clickRadius*Math.cos(i/18*Math.PI));
+	}
+	len2.roundMouse = cum2.length/2 - beg2.roundMouse;
+
+	beg2.squareMouse = cum2.length/2; cum2.splice(cum2.length, 0,
+		 clickRadius-.5,  clickRadius-.5,
+		-clickRadius+.5,  clickRadius-.5,
+		-clickRadius+.5, -clickRadius+.5,
+		 clickRadius-.5, -clickRadius+.5,
+	); len2.squareMouse = cum2.length/2 - beg2.squareMouse;
+
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cum2), gl.STATIC_DRAW);
+
+
+	// AUDIO INITIALIZATION
+
+	var audioInit = false;
+	var initState = 0;
+	async function initAudio() {
+		if (initState == 0) {
+			ac = new AudioContext();
+			initState = 1;
+		} else if (initState == 1) {
+			await ac.audioWorklet.addModule(
+				"data:application/javascript;base64," +
+				btoa(`
+            class AudioProcessor extends AudioWorkletProcessor {
+              constructor() {
+                super();
+                this.lastClick = 0;
+                this.wave = 0;
+              }
+              process (inputs, outputs, parameters) {
+                const output = outputs[0];
+                output.forEach(channel => {
+                  for (var i = 0; i < channel.length; i++) {
+                    channel[i] =
+                      (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +
+                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +
+                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);
+                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };
+                  }
+                });
+                return true;
+              }
+              static get parameterDescriptors() {
+                return [
+                  {
+                    name: "windspeed",
+                    automationRate: "a-rate",
+                    defaultValue: 0,
+                    minValue: 0,
+                    maxValue: 1,
+                  },
+                  {
+                    name: "click",
+                    automationRate: "a-rate",
+                    defaultValue: 0,
+                    minValue: 0,
+                    maxValue: 1,
+                  },
+                  {
+                    name: "beep",
+                    automationRate: "a-rate",
+                    defaultValue: 0,
+                    minValue: 0,
+                    maxValue: 1,
+                  },
+                ];
+              }
+            }
+            registerProcessor('audio-processor', AudioProcessor);
+				`));
+
+			var source = ac.createBufferSource();
+			var processor = ac.createScriptProcessor(2048);
+			source.start();
+			initState = 2;
+		} else if (initState == 2) {
+			const audioNode = new AudioWorkletNode(ac, 'audio-processor');
+			audioNode.connect(ac.destination);
+			clickSound = audioNode.parameters.get('click');
+			beepSound = audioNode.parameters.get('beep');
+			windSound = audioNode.parameters.get('windspeed');
+			initState = 3;
+			audioInit = true;
+		}
+	}
+
+	// START PROCESSING EVENTS
+	if (root) rootViewport = root;
+
+function hideAllTextInputs() {
+	kbalpha.style.display = 'none';
+	kbnum.style.display = 'none';
+	kbnext.style.display = 'none';
+	kbprev.style.display = 'none';
+}
+
+	// Add event listeners.
+	// NOTE: Some events are used to trigger audio initialization.
+	window.addEventListener("resize",
+		function(e) { resizeCanvas(); }, false); resizeCanvas();
+	window.requestAnimationFrame(refresher);
+	kbnum.addEventListener("keydown",
+		function(e) {
+			var g = inputGad;
+			if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
+				e.preventDefault();
+				beep();
+			}
+			if (g && e.key.length == 1 && g.limitLen && g.text.length >= g.limitLen) {
+				e.preventDefault();
+				beep();
+			}
+		}, false);
+	kbalpha.addEventListener("input",
+		function(e) {
+//console.log('kbalpha.input');
+			var g = inputGad;
+			g.text = kbalpha.value;
+			if (g.textFunc) g.textFunc.call(g);
+		}, false);
+	kbalpha.addEventListener("blur",
+		function(e) {
+//console.log('kbalpha.blur');
+			var g = inputGad;
+			kbalpha.style.display = 'none';
+			if (g && g.textEndFunc) g.textEndFunc.call(g);
+			inputGadPrev = g;
+			inputGad = undefined;
+		}, false);
+	kbnum.addEventListener("keydown",
+		function(e) {
+			var g = inputGad;
+			if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
+				e.preventDefault();
+				beep();
+			}
+			if (g && e.key.length == 1 && g.limitLen && g.text.length >= g.limitLen) {
+				e.preventDefault();
+				beep();
+			}
+		}, false);
+	kbnum.addEventListener("input",
+		function(e) {
+//console.log('kbnum.input', e);
+			var g = inputGad;
+			g.text = kbnum.value;
+			if (g.textFunc) g.textFunc.call(g);
+		}, false);
+	kbnum.addEventListener("blur",
+		function(e) {
+//console.log('kbnum.blur', inputGad, e);
+			var g = inputGad;
+			kbnum.style.display = 'none';
+			if (g && g.textEndFunc) g.textEndFunc.call(g);
+			inputGadPrev = g;
+			inputGad = undefined;
+		}, false);
+	kbnext.addEventListener("focus",
+		function(e) {
+//console.log('kbnext.focus');
+			var g = inputGadPrev;
+			hideAllTextInputs();
+			inputGad = undefined;
+			if (g && g.textNextFunc) g.textNextFunc.call(g);
+		}, false);
+	kbprev.addEventListener("focus",
+		function(e) {
+//console.log('kbprev.focus');
+			var g = inputGadPrev;
+			hideAllTextInputs();
+			inputGad = undefined;
+			if (g && g.textPrevFunc) g.textPrevFunc.call(g);
+		}, false);
+	canvas.addEventListener("touchend",
+		function(e) { eventHandler(e, 'touches'); }, false);
+	canvas.addEventListener("pointerdown",
+		function(e) {
+			if (!audioInit) initAudio();
+			e.preventDefault();
+			eventHandler(e, 'down');
+		}, false);
+	canvas.addEventListener("pointermove",
+		function(e) { e.preventDefault(); eventHandler(e, 'move'); }, false);
+	canvas.addEventListener("pointerup",
+		function(e) {
+			if (!audioInit) initAudio();
+			e.preventDefault();
+			eventHandler(e, 'up');
+		}, false);
+	canvas.addEventListener("contextmenu",
+		function(e) { e.preventDefault(); }, false);
+	canvas.addEventListener("wheel",
+		function(e) { e.preventDefault(); eventHandler(e, 'wheel'); }, false);
+	document.addEventListener('keydown', function(e) {
+		var g = inputGad;
+		if (e.key == 'Enter' && g && g.textNextFunc) {
+			e.preventDefault();
+			g.textNextFunc.call(g);
+		} else if (g && g.specialKeys && g.specialKeys.includes(e.key)) {
+			e.preventDefault();
+			if (g.specialFunc) g.specialFunc.call(g, e);
+		} else if (g && g.specialCodes && g.specialCodes.includes(e.code)) {
+			e.preventDefault();
+			if (g.specialFunc) g.specialFunc.call(g, e);
+		}
+	});
+}
+
+  function setDebugFlags(debug, cont) { showdebug=!!debug; continuous=!!cont; }
+  function beep() {
+		if (beepSound) beepSound.setValueAtTime(1, ac.currentTime);
+		if (beepSound) beepSound.setValueAtTime(0, ac.currentTime+0.1);
+	};
+
+  return {
+    initialize: initialize,
+    start: start,
+    setDebugFlags: setDebugFlags,
+    getContext: getContext,
+    getPointerRadius: getPointerRadius,
+    isMouseEnabled: isMouseEnabled,
+		getInputGad: getInputGad,
+		beginInput: beginInput,
+		endInput: endInput,
+		beep: beep,
+    View: View,
+    ViewDivider: ViewDivider,
+    ViewSlice: ViewSlice,
+    ViewPages: ViewPages,
+    ViewOverlay: ViewOverlay,
+    ViewMultiverse: ViewMultiverse,
+    ViewPicker: ViewPicker,
+    Gadget: Gadget,
+    MatrixGadget: MatrixGadget,
+    SwipeGadget: SwipeGadget,
+    MiddleDividerGadget: MiddleDividerGadget,
+    GAF_CLICKABLE: GAF_CLICKABLE,
+    GAF_HOLDABLE: GAF_HOLDABLE,
+    GAF_CONTEXTMENU: GAF_CONTEXTMENU,
+    GAF_STRETCHABLE: GAF_STRETCHABLE,
+    GAF_DRAGGABLE_UPDOWN: GAF_DRAGGABLE_UPDOWN,
+    GAF_DRAGGABLE_LEFTRIGHT: GAF_DRAGGABLE_LEFTRIGHT,
+    GAF_DRAGGABLE: GAF_DRAGGABLE,
+    GAF_SWIPEABLE_UPDOWN: GAF_SWIPEABLE_UPDOWN,
+    GAF_SWIPEABLE_LEFTRIGHT: GAF_SWIPEABLE_LEFTRIGHT,
+    GAF_SWIPEABLE: GAF_SWIPEABLE,
+    GAF_SCROLLABLE_UPDOWN: GAF_SCROLLABLE_UPDOWN,
+    GAF_SCROLLABLE_LEFTRIGHT: GAF_SCROLLABLE_LEFTRIGHT,
+    GAF_SCROLLABLE: GAF_SCROLLABLE,
+    GAF_SCALABLE: GAF_SCALABLE,
+    GAF_ROTATABLE: GAF_ROTATABLE,
+    GAF_PINCHABLE: GAF_PINCHABLE,
+    GAF_NUMINPUT: GAF_NUMINPUT,
+    GAF_TEXTINPUT: GAF_TEXTINPUT,
+		GAF_GONEXT: GAF_GONEXT,
+    GAF_ALL: GAF_ALL,
+    HitList: HitList,
+    LayoutState: LayoutState,
+  };
+})();
 function main() {
 	const canvas = document.querySelector('#app1');
 	vp.initialize(canvas,
@@ -1201,8 +3063,9 @@ v.renderFunc = function() {
 var checkoutsteps = v = new vp.ViewPages(null);
 v.name = Object.keys({checkoutsteps}).pop();
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT;
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT;
 v.layoutFunc = function() {
+	var v = this;
 	v.minX = -v.w; v.maxX = v.w * 2;
 	v.minY = -v.h; v.maxY = v.h * 2;
 	this.swipeGad.layout.call(this.swipeGad);
