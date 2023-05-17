@@ -3572,7 +3572,7 @@ v.renderFunc = function() {
 var checkoutsteps = v = new vp.ViewPages(null);
 v.name = Object.keys({checkoutsteps}).pop();
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT;
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT;
 v.layoutFunc = function() {
 	var v = this;
 	v.minX = -v.w; v.maxX = v.w * 2;
