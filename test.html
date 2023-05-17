@@ -1907,7 +1907,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
 										DisownAllOtherGads(p, g);
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
                     if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
-     if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
                   }
                 }
               }
@@ -1922,7 +1922,9 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
               }
               break;
             case 'swipe':
+     if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '));
               if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+     if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance(dir));
               break;
             case 'begin-drag':
               dir = calcSwipeDir(p);
