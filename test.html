@@ -575,6 +575,19 @@ class ViewPages extends View {
 		this.pages = [];
 		this.snaps = [];
 		this.prevTime = 0;
+
+		this.gadgets.push(this.swipeGad = new vp.SwipeGadget(v));
+		switch (this.type) {
+		case 'h': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT; break;
+		case 'v': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN; break;
+		default: this.swipeGad.actionFlags = 0;
+		}
+		this.layoutFunc = function() {
+			var v = this;
+			v.minX = -v.w; v.maxX = v.w * 2;
+			v.minY = -v.h; v.maxY = v.h * 2;
+			this.swipeGad.layout.call(this.swipeGad);
+		}
 	}
 	layoutAll(s) {
 		super.layoutAll(s);
@@ -589,7 +602,9 @@ class ViewPages extends View {
 
 			this.snaps = [];
 			for (var i = 0; i < this.pages.length + 1; i++) {
-				this.snaps.push([this.w * i, this.h * i]);
+				this.snaps.push([
+					this.w * i * this.type=='h'?1:0,
+					this.h * i * this.type=='v'?1:0]);
 			}
 
 			var curPage = this.pages[this.index];
@@ -597,28 +612,29 @@ class ViewPages extends View {
 			this.a = curPage; curPage.parent = this;
 			this.b = undefined;
 			var curX, curY, otherX, otherY;
-			// Following assumes axis can be determined by which of X or Y is non-zero.
-			if ((this.userX > 0 && !(this.index + 1 < this.pages.length))
-			||  (this.userX < 0 && !(this.index - 1 >= 0))) {
-				this.userX = 0;
-			}
-			if ((this.userY > 0 && !(this.index + 1 < this.pages.length))
-			||  (this.userY < 0 && !(this.index - 1 >= 0))) {
-				this.userY = 0;
-			}
+			if (this.type == 'h') {
+				if ((this.userX > 0 && !(this.index + 1 < this.pages.length))
+				||  (this.userX < 0 && !(this.index - 1 >= 0))) {
+					this.userX = 0;
+			} }
+			if (this.type == 'v') {
+				if ((this.userY > 0 && !(this.index + 1 < this.pages.length))
+				||  (this.userY < 0 && !(this.index - 1 >= 0))) {
+					this.userY = 0;
+			}	}
 			curX = this.userX;
 			curY = this.userY;
 			if ((curX > 0 || curY > 0) && this.index + 1 < this.pages.length) {
 				otherPage = this.pages[this.index + 1];
 				this.b = otherPage; otherPage.parent = this;
-				otherX = this.userX - (this.userX?this.w:0); // Same assumption here.
-				otherY = this.userY - (this.userY?this.h:0);
+				otherX = this.userX - (this.type=='h'?this.w:0);
+				otherY = this.userY - (this.type=='v'?this.h:0);
 			}
 			if ((curX < 0 || curY < 0) && this.index - 1 >= 0) {
 				otherPage = this.pages[this.index - 1];
 				this.b = otherPage; otherPage.parent = this;
-				otherX = this.userX + (this.userX?this.w:0);
-				otherY = this.userY + (this.userY?this.h:0);
+				otherX = this.userX + (this.type=='h'?this.w:0);
+				otherY = this.userY + (this.type=='v'?this.h:0);
 			}
 
 
@@ -3575,19 +3591,8 @@ v.renderFunc = function() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
-var checkoutsteps = v = new vp.ViewPages(null);
+var checkoutsteps = v = new vp.ViewPages(null, 'h');
 v.name = Object.keys({checkoutsteps}).pop();
-v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT;
-v.layoutFunc = function() {
-	var v = this;
-	v.minX = -v.w; v.maxX = v.w * 2;
-	v.minY = -v.h; v.maxY = v.h * 2;
-	this.swipeGad.layout.call(this.swipeGad);
-}
-v.renderFunc = function() {
-console.log('render');
-}
 v.pages.push(dataentry);
 v.pages.push(receivepayment);
 //v.a = dataentry; dataentry.parent = v;
