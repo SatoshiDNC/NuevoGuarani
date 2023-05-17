@@ -1185,13 +1185,11 @@ class SwipeGadget extends Gadget {
 		super(viewport);
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 		this.swipeBeginFunc = function(p) {
-console.log('swipeBegin');
 			var v = this.viewport, s = v.getScale();
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
 			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
 		}
 		this.swipeMoveFunc = function(p) {
-console.log('swipeMove');
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 			var minX = v.minX, maxX = Math.max(v.maxX - v.w/s, minX);
@@ -1210,7 +1208,6 @@ console.log('swipeMove');
 			case vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
 				v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
-console.log(v.userX);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = 0;
 				break;
@@ -1226,7 +1223,6 @@ console.log(v.userX);
 			v.setRenderFlag(true);
 		}
 		this.swipeEndFunc = function(p) {
-console.log('swipeEnd');
 			var v = this.viewport;
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
