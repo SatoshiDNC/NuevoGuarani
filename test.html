@@ -126,7 +126,7 @@ var vp = (function() {
 
   // for debug purposes
   var plainProgram;
-	var debug1 = false; // layout and rendering console messages
+	var debug1 = true; // layout and rendering console messages
 
   const touchRadius = 85, clickRadius = 5;
   function getPointerRadius() { return (navigator.maxTouchPoints>0 ? touchRadius : clickRadius); }
@@ -1219,7 +1219,6 @@ class SwipeGadget extends Gadget {
 				break;
 			}
 			v.setRenderFlag(true);
-window.speechSynthesis.speak(new SpeechSynthesisUtterance('7'));
 		}
 		this.swipeEndFunc = function(p) {
 			var v = this.viewport;
@@ -3580,7 +3579,7 @@ v.layoutFunc = function() {
 	this.swipeGad.layout.call(this.swipeGad);
 }
 v.renderFunc = function() {
-window.speechSynthesis.speak(new SpeechSynthesisUtterance('render'));
+console.log('render');
 }
 v.pages.push(dataentry);
 v.pages.push(receivepayment);
