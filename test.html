@@ -589,31 +589,29 @@ class ViewPages extends View {
 			var otherPage = undefined;
 			this.a = curPage; curPage.parent = this;
 			this.b = undefined;
+			var curX, curY, otherX, otherY;
+			// Following assumes axis can be determined by which of X or Y is non-zero.
 			if ((this.userX > 0 && !(this.index + 1 < this.pages.length))
 			||  (this.userX < 0 && !(this.index - 1 >= 0))) {
 				this.userX = 0;
-				//this.tempDX = 0; this.tempDY = 0;
 			}
-			curPage.userX = this.userX;
-			curPage.userY = this.userY;
-			if (curPage.userX > 0 && this.index + 1 < this.pages.length) {
+			if ((this.userY > 0 && !(this.index + 1 < this.pages.length))
+			||  (this.userY < 0 && !(this.index - 1 >= 0))) {
+				this.userY = 0;
+			}
+			curX = this.userX;
+			curY = this.userY;
+			if ((curX > 0 || curY > 0) && this.index + 1 < this.pages.length) {
 				otherPage = this.pages[this.index + 1];
 				this.b = otherPage; otherPage.parent = this;
-				otherPage.userX = this.userX - (this.userX?this.w:0);
-				otherPage.userY = this.userY;// + (this.userY?this.h:0);
-//				if (this.actionFlags & vp.GAF_SWIPE_LEFTRIGHT)
-//					otherPage.userX = this.userX + this.width;
-//				else if (this.actionFlags & vp.GAF_SWIPE_UPDOWN)
-//					otherPage.userY = this.userY + this.height;
+				otherX = this.userX - (this.userX?this.w:0); // Same assumption here.
+				otherY = this.userY - (this.userY?this.h:0);
 			}
-			if (curPage.userX < 0 && this.index - 1 >= 0) {
+			if ((curX < 0 || curY < 0) && this.index - 1 >= 0) {
 				otherPage = this.pages[this.index - 1];
 				this.b = otherPage; otherPage.parent = this;
-				otherPage.userX = this.userX + (this.userX?this.w:0);
-				otherPage.userY = this.userY;// - (this.userY?this.h:0);
-//				if (this.actionFlags & vp.GAF_SWIPE_LEFTRIGHT) {
-//				} else if (this.actionFlags & vp.GAF_SWIPE_UPDOWN) {
-//				}
+				otherX = this.userX + (this.userX?this.w:0);
+				otherY = this.userY + (this.userY?this.h:0);
 			}
 
 
@@ -636,23 +634,23 @@ class ViewPages extends View {
 			}
 */
 			// View calculations
-			s1.remainingWidth = clamp(s.remainingWidth + curPage.userX,
+			s1.remainingWidth = clamp(s.remainingWidth - curX,
 				0, s.remainingWidth);
-			s1.remainingHeight = clamp(s.remainingHeight + curPage.userY,
+			s1.remainingHeight = clamp(s.remainingHeight - curY,
 				0, s.remainingHeight);
-			s1.remainingX = clamp(s.remainingX - curPage.userX,
+			s1.remainingX = clamp(s.remainingX - curX,
 				s.remainingX, s.remainingX + s.remainingWidth);
-			s1.remainingY = clamp(s.remainingY - curPage.userY,
+			s1.remainingY = clamp(s.remainingY - curY,
 				s.remainingY, s.remainingY + s.remainingHeight);
 console.log('s1', s1, curPage);
 			if (otherPage) {
-				s2.remainingWidth = clamp(s.remainingWidth - otherPage.userX,
+				s2.remainingWidth = clamp(s.remainingWidth - otherX,
 					0, s.remainingWidth);
-				s2.remainingHeight = clamp(s.remainingHeight - otherPage.userY,
+				s2.remainingHeight = clamp(s.remainingHeight - otherY,
 					0, s.remainingHeight);
-				s2.remainingX = clamp(s.remainingX - otherPage.userX,
+				s2.remainingX = clamp(s.remainingX - otherX,
 					s.remainingX, s.remainingX + s.remainingWidth);
-				s2.remainingY = clamp(s.remainingY - otherPage.userY,
+				s2.remainingY = clamp(s.remainingY - otherY,
 					s.remainingY, s.remainingY + s.remainingHeight);
 console.log('s2', s2, otherPage);
 			} else {
