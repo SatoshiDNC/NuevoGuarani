@@ -126,7 +126,7 @@ var vp = (function() {
 
   // for debug purposes
   var plainProgram;
-	var debug1 = true; // layout and rendering console messages
+	var debug1 = false; // layout and rendering console messages
 
   const touchRadius = 85, clickRadius = 5;
   function getPointerRadius() { return (navigator.maxTouchPoints>0 ? touchRadius : clickRadius); }
@@ -203,6 +203,9 @@ class View {
     this.mat = mat4.create();
     this.needsRender = true; this.childRender = true;
   }
+	requeueLayout() {
+		if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
+	}
   insideFit(w,h) { this.viewScale = (this.w/w < this.h/h)? this.w/w: this.h/h; }
   layoutAll(s) {
 		if (debug1 && !continuous) console.log(this.name+'::'+this.layoutAll.name);
@@ -223,12 +226,13 @@ class View {
     this.setRenderFlag(true);
   }
   rematrix() {
+		var s = this.getScale();
+		mat4.copy(this.mat, pixelPM);
     mat4.scale(this.mat, pixelPM, [canvas.width/this.w, canvas.height/this.h, 1]);
     mat4.multiply(this.mat, this.mat, this.userMat);
     mat4.translate(this.mat, this.mat, [this.ox, this.oy, 0]);
-    mat4.scale(this.mat, this.mat, [this.getScale(), this.getScale(), 1]);
+    mat4.scale(this.mat, this.mat, [s, s, 1]);
     mat4.translate(this.mat, this.mat, [-this.userX, -this.userY, 0]);
-    //this.setRenderFlag(true);
   }
   relayout() {
     var s = new LayoutState();
@@ -584,8 +588,8 @@ class ViewPages extends View {
 		}
 		this.layoutFunc = function() {
 			var v = this;
-			v.minX = -v.w; v.maxX = v.w * 2;
-			v.minY = -v.h; v.maxY = v.h * 2;
+			v.minX = 0; v.maxX = v.w * this.pages.length;
+			v.minY = 0; v.maxY = v.h * this.pages.length;
 			this.swipeGad.layout.call(this.swipeGad);
 		}
 	}
@@ -600,66 +604,54 @@ class ViewPages extends View {
 			this.prevTime = thisTime;
 			if (delta > 17) delta = 17;
 
+			var h = (this.type == 'h');
+			var v = (this.type == 'v');
+
 			this.snaps = [];
 			for (var i = 0; i < this.pages.length + 1; i++) {
 				this.snaps.push([
-					this.w * i * (this.type=='h'?1:0),
-					this.h * i * (this.type=='v'?1:0)]);
+					this.w * i * (h?1:0),
+					this.h * i * (v?1:0)]);
 			}
 
-			if (this.swipeGad.followUpFunc) this.swipeGad.followUpFunc.call(this.swipeGad);
-//			console.log('follupUp', this.swipeGad.followUp);
-//			if (this.swipeGad.followUp) {
-//				if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
-//			}
+			// Get the index of the page that should be mostly visible.
+			if (h) this.index = clamp(Math.round(this.userX / this.w), 0, this.pages.length-1);
+			if (v) this.index = clamp(Math.round(this.userY / this.h), 0, this.pages.length-1);
 
+			// Determine which pages are visible and what their offsets are.
 			var curPage = this.pages[this.index];
-			var otherPage = undefined;
-			this.a = curPage; curPage.parent = this;
-			this.b = undefined;
-			var curX, curY, otherX, otherY;
-			if (this.type == 'h') {
-				if ((this.userX > 0 && !(this.index + 1 < this.pages.length))
-				||  (this.userX < 0 && !(this.index - 1 >= 0))) {
-					this.userX = 0;
-			} }
-			if (this.type == 'v') {
-				if ((this.userY > 0 && !(this.index + 1 < this.pages.length))
-				||  (this.userY < 0 && !(this.index - 1 >= 0))) {
-					this.userY = 0;
-			}	}
-			curX = this.userX;
-			curY = this.userY;
-			if ((curX > 0 || curY > 0) && this.index + 1 < this.pages.length) {
-				otherPage = this.pages[this.index + 1];
-				this.b = otherPage; otherPage.parent = this;
-				otherX = this.userX - (this.type=='h'?this.w:0);
-				otherY = this.userY - (this.type=='v'?this.h:0);
-			}
-			if ((curX < 0 || curY < 0) && this.index - 1 >= 0) {
-				otherPage = this.pages[this.index - 1];
-				this.b = otherPage; otherPage.parent = this;
-				otherX = this.userX + (this.type=='h'?this.w:0);
-				otherY = this.userY + (this.type=='v'?this.h:0);
-			}
-/*
-			if (this.indexNew != this.index || this.indexProg > 0) {
-				if (this.indexNew != this.index) {
-					this.indexProg += 0.008 * delta;
-					if (this.stateProg >= 1) {
-						this.stateProg = 1;
-						this.state = this.stateNew;
-					}
-					if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
-				} else {
-					this.stateProg -= 0.008 * delta;
-					if (this.stateProg < 0) this.stateProg = 0;
-					if (this.stateProg > 0) {
-						if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
-					}
+			var curX = this.userX + (h?-this.index*this.w:0);
+			var curY = this.userY + (v?-this.index*this.h:0);
+			var otherPage = undefined, otherX, otherY;
+			if (this.index * this.w > this.userX) {
+				curPage.userX = 0;
+				curPage.userY = 0;
+				var otherI = this.index - 1;
+				if (otherI >= 0 && otherI < this.pages.length) {
+					otherPage = this.pages[otherI];
+					otherX = this.userX + (h?-this.index*this.w+this.w:0);
+					otherY = this.userY + (v?-this.index*this.h+this.h:0);
+					otherPage.userX = h?otherX/otherPage.getScale():0;
+					otherPage.userY = v?otherY/otherPage.getScale():0;
 				}
+			} else if (this.index * this.w < this.userX) {
+				curPage.userX = h?curX/curPage.getScale():0;
+				curPage.userY = v?curY/curPage.getScale():0;
+				var otherI = this.index + 1;
+				if (otherI >= 0 && otherI < this.pages.length) {
+					otherPage = this.pages[otherI];
+					otherX = this.userX + (h?-this.index*this.w-this.w:0);
+					otherY = this.userY + (v?-this.index*this.h-this.h:0);
+					otherPage.userX = 0;
+					otherPage.userY = 0;
+				}
+			} else {
+				curPage.userX = 0;
+				curPage.userY = 0;
 			}
-*/
+			this.a = curPage; curPage.parent = this;
+			this.b = otherPage; if (otherPage) otherPage.parent = this;
+
 			// View calculations
 			s1.remainingWidth = clamp(s.remainingWidth - curX,
 				0, s.remainingWidth);
@@ -1209,21 +1201,18 @@ class SwipeGadget extends Gadget {
 	constructor(viewport) {
 		super(viewport);
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
-		this.followUp = false;
+		this.followUp = false; this.animState = '';
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
 			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
+			this.followUp = false;
 		}
 		this.swipeMoveFunc = function(p) {
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 			var minX = v.minX, maxX = Math.max(v.maxX - v.w/s, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.h/s, minY);
-			//var minX = Math.max(v.minX + v.w/s, v.maxX) - v.w/s, maxX = Math.min(v.maxX - v.w/s, v.minX);
-			//var minY = Math.max(v.minY + v.h/s, v.maxY) - v.h/s, maxY = Math.min(v.maxY - v.h/s, v.minY);
-			//if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
-			//if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
 			case vp.GAF_SWIPEABLE_UPDOWN:
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
@@ -1246,6 +1235,7 @@ class SwipeGadget extends Gadget {
 				v.tempVX = p.dx; v.tempVY = p.dy;
 				break;
 			}
+			this.followUp = false;
 			v.relayout();
 			v.setRenderFlag(true);
 		}
@@ -1287,106 +1277,92 @@ class SwipeGadget extends Gadget {
 				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
 			}
 			delete this.tempX; delete this.tempY;
-			v.tempDX = 0; v.tempDY = 0;
+			this.targetRest = undefined;
+			this.inflect = false;
+			this.animState = 'decel';
 			if (v.snaps && v.snaps.length > 0) {
 				var xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
 				var nxy = findNearest(xy, v.snaps);
 				this.targetRest = nxy;
-				if (!outOfBounds(xy, v)) {
-					v.tempDX = nxy[0] - xy[0];
-					v.tempDY = nxy[1] - xy[1];
-				}
-				if (v.tempDX > 0 && v.userX - v.tempDX < this.targetRest[0]
-				||  v.tempDX < 0 && v.userX - v.tempDX > this.targetRest[0]) {
-					v.tempDX = -v.tempDX;
-				}
-				if (v.tempDY > 0 && v.userY - v.tempDY < this.targetRest[1]
-				||  v.tempDY < 0 && v.userY - v.tempDY > this.targetRest[1]) {
-					v.tempDY = -v.tempDY;
-				}
+				//if (nxy[0] < v.userX) v.whenLessX = true; else v.whenLessX = false;
+				//if (nxy[1] < v.userY) v.whenLessY = true; else v.whenLessY = false;
+				if (nxy[0] < v.userX && v.tempVX > 0) this.animState = 'accel';
+				if (nxy[0] > v.userX && v.tempVX < 0) this.animState = 'accel';
+				if (nxy[1] < v.userY && v.tempVY > 0) this.animState = 'accel';
+				if (nxy[1] > v.userY && v.tempVY < 0) this.animState = 'accel';
 			}
+			v.origVX = v.tempVX;
+			v.origVY = v.tempVY;
+			v.newX = v.userX;
+			v.newY = v.userY;
+      v.magOrig = Math.sqrt(v.tempVX * v.tempVX + v.tempVY * v.tempVY);
+      v.magCur = v.magOrig;
 			this.followUp = true;
-			if (layoutViews.indexOf(this.viewport) === -1) layoutViews.push(this.viewport);
-//			if (!animViews.includes(v)) animViews.push(v);
-			v.setRenderFlag(true);
+			this.viewport.requeueLayout();
 		}
 		this.followUpFunc = function() {
-			var v = this.viewport;
-			this.followUp = false;
-console.log(v.tempDX, v.userX, this.targetRest ? this.targetRest[0] : undefined);
-			if (this.targetRest
-			&& (v.userX != this.targetRest[0] || v.userY != this.targetRest[1])) {
-				var a = v;
-				v.tempDX *= 1.1;
-				v.tempDY *= 1.1;
-				if (v.tempDX > 0 && v.userX - v.tempDX < this.targetRest[0]
-				||  v.tempDX < 0 && v.userX - v.tempDX > this.targetRest[0]) {
-					v.userX = this.targetRest[0]; v.tempDX = 0;
-				} else {
-					v.userX -= v.tempDX;
-				}
-				if (v.tempDY > 0 && v.userY - v.tempDY < this.targetRest[1]
-				||  v.tempDY < 0 && v.userY - v.tempDY > this.targetRest[1]) {
-					v.userY = this.targetRest[1]; v.tempDY = 0;
-				} else {
-					v.userY -= v.tempDY;
-				}
-				//a.rematrix(); a.relayout(); 
-				a.setRenderFlag(true);
-				this.followUp = true;
-/*
-          if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
-            var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
-            var fy = Math.sign(a.tempDY) * Math.min(10, Math.abs(a.tempDY));
-            a.tempDX = Math.sign(a.tempDX) * Math.max(0, Math.abs(a.tempDX) - 10);
-            a.tempDY = Math.sign(a.tempDY) * Math.max(0, Math.abs(a.tempDY) - 10);
-            a.userX = clamp(a.userX - (a.tempVX * 1000/30 / s - fx), minX, maxX);
-            a.userY = clamp(a.userY - (a.tempVY * 1000/30 / s - fy), minY, maxY);
-            //a.userX -= a.tempVX * 1000/30 / s - fx;
-            //a.userY -= a.tempVY * 1000/30 / s - fy;
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
-							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
-              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              todo.push(i); delete a.tempVX; delete a.tempVY;
-            } else {
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              var m = Math.sqrt(a.tempVX*a.tempVX + a.tempVY*a.tempVY);
-              var n = Math.max(0, m - 0.1);
-              if (m != 0) {
-                a.tempVX = a.tempVX / m * n;
-                a.tempVY = a.tempVY / m * n;
-              }
-            }
-          } else {
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
-							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
-              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-            }
-            delete a.tempVX; delete a.tempVY;
-						this.followUp = false;
-          }
-//			if (!animViews.includes(v)) animViews.push(v);
-//			v.setRenderFlag(true);
-*/
-				if (layoutViews.indexOf(this.viewport) === -1) layoutViews.push(this.viewport);
+			if (!this.followUp) return;
+			var g = this, v = g.viewport;
+			switch (g.animState) {
+			case 'decel':
+				if (g.coast(false)) g.animState = 'done';
+				break;
+			case 'accel':
+				if (g.coast(true)) g.animState = 'done';
+				break;
+			default:
+				g.followUp = false;
 			}
+			v.requeueLayout();
+		}
+		this.coast = function(accel) {
+			var g = this, v = g.viewport;
+			var a = v;
+      var s = a.getScale();
+			var minX = a.minX, maxX = v.maxX - a.w/s;//Math.max(a.maxX - a.w/s, minX);
+			var minY = a.minY, maxY = v.maxY - a.h/s;//Math.max(a.maxY - a.h/s, minY);
+      var newX = v.newX - (v.tempVX * 1000/30 / s /*- fx*/);
+      var newY = v.newY - (v.tempVY * 1000/30 / s /*- fy*/);
+			if (g.targetRest && (accel || g.inflect)) {
+				if (Math.sign(newX - g.targetRest[0]) != Math.sign(v.newX - g.targetRest[0])
+				||  Math.sign(newY - g.targetRest[1]) != Math.sign(v.newY - g.targetRest[1])) {
+					delete v.newX; delete v.newY;
+					delete v.tempVX; delete v.tempVY;
+					delete v.origVX; delete v.origVY;
+					delete v.magOrig; delete v.magCur;
+					v.userX = g.targetRest[0];
+					v.userY = g.targetRest[1];
+					return true;
+				}
+			}
+			v.newX = newX;
+			v.newY = newY;
+			v.userX = clamp(newX, minX, maxX);
+			v.userY = clamp(newY, minY, maxY);
+			var magCur = accel ? v.magCur + 0.1 : v.magCur - 0.1;
+			if (g.animState == 'decel' && Math.sign(magCur) != Math.sign(v.magCur)) {
+				if (g.targetRest) {
+					g.inflect = true;
+				} else {
+					delete v.newX; delete v.newY;
+					delete v.tempVX; delete v.tempVY;
+					delete v.origVX; delete v.origVY;
+					delete v.magOrig; delete v.magCur;
+					return true;
+				}
+			}
+			v.magCur = magCur;
+      v.tempVX = v.origVX / v.magOrig * v.magCur;
+      v.tempVY = v.origVY / v.magOrig * v.magCur;
+			return false;
 		}
 	}
 	layout() {
-		var g=this, v=g.viewport; //, s=v.getScale();
+		var g=this, v=g.viewport;
 		g.convexHull = g.computeHull([
 			v.minX,v.minY, v.minX,v.maxY, v.maxX,v.maxY, v.maxX,v.minY]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
-/*
-		var g = this, v=this.viewport, s=v.getScale();
-		g.convexHull = g.computeHull([v.userX-v.ox/s,v.userY-v.oy/s, v.userX-v.ox/s,v.h/s+v.userY-v.oy/s, v.w/s+v.userX-v.ox/s,v.h/s+v.userY-v.oy/s, v.w/s+v.userX-v.ox/s,v.userY-v.oy/s]); g.extendedHulls = {}; g.boundingBoxes = {};
-*/
+		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
 	}
 }
 function endInput() {
@@ -3382,7 +3358,8 @@ class LineItem {
 
 var dataentry = v = new vp.View(null);
 v.name = Object.keys({dataentry}).pop();
-v.designFit = [240,80];
+//v.designFit = [240,80];
+v.designHeight = 85;
 v.gadgets.push(v.item = g = new vp.Gadget(v));
 	g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
@@ -3599,7 +3576,9 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 				v.taxrate.text.trim());
 			if (!li.isEmpty()) {
 				v.setConversionRates();
+for (i=0; i<30; i++) {
 				invoicepane.invoiceitems.unshift(li);
+}
 				invoicepane.setRenderFlag(true);
 				v.clearDataEntry();
 				vp.beginInput(v.item);
