@@ -1201,6 +1201,7 @@ class SwipeGadget extends Gadget {
 	constructor(viewport) {
 		super(viewport);
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+		this.flingFar = false;
 		this.followUp = false; this.animState = '';
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
@@ -1240,7 +1241,7 @@ class SwipeGadget extends Gadget {
 			v.setRenderFlag(true);
 		}
 		this.swipeEndFunc = function(p) {
-			var v = this.viewport;
+			var g = this, v = g.viewport;
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
 				m = Math.sqrt(dx*dx + dy*dy);
@@ -1276,6 +1277,10 @@ class SwipeGadget extends Gadget {
 				if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
 				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
 			}
+
+			if (Math.abs(v.tempVX) < 1 && (g.actionFlags | vp.GAF_SWIPE_LEFTRIGHT)) v.tempVX = 1;
+			if (Math.abs(v.tempVY) < 1 && (g.actionFlags | vp.GAF_SWIPE_UPDOWN)) v.tempVY = 1;
+
 			delete this.tempX; delete this.tempY;
 			this.targetRest = undefined;
 			this.inflect = false;
