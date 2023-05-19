@@ -1215,7 +1215,6 @@ class SwipeGadget extends Gadget {
 		this.flingFar = false;
 		this.followUp = false; this.animState = '';
 		this.doSwipe = function(next) {
-console.log('doSwipe');
 			var v = this.viewport;
 			if (this.actionFlags & vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN) {
 				v.tempVX = next? -0.001: 0.001;
@@ -1240,8 +1239,8 @@ console.log('doSwipe');
 		this.swipeMoveFunc = function(p) {
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
-			var minX = v.minX, maxX = v.maxX - v.sw;//Math.max(v.maxX - v.w/s, minX);
-			var minY = v.minY, maxY = v.maxY - v.sh;//Math.max(v.maxY - v.h/s, minY);
+			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
+			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
 			case vp.GAF_SWIPEABLE_UPDOWN:
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
@@ -1392,8 +1391,8 @@ console.log('best',bestd, best);
 			var g = this, v = g.viewport;
 			var a = v;
       var s = a.getScale();
-			var minX = v.minX, maxX = v.maxX - v.sw;//Math.max(a.maxX - a.w/s, minX);
-			var minY = v.minY, maxY = v.maxY - v.sh;//Math.max(a.maxY - a.h/s, minY);
+			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
+			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
       var newX = v.newX - (v.tempVX * 1000/30 / s /*- fx*/);
       var newY = v.newY - (v.tempVY * 1000/30 / s /*- fy*/);
 			if (g.targetRest && (accel || g.inflect)) {
@@ -1433,7 +1432,10 @@ console.log('best',bestd, best);
 	layout() {
 		var g=this, v=g.viewport;
 		g.convexHull = g.computeHull([
-			v.minX,v.minY, v.minX,v.maxY, v.maxX,v.maxY, v.maxX,v.minY]);
+			Math.min(v.minX, 0), Math.min(v.minY, 0),
+			Math.min(v.minX, 0), Math.max(v.maxY, v.sh),
+			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
+			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
 	}
