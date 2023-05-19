@@ -1214,6 +1214,23 @@ class SwipeGadget extends Gadget {
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 		this.flingFar = false;
 		this.followUp = false; this.animState = '';
+		this.doSwipe = function(next) {
+console.log('doSwipe');
+			var v = this.viewport;
+			if (this.actionFlags & vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN) {
+				v.tempVX = next? -0.001: 0.001;
+				v.tempVY = 0;
+				v.userX = v.userX - v.tempVX;
+			} else {
+				v.tempVX = 0;
+				v.tempVY = next? -0.001: 0.001;
+				v.userY = v.userY - v.tempVY;
+			}
+			this.followUp = false;
+			v.relayout();
+			v.setRenderFlag(true);
+			this.swipeEndFunc();
+		}
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
@@ -3565,7 +3582,7 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 		&& v.unitprice.text.trim() == '') {
 			vp.beep();
 			vp.beginInput(v.unitprice);
-		}else {
+		} else {
 			var value = v.unitprice.text.trim();
 			if (value != '' && ['$', '€'].includes(v.currency.icon)) {
 				value = (v.unitprice.text * 100).toString();
@@ -3577,14 +3594,15 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 				v.taxrate.text.trim());
 			if (!li.isEmpty()) {
 				v.setConversionRates();
-for (i=0; i<30; i++) {
+//for (i=0; i<30; i++) {
 				invoicepane.invoiceitems.unshift(li);
-}
+//}
 				invoicepane.setRenderFlag(true);
 				v.clearDataEntry();
 				vp.beginInput(v.item);
 			} else {
 				vp.endInput();
+				checkoutpages.swipeGad.doSwipe(true);
 			}
 		}
 	}
