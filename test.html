@@ -3658,10 +3658,25 @@ v.renderFunc = function() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
+var extra1 = v = new vp.View(null);
+v.name = Object.keys({extra1}).pop();
+v.renderFunc = function() {
+	gl.clearColor(0,1,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+}
+
+var extra2 = v = new vp.View(null);
+v.name = Object.keys({extra2}).pop();
+v.renderFunc = function() {
+	gl.clearColor(0,0,1, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+}
+
 var checkoutsteps = v = new vp.ViewPages(null, 'h');
 v.name = Object.keys({checkoutsteps}).pop();
 v.pages.push(dataentry);
 v.pages.push(receivepayment);
+v.pages.push(extra1);
 //v.a = dataentry; dataentry.parent = v;
 //v.b = receivepayment; receivepayment.parent = v;
 
