@@ -1254,6 +1254,31 @@ class SwipeGadget extends Gadget {
 				}
 				return [x, y];
 			}
+			function calcNextPoint(o, r, snaps) {
+console.log('calcNextPoint(',o,r,snaps,')');
+				var a = vec2.fromValues(o[0], o[1]), b = vec2.fromValues(-r[0], -r[1]);
+				vec2.normalize(b, b);
+				var a1 = vec2.dot(a, b);
+console.log('a1',a1);
+				var bestd = 'unset', best, snap;
+				if (snaps) for (snap of snaps) {
+					var c = vec2.fromValues(snap[0], snap[1])
+					var c1 = vec2.dot(c, b);
+					var d = c1 - a1;
+console.log('d = c1 - a1',d, c1);
+					if (d >= 0 && (bestd == 'unset' || d < bestd)) { bestd = d; best = snap; }
+				}
+console.log('best',bestd, best);
+				if (bestd != 'unset') return best;
+				if (snaps) for (snap of snaps) {
+					var c = vec2.fromValues(snap[0], snap[1])
+					var c1 = vec2.dot(c, b);
+					var d = Math.abs(c1 - a1);
+					if (bestd == 'unset' || (d < bestd)) { bestd = d; best = snap; }
+				}
+console.log('best',bestd, best);
+				return best;
+			}
 			function calcNeededVelocity(d) {
 				var s = v.getScale(), x, y;
 				var f = d[0]<0? 1: -1;
@@ -1278,6 +1303,7 @@ class SwipeGadget extends Gadget {
 				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
 			}
 
+			// This avoids the edge case of a motionless release.
 			if (Math.abs(v.tempVX) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT))
 				v.tempVX = 0.001;
 			if (Math.abs(v.tempVY) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
@@ -1288,7 +1314,11 @@ class SwipeGadget extends Gadget {
 			this.inflect = false;
 			this.animState = 'decel';
 			if (v.snaps && v.snaps.length > 0) {
-				var xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
+				var xy;
+				if (g.flingFar)
+					xy = calcRestingPoint([v.userX, v.userY], [v.tempVX, v.tempVY]);
+				else
+					xy = calcNextPoint([v.userX, v.userY], [v.tempVX, v.tempVY], v.snaps);
 				var nxy = findNearest(xy, v.snaps);
 				this.targetRest = nxy;
 				//if (nxy[0] < v.userX) v.whenLessX = true; else v.whenLessX = false;
