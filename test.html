@@ -1278,8 +1278,10 @@ class SwipeGadget extends Gadget {
 				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
 			}
 
-			if (Math.abs(v.tempVX) < 1 && (g.actionFlags | vp.GAF_SWIPE_LEFTRIGHT)) v.tempVX = 1;
-			if (Math.abs(v.tempVY) < 1 && (g.actionFlags | vp.GAF_SWIPE_UPDOWN)) v.tempVY = 1;
+			if (Math.abs(v.tempVX) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT))
+				v.tempVX = 0.001;
+			if (Math.abs(v.tempVY) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
+				v.tempVY = 0.001;
 
 			delete this.tempX; delete this.tempY;
 			this.targetRest = undefined;
@@ -1456,55 +1458,6 @@ function refresher(timeStamp) {
         }
         if (windSound) windSound.setValueAtTime(windspeed, ac.currentTime);
 
-/*
-        var todo = [], i = 0;
-        for (const a of animViews) {
-          var s = a.getScale();
-					var minX = a.minX, maxX = Math.max(a.maxX - a.w/s, minX);
-					var minY = a.minY, maxY = Math.max(a.maxY - a.h/s, minY);
-          //var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
-          //var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
-          //if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
-          //if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
-          if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
-            var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
-            var fy = Math.sign(a.tempDY) * Math.min(10, Math.abs(a.tempDY));
-            a.tempDX = Math.sign(a.tempDX) * Math.max(0, Math.abs(a.tempDX) - 10);
-            a.tempDY = Math.sign(a.tempDY) * Math.max(0, Math.abs(a.tempDY) - 10);
-            a.userX = clamp(a.userX - (a.tempVX * 1000/30 / s - fx), minX, maxX);
-            a.userY = clamp(a.userY - (a.tempVY * 1000/30 / s - fy), minY, maxY);
-            //a.userX -= a.tempVX * 1000/30 / s - fx;
-            //a.userY -= a.tempVY * 1000/30 / s - fy;
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
-							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
-              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              todo.push(i); delete a.tempVX; delete a.tempVY;
-            } else {
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              var m = Math.sqrt(a.tempVX*a.tempVX + a.tempVY*a.tempVY);
-              var n = Math.max(0, m - 0.1);
-              if (m != 0) {
-                a.tempVX = a.tempVX / m * n;
-                a.tempVY = a.tempVY / m * n;
-              }
-            }
-          } else {
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-							a.userX = clamp(clamp(a.userX - a.ox/s, minX, maxX) + a.ox/s, minX, maxX);
-							a.userY = clamp(clamp(a.userY - a.oy/s, minY, maxY) + a.oy/s, minY, maxY);
-              //a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              //a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-            }
-            todo.push(i); delete a.tempVX; delete a.tempVY;
-          }
-          i++;
-        }
-*/
-
 				if (debug1 && !continuous) {
 					if (nframes)
 						console.log('rootViewport.renderAll()', nframes? 'n = '+nframes:'');
@@ -1512,12 +1465,6 @@ function refresher(timeStamp) {
 						console.log('rootViewport.renderAll()');
 				}
         rootViewport.renderAll();
-/*
-        while (todo.length) {
-          animViews.splice(todo.pop(), 1);
-        }
-        if (animViews.length > 0) rootViewport.setRenderFlag(true);
-*/
 
 if (showdebug) {
         gl.viewport(0, 0, canvas.width, canvas.height);
