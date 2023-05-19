@@ -196,6 +196,7 @@ class View {
     this.parent = parent;
     this.designFit = undefined; this.designSize = 0; this.designScale = 0; this.designWidth = 0; this.designHeight = 0;
     this.x = 0; this.y = 0; this.w = 0; this.h = 0; this.W = 0; this.H = 0;
+		this.sw = 0; this.sh = 0;
     this.userMat = mat4.create(); mat4.identity(this.userMat);
     this.ox = 0; this.oy = 0; // origin
     this.userX = 0; this.userY = 0;
@@ -221,17 +222,18 @@ class View {
       this.designWidth? this.w/this.designWidth:
       this.designHeight? this.h/this.designHeight:
       this.parent? this.parent.viewScale: 1;
+		this.sw = this.w/this.viewScale;
+		this.sh = this.h/this.viewScale;
     this.rematrix();
     if (this.layoutFunc) { this.layoutFunc.call(this); this.rematrix(); }
     this.setRenderFlag(true);
   }
   rematrix() {
-		var s = this.getScale();
 		mat4.copy(this.mat, pixelPM);
     mat4.scale(this.mat, pixelPM, [canvas.width/this.w, canvas.height/this.h, 1]);
     mat4.multiply(this.mat, this.mat, this.userMat);
     mat4.translate(this.mat, this.mat, [this.ox, this.oy, 0]);
-    mat4.scale(this.mat, this.mat, [s, s, 1]);
+    mat4.scale(this.mat, this.mat, [this.viewScale, this.viewScale, 1]);
     mat4.translate(this.mat, this.mat, [-this.userX, -this.userY, 0]);
   }
   relayout() {
@@ -583,13 +585,13 @@ class ViewPages extends View {
 		this.gadgets.push(this.swipeGad = new vp.SwipeGadget(this));
 		switch (this.type) {
 		case 'h': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT; break;
-		case 'v': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN; break;
+		case 'v': this.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN; break;
 		default: this.swipeGad.actionFlags = 0;
 		}
 		this.layoutFunc = function() {
-			var v = this, s = v.getScale();
-			v.minX = 0; v.maxX = v.w * v.pages.length;
-			v.minY = 0; v.maxY = v.h * v.pages.length;
+			var v = this;
+			v.minX = 0; v.maxX = v.sw * v.pages.length;
+			v.minY = 0; v.maxY = v.sh * v.pages.length;
 			v.swipeGad.layout.call(v.swipeGad);
 		}
 	}
@@ -610,40 +612,42 @@ class ViewPages extends View {
 			this.snaps = [];
 			for (var i = 0; i < this.pages.length; i++) {
 				this.snaps.push([
-					this.w * i * (h?1:0),
-					this.h * i * (v?1:0)]);
+					this.sw * i * (h?1:0),
+					this.sh * i * (v?1:0)]);
 			}
 
 			// Get the index of the page that should be mostly visible.
 			var oldIndex = this.index;
-			if (h) this.index = clamp(Math.round(this.userX / this.w), 0, this.pages.length-1);
-			if (v) this.index = clamp(Math.round(this.userY / this.h), 0, this.pages.length-1);
+			if (h) this.index = clamp(Math.round(this.userX / this.sw), 0, this.pages.length-1);
+			if (v) this.index = clamp(Math.round(this.userY / this.sh), 0, this.pages.length-1);
 			if (this.index != oldIndex && this.pageChangeFunc) this.pageChangeFunc.call(this);
 
 			// Determine which pages are visible and what their offsets are.
 			var curPage = this.pages[this.index];
-			var curX = this.userX + (h?-this.index*this.w:0);
-			var curY = this.userY + (v?-this.index*this.h:0);
+			var curX = this.userX + (h?-this.index*this.sw:0);
+			var curY = this.userY + (v?-this.index*this.sh:0);
 			var otherPage = undefined, otherX, otherY;
-			if (this.index * this.w > this.userX) {
+			if (h && this.index * this.sw > this.userX
+			||  v && this.index * this.sh > this.userY) {
 				curPage.userX = 0;
 				curPage.userY = 0;
 				var otherI = this.index - 1;
 				if (otherI >= 0 && otherI < this.pages.length) {
 					otherPage = this.pages[otherI];
-					otherX = this.userX + (h?-this.index*this.w+this.w:0);
-					otherY = this.userY + (v?-this.index*this.h+this.h:0);
-					otherPage.userX = h?otherX/otherPage.getScale():0;
-					otherPage.userY = v?otherY/otherPage.getScale():0;
+					otherX = this.userX + (h?-this.index*this.sw+this.sw:0);
+					otherY = this.userY + (v?-this.index*this.sh+this.sh:0);
+					otherPage.userX = h?otherX*this.viewScale/otherPage.viewScale:0;
+					otherPage.userY = v?otherY*this.viewScale/otherPage.viewScale:0;
 				}
-			} else if (this.index * this.w < this.userX) {
-				curPage.userX = h?curX/curPage.getScale():0;
-				curPage.userY = v?curY/curPage.getScale():0;
+			} else if (h && this.index * this.sw < this.userX
+							|| v && this.index * this.sh < this.userY) {
+				curPage.userX = h?curX*this.viewScale/curPage.viewScale:0;
+				curPage.userY = v?curY*this.viewScale/curPage.viewScale:0;
 				var otherI = this.index + 1;
 				if (otherI >= 0 && otherI < this.pages.length) {
 					otherPage = this.pages[otherI];
-					otherX = this.userX + (h?-this.index*this.w-this.w:0);
-					otherY = this.userY + (v?-this.index*this.h-this.h:0);
+					otherX = this.userX + (h?-this.index*this.sw-this.sw:0);
+					otherY = this.userY + (v?-this.index*this.sh-this.sh:0);
 					otherPage.userX = 0;
 					otherPage.userY = 0;
 				}
@@ -655,22 +659,27 @@ class ViewPages extends View {
 			this.b = otherPage; if (otherPage) otherPage.parent = this;
 
 			// View calculations
-			s1.remainingWidth = clamp(s.remainingWidth - curX,
+console.log('cur',curX,curY);
+			curX *= this.viewScale;
+			curY *= this.viewScale;
+			s1.remainingWidth = clamp(s.remainingWidth - Math.abs(curX),
 				0, s.remainingWidth);
-			s1.remainingHeight = clamp(s.remainingHeight - curY,
+			s1.remainingHeight = clamp(s.remainingHeight - Math.abs(curY),
 				0, s.remainingHeight);
-			s1.remainingX = clamp(s.remainingX - curX,
+			s1.remainingX = clamp(s.remainingX - (curX < 0 ? curX : 0),
 				s.remainingX, s.remainingX + s.remainingWidth);
-			s1.remainingY = clamp(s.remainingY - curY,
+			s1.remainingY = clamp(s.remainingY - (curY < 0 ? curY : 0),
 				s.remainingY, s.remainingY + s.remainingHeight);
 			if (otherPage) {
-				s2.remainingWidth = clamp(s.remainingWidth - otherX,
+				otherX *= this.viewScale;
+				otherY *= this.viewScale;
+				s2.remainingWidth = clamp(s.remainingWidth - Math.abs(otherX),
 					0, s.remainingWidth);
-				s2.remainingHeight = clamp(s.remainingHeight - otherY,
+				s2.remainingHeight = clamp(s.remainingHeight - Math.abs(otherY),
 					0, s.remainingHeight);
-				s2.remainingX = clamp(s.remainingX - otherX,
+				s2.remainingX = clamp(s.remainingX - (otherX < 0 ? otherX : 0),
 					s.remainingX, s.remainingX + s.remainingWidth);
-				s2.remainingY = clamp(s.remainingY - otherY,
+				s2.remainingY = clamp(s.remainingY - (otherY < 0 ? otherY : 0),
 					s.remainingY, s.remainingY + s.remainingHeight);
 			} else {
 				s2.clear();
@@ -1214,8 +1223,8 @@ class SwipeGadget extends Gadget {
 		this.swipeMoveFunc = function(p) {
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
-			var minX = v.minX, maxX = v.maxX - v.w/s;//Math.max(v.maxX - v.w/s, minX);
-			var minY = v.minY, maxY = v.maxY - v.h/s;//Math.max(v.maxY - v.h/s, minY);
+			var minX = v.minX, maxX = v.maxX - v.sw;//Math.max(v.maxX - v.w/s, minX);
+			var minY = v.minY, maxY = v.maxY - v.sh;//Math.max(v.maxY - v.h/s, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
 			case vp.GAF_SWIPEABLE_UPDOWN:
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
@@ -1302,10 +1311,14 @@ console.log('best',bestd, best);
 			}
 			function outOfBounds(p, a) {
 				var s = a.getScale();
-				var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
-				var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
-				if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
-				if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
+				//var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
+				//var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
+				var minX = a.minX;
+				var minY = a.minY;
+				var maxX = a.maxX;
+				var maxY = a.maxY;
+				//if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
+				//if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
 				return p[0] - a.ox/s < minX || p[0] - a.ox/s > maxX || p[1] - a.oy/s < minY || p[1] - a.oy/s > maxY;
 			}
 
@@ -1362,8 +1375,8 @@ console.log('best',bestd, best);
 			var g = this, v = g.viewport;
 			var a = v;
       var s = a.getScale();
-			var minX = a.minX, maxX = v.maxX - v.w;//Math.max(a.maxX - a.w/s, minX);
-			var minY = a.minY, maxY = v.maxY - v.h;//Math.max(a.maxY - a.h/s, minY);
+			var minX = v.minX, maxX = v.maxX - v.sw;//Math.max(a.maxX - a.w/s, minX);
+			var minY = v.minY, maxY = v.maxY - v.sh;//Math.max(a.maxY - a.h/s, minY);
       var newX = v.newX - (v.tempVX * 1000/30 / s /*- fx*/);
       var newY = v.newY - (v.tempVY * 1000/30 / s /*- fy*/);
 			if (g.targetRest && (accel || g.inflect)) {
@@ -3601,10 +3614,10 @@ v.renderFunc = function(flip = false) {
 	if (flip) {
 		this.rematrix();
 		var s = this.getScale();
-		mat4.translate(this.mat, this.mat, [this.w/2/s, this.h/2/s, 0]);
+		mat4.translate(this.mat, this.mat, [this.sw/2, this.sh/2, 0]);
 		mat4.rotate(this.mat, this.mat, Math.PI, [0,0,1]);
-		mat4.translate(this.mat, this.mat, [-this.w/2/s, -this.h/2/s, 0]);
-		y = this.h/s - 18; dir = -1;
+		mat4.translate(this.mat, this.mat, [-this.sw/2, -this.sh/2, 0]);
+		y = this.sh - 18; dir = -1;
 	}
 
 	useProg5();
@@ -3667,6 +3680,7 @@ v.pages.push(receivepayment);
 v.pages.push(extra1);
 v.pages.push(extra2);
 v.pageChangeFunc = function() {
+	console.log('page change');
 	checkoutprogress.setRenderFlag(true);
 }
 
