@@ -587,10 +587,10 @@ class ViewPages extends View {
 		default: this.swipeGad.actionFlags = 0;
 		}
 		this.layoutFunc = function() {
-			var v = this;
-			v.minX = 0; v.maxX = v.w * this.pages.length;
-			v.minY = 0; v.maxY = v.h * this.pages.length;
-			this.swipeGad.layout.call(this.swipeGad);
+			var v = this, s = v.getScale();
+			v.minX = 0; v.maxX = v.w * v.pages.length;
+			v.minY = 0; v.maxY = v.h * v.pages.length;
+			v.swipeGad.layout.call(v.swipeGad);
 		}
 	}
 	layoutAll(s) {
@@ -608,15 +608,17 @@ class ViewPages extends View {
 			var v = (this.type == 'v');
 
 			this.snaps = [];
-			for (var i = 0; i < this.pages.length + 1; i++) {
+			for (var i = 0; i < this.pages.length; i++) {
 				this.snaps.push([
 					this.w * i * (h?1:0),
 					this.h * i * (v?1:0)]);
 			}
 
 			// Get the index of the page that should be mostly visible.
+			var oldIndex = this.index;
 			if (h) this.index = clamp(Math.round(this.userX / this.w), 0, this.pages.length-1);
 			if (v) this.index = clamp(Math.round(this.userY / this.h), 0, this.pages.length-1);
+			if (this.index != oldIndex && this.pageChangeFunc) this.pageChangeFunc.call(this);
 
 			// Determine which pages are visible and what their offsets are.
 			var curPage = this.pages[this.index];
@@ -1212,26 +1214,30 @@ class SwipeGadget extends Gadget {
 		this.swipeMoveFunc = function(p) {
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
-			var minX = v.minX, maxX = Math.max(v.maxX - v.w/s, minX);
-			var minY = v.minY, maxY = Math.max(v.maxY - v.h/s, minY);
+			var minX = v.minX, maxX = v.maxX - v.w/s;//Math.max(v.maxX - v.w/s, minX);
+			var minY = v.minY, maxY = v.maxY - v.h/s;//Math.max(v.maxY - v.h/s, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
 			case vp.GAF_SWIPEABLE_UPDOWN:
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
-				v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				//v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = 0; v.tempVY = p.dy;
 				break;
 			case vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
-				v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
+				//v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
+				v.userX = clamp(v.userX - dx, minX, maxX);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = 0;
 				break;
 			case vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
-				v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
-				v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				//v.userX = clamp(clamp(v.userX - dx - v.ox/s, minX, maxX) + v.ox/s, minX, maxX);
+				//v.userY = clamp(clamp(v.userY - dy - v.oy/s, minY, maxY) + v.oy/s, minY, maxY);
+				v.userX = clamp(v.userX - dx, minX, maxX);
+				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = p.dy;
 				break;
@@ -1356,8 +1362,8 @@ console.log('best',bestd, best);
 			var g = this, v = g.viewport;
 			var a = v;
       var s = a.getScale();
-			var minX = a.minX, maxX = v.maxX - a.w/s;//Math.max(a.maxX - a.w/s, minX);
-			var minY = a.minY, maxY = v.maxY - a.h/s;//Math.max(a.maxY - a.h/s, minY);
+			var minX = a.minX, maxX = v.maxX - v.w;//Math.max(a.maxX - a.w/s, minX);
+			var minY = a.minY, maxY = v.maxY - v.h;//Math.max(a.maxY - a.h/s, minY);
       var newX = v.newX - (v.tempVX * 1000/30 / s /*- fx*/);
       var newY = v.newY - (v.tempVY * 1000/30 / s /*- fy*/);
 			if (g.targetRest && (accel || g.inflect)) {
@@ -3266,82 +3272,82 @@ class LineItem {
 	}
 }
 
-	var buttonbar = v = new vp.View(null);
-	v.name = Object.keys({buttonbar}).pop();
-	v.designFit = [400,50];
-	v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
-		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-		g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
-		g.autoHull();
-		g.icon = "\x00";
-		g.renderFunc = function() {
-			var g = this;
-			var sel = clickTapActive.includes(g.gestureState);
-			const mat = mat4.create();
-			mat4.identity(mat);
-			mat4.translate(mat, mat, [g.x, g.y, 0]);
-			mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
-			mat4.translate(mat, mat, [-1, 16, 0]);
-			iconFont.draw(0,0, g.icon,
-				g.enabled?(sel?uiButtonSel:uiButton):uiButtonGhost,
-				g.viewport.mat, mat);
+var buttonbar = v = new vp.View(null);
+v.name = Object.keys({buttonbar}).pop();
+v.designFit = [400,50];
+v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x00";
+	g.renderFunc = function() {
+		var g = this;
+		var sel = clickTapActive.includes(g.gestureState);
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
+		mat4.translate(mat, mat, [-1, 16, 0]);
+		iconFont.draw(0,0, g.icon,
+			g.enabled?(sel?uiButtonSel:uiButton):uiButtonGhost,
+			g.viewport.mat, mat);
+	}
+	g.clickFunc = function() {
+		transitionTo(startpane, 'min');
+	}
+v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x01";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('pushGad');
+	}
+v.gadgets.push(v.popGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x02";
+	g.enabled = false;
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('popGad');
+	}
+v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 150 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x03";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		if (window.confirm(tr("Discard this invoice?"))) {
+			dataentry.clearDataEntry();
+			invoicepane.invoiceitems = [];
+			invoicepane.setRenderFlag(true);
 		}
-		g.clickFunc = function() {
-			transitionTo(startpane, 'min');
-		}
-	v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
-		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-		g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-		g.autoHull();
-		g.icon = "\x01";
-		g.renderFunc = v.homeGad.renderFunc;
-		g.clickFunc = function() {
-			console.log('pushGad');
-		}
-	v.gadgets.push(v.popGad = g = new vp.Gadget(v));
-		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-		g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-		g.autoHull();
-		g.icon = "\x02";
-		g.enabled = false;
-		g.renderFunc = v.homeGad.renderFunc;
-		g.clickFunc = function() {
-			console.log('popGad');
-		}
-	v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
-		g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-		g.x = 150 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-		g.autoHull();
-		g.icon = "\x03";
-		g.renderFunc = v.homeGad.renderFunc;
-		g.clickFunc = function() {
-			if (window.confirm(tr("Discard this invoice?"))) {
-				dataentry.clearDataEntry();
-				invoicepane.invoiceitems = [];
-				invoicepane.setRenderFlag(true);
-			}
-		}
-	v.layoutFunc = function() {
-		var totalW = 0; for (const g of this.gadgets) totalW += g.w;
-		var space = (this.w / this.getScale() - totalW) / (this.gadgets.length * 2);
-		var x = 0;
-		for (const g of this.gadgets) {
-			g.x = x + space;
-			x += space + g.w + space;
-		}
-	};
-	v.renderFunc = function() {
-		gl.clearColor(0,0,0, 1);
-		gl.clear(gl.COLOR_BUFFER_BIT);
-		for (const g of this.gadgets) {
-			if (g.renderFunc) g.renderFunc.call(g);
-		}
-	};
+	}
+v.layoutFunc = function() {
+	var totalW = 0; for (const g of this.gadgets) totalW += g.w;
+	var space = (this.w / this.getScale() - totalW) / (this.gadgets.length * 2);
+	var x = 0;
+	for (const g of this.gadgets) {
+		g.x = x + space;
+		x += space + g.w + space;
+	}
+};
+v.renderFunc = function() {
+	gl.clearColor(0,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	for (const g of this.gadgets) {
+		if (g.renderFunc) g.renderFunc.call(g);
+	}
+};
 
 var dataentry = v = new vp.View(null);
 v.name = Object.keys({dataentry}).pop();
 //v.designFit = [240,80];
-v.designHeight = 85;
+v.designHeight = 80;
 v.gadgets.push(v.item = g = new vp.Gadget(v));
 	g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
@@ -3654,13 +3660,34 @@ v.renderFunc = function() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
-var checkoutsteps = v = new vp.ViewPages(null, 'h');
-v.name = Object.keys({checkoutsteps}).pop();
+var checkoutpages = v = new vp.ViewPages(null, 'h');
+v.name = Object.keys({checkoutpages}).pop();
 v.pages.push(dataentry);
 v.pages.push(receivepayment);
 v.pages.push(extra1);
-//v.a = dataentry; dataentry.parent = v;
-//v.b = receivepayment; receivepayment.parent = v;
+v.pages.push(extra2);
+v.pageChangeFunc = function() {
+	checkoutprogress.setRenderFlag(true);
+}
+
+var checkoutprogress = v = new vp.View(null);
+v.name = Object.keys({checkoutprogress}).pop();
+v.renderFunc = function() {
+	gl.clearColor(0,0,0, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	var m = mat4.create(), icon = '.', sp = 5;
+	mat4.identity(m); mat4.translate(m, m, [(this.w/this.getScale() - sp - (defaultFont.calcWidth(icon) + sp) * checkoutpages.pages.length)/2, 4, 0]);
+
+	for (i=0; i<checkoutpages.pages.length; i++) {
+	  defaultFont.draw(sp,0, icon, i==checkoutpages.index?uiText:uiButtonGhost, this.mat, m);
+	}
+}
+
+var checkoutsteps = v = new vp.ViewSlice(null, 'b', 10);
+v.name = Object.keys({checkoutsteps}).pop();
+v.designWidth = 240;
+v.a = checkoutprogress; checkoutprogress.parent = v;
+v.b = checkoutpages; checkoutpages.parent = v;
 
 var vendorinvoice = v = new vp.View(null);
 v.name = Object.keys({vendorinvoice}).pop();
@@ -3883,16 +3910,6 @@ v.layoutFunc = function() {
 v.renderFunc = v.renderFunc = function() {
 	dataentry.renderFunc.call(this, true);
 };
-/*
-v.getHitsF = v.getHits;
-v.getHits = function(hitList, radius) {
-console.log('myhitfunc');
-	var v = this;
-	var hl = new vp.HitList(v.w - hitList.x, v.h - hitList.y);
-	this.getHitsF(hl, radius);
-	while (hl.hits.length) hitList.hits.push(hl.hits.pop());
-}
-*/
 
 var customerpane = v = new vp.ViewSlice(null, 't', 50/240);
 v.name = Object.keys({customerpane}).pop();
@@ -3900,7 +3917,7 @@ v.prop = true;
 v.a = customertotal; customertotal.parent = v;
 v.b = customerinvoice; customerinvoice.parent = v;
 
-var invoicemain = v = new vp.ViewSlice(null, 't', 85/240);
+var invoicemain = v = new vp.ViewSlice(null, 't', 90/240);
 v.name = Object.keys({invoicemain}).pop();
 v.prop = true;
 v.a = checkoutsteps; checkoutsteps.parent = v;
