@@ -1241,7 +1241,8 @@ console.log('doSwipe()');
 			this.followUp = false;
 		}
 		this.swipeMoveFunc = function(p) {
-console.log('swipeMoveFunc()');
+console.log(v.name,'swipeMoveFunc()');
+if (!v.tempVY) console.log('a');
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
@@ -1272,6 +1273,7 @@ console.log('swipeMoveFunc()');
 				v.tempVX = p.dx; v.tempVY = p.dy;
 				break;
 			}
+if (!v.tempVY) console.log('b');
 			this.followUp = false;
 			v.relayout();
 			v.setRenderFlag(true);
@@ -1279,6 +1281,7 @@ console.log('swipeMoveFunc()');
 		this.swipeEndFunc = function(p) {
 			var g = this, v = g.viewport;
 console.log(v.name,'swipeEndFunc()');
+if (!v.tempVY) console.log('a');
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
 				m = Math.sqrt(dx*dx + dy*dy);
@@ -1344,6 +1347,7 @@ console.log(v.name,'swipeEndFunc()');
 				v.tempVX = 0.001;
 			if (Math.abs(v.tempVY) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
 				v.tempVY = 0.001;
+if (!v.tempVY) console.log('b');
 
 			delete this.tempX; delete this.tempY;
 			this.targetRest = undefined;
@@ -1364,6 +1368,7 @@ console.log(v.name,'swipeEndFunc()');
 				if (nxy[1] < v.userY && v.tempVY > 0) this.animState = 'accel';
 				if (nxy[1] > v.userY && v.tempVY < 0) this.animState = 'accel';
 			}
+if (!v.tempVY) console.log('c');
 			v.origVX = v.tempVX;
 			v.origVY = v.tempVY;
 			v.newX = v.userX;
@@ -1372,11 +1377,13 @@ console.log(v.name,'swipeEndFunc()');
       v.magCur = v.magOrig;
 			this.followUp = true;
 			this.viewport.requeueLayout();
+if (!v.tempVY) console.log('d');
 		}
 		this.followUpFunc = function() {
 			if (!this.followUp) return;
 			var g = this, v = g.viewport;
 console.log(v.name,'followUpFunc()');
+if (!v.tempVY) console.log('a');
 			switch (g.animState) {
 			case 'decel':
 				if (g.coast(false)) g.animState = 'done';
@@ -1392,6 +1399,7 @@ console.log(v.name,'followUpFunc()');
 		this.coast = function(accel) {
 			var g = this, v = g.viewport;
 console.log(v.name,'coast()');
+if (!v.tempVY) console.log('a');
 			var a = v;
       var s = a.getScale();
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
