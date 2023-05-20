@@ -1214,6 +1214,7 @@ class SwipeGadget extends Gadget {
 		this.flingFar = false;
 		this.followUp = false; this.animState = '';
 		this.doSwipe = function(next) {
+console.log('doSwipe()');
 			var v = this.viewport;
 			if (this.actionFlags & vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN) {
 				v.tempVX = next? -0.001: 0.001;
@@ -1236,6 +1237,7 @@ class SwipeGadget extends Gadget {
 			this.followUp = false;
 		}
 		this.swipeMoveFunc = function(p) {
+console.log('swipeMoveFunc()');
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
@@ -1382,6 +1384,7 @@ class SwipeGadget extends Gadget {
 			v.requeueLayout();
 		}
 		this.coast = function(accel) {
+console.log('coast()');
 			var g = this, v = g.viewport;
 			var a = v;
       var s = a.getScale();
@@ -1431,6 +1434,7 @@ class SwipeGadget extends Gadget {
 			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
+console.log('layout()',v,v.userX,v.minX,v.maxX,v.sw);
 		v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
 		v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
