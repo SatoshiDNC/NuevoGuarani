@@ -1436,7 +1436,7 @@ console.log('coast()');
 			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
-console.log('layout()',v,v.userX,v.minX,v.maxX,v.sw);
+console.log('layout()',v.name,v.userX,v.minX,v.maxX,v.sw);
 		v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
 		v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
