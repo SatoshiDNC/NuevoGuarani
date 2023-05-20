@@ -1236,6 +1236,7 @@ console.log('doSwipe()');
 		}
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
+console.log(v.name,'swipeBeginFunc()');
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
 			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
 			this.followUp = false;
@@ -4181,6 +4182,7 @@ v.layoutFunc = function() {
 		customerpane.parent = undefined;
 	} else {
 		v.a = customerpane; customerpane.parent = v;
+		customermain.parent = customerpane;
 	}
 }
 v.layoutEndFunc = function() {
