@@ -210,12 +210,13 @@ class View {
   insideFit(w,h) { this.viewScale = (this.w/w < this.h/h)? this.w/w: this.h/h; }
   layoutAll(s) {
 		if (debug1 && !continuous) console.log(this.name+'::'+this.layoutAll.name);
+var nan = isNaN(this.sw);
     this.x = s.remainingX; this.y = s.remainingY;
     this.w = s.remainingWidth; this.h = s.remainingHeight;
     this.W = s.totalWidth; this.H = s.totalHeight;
     this.viewScale =
       this.designFit?
-				(this.h&&this.designFit[0]/this.designFit[1]>this.w/this.h?
+				(this.designFit[0]/this.designFit[1]>this.w/this.h?
 				 this.w/this.designFit[0]:this.h/this.designFit[1]):
       this.designSize? Math.sqrt(this.w*this.h/this.designSize):
       this.designScale? this.designScale:// * window.devicePixelRatio:
@@ -224,6 +225,7 @@ class View {
       this.parent? this.parent.viewScale: 1;
 		this.sw = this.w/this.viewScale;
 		this.sh = this.h/this.viewScale;
+ if (!nan && isNaN(this.sw)) console.log('CHANGED TO NAN', this);
     this.rematrix();
     if (this.layoutFunc) { this.layoutFunc.call(this); this.rematrix(); }
     this.setRenderFlag(true);
