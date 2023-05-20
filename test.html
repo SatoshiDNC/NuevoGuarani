@@ -1431,6 +1431,8 @@ class SwipeGadget extends Gadget {
 			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
+		v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
+		v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
 	}
 }
@@ -2709,6 +2711,8 @@ class ColorTheme {
 		this.uiButton					= [0.6,0.6,0.6, 1];
 		this.uiButtonSel			= [1.0,0.2,0.2, 1];
 		this.uiButtonGhost		= [0.2,0.2,0.2, 1];
+		this.uiLedger1				= [0.00,0.00,0.00, 1];
+		this.uiLedger2				= [0.05,0.05,0.05, 1];
 
 		// Derived colors (can be overridden).
 		// If this list is changed, the set function (below) must be updated to correspond.
@@ -2751,6 +2755,8 @@ class DefaultDarkTheme extends ColorTheme {
 		this.set('uiButton'					, [0.6,0.6,0.6, 1]);
 		this.set('uiButtonSel'			, [1.0,0.2,0.2, 1]);
 		this.set('uiButtonGhost'		, [0.2,0.2,0.2, 1]);
+		this.set('uiLedger1'				, [0.00,0.00,0.00, 1]);
+		this.set('uiLedger2'				, [0.05,0.05,0.05, 1]);
 	}
 }
 class DefaultLightTheme extends ColorTheme {
@@ -2761,6 +2767,8 @@ class DefaultLightTheme extends ColorTheme {
 		this.set('uiButton'					, [0.2,0.2,0.2, 1]);
 		this.set('uiButtonSel'			, [0.8,0.0,0.0, 1]);
 		this.set('uiButtonGhost'		, [0.8,0.8,0.8, 1]);
+		this.set('uiLedger1'				, [1.00,1.00,1.00, 1]);
+		this.set('uiLedger2'				, [0.95,0.95,0.95, 1]);
 	}
 }
 const trs = {};
@@ -2995,6 +3003,12 @@ addShape2('rect', gl.TRIANGLE_STRIP,
 	0.0,1, 0.0,0, 1.0,1, 1.0,0, );
 addShape5('rect', gl.TRIANGLE_STRIP,
 	0.0,1,1,1,1, 0.0,0,1,1,1, 1.0,1,1,1,1, 1.0,0,1,1,1, );
+addShape5('vendorLedger', gl.TRIANGLE_STRIP,
+	0.0,1,...rgb(vendorColors.uiLedger1), 0.0,0,...rgb(vendorColors.uiLedger2),
+	1.0,1,...rgb(vendorColors.uiLedger1), 1.0,0,...rgb(vendorColors.uiLedger2), );
+addShape5('customerLedger', gl.TRIANGLE_STRIP,
+	0.0,1,...rgb(customerColors.uiLedger1), 0.0,0,...rgb(customerColors.uiLedger2),
+	1.0,1,...rgb(customerColors.uiLedger1), 1.0,0,...rgb(customerColors.uiLedger2), );
 addShape5('scrollUp', gl.TRIANGLE_FAN,
 	0.5,0,0.75,0.75,0.75,
 	0.0,1,0.25,0.25,0.25,
@@ -3811,14 +3825,10 @@ v.renderFunc = function(flip = false) {
 
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
+	if (flip && !customerpane.parent) return;
 
 	var y = 16, h = 0, w, t, c, s, dir = 1;
 	if (flip) {
-		this.rematrix();
-		var s = this.getScale();
-		mat4.translate(this.mat, this.mat, [this.w/2/s, this.h/2/s, 0]);
-		mat4.rotate(this.mat, this.mat, Math.PI, [0,0,1]);
-		mat4.translate(this.mat, this.mat, [-this.w/2/s, -this.h/2/s, 0]);
 		y = this.h/s - 18; dir = -1;
 	}
 
@@ -3836,13 +3846,47 @@ v.renderFunc = function(flip = false) {
 		this.setRenderFlag(true);
 	}
 
+	useProg5();
+	this.rematrix();
+  var m = mat4.create();
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'), new Float32Array([1,1,1,1]));
+	mat4.identity(m);
+	if (flip) {
+		mat4.translate(m, m, [0, 1 - this.scrollY, 0]);
+		mat4.scale(m, m, [this.sw, -32, 1]);
+		mat4.translate(m, m, [0, -1 - Math.floor(this.sh / 32) - Math.floor(this.userY / 32), 0]);
+	} else {
+		mat4.translate(m, m, [0, 1 + this.scrollY, 0]);
+		mat4.scale(m, m, [this.sw, 32, 1]);
+		mat4.translate(m, m, [0, Math.floor(this.userY / 32), 0]);
+	}
+	var typ5o, beg5o, len5o;
+	if (this === vendorinvoice) {
+		typ5o = typ5.vendorLedger; beg5o = beg5.vendorLedger; len5o = len5.vendorLedger;
+	} else {
+		typ5o = typ5.customerLedger, beg5o = beg5.customerLedger, len5o = len5.customerLedger;
+	}
+	for (var i=0; i<=this.sh/32; i++) {
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, m);
+		gl.drawArrays(typ5o, beg5o, len5o);
+		mat4.translate(m, m, [0, 1, 0]);
+	}
+
+	if (flip) {
+		this.rematrix();
+		var s = this.getScale();
+		mat4.translate(this.mat, this.mat, [this.w/2/s, this.h/2/s, 0]);
+		mat4.rotate(this.mat, this.mat, Math.PI, [0,0,1]);
+		mat4.translate(this.mat, this.mat, [-this.w/2/s, -this.h/2/s, 0]);
+	}
+
 	var currencies = [];
 	for (const li of invoicepane.invoiceitems) {
 		if (!currencies.includes(li.currency)) currencies.push(li.currency);
 	}
 	if (!currencies.includes(customertotal.currency.icon))
 		currencies.push(customertotal.currency.icon);
-  var m = mat4.create();
 	for (const li of invoicepane.invoiceitems) {
 		if (skip > 0) { skip -= 1; continue; }
 		var cust = (this === customerinvoice);
@@ -3905,28 +3949,40 @@ v.name = Object.keys({vendorpane}).pop();
 v.prop = true;
 v.a = buttonbar; buttonbar.parent = v;
 v.b = vendormain; vendormain.parent = v;
-var customerpane;
+var invoicepane, customerpane, customertotal;
 
 var customertitlebar = v = new vp.View(null);
 v.name = Object.keys({customertitlebar}).pop();
-v.label = tr('Customer Bill');
-v.neededWidth = defaultFont.calcWidth(v.label)+8;
-v.designFit = [v.neededWidth,18];
+v.label = tr('Customer Bill')+' '; // Space ensures init.
+v.skipUpdate = false;
 v.layoutFunc = function() {
 	var v = this;
-	customerpane.sizeH = customerpane.sizeV = 20/v.neededWidth;
-	customerpane.requeueLayout();
+	var label = tr('Customer Bill', customertotal.language.lang);
+	if (label != v.label && customertotal) {
+		v.label = label;
+		v.neededWidth = defaultFont.calcWidth(v.label)+8;
+		v.designWidth = v.neededWidth;
+		customerpane.sizeH = customerpane.sizeV = 20/v.neededWidth;
+		customerpane.requeueLayout();
+		v.skipUpdate = true;
+	}
 }
 v.renderFunc = function() {
 	const th = customerColors;
 	var v = this;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	var m = mat4.create(); mat4.identity(m);
-	mat4.translate(m, m, [v.sw/2, v.sh/2, 0]);
-	mat4.rotate(m, m, Math.PI, [0,0,1]);
-	mat4.translate(m, m, [-v.sw/2, -v.sh/2, 0]);
-	defaultFont.draw(4,16, v.label, th.uiText, v.mat, m);
+	if (!v.skipUpdate) {
+		var m = mat4.create(); mat4.identity(m);
+		mat4.translate(m, m, [v.sw/2, v.sh/2, 0]);
+		mat4.rotate(m, m, Math.PI, [0,0,1]);
+		mat4.translate(m, m, [-v.sw/2, -v.sh/2, 0]);
+		defaultFont.draw(4,16, v.label, th.uiText, v.mat, m);
+	}
+	if (v.skipUpdate) {
+		v.skipUpdate = false;
+		v.setRenderFlag(true);
+	}
 };
 
 var customerinvoice = v = new vp.View(null);
@@ -4004,6 +4060,7 @@ v.gadgets.push(v.language = g = new vp.Gadget(v));
 		i += 1;
 		if (i >= enabledCustomerLangs.length) i = 0;
 		g.lang = enabledCustomerLangs[i];
+		customertitlebar.requeueLayout();
 		customerpane.setRenderFlag(true);
 	}
 	g.getHits = v.currency.getHits;
@@ -4090,10 +4147,20 @@ v.b = vendorpane; vendorpane.parent = v;
 v.c = vendorcustomerdiv; vendorcustomerdiv.parent = v;
 v.ratioMin['v'] = 0.25;
 v.ratioMax['v'] = 0.75;
-v.layoutEndFunc = function() {
+v.layoutFunc = function() {
 	var v = this, h = v.h/v.getScale();
-	v.ratioMin['h'] = (v.w/240*49 + v.w/customertitlebar.neededWidth*20) / v.h;
-	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*80) / v.h;
+	inflection1 = (v.w/240*49 + v.w/customertitlebar.neededWidth*20) / v.h;
+  if (v.ratio < inflection1) {
+		v.a = customermain; customermain.parent = v;
+		customerpane.parent = undefined;
+	} else {
+		v.a = customerpane; customerpane.parent = v;
+	}
+}
+v.layoutEndFunc = function() {
+	var v = this;
+	v.ratioMin['h'] = (v.w/240*49) / v.h;
+	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*90) / v.h;
 }
   var menupane = v = new vp.View(null);
 	v.name = Object.keys({menupane}).pop();
