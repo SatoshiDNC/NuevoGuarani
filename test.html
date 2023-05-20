@@ -1413,7 +1413,7 @@ if (isNaN(v.userY)) console.log('NaN', g.targetRest[1]);
 			v.newY = newY;
 			v.userX = clamp(newX, minX, maxX);
 			v.userY = clamp(newY, minY, maxY);
-if (isNaN(v.userY)) console.log('NaN', newY, minY, maxY);
+if (isNaN(v.userY)) console.log('NaN:', newY, minY, maxY, s, v.tempVY);
 			var magCur = accel ? v.magCur + 0.1 : v.magCur - 0.1;
 			if (g.animState == 'decel' && Math.sign(magCur) != Math.sign(v.magCur)) {
 				if (g.targetRest) {
