@@ -216,7 +216,7 @@ var nan = isNaN(this.sw);
     this.W = s.totalWidth; this.H = s.totalHeight;
     this.viewScale =
       this.designFit?
-				(this.designFit[0]/this.designFit[1]>this.w/this.h?
+				((this.h!=0&&this.designFit[0]/this.designFit[1]>this.w/this.h)?
 				 this.w/this.designFit[0]:this.h/this.designFit[1]):
       this.designSize? Math.sqrt(this.w*this.h/this.designSize):
       this.designScale? this.designScale:// * window.devicePixelRatio:
@@ -225,7 +225,7 @@ var nan = isNaN(this.sw);
       this.parent? this.parent.viewScale: 1;
 		this.sw = this.w/this.viewScale;
 		this.sh = this.h/this.viewScale;
- if (!nan && isNaN(this.sw)) console.log('CHANGED TO NAN', this.designFit[0], this.designFit[1], this.w, this.h, this.designSize, this.designScale, this.designWidth, this.designHeight, this.parent);
+ if (!nan && isNaN(this.sw)) console.log('CHANGED TO NAN', this.designFit[0], this.designFit[1], this.w, this.h, this.designSize, this.designScale, this.designWidth, this.designHeight, this.parent?this.parent.name:'');
     this.rematrix();
     if (this.layoutFunc) { this.layoutFunc.call(this); this.rematrix(); }
     this.setRenderFlag(true);
