@@ -214,7 +214,7 @@ var nan = isNaN(this.sw);
     this.x = s.remainingX; this.y = s.remainingY;
     this.w = s.remainingWidth; this.h = s.remainingHeight;
     this.W = s.totalWidth; this.H = s.totalHeight;
-if (this.designFit) console.log(this.h!=0,(this.h!=0&&this.designFit[0]/this.designFit[1]>this.w/this.h));
+if (this.name == 'customertotal') console.log(viewScale);
     this.viewScale =
       this.designFit?
 				((this.h!=0&&this.designFit[0]/this.designFit[1]>this.w/this.h)?
@@ -226,7 +226,7 @@ if (this.designFit) console.log(this.h!=0,(this.h!=0&&this.designFit[0]/this.des
       this.parent? this.parent.viewScale: 1;
 		this.sw = this.w/this.viewScale;
 		this.sh = this.h/this.viewScale;
- if (!nan && isNaN(this.sw)) console.log('CHANGED TO NAN', this.designFit[0], this.designFit[1], this.w, this.h, this.designSize, this.designScale, this.designWidth, this.designHeight, this.parent?this.parent.name:'');
+ if (!nan && isNaN(this.sw)) console.log('CHANGED TO NAN', this.name, this.viewScale, this.designFit[0], this.designFit[1], this.w, this.h, this.designSize, this.designScale, this.designWidth, this.designHeight, this.parent?this.parent.name:'(no parent)');
     this.rematrix();
     if (this.layoutFunc) { this.layoutFunc.call(this); this.rematrix(); }
     this.setRenderFlag(true);
@@ -4108,10 +4108,10 @@ v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
 		defaultFont.draw(-w-3-defaultFont.calcWidth(d),0, d, c, v.mat, m);
 	}
 v.layoutFunc = function() {
-};
+}
 v.renderFunc = v.renderFunc = function() {
 	dataentry.renderFunc.call(this, true);
-};
+}
 
 var customermain = v = new vp.ViewSlice(null, 't', 49/240);
 v.name = Object.keys({customermain}).pop();
