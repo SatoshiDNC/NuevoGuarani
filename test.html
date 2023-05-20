@@ -218,11 +218,11 @@ class View {
     this.viewScale =
       this.designFit?
 				(this.h==0?1:this.designFit[0]/this.designFit[1]>this.w/this.h?
-				 this.w/this.designFit[0]:this.h/this.designFit[1]):
+				 this.w==0?1:this.w/this.designFit[0]:this.h==0?1:this.h/this.designFit[1]):
       this.designSize? Math.sqrt(this.w*this.h/this.designSize):
       this.designScale? this.designScale:// * window.devicePixelRatio:
-      this.designWidth? this.w/this.designWidth:
-      this.designHeight? this.h/this.designHeight:
+      this.designWidth? this.w==0?1:this.w/this.designWidth:
+      this.designHeight? this.h==0?1:this.h/this.designHeight:
       this.parent? this.parent.viewScale: 1;
 		this.sw = this.w/this.viewScale;
 		this.sh = this.h/this.viewScale;
