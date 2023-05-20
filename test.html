@@ -214,6 +214,7 @@ var nan = isNaN(this.sw);
     this.x = s.remainingX; this.y = s.remainingY;
     this.w = s.remainingWidth; this.h = s.remainingHeight;
     this.W = s.totalWidth; this.H = s.totalHeight;
+if (this.designFit) console.log(this.h!=0,this.designFit[0]/this.designFit[1]);
     this.viewScale =
       this.designFit?
 				((this.h!=0&&this.designFit[0]/this.designFit[1]>this.w/this.h)?
