@@ -97,7 +97,7 @@ b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2"
 b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],this.pixCoords[8*k+2]=0,this.pixCoords[8*k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],
 this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/
 (2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}}init(){if(!u){{var e=
-h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
+h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      //vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      //vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      //vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      vec4 o1 = vec4(color1.rgb, v1/float(ss*ss));\n      vec4 o2 = vec4(color2.rgb, v2/float(ss*ss));\n      vec4 o3 = vec4(color3.rgb, v3/float(ss*ss));\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
 g=e.createProgram();e.attachShader(g,m);e.attachShader(g,l);e.linkProgram(g);e.getProgramParameter(g,e.LINK_STATUS)?u=g:(alert("Unable to initialize the shader program: "+e.getProgramInfoLog(g)),u=null)}}h.useProgram(u);this.tex=h.createTexture();h.bindTexture(h.TEXTURE_2D,this.tex);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MIN_FILTER,h.LINEAR);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MAG_FILTER,h.LINEAR);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data);this.vertexBuff=h.createBuffer();
 h.bindBuffer(h.ARRAY_BUFFER,this.vertexBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.pixCoords),h.STATIC_DRAW);this.texBuff=h.createBuffer();h.bindBuffer(h.ARRAY_BUFFER,this.texBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.texCoords),h.STATIC_DRAW);this.vloc=h.getAttribLocation(u,"aVertex");this.tloc=h.getAttribLocation(u,"aUV");this.scaleFactorLoc=h.getUniformLocation(u,"scaleFactor");this.layerLoc=h.getUniformLocation(u,"layer");this.depthLoc=h.getUniformLocation(u,"depth");
 this.projMatLoc=h.getUniformLocation(u,"uProjectionMatrix");this.viewMatLoc=h.getUniformLocation(u,"uModelViewMatrix");this.color1Loc=h.getUniformLocation(u,"color1");this.color2Loc=h.getUniformLocation(u,"color2");this.color3Loc=h.getUniformLocation(u,"color3")}update(){h.useProgram(u);h.bindTexture(h.TEXTURE_2D,this.tex);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data)}calcWidth(e){var m=0;for(let g of e){e=g.codePointAt(0);var l;for(l=0;l<this.glyphCodes.length&&this.glyphCodes[l]!=
@@ -261,7 +261,7 @@ class View {
 				if (debug1 && !continuous)
 					console.log(this.name+'::'+this.renderAll.name, this.w, this.h);
 				this.clip();
-		    if (clearBackground) { gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT); }
+		    if (clearBackground) { gl.clearColor(0,1,1,1); gl.clear(gl.COLOR_BUFFER_BIT); }
 		    if (this.renderFunc) { this.renderFunc.call(this); }
 			}
     }
@@ -659,7 +659,6 @@ class ViewPages extends View {
 			this.b = otherPage; if (otherPage) otherPage.parent = this;
 
 			// View calculations
-console.log('cur',curX,curY);
 			curX *= this.viewScale;
 			curY *= this.viewScale;
 			s1.remainingWidth = clamp(s.remainingWidth - Math.abs(curX),
@@ -1286,20 +1285,16 @@ class SwipeGadget extends Gadget {
 				return [x, y];
 			}
 			function calcNextPoint(o, r, snaps) {
-console.log('calcNextPoint(',o,r,snaps,')');
 				var a = vec2.fromValues(o[0], o[1]), b = vec2.fromValues(-r[0], -r[1]);
 				vec2.normalize(b, b);
 				var a1 = vec2.dot(a, b);
-console.log('a1',a1);
 				var bestd = 'unset', best, snap;
 				if (snaps) for (snap of snaps) {
 					var c = vec2.fromValues(snap[0], snap[1])
 					var c1 = vec2.dot(c, b);
 					var d = c1 - a1;
-console.log('d = c1 - a1',d, c1);
 					if (d >= 0 && (bestd == 'unset' || d < bestd)) { bestd = d; best = snap; }
 				}
-console.log('best',bestd, best);
 				if (bestd != 'unset') return best;
 				if (snaps) for (snap of snaps) {
 					var c = vec2.fromValues(snap[0], snap[1])
@@ -1307,7 +1302,6 @@ console.log('best',bestd, best);
 					var d = Math.abs(c1 - a1);
 					if (bestd == 'unset' || (d < bestd)) { bestd = d; best = snap; }
 				}
-console.log('best',bestd, best);
 				return best;
 			}
 			function calcNeededVelocity(d) {
@@ -2769,29 +2763,80 @@ function main() {
 		return style == PARAGUAY? s * 2: s / 3600;
 	}
 
-	const uiPillOrange = [1, 0.55, 0.1, 1];
-	const uiLightningPurple = [0.5, 0, 1, 1];
-	const uiLightningYellow = [1, 0.9, 0, 1];
-	const uiFiatGreen = [112/255, 130/255, 56/255, 1];
-	const uiBlack = [0,0,0, 1];
-	const uiWhite = [1,1,1, 1];
-	const uiDarkWhite = [0.9,0.9,0.9, 1];
-
-	const uiButton				= [0.6,0.6,0.6, 1];
-	const uiButtonSel			= [1.0,0.2,0.2, 1];
-	const uiButtonGhost		= [0.2,0.2,0.2, 1];
-	const uiTextLabelArea	= uiButtonGhost;
-	const uiTextField			= uiBlack;
-	const uiTextFocus			= uiButtonSel;
-	const uiText					= uiWhite;
-	const uiTextLabel			= uiWhite;
-	const uiGhostText			= uiButton;
-
   clickTapActive = ['begin-click','recover-click','begin-tap'];
 
 	console.log(enabledVendorCurrencies, enabledCustomerCurrencies, enabledCustomerLangs);
 
 	var v, g;
+class ColorTheme {
+	constructor() {
+
+		// Colors that are generally theme-independent.
+		this.uiPillOrange = [1, 0.55, 0.1, 1];
+		this.uiLightningPurple = [0.5, 0, 1, 1];
+		this.uiLightningYellow = [1, 0.9, 0, 1];
+		this.uiFiatGreen = [112/255, 130/255, 56/255, 1];
+
+		// Colors that generally should be set for each theme.
+		this.uiBackground			= [0,0,0, 1];
+		this.uiForeground			= [1,1,1, 1];
+		this.uiButton					= [0.6,0.6,0.6, 1];
+		this.uiButtonSel			= [1.0,0.2,0.2, 1];
+		this.uiButtonGhost		= [0.2,0.2,0.2, 1];
+
+		// Derived colors (can be overridden).
+		// If this list is changed, the set function (below) must be updated to correspond.
+		this.uiTextLabelArea	= this.uiButtonGhost;
+		this.uiTextField			= this.uiBackground;
+		this.uiTextFocus			= this.uiButtonSel;
+		this.uiText						= this.uiForeground;
+		this.uiTextLabel			= this.uiForeground;
+		this.uiGhostText			= this.uiButton;
+	}
+	set(variable, value) {
+
+		// Helper.
+		const me = this;
+		function subset(variable, sub, value) {
+			if (me[sub] == me[variable]) me[sub] = value;
+		}
+
+		// This switch block must correspond to derived colors list.
+		switch (variable) {
+		case 'uiButtonGhost': subset(variable, 'uiTextLabelArea', value); break;
+		case 'uiBackground': subset(variable, 'uiTextField', value); break;
+		case 'uiButtonSel': subset(variable, 'uiTextFocus', value); break;
+		case 'uiForeground':
+			subset(variable, 'uiText', value);
+			subset(variable, 'uiTextLabel', value);
+			break;
+		case 'uiButton': subset(variable, 'uiGhostText', value); break;
+		}
+
+		// Finally, do what we came for.
+		this[variable] = value;
+	}
+}
+class DefaultDarkTheme extends ColorTheme {
+	constructor() {
+		super();
+		this.set('uiBackground'			, [0,0,0, 1]);
+		this.set('uiForeground'			, [1,1,1, 1]);
+		this.set('uiButton'					, [0.6,0.6,0.6, 1]);
+		this.set('uiButtonSel'			, [1.0,0.2,0.2, 1]);
+		this.set('uiButtonGhost'		, [0.2,0.2,0.2, 1]);
+	}
+}
+class DefaultLightTheme extends ColorTheme {
+	constructor() {
+		super();
+		this.set('uiBackground'			, [1,1,1, 1]);
+		this.set('uiForeground'			, [0,0,0, 1]);
+		this.set('uiButton'					, [0.2,0.2,0.2, 1]);
+		this.set('uiButtonSel'			, [0.8,0.0,0.0, 1]);
+		this.set('uiButtonGhost'		, [0.8,0.8,0.8, 1]);
+	}
+}
 const trs = {};
  function tr(s, l = lcode) {
 	if (!(s in trs)) {
@@ -2904,9 +2949,15 @@ const trs = {};
 		}
 	}
 }
+const vendorColors = new DefaultLightTheme();
+const customerColors = new DefaultLightTheme();
+
 // Shape data storage
 const beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
 const beg5 = {}, len5 = {}, typ5 = {}; var all5 = [], buf5;
+
+// Helper function
+function rgb(rgba) { return [rgba[0], rgba[1], rgba[2]]; }
 
 // Shape building functions
 function addShape2(name, typ, ...points) {
@@ -2925,15 +2976,15 @@ addShape2('unitLine', gl.LINE_LOOP, 0,0, 1,1, );
 addShape5('unitLine', gl.LINE_LOOP, 0,0,1,1,0, 1,1,0,1,0, );
 addShape5('divLine', gl.LINE_STRIP, 0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
 addShape5('divLineV', gl.TRIANGLE_STRIP,
-	1,0.0,0,0,0, 0,0.0,0,0,0,
-	1,0.4,1,1,1, 0,0.4,1,1,1,
-	1,0.6,1,1,1, 0,0.6,1,1,1,
-	1,1.0,0,0,0, 0,1.0,0,0,0, );
+	1,0.0,...rgb(vendorColors.uiBackground), 0,0.0,...rgb(vendorColors.uiBackground),
+	1,0.4,...rgb(vendorColors.uiForeground), 0,0.4,...rgb(vendorColors.uiForeground),
+	1,0.6,...rgb(vendorColors.uiForeground), 0,0.6,...rgb(vendorColors.uiForeground),
+	1,1.0,...rgb(vendorColors.uiBackground), 0,1.0,...rgb(vendorColors.uiBackground), );
 addShape5('divLineH', gl.TRIANGLE_STRIP,
-	0.0,1,0,0,0, 0.0,0,0,0,0,
-	0.4,1,1,1,1, 0.4,0,1,1,1,
-	0.6,1,1,1,1, 0.6,0,1,1,1,
-	1.0,1,0,0,0, 1.0,0,0,0,0, );
+	0.0,1,...rgb(vendorColors.uiBackground), 0.0,0,...rgb(vendorColors.uiBackground),
+	0.4,1,...rgb(vendorColors.uiForeground), 0.4,0,...rgb(vendorColors.uiForeground),
+	0.6,1,...rgb(vendorColors.uiForeground), 0.6,0,...rgb(vendorColors.uiForeground),
+	1.0,1,...rgb(vendorColors.uiBackground), 1.0,0,...rgb(vendorColors.uiBackground), );
 addShape2('rect', gl.TRIANGLE_STRIP,
 	0.0,1, 0.0,0, 1.0,1, 1.0,0, );
 addShape5('rect', gl.TRIANGLE_STRIP,
@@ -3166,7 +3217,7 @@ var invoicepane;
 			useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-				new Float32Array(uiWhite));
+				new Float32Array(vendorColors.uiForeground));
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 			gl.drawArrays(typ2.maximizer, beg2.maximizer, len2.maximizer);
 		}
@@ -3185,6 +3236,7 @@ var invoicepane;
 		g.renderFunc = function() {
 			var g = this;
 			var sel = clickTapActive.includes(g.gestureState);
+			const th = vendorColors;
 			const mat = mat4.create();
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
@@ -3192,12 +3244,12 @@ var invoicepane;
 			useProg5();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-				new Float32Array(sel?uiWhite:uiPillOrange));
+				new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
 			gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [50/32, 50/32, 1]);
-			centerText(8,7, 5*32-16,32-14, g.text, uiBlack, g.viewport.mat, mat);
+			centerText(8,7, 5*32-16,32-14, g.text, th.uiBackground, g.viewport.mat, mat);
 		}
 		g.clickFunc = function() {
 			transitionTo(invoicepane, 'max');
@@ -3231,12 +3283,13 @@ var invoicepane;
 //    g.start = this.userY;
 //		g.viewport.relayout();
 		//g.viewport.setRenderFlag(true);
-		gl.clearColor(0,0,0, 1);
+		const th = vendorColors;
+		gl.clearColor(...th.uiBackground);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		useProg5();
 		gl.enable(gl.BLEND);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array([1,1,1,1]));
+			new Float32Array(th.uiForeground));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		for (const g of this.gadgets) {
 			if (g.renderFunc) g.renderFunc.call(g);
@@ -3253,9 +3306,9 @@ var invoicepane;
 		mat4.identity(m);
 		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
 		mat4.translate(m, m, [(tmpw/400*this.w/s-balw)*0.51, (tmpw/400*this.h/s-20)*0.49, 0]);
-		defaultFont.draw(0,0, balstr, uiPillOrange, this.mat, m);
+		defaultFont.draw(0,0, balstr, vendorColors.uiPillOrange, this.mat, m);
 		mat4.scale(m, m, [0.5, 0.5, 1]);
-		defaultFont.draw(0,0, ' sats', uiPillOrange, this.mat, m);
+		defaultFont.draw(0,0, ' sats', vendorColors.uiPillOrange, this.mat, m);
 
 		bal = toFiat(bal);
 		if (style == PARAGUAY) {
@@ -3278,7 +3331,7 @@ var invoicepane;
 		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
 		mat4.translate(m, m, [(tmpw/400*this.w/s-balw)*0.51, (tmpw/400*this.h/s-20)*0.49+10, 0]);
 		mat4.scale(m, m, [0.5, 0.5, 1]);
-		defaultFont.draw(0,0, balstr, uiFiatGreen, this.mat, m);
+		defaultFont.draw(0,0, balstr, vendorColors.uiFiatGreen, this.mat, m);
 */
 	};
 //	v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -3321,7 +3374,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?uiButtonSel:uiButton):uiButtonGhost,
+			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
@@ -3369,7 +3422,8 @@ v.layoutFunc = function() {
 	}
 };
 v.renderFunc = function() {
-	gl.clearColor(0,0,0, 1);
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);
@@ -3387,6 +3441,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 	g.renderFunc = function() {
 		var g = this;
 		var sel = vp.getInputGad() === g;
+		const th = this.viewport === dataentry? vendorColors : customerColors;
 		const mat = mat4.create();
 		useProg5();
 		mat4.identity(mat);
@@ -3394,18 +3449,18 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w+2, g.h+12, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(uiTextLabelArea));
+			new Float32Array(th.uiTextLabelArea));
 		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(uiTextField));
+			new Float32Array(th.uiTextField));
 		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 		if (sel) {
 			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-				new Float32Array(uiTextFocus));
+				new Float32Array(th.uiTextFocus));
 			for (var i=0; i<4; i++) {
 				mat4.identity(mat);
 				switch (i) {
@@ -3429,9 +3484,9 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		} else {
 			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
 		}
-		defaultFont.draw(0,0, g.text.toUpperCase(), uiText, g.viewport.mat, mat);
+		defaultFont.draw(0,0, g.text.toUpperCase(), th.uiText, g.viewport.mat, mat);
 		if (g === g.viewport.taxrate && g.text != '') {
-			defaultFont.draw(0,0, '%', uiGhostText, g.viewport.mat, mat);
+			defaultFont.draw(0,0, '%', th.uiGhostText, g.viewport.mat, mat);
 		}
 	}
 	g.textBeginFunc = function() {
@@ -3453,20 +3508,20 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 	g.label = tr('currency');
 	g.icon = defaultVendorCurrency;
 	g.renderFunc = function() {
-		var g = this;
+		var g = this, th = g.parent === dataentry? vendorColors : customerColors;
 		var sel = clickTapActive.includes(g.gestureState);
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
-		c = (g.icon == '₿') ? uiPillOrange : uiFiatGreen;
+		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
 		iconFont.draw(0,0, g.icon,
-			sel?uiButtonSel:c,
+			sel?th.uiButtonSel:c,
 			g.viewport.mat, mat);
 		if (g.icon == '₿') {
 			iconFont.draw(0,0, '🗲',
-				sel?uiButtonSel:uiLightningPurple,
+				sel?th.uiButtonSel:th.uiLightningPurple,
 				g.viewport.mat, mat);
 		}
 	}
@@ -3604,7 +3659,8 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 				vp.beginInput(v.item);
 			} else {
 				vp.endInput();
-				checkoutpages.swipeGad.doSwipe(true);
+				if (invoicepane.invoiceitems.length > 0)
+					checkoutpages.swipeGad.doSwipe(true);
 			}
 		}
 	}
@@ -3628,7 +3684,8 @@ v.layoutFunc = function() {
 }
 v.renderFunc = function(flip = false) {
 	// WARNING: This function is re-used by customertotal; "this" may vary!
-	gl.clearColor(0,0,0, 1);
+	const th = this === dataentry? vendorColors : customerColors;
+	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	if (flip) {
@@ -3643,7 +3700,7 @@ v.renderFunc = function(flip = false) {
 	useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-		new Float32Array(uiTextLabel));
+		new Float32Array(th.uiTextLabel));
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 
 	for (const g of this.gadgets) {
@@ -3656,7 +3713,7 @@ v.renderFunc = function(flip = false) {
 		mat4.identity(m);
 		mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
 		mat4.scale(m, m, scale);
-		defaultFont.draw(0,0, g.label, uiTextLabel, this.mat, m);
+		defaultFont.draw(0,0, g.label, th.uiTextLabel, this.mat, m);
 	}
 
 	if (this === dataentry) {
@@ -3707,13 +3764,14 @@ v.pageChangeFunc = function() {
 var checkoutprogress = v = new vp.View(null);
 v.name = Object.keys({checkoutprogress}).pop();
 v.renderFunc = function() {
-	gl.clearColor(0,0,0, 1);
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	var m = mat4.create(), icon = '.', sp = 5;
 	mat4.identity(m); mat4.translate(m, m, [(this.w/this.getScale() - sp - (defaultFont.calcWidth(icon) + sp) * checkoutpages.pages.length)/2, 4, 0]);
 
 	for (i=0; i<checkoutpages.pages.length; i++) {
-	  defaultFont.draw(sp,0, icon, i==checkoutpages.index?uiText:uiButtonGhost, this.mat, m);
+	  defaultFont.draw(sp,0, icon, i==checkoutpages.index?th.uiText:th.uiButtonGhost, this.mat, m);
 	}
 }
 
@@ -3736,6 +3794,7 @@ v.layoutFunc = function() {
 //var scrollbar;
 v.renderFunc = function(flip = false) {
 	// WARNING: This is called by customerinvoice also, so "this" may be either!
+	const th = this === vendorinvoice? vendorColors : customerColors;
 	var /*g = scrollbar.knobGad,*/ s = this.getScale();
 //	g.shown = this.h/this.getScale();
 //  g.total = this.maxY;
@@ -3743,7 +3802,7 @@ v.renderFunc = function(flip = false) {
 //	g.viewport.relayout();
 	//g.viewport.setRenderFlag(true);
 
-	gl.clearColor(0,0,0, 1);
+	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	var y = 16, h = 0, w, t, c, s, dir = 1;
@@ -3783,14 +3842,14 @@ v.renderFunc = function(flip = false) {
 		lang = cust ? customertotal.language.lang : lcode;
 		s = cust? customertotal.currency.icon : li.currency;
 		d = s; if (d == '₿') d = '🗲';
-		c = (s == '₿')? uiLightningYellow : uiFiatGreen;
+		c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
 		//	'⃀' temporary approximately equal sign
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		defaultFont.draw(0,0, li.item.toUpperCase(), uiText, this.mat, m);
+		defaultFont.draw(0,0, li.item.toUpperCase(), th.uiText, this.mat, m);
 		y += 16;
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
-		defaultFont.draw(36-w,0, t + ' ×', uiText, this.mat, m);
+		defaultFont.draw(36-w,0, t + ' ×', th.uiText, this.mat, m);
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = (+dataentry.cconv(li.unitprice, li.currency, s)).toString();
 		if (['$', '€'].includes(s)) {
@@ -3799,7 +3858,7 @@ v.renderFunc = function(flip = false) {
 			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
 		}
 		w = defaultFont.calcWidth(t);
-		defaultFont.draw(180-w,0, t, uiText, this.mat, m);
+		defaultFont.draw(180-w,0, t, th.uiText, this.mat, m);
 		if (currencies.length > 1) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 			defaultFont.draw(180-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
@@ -3812,14 +3871,14 @@ v.renderFunc = function(flip = false) {
 			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
 		}
 		w = defaultFont.calcWidth(t);
-		defaultFont.draw(340-w,0, t, uiText, this.mat, m);
+		defaultFont.draw(340-w,0, t, th.uiText, this.mat, m);
 		if (currencies.length > 1) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 			defaultFont.draw(340-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
 		}
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = +li.taxrate + '%'; w = defaultFont.calcWidth(t);
-		defaultFont.draw(380-w,0, t, uiText, this.mat, m);
+		defaultFont.draw(380-w,0, t, th.uiText, this.mat, m);
 		y -= 16;
 		y += 32 * dir;
 		h += 32;
@@ -3890,12 +3949,12 @@ v.gadgets.push(v.language = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(sel?uiButtonSel:uiTextLabelArea));
+			new Float32Array(sel?customerColors.uiButtonSel:customerColors.uiTextLabelArea));
 		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x, g.y, 0]);
 			mat4.scale(mat, mat, [0.6, 0.6, 1]);
-		centerText(0,0, g.w/0.6, g.h/0.6, g.text, uiText, g.viewport.mat, mat);
+		centerText(0,0, g.w/0.6, g.h/0.6, g.text, customerColors.uiText, g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
 		var g = this;
@@ -3918,7 +3977,7 @@ v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
 		var lang = customertotal.language.lang;
 		var s = customertotal.currency.icon;
 		var d = s; if (d == '₿') d = '🗲';
-		var c = (s == '₿')? uiLightningYellow : uiFiatGreen;
+		var c = (s == '₿')? customerColors.uiLightningYellow : customerColors.uiFiatGreen;
 		for (const li of invoicepane.invoiceitems) {
 			//	'⃀' temporary approximately equal sign
 			subtotal += dataentry.cconv(li.qty * li.unitprice, li.currency, s);
@@ -3935,7 +3994,7 @@ v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
 
 		w = defaultFont.calcWidth(t);
 		mat4.identity(m); mat4.translate(m, m, [g.x + g.w - 2, g.y + 16, 0]);
-		defaultFont.draw(-w,0, t, uiText, v.mat, m);
+		defaultFont.draw(-w,0, t, customerColors.uiText, v.mat, m);
 		mat4.identity(m); mat4.translate(m, m, [g.x + g.w - 2, g.y + 16, 0]);
 		defaultFont.draw(-w-3-defaultFont.calcWidth(d),0, d, c, v.mat, m);
 	}
@@ -3969,7 +4028,8 @@ v.designScale = 1;
 v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
 v.layoutFunc = function() { this.middleDividerGad.layout(); }
 v.renderFunc = function() {
-	gl.clearColor(0,0,0, 1);
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	useProg5();
 	gl.enable(gl.BLEND);
@@ -4174,7 +4234,7 @@ function scrollUpDn(g, amt) {
 	v.renderFunc = function() {
 		var s = this.getScale();
 		var sel;
-		gl.clearColor(0,0,0, 1);
+		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		useProg5();
 		gl.enable(gl.BLEND);
@@ -4251,7 +4311,8 @@ function scrollUpDn(g, amt) {
 	v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
 	v.layoutFunc = function() { this.middleDividerGad.layout(); }
 	v.renderFunc = function() {
-		gl.clearColor(0,0,0, 1);
+		const th = vendorColors;
+		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		useProg5();
 		gl.enable(gl.BLEND);
@@ -4300,10 +4361,10 @@ function scrollUpDn(g, amt) {
 			else
 				console.log('transition state:', this.state);
 		}
+		gl.clearColor(0,0,0, 1);
+		gl.clear(gl.COLOR_BUFFER_BIT);
 		switch (this.state) {
 		case 'begin':
-			gl.clearColor(0,0,0, 1);
-			gl.clear(gl.COLOR_BUFFER_BIT);
 			this.counter = 1; this.state = 't1';
 			break;
 		case 't1':
@@ -4341,7 +4402,7 @@ function scrollUpDn(g, amt) {
 	v.resizeFunc = function() {
 		allblack.resized = true;
 	}
-  vp.start(menudiv);
+	vp.start(menudiv);
 }
 var loadPending = true;
 function loadCheck() {
