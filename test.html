@@ -1236,7 +1236,6 @@ console.log('doSwipe()');
 		}
 		this.swipeBeginFunc = function(p) {
 			var v = this.viewport, s = v.getScale();
-console.log(v.name,'swipeBeginFunc()');
 			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
 			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
 			this.followUp = false;
@@ -1244,8 +1243,6 @@ console.log(v.name,'swipeBeginFunc()');
 		this.swipeMoveFunc = function(p) {
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
-console.log(v.name,'swipeMoveFunc()');
-if (!v.tempVY) console.log('a', v.tempVY);
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
@@ -1255,7 +1252,6 @@ if (!v.tempVY) console.log('a', v.tempVY);
 				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = 0; v.tempVY = p.dy;
-if (!v.tempVY) console.log('a1', v.tempVY, p.dy);
 				break;
 			case vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
@@ -1263,7 +1259,6 @@ if (!v.tempVY) console.log('a1', v.tempVY, p.dy);
 				v.userX = clamp(v.userX - dx, minX, maxX);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = 0;
-if (!v.tempVY) console.log('a2', v.tempVY);
 				break;
 			case vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
@@ -1274,18 +1269,14 @@ if (!v.tempVY) console.log('a2', v.tempVY);
 				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = p.dy;
-if (!v.tempVY) console.log('a3', v.tempVY, p.dy);
 				break;
 			}
-if (!v.tempVY) console.log('b', v.tempVY);
 			this.followUp = false;
 			v.relayout();
 			v.setRenderFlag(true);
 		}
 		this.swipeEndFunc = function(p) {
 			var g = this, v = g.viewport;
-console.log(v.name,'swipeEndFunc()');
-if (!v.tempVY) console.log('a');
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
 				m = Math.sqrt(dx*dx + dy*dy);
@@ -1351,7 +1342,6 @@ if (!v.tempVY) console.log('a');
 				v.tempVX = 0.001;
 			if (Math.abs(v.tempVY) < 0.001 && (g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
 				v.tempVY = 0.001;
-if (!v.tempVY) console.log('b');
 
 			delete this.tempX; delete this.tempY;
 			this.targetRest = undefined;
@@ -1372,7 +1362,6 @@ if (!v.tempVY) console.log('b');
 				if (nxy[1] < v.userY && v.tempVY > 0) this.animState = 'accel';
 				if (nxy[1] > v.userY && v.tempVY < 0) this.animState = 'accel';
 			}
-if (!v.tempVY) console.log('c');
 			v.origVX = v.tempVX;
 			v.origVY = v.tempVY;
 			v.newX = v.userX;
@@ -1381,13 +1370,10 @@ if (!v.tempVY) console.log('c');
       v.magCur = v.magOrig;
 			this.followUp = true;
 			this.viewport.requeueLayout();
-if (!v.tempVY) console.log('d');
 		}
 		this.followUpFunc = function() {
 			if (!this.followUp) return;
 			var g = this, v = g.viewport;
-console.log(v.name,'followUpFunc()');
-if (!v.tempVY) console.log('a');
 			switch (g.animState) {
 			case 'decel':
 				if (g.coast(false)) g.animState = 'done';
@@ -1402,8 +1388,6 @@ if (!v.tempVY) console.log('a');
 		}
 		this.coast = function(accel) {
 			var g = this, v = g.viewport;
-console.log(v.name,'coast()');
-if (!v.tempVY) console.log('a');
 			var a = v;
       var s = a.getScale();
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
@@ -1419,7 +1403,6 @@ if (!v.tempVY) console.log('a');
 					delete v.magOrig; delete v.magCur;
 					v.userX = g.targetRest[0];
 					v.userY = g.targetRest[1];
-if (isNaN(v.userY)) console.log('NaN', g.targetRest[1]);
 					return true;
 				}
 			}
@@ -1427,7 +1410,6 @@ if (isNaN(v.userY)) console.log('NaN', g.targetRest[1]);
 			v.newY = newY;
 			v.userX = clamp(newX, minX, maxX);
 			v.userY = clamp(newY, minY, maxY);
-if (isNaN(v.userY)) console.log('NaN:', newY, minY, maxY, s, v.tempVY);
 			var magCur = accel ? v.magCur + 0.1 : v.magCur - 0.1;
 			if (g.animState == 'decel' && Math.sign(magCur) != Math.sign(v.magCur)) {
 				if (g.targetRest) {
@@ -1454,7 +1436,6 @@ if (isNaN(v.userY)) console.log('NaN:', newY, minY, maxY, s, v.tempVY);
 			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
-console.log('layout()',v.name,v.userY,v.minY,v.maxY,v.sh);
 		v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
 		v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
@@ -3802,7 +3783,6 @@ v.pages.push(receivepayment);
 v.pages.push(extra1);
 v.pages.push(extra2);
 v.pageChangeFunc = function() {
-	console.log('page change');
 	checkoutprogress.setRenderFlag(true);
 }
 
@@ -3877,9 +3857,6 @@ v.renderFunc = function(flip = false) {
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'), new Float32Array([1,1,1,1]));
 	mat4.identity(m);
 	if (flip) {
-console.log('uXY', this.userX, this.userY, this.sw, this.sh);
-	gl.clearColor(1,0,0,1);
-	gl.clear(gl.COLOR_BUFFER_BIT);
 		mat4.translate(m, m, [0, 1 - this.scrollY, 0]);
 		mat4.scale(m, m, [this.sw, -32, 1]);
 		mat4.translate(m, m, [0, -1 - Math.floor(this.sh / 32) - Math.floor(this.userY / 32), 0]);
