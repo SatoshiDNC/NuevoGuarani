@@ -1244,7 +1244,7 @@ console.log('doSwipe()');
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 console.log(v.name,'swipeMoveFunc()');
-if (!v.tempVY) console.log('a');
+if (!v.tempVY) console.log('a', v.tempVY);
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
@@ -1254,6 +1254,7 @@ if (!v.tempVY) console.log('a');
 				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = 0; v.tempVY = p.dy;
+if (!v.tempVY) console.log('a1', v.tempVY, p.dy);
 				break;
 			case vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
@@ -1261,6 +1262,7 @@ if (!v.tempVY) console.log('a');
 				v.userX = clamp(v.userX - dx, minX, maxX);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = 0;
+if (!v.tempVY) console.log('a2', v.tempVY);
 				break;
 			case vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SWIPEABLE_LEFTRIGHT:
 				dx = (p.x - v.x - v.ox)/s + v.userX - this.tempX;
@@ -1271,9 +1273,10 @@ if (!v.tempVY) console.log('a');
 				v.userY = clamp(v.userY - dy, minY, maxY);
 				v.rematrix(); this.layout();
 				v.tempVX = p.dx; v.tempVY = p.dy;
+if (!v.tempVY) console.log('a3', v.tempVY, p.dy);
 				break;
 			}
-if (!v.tempVY) console.log('b');
+if (!v.tempVY) console.log('b', v.tempVY);
 			this.followUp = false;
 			v.relayout();
 			v.setRenderFlag(true);
