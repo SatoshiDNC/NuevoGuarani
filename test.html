@@ -215,7 +215,7 @@ class View {
     this.W = s.totalWidth; this.H = s.totalHeight;
     this.viewScale =
       this.designFit?
-				(this.designFit[0]/this.designFit[1]>this.w/this.h?
+				(this.h&&this.designFit[0]/this.designFit[1]>this.w/this.h?
 				 this.w/this.designFit[0]:this.h/this.designFit[1]):
       this.designSize? Math.sqrt(this.w*this.h/this.designSize):
       this.designScale? this.designScale:// * window.devicePixelRatio:
