@@ -1405,6 +1405,7 @@ console.log('coast()');
 					delete v.magOrig; delete v.magCur;
 					v.userX = g.targetRest[0];
 					v.userY = g.targetRest[1];
+if (isNaN(v.userY)) console.log('NaN', g.targetRest[1]);
 					return true;
 				}
 			}
@@ -1412,6 +1413,7 @@ console.log('coast()');
 			v.newY = newY;
 			v.userX = clamp(newX, minX, maxX);
 			v.userY = clamp(newY, minY, maxY);
+if (isNaN(v.userY)) console.log('NaN', newY, minY, maxY);
 			var magCur = accel ? v.magCur + 0.1 : v.magCur - 0.1;
 			if (g.animState == 'decel' && Math.sign(magCur) != Math.sign(v.magCur)) {
 				if (g.targetRest) {
