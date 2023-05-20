@@ -261,7 +261,7 @@ class View {
 				if (debug1 && !continuous)
 					console.log(this.name+'::'+this.renderAll.name, this.w, this.h);
 				this.clip();
-		    if (clearBackground) { gl.clearColor(0,1,1,1); gl.clear(gl.COLOR_BUFFER_BIT); }
+		    if (clearBackground) { gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT); }
 		    if (this.renderFunc) { this.renderFunc.call(this); }
 			}
     }
@@ -2852,6 +2852,12 @@ const trs = {};
 			trs[s]['gn-PY'] = "ALEMÁN";
 			trs[s]['de-DE'] = 'DEUTSCH';
 			break;
+		case 'Customer Bill':
+			trs[s]['en-US'] = 'CUSTOMER BILL';
+			trs[s]['es-PY'] = 'FACTURA CLIENTE';
+			trs[s]['gn-PY'] = 'FACTURA CLIENTE';
+			trs[s]['de-DE'] = 'KUNDENRECHNUNG';
+			break;
 		case 'Discard this invoice?':
 			trs[s]['en-US'] = 'Discard this invoice?';
 			trs[s]['es-PY'] = '¿Descartar esta factura?';
@@ -3356,6 +3362,7 @@ class LineItem {
 			return false;
 	}
 }
+
 
 var buttonbar = v = new vp.View(null);
 v.name = Object.keys({buttonbar}).pop();
@@ -3887,6 +3894,41 @@ v.renderFunc = function(flip = false) {
 	this.swipeGad.layout.call(this.swipeGad);
 };
 
+var vendormain = v = new vp.ViewSlice(null, 't', 90/240);
+v.name = Object.keys({vendormain}).pop();
+v.prop = true;
+v.a = checkoutsteps; checkoutsteps.parent = v;
+v.b = vendorinvoice; vendorinvoice.parent = v;
+
+var vendorpane = v = new vp.ViewSlice(null, 'b', 0.125);
+v.name = Object.keys({vendorpane}).pop();
+v.prop = true;
+v.a = buttonbar; buttonbar.parent = v;
+v.b = vendormain; vendormain.parent = v;
+var customerpane;
+
+var customertitlebar = v = new vp.View(null);
+v.name = Object.keys({customertitlebar}).pop();
+v.label = tr('Customer Bill');
+v.neededWidth = defaultFont.calcWidth(v.label)+8;
+v.designFit = [v.neededWidth,18];
+v.layoutFunc = function() {
+	var v = this;
+	customerpane.sizeH = customerpane.sizeV = 20/v.neededWidth;
+	customerpane.requeueLayout();
+}
+v.renderFunc = function() {
+	const th = customerColors;
+	var v = this;
+	gl.clearColor(...th.uiBackground);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	var m = mat4.create(); mat4.identity(m);
+	mat4.translate(m, m, [v.sw/2, v.sh/2, 0]);
+	mat4.rotate(m, m, Math.PI, [0,0,1]);
+	mat4.translate(m, m, [-v.sw/2, -v.sh/2, 0]);
+	defaultFont.draw(4,16, v.label, th.uiText, v.mat, m);
+};
+
 var customerinvoice = v = new vp.View(null);
 v.name = Object.keys({customerinvoice}).pop();
 v.designWidth = 400;
@@ -4004,23 +4046,17 @@ v.renderFunc = v.renderFunc = function() {
 	dataentry.renderFunc.call(this, true);
 };
 
-var customerpane = v = new vp.ViewSlice(null, 't', 50/240);
-v.name = Object.keys({customerpane}).pop();
+var customermain = v = new vp.ViewSlice(null, 't', 49/240);
+v.name = Object.keys({customermain}).pop();
 v.prop = true;
 v.a = customertotal; customertotal.parent = v;
 v.b = customerinvoice; customerinvoice.parent = v;
 
-var invoicemain = v = new vp.ViewSlice(null, 't', 90/240);
-v.name = Object.keys({invoicemain}).pop();
+var customerpane = v = new vp.ViewSlice(null, 'b', 0.125);
+v.name = Object.keys({customerpane}).pop();
 v.prop = true;
-v.a = checkoutsteps; checkoutsteps.parent = v;
-v.b = vendorinvoice; vendorinvoice.parent = v;
-
-var vendorpane = v = new vp.ViewSlice(null, 'b', 0.125);
-v.name = Object.keys({vendorpane}).pop();
-v.prop = true;
-v.a = buttonbar; buttonbar.parent = v;
-v.b = invoicemain; invoicemain.parent = v;
+v.a = customertitlebar; customertitlebar.parent = v;
+v.b = customermain; customermain.parent = v;
 
 var vendorcustomerdiv = v = new vp.View();
 v.name = Object.keys({vendorcustomerdiv}).pop();
@@ -4056,6 +4092,7 @@ v.ratioMin['v'] = 0.25;
 v.ratioMax['v'] = 0.75;
 v.layoutEndFunc = function() {
 	var v = this, h = v.h/v.getScale();
+	v.ratioMin['h'] = (v.h - customertotal.h - customertitlebar.h) / v.h;
 	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*80) / v.h;
 }
   var menupane = v = new vp.View(null);
