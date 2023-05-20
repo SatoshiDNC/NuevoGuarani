@@ -3858,12 +3858,12 @@ v.renderFunc = function(flip = false) {
 	mat4.identity(m);
 	if (flip) {
 		mat4.translate(m, m, [0, 1 - this.scrollY, 0]);
-		mat4.scale(m, m, [this.sw, -32, 1]);
-		mat4.translate(m, m, [0, -1 - Math.floor(this.sh / 32) - Math.floor(this.userY / 32), 0]);
-	} else {
-		mat4.translate(m, m, [0, 1 + this.scrollY, 0]);
 		mat4.scale(m, m, [this.sw, 32, 1]);
 		mat4.translate(m, m, [0, Math.floor(this.userY / 32), 0]);
+	} else {
+		mat4.translate(m, m, [0, 1 + this.scrollY, 0]);
+		mat4.scale(m, m, [this.sw, -32, 1]);
+		mat4.translate(m, m, [0, -1 - Math.floor(this.sh / 32) - Math.floor(this.userY / 32), 0]);
 	}
 	var typ5o, beg5o, len5o;
 	if (this === vendorinvoice) {
@@ -3966,7 +3966,7 @@ v.layoutFunc = function() {
 		v.label = label;
 		v.neededWidth = defaultFont.calcWidth(v.label)+8;
 		v.designWidth = v.neededWidth;
-		customerpane.sizeH = customerpane.sizeV = 20/v.neededWidth;
+		customerpane.sizeH = customerpane.sizeV = 18/v.neededWidth;
 		customerpane.requeueLayout();
 		v.skipUpdate = true;
 	}
