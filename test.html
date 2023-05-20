@@ -217,7 +217,7 @@ var nan = isNaN(this.sw);
 if (this.name == 'customertotal') console.log(this.viewScale);
     this.viewScale =
       this.designFit?
-				((this.h!=0&&this.designFit[0]/this.designFit[1]>this.w/this.h)?
+				(this.h==0?1:this.designFit[0]/this.designFit[1]>this.w/this.h?
 				 this.w/this.designFit[0]:this.h/this.designFit[1]):
       this.designSize? Math.sqrt(this.w*this.h/this.designSize):
       this.designScale? this.designScale:// * window.devicePixelRatio:
