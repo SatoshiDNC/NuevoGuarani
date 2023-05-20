@@ -1241,10 +1241,10 @@ console.log('doSwipe()');
 			this.followUp = false;
 		}
 		this.swipeMoveFunc = function(p) {
-console.log(v.name,'swipeMoveFunc()');
-if (!v.tempVY) console.log('a');
 			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
+console.log(v.name,'swipeMoveFunc()');
+if (!v.tempVY) console.log('a');
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
