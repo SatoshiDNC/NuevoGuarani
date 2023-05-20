@@ -4092,7 +4092,7 @@ v.ratioMin['v'] = 0.25;
 v.ratioMax['v'] = 0.75;
 v.layoutEndFunc = function() {
 	var v = this, h = v.h/v.getScale();
-	v.ratioMin['h'] = (v.h - v.w/240*49 - v.w/customertitlebar.neededWidth*20) / v.h;
+	v.ratioMin['h'] = (v.w/240*49 + v.w/customertitlebar.neededWidth*20) / v.h;
 	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*80) / v.h;
 }
   var menupane = v = new vp.View(null);
