@@ -2691,81 +2691,7 @@ function main() {
 	defaultFont.init();
 	iconFont.init();
 
-	const GENERIC = 0;
-	const PARAGUAY = 1;
-	var style = Math.round(Math.random() * 1);
-
-	var lcode = Math.random() > 0.5?
-		(Math.random() > 0.5?'gn-PY':'es-PY'):
-		(Math.random() > 0.5?'en-US':'de-DE');
-
-	var enabledCustomerLangs = ['gn-PY', 'es-PY', 'en-US', 'de-DE'];
-	for (var i=enabledCustomerLangs.length-1; i>=0; i--)
-		if (Math.random() > 0.5) enabledCustomerLangs.splice(i,1);
-	if (enabledCustomerLangs.length == 0) enabledCustomerLangs.push('es-PY');
-	var defaultCustomerLang = enabledCustomerLangs[
-		Math.floor(enabledCustomerLangs.length * Math.random())];
-
-	const enabledVendorCurrencies = ['₿','₲','$','€'];
-	const enabledCustomerCurrencies = ['₿','₲','$','€'];
-	for (var i=enabledVendorCurrencies.length-1; i>=0; i--)
-		if (Math.random() > 0.5) enabledVendorCurrencies.splice(i,1);
-	for (var i=enabledCustomerCurrencies.length-1; i>=0; i--)
-		if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
-	if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
-	if (enabledCustomerCurrencies.length == 0) enabledCustomerCurrencies.push('₲');
-	var defaultVendorCurrency = enabledVendorCurrencies[
-		Math.floor(enabledVendorCurrencies.length * Math.random())];
-	var defaultCustomerCurrency = enabledCustomerCurrencies[
-		Math.floor(enabledCustomerCurrencies.length * Math.random())];
-
-  // DEMO MODES
-	if (0) { // USD
-		style = GENERIC; lcode = 'en-US';
-		enabledVendorCurrencies.splice(0,4,'₿','$');
-		enabledCustomerCurrencies.splice(0,4,'₿','$');
-		defaultVendorCurrency = '$';
-		defaultCustomerCurrency = '$';
-	}
-	if (0) { // EUR
-		style = GENERIC; lcode = 'en-US';
-		enabledVendorCurrencies.splice(0,4,'₿','€');
-		enabledCustomerCurrencies.splice(0,4,'₿','€');
-		defaultVendorCurrency = '€';
-		defaultCustomerCurrency = '€';
-	}
-	if (0) { // USD
-		style = GENERIC; lcode = 'en-US';
-		enabledVendorCurrencies.splice(0,4,'$');
-		enabledCustomerCurrencies.splice(0,4,'$');
-		defaultVendorCurrency = '$';
-		defaultCustomerCurrency = '$';
-	}
-
-	conversionRates = {};
-	conversionRates['₿'] = {
-		'₿': 1.0, // calculated in sats
-		'₲': 1.5 + Math.random(),
-		'$': 1/(40 + 10 * Math.random()), // calculated in cents
-		'€': 1/(45 + 10 * Math.random()), // calculated in cents
-	};
-	for (var i=1; i<Object.keys(conversionRates['₿']).length; i++) {
-		var cur = Object.keys(conversionRates['₿'])[i];
-		conversionRates[cur] = {
-			'₿': 1/conversionRates['₿'][cur],
-			'₲': 1/conversionRates['₿'][cur] * conversionRates['₿']['₲'],
-			'$': 1/conversionRates['₿'][cur] * conversionRates['₿']['$'],
-			'€': 1/conversionRates['₿'][cur] * conversionRates['₿']['€'],
-		};
-	}
-
-	function toFiat(s) {
-		return style == PARAGUAY? s * 2: s / 3600;
-	}
-
   clickTapActive = ['begin-click','recover-click','begin-tap'];
-
-	console.log(enabledVendorCurrencies, enabledCustomerCurrencies, enabledCustomerLangs);
 
 	var v, g;
 class ColorTheme {
@@ -2949,8 +2875,82 @@ const trs = {};
 		}
 	}
 }
-const vendorColors = new DefaultLightTheme();
-const customerColors = new DefaultLightTheme();
+	const GENERIC = 0;
+	const PARAGUAY = 1;
+	var style = Math.round(Math.random() * 1);
+
+	var lcode = Math.random() > 0.5?
+		(Math.random() > 0.5?'gn-PY':'es-PY'):
+		(Math.random() > 0.5?'en-US':'de-DE');
+
+	var enabledCustomerLangs = ['gn-PY', 'es-PY', 'en-US', 'de-DE'];
+	for (var i=enabledCustomerLangs.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledCustomerLangs.splice(i,1);
+	if (enabledCustomerLangs.length == 0) enabledCustomerLangs.push('es-PY');
+	var defaultCustomerLang = enabledCustomerLangs[
+		Math.floor(enabledCustomerLangs.length * Math.random())];
+
+	const enabledVendorCurrencies = ['₿','₲','$','€'];
+	const enabledCustomerCurrencies = ['₿','₲','$','€'];
+	for (var i=enabledVendorCurrencies.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledVendorCurrencies.splice(i,1);
+	for (var i=enabledCustomerCurrencies.length-1; i>=0; i--)
+		if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
+	if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
+	if (enabledCustomerCurrencies.length == 0) enabledCustomerCurrencies.push('₲');
+	var defaultVendorCurrency = enabledVendorCurrencies[
+		Math.floor(enabledVendorCurrencies.length * Math.random())];
+	var defaultCustomerCurrency = enabledCustomerCurrencies[
+		Math.floor(enabledCustomerCurrencies.length * Math.random())];
+
+  // DEMO MODES
+	if (0) { // USD
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'₿','$');
+		enabledCustomerCurrencies.splice(0,4,'₿','$');
+		defaultVendorCurrency = '$';
+		defaultCustomerCurrency = '$';
+	}
+	if (0) { // EUR
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'₿','€');
+		enabledCustomerCurrencies.splice(0,4,'₿','€');
+		defaultVendorCurrency = '€';
+		defaultCustomerCurrency = '€';
+	}
+	if (0) { // USD
+		style = GENERIC; lcode = 'en-US';
+		enabledVendorCurrencies.splice(0,4,'$');
+		enabledCustomerCurrencies.splice(0,4,'$');
+		defaultVendorCurrency = '$';
+		defaultCustomerCurrency = '$';
+	}
+
+	conversionRates = {};
+	conversionRates['₿'] = {
+		'₿': 1.0, // calculated in sats
+		'₲': 1.5 + Math.random(),
+		'$': 1/(40 + 10 * Math.random()), // calculated in cents
+		'€': 1/(45 + 10 * Math.random()), // calculated in cents
+	};
+	for (var i=1; i<Object.keys(conversionRates['₿']).length; i++) {
+		var cur = Object.keys(conversionRates['₿'])[i];
+		conversionRates[cur] = {
+			'₿': 1/conversionRates['₿'][cur],
+			'₲': 1/conversionRates['₿'][cur] * conversionRates['₿']['₲'],
+			'$': 1/conversionRates['₿'][cur] * conversionRates['₿']['$'],
+			'€': 1/conversionRates['₿'][cur] * conversionRates['₿']['€'],
+		};
+	}
+
+	function toFiat(s) {
+		return style == PARAGUAY? s * 2: s / 3600;
+	}
+
+	console.log(enabledVendorCurrencies, enabledCustomerCurrencies, enabledCustomerLangs);
+
+	vendorColors = Math.random() > 0.5? new DefaultLightTheme() : new DefaultDarkTheme();
+	customerColors = Math.random() > 0.5? new DefaultLightTheme() : new DefaultDarkTheme();
 
 // Shape data storage
 const beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
