@@ -1278,7 +1278,7 @@ console.log('swipeMoveFunc()');
 		}
 		this.swipeEndFunc = function(p) {
 			var g = this, v = g.viewport;
-console.log(v.name.'swipeEndFunc()');
+console.log(v.name,'swipeEndFunc()');
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
 				m = Math.sqrt(dx*dx + dy*dy);
@@ -1376,7 +1376,7 @@ console.log(v.name.'swipeEndFunc()');
 		this.followUpFunc = function() {
 			if (!this.followUp) return;
 			var g = this, v = g.viewport;
-console.log(v.name.'followUpFunc()');
+console.log(v.name,'followUpFunc()');
 			switch (g.animState) {
 			case 'decel':
 				if (g.coast(false)) g.animState = 'done';
@@ -1391,7 +1391,7 @@ console.log(v.name.'followUpFunc()');
 		}
 		this.coast = function(accel) {
 			var g = this, v = g.viewport;
-console.log(v.name.'coast()');
+console.log(v.name,'coast()');
 			var a = v;
       var s = a.getScale();
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
