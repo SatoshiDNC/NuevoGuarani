@@ -2729,6 +2729,7 @@ function hideAllTextInputs() {
 	kbnum.addEventListener("keydown",
 		function(e) {
 			var g = inputGad;
+			if (kbnum.value == '00') kbnum.value = '0';
 			if (g && g.specialKeys && g.specialKeys.includes(e.key)) {
 				e.preventDefault();
 				if (g.specialFunc) g.specialFunc.call(g, e);
@@ -3699,17 +3700,20 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 				gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 			}
 		}
+		var str = g.text.toUpperCase();
+		if (g === v.qty && v.qty.text.trim() != '') {
+			str = (+g.text).toLocaleString(lcode, {});
+		}
 		mat4.identity(mat);
-		var tw = defaultFont.calcWidth(g.text.toUpperCase());
+		var tw = defaultFont.calcWidth(str);
 		if (g.align && g.align == 'r') {
 			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
 		} else {
 			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
 		}
-		defaultFont.draw(0,0, g.text.toUpperCase(), th.uiText, v.mat, mat);
-		if (g === v.taxrate && g.text != '') {
-			defaultFont.draw(0,0, '%', th.uiGhostText, v.mat, mat);
-		}
+		defaultFont.draw(0,0, str, th.uiText, v.mat, mat);
+
+		// Add decorations.
 		if (g === v.unitprice) {
 			var s = v.unitprice.currency;
 			var c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
@@ -3717,11 +3721,12 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 			mat4.identity(mat);
 			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
 			defaultFont.draw(0,0, s, c, v.mat, mat);
-		}
-		if (g == v.qty && v.qty.text.startsWith('.')) {
-			mat4.identity(mat);
-			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
-			defaultFont.draw(-defaultFont.calcWidth('0'),0, '0', th.uiGhostText, v.mat, mat);
+//		} else if (g == v.qty && v.qty.text.startsWith('.')) {
+//			mat4.identity(mat);
+//			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+//			defaultFont.draw(-defaultFont.calcWidth('0'),0, '0', th.uiGhostText, v.mat, mat);
+		} else if (g === v.taxrate && g.text != '') {
+			defaultFont.draw(0,0, '%', th.uiGhostText, v.mat, mat);
 		}
 	}
 	g.textBeginFunc = function() {
@@ -4133,7 +4138,8 @@ v.renderFunc = function(flip = false) {
 		y += 16;
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		if (li.qty.includes('.')) {
-			t = parseFloat(li.qty).toFixed(3); w = defaultFont.calcWidth(t);
+			t = (+li.qty).toLocaleString(lang,
+				{minimumFractionDigits:3, maximumFractionDigits:3}); w = defaultFont.calcWidth(t);
 		} else {
 			t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
 		}
