@@ -1989,8 +1989,8 @@ console.log('menu down', g.gestureState, g.ownedBy);
               g.gestureState = 'begin-tap'; g.ownedBy = index;
               g.viewport.setRenderFlag(true);
               g.gestureBeginTime = e.timeStamp;
-              if ((g.actionFlags & (
-								vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE)) != 0) {
+              if (!!(g.actionFlags & (
+								vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE))) {
                 g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
      if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap hold'));
               } else
@@ -1999,6 +1999,10 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
               g.gestureState = 'begin-input'; g.ownedBy = index;
               g.viewport.setRenderFlag(true);
               g.gestureBeginTime = e.timeStamp;
+              if (!!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
+                g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e,
+									'tap-and-hold time reached');
+              }
             } else if (!!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
               g.gestureState = 'begin-menu'; g.ownedBy = index;
               g.viewport.setRenderFlag(true);
@@ -2433,6 +2437,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
       }
       break;
     case 'tap-and-hold time reached':
+console.log('tap-and-hold time reached');
       if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: true };
       p = pointers[index]; p.e = e;
       for (const h of p.hitList.hits) {
@@ -2446,11 +2451,11 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
           case 'begin-drag':
           case 'begin-hold':
             if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
-		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
-              g.gestureState = 'tap-and-hold';
 console.log('tap-and-hold');
+              g.gestureState = 'tap-and-hold';
               g.viewport.setRenderFlag(true);
-if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hold'));
+if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hold'));
+		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
             } else if (!!(g.actionFlags & vp.GAF_HOLDABLE) && !p.swiping) {
               g.gestureState = 'hold';
 console.log('hold');
