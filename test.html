@@ -2446,6 +2446,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
           case 'begin-drag':
           case 'begin-hold':
             if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
+		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
               g.gestureState = 'tap-and-hold';
 console.log('tap-and-hold');
               g.viewport.setRenderFlag(true);
@@ -3746,9 +3747,7 @@ v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
 	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789'; g.limitLen = 11;
 	g.currency = defaultVendorCurrency;
 	g.contextMenuFunc = function() {
-		console.log('contextMenuFunc');
 		this.cycleCurrency();
-		beep();
 	}
 	g.cycleCurrency = function() {
 		var g = this;
@@ -4250,7 +4249,7 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 		while (hl.hits.length) hitList.hits.push(hl.hits.pop());
 	}
 v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
-	g.x = 54; g.y = 19; g.w = 240 - g.x - 4; g.h = 20;
+	g.x = 53; g.y = 19; g.w = 240 - g.x - 4; g.h = 20;
 	g.text = '0'; g.label = tr('subtotal');
 	g.align = 'r';
 	g.autoHull();
