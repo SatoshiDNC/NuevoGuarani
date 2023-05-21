@@ -2452,10 +2452,9 @@ console.log('tap-and-hold time reached');
           case 'begin-drag':
           case 'begin-hold':
             if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
-console.log('tap-and-hold');
-              g.gestureState = 'tap-and-hold';
+              g.gestureState = 'menu-hold';
               g.viewport.setRenderFlag(true);
-if(true) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hold'));
+							DisownAllOtherGads(p, g);
 		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
             } else if (!!(g.actionFlags & vp.GAF_HOLDABLE) && !p.swiping) {
               g.gestureState = 'hold';
