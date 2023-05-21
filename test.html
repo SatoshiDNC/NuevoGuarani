@@ -3984,6 +3984,7 @@ v.renderFunc = function() {
 
 var checkoutpages = v = new vp.PagesView(null, 'h');
 v.name = Object.keys({checkoutpages}).pop();
+v.swipeGad.z = -1;
 v.pages.push(dataentry);
 v.pages.push(receivepayment);
 v.pages.push(extra1);
