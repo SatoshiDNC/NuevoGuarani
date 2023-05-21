@@ -1604,6 +1604,7 @@ console.log('doSwipe()');
 	}
 }
 function endInput() {
+  inputSelected = false;
 	if (!inputGad) return;
 	var g = inputGad;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
@@ -1627,6 +1628,7 @@ function beginInput(g) {
 	el.style.display = 'inline';
 	el.focus();
 	el.select();
+  inputSelected = true;
 }
 
   function useProg() {
@@ -2699,10 +2701,12 @@ function hideAllTextInputs() {
 			if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
 				e.preventDefault();
 				beep();
-			} else if (g && e.key.length == 1 && g.limitLen && g.text.length >= g.limitLen) {
+			} else if (!inputSelected && g && e.key.length == 1
+			&& g.limitLenFunc && g.limitLenFunc()) {
 				e.preventDefault();
 				beep();
 			}
+		  inputSelected = false;
 		}, false);
 	kbalpha.addEventListener("input",
 		function(e) {
@@ -2710,6 +2714,7 @@ function hideAllTextInputs() {
 			var g = inputGad;
 			g.text = kbalpha.value;
 			if (g.textFunc) g.textFunc.call(g);
+		  inputSelected = false;
 		}, false);
 	kbalpha.addEventListener("blur",
 		function(e) {
@@ -2719,6 +2724,7 @@ function hideAllTextInputs() {
 			if (g && g.textEndFunc) g.textEndFunc.call(g);
 			inputGadPrev = g;
 			inputGad = undefined;
+		  inputSelected = false;
 		}, false);
 	kbnum.addEventListener("keydown",
 		function(e) {
@@ -2732,10 +2738,12 @@ function hideAllTextInputs() {
 			} else if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
 				e.preventDefault();
 				beep();
-			} else if (g && e.key.length == 1 && g.limitLen && g.text.length >= g.limitLen) {
+			} else if (!inputSelected && g && e.key.length == 1
+			&& g.limitLenFunc && g.limitLenFunc()) {
 				e.preventDefault();
 				beep();
 			}
+		  inputSelected = false;
 		}, false);
 	kbnum.addEventListener("input",
 		function(e) {
@@ -2743,6 +2751,7 @@ function hideAllTextInputs() {
 			var g = inputGad;
 			g.text = kbnum.value;
 			if (g.textFunc) g.textFunc.call(g);
+		  inputSelected = false;
 		}, false);
 	kbnum.addEventListener("blur",
 		function(e) {
@@ -2752,6 +2761,7 @@ function hideAllTextInputs() {
 			if (g && g.textEndFunc) g.textEndFunc.call(g);
 			inputGadPrev = g;
 			inputGad = undefined;
+		  inputSelected = false;
 		}, false);
 	kbnext.addEventListener("focus",
 		function(e) {
@@ -3700,11 +3710,18 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		if (g === v.taxrate && g.text != '') {
 			defaultFont.draw(0,0, '%', th.uiGhostText, v.mat, mat);
 		}
-		if (g === v.unitprice && g.text != '') {
+		if (g === v.unitprice) {
 			var s = v.unitprice.currency;
 			var c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
 			if (s == '₿') s = '🗲';
-			defaultFont.draw(-tw-defaultFont.calcWidth(s)-3,0, s, c, v.mat, mat);
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+			defaultFont.draw(0,0, s, c, v.mat, mat);
+		}
+		if (g == v.qty && v.qty.text.startsWith('.')) {
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+			defaultFont.draw(-defaultFont.calcWidth('0'),0, '0', th.uiGhostText, v.mat, mat);
 		}
 	}
 	g.textBeginFunc = function() {
@@ -3719,6 +3736,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 	}
 	g.textPrevFunc = function() { vp.beginInput(this.viewport.item); }
 	g.textNextFunc = function() { vp.beginInput(this.viewport.unitprice); }
+/*
 v.gadgets.push(v.currency = g = new vp.Gadget(v));
 	g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = 4; g.y = 55;
@@ -3746,10 +3764,12 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 	g.clickFunc = function() {
 		this.viewport.unitprice.cycleCurrency();
 	}
+*/
 v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
-	g.x = 52; g.y = 55; g.w = 101; g.h = 20;
+	g.x = 5; g.y = 55; g.w = 139; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT | vp.GAF_CONTEXTMENU;
-	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789'; g.limitLen = 11;
+	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.replace('.','').length >= 11; }
 	g.currency = defaultVendorCurrency;
 	g.contextMenuFunc = function() {
 		this.cycleCurrency();
@@ -3800,9 +3820,12 @@ v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
 		}
 	}
 v.gadgets.push(v.qty = g = new vp.Gadget(v));
-	g.x = 158; g.y = 55; g.w = 37; g.h = 20;
+	g.x = 149; g.y = 55; g.w = 46; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
-	g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789'; g.limitLen = 3;
+	g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789.';
+	g.limitLenFunc = function() {
+		return this.text.replace('.','').length >= (this.text.startsWith('.')?3:4);
+	}
 	g.align = 'r';
 	g.layoutFunc = function() {
 		var g = this, v = g.viewport, s = v.getScale();
@@ -3841,7 +3864,8 @@ v.gadgets.push(v.qty = g = new vp.Gadget(v));
 v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 	g.x = 200; g.y = 55; g.w = 35; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
-	g.text = ''; g.label = tr('tax'); g.limitChars = '0123456789'; g.limitLen = 2;
+	g.text = ''; g.label = tr('tax'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.length >= 2; }
 	g.align = 'r'; g.margin = 12;
 	g.autoHull();
 	g.renderFunc = v.item.renderFunc;
@@ -3902,7 +3926,6 @@ v.cconv = function(a, f, t) {
 }
 v.clearDataEntry = function() {
 	this.item.text = '';
-	this.currency.icon = defaultVendorCurrency;
 	this.unitprice.currency = defaultVendorCurrency;
 	this.unitprice.text = '';
 	this.qty.text = '';
@@ -4109,7 +4132,11 @@ v.renderFunc = function(flip = false) {
 		defaultFont.draw(0,0, li.item.toUpperCase(), th.uiText, this.mat, m);
 		y += 16;
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
+		if (li.qty.includes('.')) {
+			t = parseFloat(li.qty).toFixed(3); w = defaultFont.calcWidth(t);
+		} else {
+			t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
+		}
 		defaultFont.draw(36-w,0, t + ' ×', th.uiText, this.mat, m);
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = (+dataentry.cconv(li.unitprice, li.currency, s)).toString();
@@ -4235,9 +4262,20 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 	g.label = tr('currency');
 	g.icon = defaultCustomerCurrency;
 	g.renderFunc = function() {
-		var g = this;
+		var g = this, th = customerColors;
 		g.label = tr('currency', customertitlebar.language.lang);
-		dataentry.currency.renderFunc.call(g);
+		var sel = clickTapActive.includes(g.gestureState);
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
+		mat4.translate(mat, mat, [-1, 16, 0]);
+		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
+		iconFont.draw(0,0, g.icon, sel?th.uiButtonSel:c, g.viewport.mat, mat);
+		if (g.icon == '₿') {
+			iconFont.draw(0,0, '🗲',
+				sel?th.uiButtonSel:th.uiLightningPurple, g.viewport.mat, mat);
+		}
 	}
 	g.clickFunc = function() {
 		var g = this;
@@ -4255,7 +4293,7 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 		while (hl.hits.length) hitList.hits.push(hl.hits.pop());
 	}
 v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
-	g.x = 53; g.y = 19; g.w = 240 - g.x - 4; g.h = 20;
+	g.x = 53; g.y = 19; g.w = 240 - g.x - 5; g.h = 20;
 	g.text = '0'; g.label = tr('subtotal');
 	g.align = 'r';
 	g.autoHull();
