@@ -6,35 +6,38 @@
 
     // Gadget Action Flags
     var GAF_CLICKABLE = 1; // whether this gadget can be clicked or tapped
-    var GAF_CONTEXTMENU = 2; // whether this gadget can show a context menu
-    var GAF_STRETCHABLE = 4; // whether this gadget can be stretched
-    var GAF_DRAGGABLE_UPDOWN = 8; // whether this gadget can be dragged up or down
-    var GAF_DRAGGABLE_LEFTRIGHT = 16; // whether this gadget can be dragged left or right
-    var GAF_SWIPEABLE_UPDOWN = 32;
-    var GAF_SWIPEABLE_LEFTRIGHT = 64;
-    var GAF_SCROLLABLE_UPDOWN = 128;
-    var GAF_SCROLLABLE_LEFTRIGHT = 256;
-    var GAF_SCALABLE = 512;
-    var GAF_ROTATABLE = 1024;
+    var GAF_HOLDABLE = 2; // whether it can be held down (invalid with GAF_CONTEXT_MENU)
+    var GAF_CONTEXTMENU = 4; // whether this gadget can show a context menu
+    var GAF_STRETCHABLE = 8; // whether this gadget can be stretched
+    var GAF_DRAGGABLE_UPDOWN = 16; // whether this gadget can be dragged up or down
+    var GAF_DRAGGABLE_LEFTRIGHT = 32; // whether this gadget can be dragged left or right
+    var GAF_SWIPEABLE_UPDOWN = 64;
+    var GAF_SWIPEABLE_LEFTRIGHT = 128;
+    var GAF_SCROLLABLE_UPDOWN = 256;
+    var GAF_SCROLLABLE_LEFTRIGHT = 512;
+    var GAF_SCALABLE = 1024;
+    var GAF_ROTATABLE = 2048;
     var GAF_DRAGGABLE = GAF_DRAGGABLE_UPDOWN | GAF_DRAGGABLE_LEFTRIGHT;
     var GAF_SWIPEABLE = GAF_SWIPEABLE_UPDOWN | GAF_SWIPEABLE_LEFTRIGHT;
     var GAF_SCROLLABLE = GAF_SCROLLABLE_UPDOWN | GAF_SCROLLABLE_LEFTRIGHT;
     var GAF_PINCHABLE = GAF_SCALABLE | GAF_ROTATABLE;
     var GAF_ALL = GAF_CLICKABLE | GAF_CONTEXTMENU | GAF_STRETCHABLE | GAF_DRAGGABLE | GAF_SCROLLABLE | GAF_PINCHABLE;
+    var GAF_NUMINPUT = 4096;
+    var GAF_TEXTINPUT = 8192;
+    var GAF_GONEXT = 16384;
     class Gadget {
       constructor(viewport) {
         this.viewport = viewport;
         this.mat = mat4.create(); mat4.identity(this.mat);
-        this.x = 0; this.y = 0; this.w = 0; this.h = 0; this.hLimit = 0;
+        this.x = 0; this.y = 0; this.w = 0; this.h = 0; this.H = 0;
         this.convexHull = []; this.extendedHulls = {}; this.boundingBoxes = {};
         this.xo = 0; this.yo = 0;
         this.enabled = true;
+        this.selected = false;
         this.actionFlags = 0;
       }
       getHits(hitList, radius) {
         if (!this.enabled || this.convexHull.length == 0) return;
-
-        
         var v = this.viewport, matS = vec3.create(); mat4.getScaling(matS, v.userMat);
         var r = radius/v.getScale()/matS[0], key = ''+r;
         if (!(key in this.extendedHulls)) { this.computeExtendedHull(r); this.computeBoundingBox(r); }
@@ -42,7 +45,9 @@
 
         // bounding box check
         var ss = 1/v.getScale();
-        var rxy = vec3.create(); rxy[0] = (hitList.x - v.x); rxy[1] = (hitList.y - v.y);
+        var rxy = vec3.create();
+        rxy[0] = (hitList.x - v.x - this.x / ss);
+        rxy[1] = (hitList.y - v.y - this.y / ss);
         var inv = mat4.create(); mat4.invert(inv, v.userMat);
         vec3.transformMat4(rxy, rxy, inv);
         var rx = rxy[0] * ss, ry = rxy[1] * ss;
@@ -69,6 +74,11 @@
         var d = 0; if (!flag) d = this.distToHull(rx, ry);
         hitList.hits.push({ gad: this, dist: d });
       }
+			autoHull() {
+				var g = this;
+				g.convexHull = g.computeHull([0,0, g.w,0, g.w,g.h, 0,g.h]);
+				g.extendedHulls = {}; g.boundingBoxes = {};
+			}
       computeHull(points) {
         var S = [...points];
         var T = [];

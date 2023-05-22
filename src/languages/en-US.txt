@@ -1,0 +1,16 @@
+about @	about @
+bill	INVOICE
+pay	PAYMENT
+item	ITEM
+tax	TAX
+currency	CURRENCY
+price	PRICE
+qty	QTY
+subtotal	SUBTOTAL
+language	LANGUAGE
+en-US	ENGLISH
+es-PY	SPANISH
+gn-PY	GUARANÍ
+de-DE	GERMAN
+Customer Bill	CUSTOMER BILL
+Discard this invoice?	Discard this invoice?

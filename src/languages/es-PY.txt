@@ -1,0 +1,16 @@
+about @	circa de @
+bill	FACTURA
+pay	PAGO
+item	ARTÍCULO
+tax	IVA
+currency	MONEDA
+price	PRECIO
+qty	CANT.	CANTIDAD
+subtotal	IMPORTE TOTAL
+language	IDIOMA
+en-US	INGLÉS
+es-PY	ESPAÑOL
+gn-PY	GUARANÍ
+de-DE	ALEMÁN
+Customer Bill	FACTURA CLIENTE
+Discard this invoice?	¿Descartar esta factura?

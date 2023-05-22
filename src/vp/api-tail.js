@@ -1,4 +1,8 @@
   function setDebugFlags(debug, cont) { showdebug=!!debug; continuous=!!cont; }
+  function beep() {
+		if (beepSound) beepSound.setValueAtTime(1, ac.currentTime);
+		if (beepSound) beepSound.setValueAtTime(0, ac.currentTime+0.1);
+	};
 
   return {
     initialize: initialize,
@@ -7,8 +11,15 @@
     getContext: getContext,
     getPointerRadius: getPointerRadius,
     isMouseEnabled: isMouseEnabled,
+		getInputGad: getInputGad,
+		beginInput: beginInput,
+		endInput: endInput,
+		beep: beep,
     View: View,
-    ViewDivider: ViewDivider,
+    DividerView: DividerView,
+    SliceView: SliceView,
+    PagesView: PagesView,
+		PopupView: PopupView,
     ViewOverlay: ViewOverlay,
     ViewMultiverse: ViewMultiverse,
     ViewPicker: ViewPicker,
@@ -17,6 +28,7 @@
     SwipeGadget: SwipeGadget,
     MiddleDividerGadget: MiddleDividerGadget,
     GAF_CLICKABLE: GAF_CLICKABLE,
+    GAF_HOLDABLE: GAF_HOLDABLE,
     GAF_CONTEXTMENU: GAF_CONTEXTMENU,
     GAF_STRETCHABLE: GAF_STRETCHABLE,
     GAF_DRAGGABLE_UPDOWN: GAF_DRAGGABLE_UPDOWN,
@@ -31,6 +43,9 @@
     GAF_SCALABLE: GAF_SCALABLE,
     GAF_ROTATABLE: GAF_ROTATABLE,
     GAF_PINCHABLE: GAF_PINCHABLE,
+    GAF_NUMINPUT: GAF_NUMINPUT,
+    GAF_TEXTINPUT: GAF_TEXTINPUT,
+		GAF_GONEXT: GAF_GONEXT,
     GAF_ALL: GAF_ALL,
     HitList: HitList,
     LayoutState: LayoutState,

@@ -1,0 +1,16 @@
+about @	etwa @
+bill	RECHNUNG
+pay	ZAHLUNG
+item	ARTIKEL
+tax	STEUER
+currency	WÄHRUNG
+price	PREIS
+qty	QUANT.	QUANTITÄT
+subtotal	ZWISCHENSUMME
+language	SPRACHE
+en-US	ENGLISCH
+es-PY	SPANISCH
+gn-PY	GUARANÍ
+de-DE	DEUTSCH
+Customer Bill	KUNDENRECHNUNG
+Discard this invoice?	Diese Rechnung verwerfen?

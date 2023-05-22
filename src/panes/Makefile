@@ -1,13 +1,11 @@
 all: subdirs all.js # Textbook subdirectory recursion
 
 FILES = \
-	api-head.js \
-	HitList.js \
-	LayoutState.js \
-	views/all.js \
-	gadgets/all.js \
-	api.js \
-	api-tail.js \
+	startpane.js \
+	invoice/all.js \
+	misc.js \
+	allblack.js \
+	menudiv.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
@@ -15,13 +13,13 @@ all.js: $(FILES)
 # Clean files from subdirs and this dir
 .PHONY: clean
 clean:
-	@$(MAKE) -sC views clean # ADD DIRS AS NEEDED
-	@$(MAKE) -sC gadgets clean
-	-rm -f all.js
+	@$(MAKE) -sC invoice clean # ADD DIRS AS NEEDED
+	@-rm -f all.js
 
 # Textbook subdirectory recursion
-SUBDIRS = views gadgets # ADD DIRS AS NEEDED
+SUBDIRS = invoice # ADD DIRS AS NEEDED
 .PHONY: subdirs $(SUBDIRS)
 subdirs: $(SUBDIRS)
 $(SUBDIRS):
 	@$(MAKE) -C $@
+

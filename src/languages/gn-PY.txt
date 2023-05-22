@@ -1,0 +1,16 @@
+about @	@ rupi
+bill	ÑEMUMBYREHAI
+pay	HEPYME'Ẽ
+item	MBA'E
+tax	IVA
+currency	VIRU
+price	HEPYKUE
+qty	HETAKUE
+subtotal	OPAITE
+language	ÑE'Ẽ
+en-US	INGLÉS
+es-PY	ESPAÑOL
+gn-PY	GUARANÍ
+de-DE	ALEMÁN
+Customer Bill	FACTURA CLIENTE
+Discard this invoice?	¿Emboyke ko factura?

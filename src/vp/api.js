@@ -1,14 +1,76 @@
+function endInput() {
+  inputSelected = false;
+	if (!inputGad) return;
+	var g = inputGad;
+	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
+	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
+	el.blur();
+	el.style.display = 'none';
+	inputGad = undefined;
+}
 
-  rootViewport = new ViewPicker();
-  var refresherTimeStamp = -1, refresherFrame = 0;
-  var v=0, continuous=0, nframes=0, showdebug=0;
-  function refresher(timeStamp) {
-    if (timeStamp != refresherTimeStamp) {
-      var delta=0; if (refresherTimeStamp > 0) delta = timeStamp - refresherTimeStamp;
-      refresherTimeStamp = timeStamp;
+function beginInput(g) {
+	endInput();
+	inputGad = g;
+	if (g.textBeginFunc) g.textBeginFunc.call(g);
+	if (g.actionFlags & vp.GAF_GONEXT) {
+		kbnext.style.display = 'inline';
+		kbprev.style.display = 'inline';
+	}
+	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
+	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
+	el.value = g.text;
+	el.style.display = 'inline';
+	el.focus();
+	el.select();
+  inputSelected = true;
+}
 
-      if (nframes) nframes -= 1;
-      if (continuous || nframes) rootViewport.setRenderFlag(true);
+  function useProg() {
+    gl.useProgram(plainProgram);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
+    var a = gl.getAttribLocation(plainProgram, 'aVertexPosition')
+    gl.vertexAttribPointer(
+	a,
+	2, // numComponents
+	gl.FLOAT, // type
+	false, // normalize
+	0, // stride
+	0); // offset
+    gl.enableVertexAttribArray(a);
+  }
+
+
+rootViewport = new ViewPicker();
+var refresherTimeStamp = -1, refresherFrame = 0;
+var v=0, continuous=0, nframes=0, showdebug=0;
+function refresher(timeStamp) {
+	if (timeStamp != refresherTimeStamp) {
+		var delta=0;
+		if (refresherTimeStamp > 0) delta = timeStamp - refresherTimeStamp;
+		refresherTimeStamp = timeStamp;
+
+//if (delta < 10) console.log(delta);
+
+		const todoViews = [];
+		while (lv = layoutViews.pop()) todoViews.push(lv);
+		if (layoutSignal) {
+			layoutSignal = false;
+			gl.viewport(0, 0, canvas.width, canvas.height);
+			mat4.identity(pixelPM);
+			mat4.translate(pixelPM, pixelPM, [-1, 1, 0]);
+			mat4.scale(pixelPM, pixelPM, [2/canvas.width, -2/canvas.height, 1]);
+			if (rootViewport) {
+				var s = new vp.LayoutState(canvas.width, canvas.height);
+				rootViewport.layoutAll(s);
+			}
+		} else while (lv = todoViews.pop()) lv.relayout();
+
+      if (nframes) {
+				nframes -= 1;
+				if (!nframes) rootViewport.setRenderFlag(true);
+			}
+      if (continuous) rootViewport.setRenderFlag(true);
       if (rootViewport && (rootViewport.needsRender || rootViewport.childRender)) {
         //gl.viewport(0, 0, canvas.width, canvas.height);
         //gl.disable(gl.SCISSOR_TEST);
@@ -24,64 +86,18 @@
         }
         if (windSound) windSound.setValueAtTime(windspeed, ac.currentTime);
 
-        var todo = [], i = 0;
-        for (const a of animViews) {
-          var s = a.getScale();
-          var minX = Math.max(a.minX + a.w/s, a.maxX) - a.w/s, maxX = Math.min(a.maxX - a.w/s, a.minX);
-          var minY = Math.max(a.minY + a.h/s, a.maxY) - a.h/s, maxY = Math.min(a.maxY - a.h/s, a.minY);
-          if (maxX < minX) { var t=minX; minX=maxX; maxX=t; }
-          if (maxY < minY) { var t=minY; minY=maxY; maxY=t; }
-          if (a.tempVX || a.tempVY || a.tempDX || a.tempDY) {
-            var fx = Math.sign(a.tempDX) * Math.min(10, Math.abs(a.tempDX));
-            var fy = Math.sign(a.tempDY) * Math.min(10, Math.abs(a.tempDY));
-            a.tempDX = Math.sign(a.tempDX) * Math.max(0, Math.abs(a.tempDX) - 10);
-            a.tempDY = Math.sign(a.tempDY) * Math.max(0, Math.abs(a.tempDY) - 10);
-            a.userX -= a.tempVX * 1000/30 / s - fx;
-            a.userY -= a.tempVY * 1000/30 / s - fy;
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-              a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              todo.push(i); delete a.tempVX; delete a.tempVY;
-            } else {
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-              var m = Math.sqrt(a.tempVX*a.tempVX + a.tempVY*a.tempVY);
-              var n = Math.max(0, m - 0.1);
-              if (m != 0) {
-                a.tempVX = a.tempVX / m * n;
-                a.tempVY = a.tempVY / m * n;
-              }
-            }
-          } else {
-            if (a.userX - a.ox/s < minX || a.userX - a.ox/s > maxX || a.userY - a.oy/s < minY || a.userY - a.oy/s > maxY) {
-              a.userX = Math.max(minX, Math.min(maxX, a.userX - a.ox/s)) + a.ox/s;
-              a.userY = Math.max(minY, Math.min(maxY, a.userY - a.oy/s)) + a.oy/s;
-              a.rematrix(); a.relayout(); a.setRenderFlag(true);
-            }
-            todo.push(i); delete a.tempVX; delete a.tempVY;
-          }
-          i++;
-        }
-
+				if (debug1 && !continuous) {
+					if (nframes)
+						console.log('rootViewport.renderAll()', nframes? 'n = '+nframes:'');
+					else
+						console.log('rootViewport.renderAll()');
+				}
         rootViewport.renderAll();
-        while (todo.length) {
-          animViews.splice(todo.pop(), 1);
-        }
-        if (animViews.length > 0) rootViewport.setRenderFlag(true);
 
 if (showdebug) {
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.disable(gl.SCISSOR_TEST);
-        gl.useProgram(plainProgram);
-        gl.bindBuffer(gl.ARRAY_BUFFER, buf2);
-        gl.vertexAttribPointer(
-          gl.getAttribLocation(plainProgram, 'aVertexPosition'),
-          2, // numComponents
-          gl.FLOAT, // type
-          false, // normalize
-          0, // stride
-          0); // offset
-
+        useProg();
         gl.enable(gl.BLEND);
 
         gl.uniform4fv(gl.getUniformLocation(plainProgram, 'uVertexColor'), new Float32Array([1, 1, 1, 1]));
@@ -131,6 +147,7 @@ if (showdebug) {
               gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
             }
             var matS = vec3.create(); mat4.getScaling(matS, g.viewport.userMat);
+/*
             for (const k in g.extendedHulls) if (k == ''+(getPointerRadius()/g.viewport.getScale()/matS[0])) {
               var h=g.extendedHulls[k];
               for (p = 0; p < h.length; p += 2) {
@@ -146,6 +163,7 @@ if (showdebug) {
                 gl.drawArrays(gl.LINE_LOOP, beg2.unitLine, len2.unitLine);
               }
             }
+*/
             break;
           }
 
@@ -241,11 +259,12 @@ if (showdebug) {
 
 
       }
-    }
-    window.requestAnimationFrame(refresher);
-  };
+	} // refresher time stamp changed
+	window.requestAnimationFrame(refresher);
+};
 
 function resizeCanvas() {
+	if (debug1) console.log('resizeCanvas()');
 	nframes = 10;
 	var w = window.innerWidth, h = window.innerHeight;
 	if (1) {
@@ -257,20 +276,28 @@ function resizeCanvas() {
 	diagonal = Math.sqrt(canvas.width*canvas.width + canvas.height*canvas.height);
 	wi2px = window.visualViewport.scale * window.devicePixelRatio;
 	px2wi = 1/wi2px;
-	gl.viewport(0, 0, canvas.width, canvas.height);
-	mat4.identity(pixelPM);
-	mat4.translate(pixelPM, pixelPM, [-1, 1, 0]);
-	mat4.scale(pixelPM, pixelPM, [2/canvas.width, -2/canvas.height, 1]);
-	if (rootViewport) {
-		var s = new vp.LayoutState(canvas.width, canvas.height);
-		rootViewport.layoutAll(s);
-	}
+	layoutSignal = true;
+	if (rootViewport.resizeFunc) rootViewport.resizeFunc.call(rootViewport);
 }
 
   var pointers = {};
   const TAP_WINDOW = 250; // ms
   const TAP_WIGGLE = 15 * window.devicePixelRatio;
   function eventHandler(e, action) {
+
+    var index;
+
+		// Helper: On commitment to drag, disown ambiguously selected click gadgets.
+		function DisownAllOtherGads(p, g) {
+      for (const o of p.hitList.hits) if (o.gad !== g) {
+				if (o.gad.ownedBy == index) {
+					o.gad.gestureState = o.gad.gestureState + '-disowned';
+					o.gad.viewport.setRenderFlag(true);
+          delete o.gad.ownedBy;
+				}
+			}
+    }
+
     if (action == 'touches' && e.touches && e.touches.length == 0) {
    //   window.speechSynthesis.speak(new SpeechSynthesisUtterance(' '+e.touches.length));
       var toDel = [];
@@ -283,7 +310,7 @@ function resizeCanvas() {
     }
     if (wi2px != window.visualViewport.scale * window.devicePixelRatio) resizeCanvas();
 var speak = 0;
-    var index = 'p-'+e.pointerId;
+    index = 'p-'+e.pointerId;
 /*
     var numTouches;
     var touches = [];
@@ -309,6 +336,7 @@ var speak = 0;
     var p, hl;
     switch (action) {
     case 'down':
+			endInput();
       if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: false, px: e.layerX * wi2px, py: e.layerY * wi2px };
       p = pointers[index]; p.e = e; p.touching = true;
       p.x = e.layerX * wi2px;
@@ -320,57 +348,86 @@ var speak = 0;
       rootViewport.getHits(p.hitList, getPointerRadius());
       p.hitList.sortHits();
       if (e.pointerType=='mouse') {
-        if ((e.buttons | 1)==1) {
+        if (e.button == 0) {
           for (const h of p.hitList.hits) {
             const g = h.gad;
             if (!g.ownedBy && !!(g.actionFlags & vp.GAF_CLICKABLE)) {
               g.gestureState = 'begin-click'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
             }
             if (!g.ownedBy && !!(g.actionFlags & vp.GAF_DRAGGABLE)) {
               g.gestureState = 'begin-drag'; g.ownedBy = index;
-              g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'drag time reached');
+              g.viewport.setRenderFlag(true);
             }
+            if (!g.ownedBy && !!(g.actionFlags & (vp.GAF_NUMINPUT | vp.GAF_TEXTINPUT))) {
+              g.gestureState = 'begin-input'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+            }
+            g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'drag time reached');
           }
         }
-        if ((e.buttons | 2)==2) {
+        if (e.button == 2) {
           for (const h of p.hitList.hits) {
             const g = h.gad;
             if (!g.ownedBy && !!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
               g.gestureState = 'begin-menu'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
               if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
               if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
-console.log('menu down');
+console.log('menu down', g.gestureState, g.ownedBy);
             }
           }
         }
-      } else { // not mouse
+      } else { // not mouse (down)
         for (const h of p.hitList.hits) {
           const g = h.gad;
           if (!g.ownedBy) {
             if (!!(g.actionFlags & vp.GAF_CLICKABLE)) {
               g.gestureState = 'begin-tap'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
               g.gestureBeginTime = e.timeStamp;
-              if (g.actionFlags & (vp.GAF_CONTEXTMENU | vp.GAF_DRAGGABLE) != 0) {
+              if (!!(g.actionFlags & (
+								vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE))) {
                 g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap hold'));
+              } else
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '+g.actionFlags));
+            } else if (!!(g.actionFlags & (vp.GAF_NUMINPUT | vp.GAF_TEXTINPUT))) {
+              g.gestureState = 'begin-input'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureBeginTime = e.timeStamp;
+              if (!!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
+                g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e,
+									'tap-and-hold time reached');
               }
             } else if (!!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
               g.gestureState = 'begin-menu'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
+              g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
+            } else if (!!(g.actionFlags & vp.GAF_HOLDABLE)) {
+              g.gestureState = 'begin-hold'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
               g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
             } else if (!!(g.actionFlags & vp.GAF_DRAGGABLE)) {
               g.gestureState = 'begin-drag'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
               g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'drag time reached');
             } else if (!!(g.actionFlags & vp.GAF_SWIPEABLE)) {
               g.gestureState = 'begin-swipe'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
  // if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin swipe'));
             } else if (!!(g.actionFlags & vp.GAF_PINCHABLE)) {
               g.gestureState = 'await-pinch'; g.ownedBy = index;
+              g.viewport.setRenderFlag(true);
             }
           } else if (g.ownedBy != index) {
             if (g.gestureState == 'await-pinch' || (!!(g.actionFlags & vp.GAF_PINCHABLE) && (g.gestureState == 'begin-drag' || g.gestureState == 'begin-tap'))) {
               g.gestureState = 'pinch'; g.secondTouch = index;
+              g.viewport.setRenderFlag(true);
               if (g.pinchBeginFunc) g.pinchBeginFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
             } else if (g.gestureState == 'drag' && !!(g.actionFlags & vp.GAF_PINCHABLE)) {
               g.gestureState = 'pinch'; g.secondTouch = index;
+              g.viewport.setRenderFlag(true);
               if (g.dragEndFunc) g.dragEndFunc.call(g, pointers[g.ownedBy]);
               if (g.pinchBeginFunc) g.pinchBeginFunc.call(g, pointers[g.ownedBy], pointers[g.secondTouch]);
             }
@@ -393,12 +450,44 @@ console.log('menu down');
             case 'recover-click':
               var tempHit = new vp.HitList(p.x, p.y);
               g.getHits(tempHit, getPointerRadius());
-              if (tempHit.hits.length == 0) g.gestureState = 'abandon-click';
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-click';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-input':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-input';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+              }
               break;
             case 'abandon-click':
               var tempHit = new vp.HitList(p.x, p.y);
               g.getHits(tempHit, getPointerRadius());
-              if (tempHit.hits.length != 0) g.gestureState = 'recover-click';
+              if (tempHit.hits.length != 0) {
+                g.gestureState = 'recover-click';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'abandon-hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length != 0) {
+                g.gestureState = 'hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+              }
               break;
             case 'begin-drag':
               dir = calcSwipeDir(p);
@@ -407,7 +496,8 @@ console.log('menu down');
                 if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
                   || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
                   g.gestureState = 'drag';
-                  for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+                  g.viewport.setRenderFlag(true);
+									DisownAllOtherGads(p, g);
                   if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
                   if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
                 }
@@ -419,7 +509,7 @@ console.log('menu down');
             }
           }
         }
-      } else { // not mouse
+      } else { // not mouse (move)
         for (const h of p.hitList.hits) {
           const g = h.gad;
           if (g.ownedBy == index) {
@@ -427,11 +517,14 @@ console.log('menu down');
             case 'begin-tap':
               if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
                 g.gestureState = 'invalid-tap';
+                g.viewport.setRenderFlag(true);
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('invalid'));
                 if (!p.swiping) {
                   dir = calcSwipeDir(p);
                   if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'swipe'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
                     for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
                     if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
@@ -441,7 +534,8 @@ console.log('menu down');
                   if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'drag'; p.swiping = true;
-                    for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+                    g.viewport.setRenderFlag(true);
+										DisownAllOtherGags(p, g);
                     if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
                     if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
   console.log('drag '+dir);
@@ -450,10 +544,25 @@ console.log('menu down');
                 }
               }
               break;
+            case 'begin-input':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                g.gestureState = 'invalid-input';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
             case 'begin-menu':
               if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
                 if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
                 g.gestureState = 'invalid-menu';
+                g.viewport.setRenderFlag(true);
+              }
+              break;
+            case 'begin-hold':
+              if (Math.sqrt((p.ox - p.x)**2 + (p.oy - p.y)**2) > TAP_WIGGLE) {
+                if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
+                g.gestureState = 'invalid-hold';
+                g.viewport.setRenderFlag(true);
               }
               break;
             case 'begin-swipe':
@@ -464,12 +573,22 @@ console.log('menu down');
                   if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_SWIPEABLE_UPDOWN))
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_SWIPEABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'swipe'; p.swiping = true;
-                    for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+                    g.viewport.setRenderFlag(true);
+										DisownAllOtherGads(p, g);
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
                     if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
      if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
                   }
                 }
+              }
+              break;
+            case 'hold':
+              var tempHit = new vp.HitList(p.x, p.y);
+              g.getHits(tempHit, getPointerRadius());
+              if (tempHit.hits.length == 0) {
+                g.gestureState = 'abandon-hold';
+                g.viewport.setRenderFlag(true);
+								if (g.holdEndFunc) g.holdEndFunc.call(g, p);
               }
               break;
             case 'swipe':
@@ -483,12 +602,14 @@ console.log('menu down');
                   if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'drag'; p.swiping = true;
+                    g.viewport.setRenderFlag(true);
+										DisownAllOtherGads(p, g);
                     for (const o of p.hitList.hits) if (o.gad !== g) {
-                      if (o.gad.ownedBy == index) delete o.gad.ownedBy;
                       if (o.gad.secondTouch == index) {
                         switch (o.gad.gestureState) {
                         case 'pinch':
                           o.gad.gestureState = 'drag'; delete o.gad.secondTouch;
+                          o.gad.viewport.setRenderFlag(true);
                           if (o.gad.pinchEndFunc) o.gad.pinchEndFunc.call(o.gad);
                           if (o.gad.dragBeginFunc) o.gad.dragBeginFunc.call(o.gad, pointers[o.gad.ownedBy]);
                           break;
@@ -523,7 +644,7 @@ console.log('menu down');
       p = pointers[index]; p.e = e; p.touching = false;
      // recalc();
       if (e.pointerType=='mouse') {
-        if ((e.buttons | 1) == 1) {
+        if (e.button == 0) {
           var skipflag = 0;
           for (const h of p.hitList.hits) {
             const g = h.gad;
@@ -536,6 +657,15 @@ console.log('menu down');
                 if (g.clickFunc) g.clickFunc.call(g);
                 skipflag=1;
                 break;
+              case 'begin-input':
+                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+								beginInput(g);
+                skipflag=1;
+                break;
+							case 'hold':
+                if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+								break;
               case 'abandon-click':
                 break;
               case 'begin-drag':
@@ -544,29 +674,29 @@ console.log('menu down');
               case 'drag':
                 if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
                 if (g.dragEndFunc) g.dragEndFunc.call(g, p);
-console.log('drag release');
-if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('release'));
                 break;
               }
               delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
             }
           }
         }
-        if ((e.buttons | 2) == 2) {
+        if (e.button == 2) {
           for (const h of p.hitList.hits) {
             const g = h.gad;
             if (g.ownedBy == index) {
               switch (g.gestureState) {
               case 'begin-menu':
-console.log('menu up');
+								if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
                 break;
               }
               delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
             }
           }
         }
         delete p.hitList;
-      } else { // not mouse
+      } else { // not mouse (up)
         var skipflag = 0;
         for (const h of p.hitList.hits) {
           const g = h.gad;
@@ -575,17 +705,21 @@ console.log('menu up');
             if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
             if (!skipflag) switch (g.gestureState) {
             case 'begin-tap':
-              if (e.timeStamp - g.gestureBeginTime < TAP_WINDOW) {
-                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
-                if (g.clickFunc) g.clickFunc.call(g);
-                skipflag=1;
-              } else {
-                // Tap-and-hold release (edge case, if timer was late to fire).
-console.log('tap-and-hold release (edge case)');
-if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('hold plus release'));
-              }
+              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+              if (g.clickFunc) g.clickFunc.call(g);
+              skipflag=1;
               break;
+            case 'begin-input':
+              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
+              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+							beginInput(g);
+              skipflag=1;
+              break;
+						case 'hold':
+     if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('end hold'));
+              if (g.holdEndFunc) g.holdEndFunc.call(g, p);
+							break;
             case 'tap-and-hold':
 console.log('tap-and-hold release');
 if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('release'));
@@ -601,17 +735,22 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('release'));
             case 'pinch':
 if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing'));
               g.gestureState = 'drag'; g.ownedBy = g.secondTouch; delete g.secondTouch;
+              g.viewport.setRenderFlag(true);
               if (g.pinchEndFunc) g.pinchEndFunc.call(g);
               if (g.dragBeginFunc) g.dragBeginFunc.call(g, pointers[g.ownedBy]);
               skipDel = 1;
               break;
             }
-            if (!skipDel) { delete g.gestureState; delete g.ownedBy; }
+            if (!skipDel) {
+              delete g.gestureState; delete g.ownedBy;
+              g.viewport.setRenderFlag(true);
+            }
           } else if (g.secondTouch == index) {
             switch (g.gestureState) {
             case 'pinch':
 if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing'));
               g.gestureState = 'drag'; delete g.secondTouch;
+              g.viewport.setRenderFlag(true);
               if (g.pinchEndFunc) g.pinchEndFunc.call(g);
               if (g.dragBeginFunc) g.dragBeginFunc.call(g, pointers[g.ownedBy]);
               break;
@@ -638,13 +777,23 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
         for (const h of p.hitList.hits) {
           const g = h.gad;
           if (!skipflag && !g.ownedBy) {
-            if (!!(g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN))) {
+            if (!!(g.actionFlags & vp.GAF_SCROLLABLE_UPDOWN)) {
               p = pointers[index]; p.e = e;
               p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
               p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
               if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
               p.dx = 0; p.x = p.x;
               p.dy = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.y = p.y + p.dy;
+              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+              skipflag=1;
+            } else if (!!(g.actionFlags & vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+              p = pointers[index]; p.e = e;
+              p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
+              p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+              if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+              p.dx = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.x = p.x + p.dx;
+              p.dy = 0; p.y = p.y;
               if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
               if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
               skipflag=1;
@@ -665,12 +814,19 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
     case 'drag time reached':
       if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: true };
       p = pointers[index]; p.e = e;
-      for (const h of p.hitList.hits) {
+      if (p.hitList) for (const h of p.hitList.hits) {
         const g = h.gad;
         if (g.ownedBy == index) {
+          if (g.gestureState == 'begin-click' && (g.actionFlags & vp.GAF_HOLDABLE)) {
+            g.gestureState = 'hold';
+            g.viewport.setRenderFlag(true);
+						DisownAllOtherGads(p, g);
+            if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+					}
           if (g.gestureState == 'begin-drag' && !p.swiping) {
             g.gestureState = 'drag'; p.swiping = true;
-            for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+            g.viewport.setRenderFlag(true);
+						DisownAllOtherGads(p, g);
             if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
           }
           if (g.hasOwnProperty('gestureTimerId')) { delete g.gestureTimerId; }
@@ -678,6 +834,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
       }
       break;
     case 'tap-and-hold time reached':
+console.log('tap-and-hold time reached');
       if (!pointers.hasOwnProperty(index)) pointers[index] = { gestureState: '', touching: true };
       p = pointers[index]; p.e = e;
       for (const h of p.hitList.hits) {
@@ -687,22 +844,35 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
           switch (g.gestureState) {
           case 'begin-tap':
           case 'begin-menu':
+          case 'begin-input':
           case 'begin-swipe':
           case 'begin-drag':
+          case 'begin-hold':
             if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
-              g.gestureState = 'tap-and-hold';
-console.log('tap-and-hold');
-if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hold'));
+              g.gestureState = 'menu-hold';
+              g.viewport.setRenderFlag(true);
+							DisownAllOtherGads(p, g);
+		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
+            } else if (!!(g.actionFlags & vp.GAF_HOLDABLE) && !p.swiping) {
+              g.gestureState = 'hold';
+console.log('hold');
+              g.viewport.setRenderFlag(true);
+							DisownAllOtherGads(p, g);
+		          if (g.holdBeginFunc) g.holdBeginFunc.call(g, p);
+if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('hold'));
             } else if (!!(g.actionFlags & vp.GAF_DRAGGABLE) && !p.swiping) {
               g.gestureState = 'drag'; p.swiping = true;
-              for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+              g.viewport.setRenderFlag(true);
+							DisownAllOtherGads(p, g);
               if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
             } else if (!!(g.actionFlags & vp.GAF_SWIPEABLE) && !p.swiping) {
               g.gestureState = 'swipe'; p.swiping = true;
+              g.viewport.setRenderFlag(true);
               for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
               if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
             } else {
               g.gestureState = 'invalid-tap-and-hold';
+              g.viewport.setRenderFlag(true);
             }
             break;
           }
@@ -713,8 +883,12 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('tap and hol
     }
   }
 
-function initialize(c) {
+function initialize(c, inputalpha, inputnum, inputnext, inputprev) {
 	canvas = c;
+	kbalpha = inputalpha;
+	kbnum = inputnum;
+	kbnext = inputnext;
+	kbprev = inputprev;
 	gl = canvas.getContext('webgl2', {
 		antialias: true,
 		alpha: false,
@@ -842,6 +1016,7 @@ function start(root) {
               constructor() {
                 super();
                 this.lastClick = 0;
+                this.wave = 0;
               }
               process (inputs, outputs, parameters) {
                 const output = outputs[0];
@@ -849,7 +1024,9 @@ function start(root) {
                   for (var i = 0; i < channel.length; i++) {
                     channel[i] =
                       (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +
-                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]);
+                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +
+                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);
+                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };
                   }
                 });
                 return true;
@@ -870,6 +1047,13 @@ function start(root) {
                     minValue: 0,
                     maxValue: 1,
                   },
+                  {
+                    name: "beep",
+                    automationRate: "a-rate",
+                    defaultValue: 0,
+                    minValue: 0,
+                    maxValue: 1,
+                  },
                 ];
               }
             }
@@ -884,6 +1068,7 @@ function start(root) {
 			const audioNode = new AudioWorkletNode(ac, 'audio-processor');
 			audioNode.connect(ac.destination);
 			clickSound = audioNode.parameters.get('click');
+			beepSound = audioNode.parameters.get('beep');
 			windSound = audioNode.parameters.get('windspeed');
 			initState = 3;
 			audioInit = true;
@@ -893,11 +1078,103 @@ function start(root) {
 	// START PROCESSING EVENTS
 	if (root) rootViewport = root;
 
+function hideAllTextInputs() {
+	kbalpha.style.display = 'none';
+	kbnum.style.display = 'none';
+	kbnext.style.display = 'none';
+	kbprev.style.display = 'none';
+}
+
 	// Add event listeners.
 	// NOTE: Some events are used to trigger audio initialization.
 	window.addEventListener("resize",
 		function(e) { resizeCanvas(); }, false); resizeCanvas();
 	window.requestAnimationFrame(refresher);
+	kbalpha.addEventListener("keydown",
+		function(e) {
+			var g = inputGad;
+			if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
+				e.preventDefault();
+				beep();
+			} else if (!inputSelected && g && e.key.length == 1
+			&& g.limitLenFunc && g.limitLenFunc()) {
+				e.preventDefault();
+				beep();
+			}
+		  inputSelected = false;
+		}, false);
+	kbalpha.addEventListener("input",
+		function(e) {
+//console.log('kbalpha.input');
+			var g = inputGad;
+			g.text = kbalpha.value;
+			if (g.textFunc) g.textFunc.call(g);
+		  inputSelected = false;
+		}, false);
+	kbalpha.addEventListener("blur",
+		function(e) {
+//console.log('kbalpha.blur');
+			var g = inputGad;
+			kbalpha.style.display = 'none';
+			if (g && g.textEndFunc) g.textEndFunc.call(g);
+			inputGadPrev = g;
+			inputGad = undefined;
+		  inputSelected = false;
+		}, false);
+	kbnum.addEventListener("keydown",
+		function(e) {
+			var g = inputGad;
+			if (kbnum.value == '00') kbnum.value = '0';
+			if (g && g.specialKeys && g.specialKeys.includes(e.key)) {
+				e.preventDefault();
+				if (g.specialFunc) g.specialFunc.call(g, e);
+			} else if (g && g.specialCodes && g.specialCodes.includes(e.code)) {
+				e.preventDefault();
+				if (g.specialFunc) g.specialFunc.call(g, e);
+			} else if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
+				e.preventDefault();
+				beep();
+			} else if (!inputSelected && g && e.key.length == 1
+			&& g.limitLenFunc && g.limitLenFunc()) {
+				e.preventDefault();
+				beep();
+			}
+		  inputSelected = false;
+		}, false);
+	kbnum.addEventListener("input",
+		function(e) {
+//console.log('kbnum.input', e);
+			var g = inputGad;
+			g.text = kbnum.value;
+			if (g.textFunc) g.textFunc.call(g);
+		  inputSelected = false;
+		}, false);
+	kbnum.addEventListener("blur",
+		function(e) {
+//console.log('kbnum.blur', inputGad, e);
+			var g = inputGad;
+			kbnum.style.display = 'none';
+			if (g && g.textEndFunc) g.textEndFunc.call(g);
+			inputGadPrev = g;
+			inputGad = undefined;
+		  inputSelected = false;
+		}, false);
+	kbnext.addEventListener("focus",
+		function(e) {
+//console.log('kbnext.focus');
+			var g = inputGadPrev;
+			hideAllTextInputs();
+			inputGad = undefined;
+			if (g && g.textNextFunc) g.textNextFunc.call(g);
+		}, false);
+	kbprev.addEventListener("focus",
+		function(e) {
+//console.log('kbprev.focus');
+			var g = inputGadPrev;
+			hideAllTextInputs();
+			inputGad = undefined;
+			if (g && g.textPrevFunc) g.textPrevFunc.call(g);
+		}, false);
 	canvas.addEventListener("touchend",
 		function(e) { eventHandler(e, 'touches'); }, false);
 	canvas.addEventListener("pointerdown",
@@ -918,5 +1195,12 @@ function start(root) {
 		function(e) { e.preventDefault(); }, false);
 	canvas.addEventListener("wheel",
 		function(e) { e.preventDefault(); eventHandler(e, 'wheel'); }, false);
+	document.addEventListener('keydown', function(e) {
+		var g = inputGad;
+		if (e.key == 'Enter' && g && g.textNextFunc) {
+			e.preventDefault();
+			g.textNextFunc.call(g);
+		}
+	});
 }
 

@@ -1,0 +1,2 @@
+	vp.start(menudiv);
+}
