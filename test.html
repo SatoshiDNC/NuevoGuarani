@@ -97,7 +97,7 @@ b.type,c.attr),d.skip(b.length)}d.i-D!=b.length&&console.log("error: bad data 2"
 b.type,attr),d.skip(b.length-1)}break;default:console.log("ignoring unknown chunk type: ",b),d.skip(b.length)}b=d.getChunkHeader()}for(a=0;a<this.glyphCodes.length;a++)1==this.glyphSourceZD[a]%2&&(this.glyphSourceY[a]+=l.height);a=l.width;d=l.height;for(b=0;b<this.glyphCodes.length;b++)k=b,this.pixCoords[8*k]=0,this.pixCoords[8*k+1]=this.glyphHeights[b],this.pixCoords[8*k+2]=0,this.pixCoords[8*k+3]=0,this.pixCoords[8*k+4]=this.glyphWidths[b],this.pixCoords[8*k+5]=0,this.pixCoords[8*k+6]=this.glyphWidths[b],
 this.pixCoords[8*k+7]=this.glyphHeights[b],this.texCoords[8*k]=this.glyphSourceX[k]/a,this.texCoords[8*k+1]=(this.glyphSourceY[k]+this.glyphHeights[b])/(2*d),this.texCoords[8*k+2]=this.glyphSourceX[k]/a,this.texCoords[8*k+3]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+4]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+5]=this.glyphSourceY[k]/(2*d),this.texCoords[8*k+6]=(this.glyphSourceX[k]+this.glyphWidths[b])/a,this.texCoords[8*k+7]=(this.glyphSourceY[k]+this.glyphHeights[b])/
 (2*d);d=g.getImageData(0,0,e.width,e.height);b=d.data;for(a=0;a<~~(b.length/2);a+=4)b[a+0]=16*(b[a+0]&15),b[a+1]=16*(b[a+1]&15),b[a+2]=16*(b[a+2]&15),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);for(a=~~(b.length/2);a<b.length;a+=4)b[a+0]=16*~~(b[a+0]/16),b[a+1]=16*~~(b[a+1]/16),b[a+2]=16*~~(b[a+2]/16),b[a+0]|=~~(b[a+0]/16),b[a+1]|=~~(b[a+1]/16),b[a+2]|=~~(b[a+2]/16);g.putImageData(d,0,0);this.data=e;e=g=d=b=null;this.ready=!0;this.finalCallback&&this.finalCallback.call(null)}}init(){if(!u){{var e=
-h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      //vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      //vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      //vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      vec4 o1 = vec4(color1.rgb, v1/float(ss*ss));\n      vec4 o2 = vec4(color2.rgb, v2/float(ss*ss));\n      vec4 o3 = vec4(color3.rgb, v3/float(ss*ss));\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
+h;const m=N(e,e.VERTEX_SHADER,"\n    attribute vec2 aVertex;\n    attribute vec2 aUV;\n    varying vec2 vTex;\n    uniform vec2 pos;\n    uniform mat4 uProjectionMatrix;\n    uniform mat4 uModelViewMatrix;\n    void main(void) {\n      gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertex + pos, 0.0, 1.0);\n      vTex = aUV;\n    }\n    "),l=N(e,e.FRAGMENT_SHADER,"\n    precision highp float;\n    varying vec2 vTex;\n    uniform sampler2D sampler0;\n    uniform lowp vec4 color1;\n    uniform lowp vec4 color2;\n    uniform lowp vec4 color3;\n    uniform int layer;\n    uniform int depth;\n    uniform float scaleFactor;\n    void main(void){\n      float v1=0.0, v2=0.0, v3=0.0;\n      const int ss = 4;//sampleBase;\n      float tx =1.0/64.0;\n      float ty =1.0/128.0;\n      float o = float(ss-1)/2.0;\n      int i=0, j=0;\n      for(int i=0; i<ss; i++) {\n        for(int j=0; j<ss; j++) {\n          vec4 c = texture2D(sampler0, vTex+vec2((float(i)-o)/float(ss)*tx/scaleFactor,(float(j)-o)/float(ss)*ty/scaleFactor));//texture(tex, texCoordOut+vec2((i-o)/float(ss)*tx/scaleFactor,(j-o)/float(ss)*ty/scaleFactor));\n          if (layer == 0) {\n            v1 += c.r>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 3) v3 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 1) {\n            v1 += c.g>=.5 ? 1.0 : 0.0;\n            if (depth >= 2) v2 += c.b>=.5 ? 1.0 : 0.0;\n          } else if (layer == 2) {\n            v1 += c.b>=.5 ? 1.0 : 0.0;\n          }\n        }\n      }\n      //vec4 o1 = vec4(color1.rgb * (v1/float(ss*ss)), v1/float(ss*ss));\n      //vec4 o2 = vec4(color2.rgb * (v2/float(ss*ss)), v2/float(ss*ss));\n      //vec4 o3 = vec4(color3.rgb * (v3/float(ss*ss)), v3/float(ss*ss));\n      vec4 o1 = vec4(color1.rgb, v1/float(ss*ss)*color1.a);\n      vec4 o2 = vec4(color2.rgb, v2/float(ss*ss)*color2.a);\n      vec4 o3 = vec4(color3.rgb, v3/float(ss*ss)*color3.a);\n      o1.rgb += o2.rgb * (1.0 - o1.a); o1.a += o2.a * (1.0 - o1.a);\n      o1.rgb += o3.rgb * (1.0 - o1.a); o1.a += o3.a * (1.0 - o1.a);\n      gl_FragColor = o1;\n    }\n    "),
 g=e.createProgram();e.attachShader(g,m);e.attachShader(g,l);e.linkProgram(g);e.getProgramParameter(g,e.LINK_STATUS)?u=g:(alert("Unable to initialize the shader program: "+e.getProgramInfoLog(g)),u=null)}}h.useProgram(u);this.tex=h.createTexture();h.bindTexture(h.TEXTURE_2D,this.tex);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MIN_FILTER,h.LINEAR);h.texParameteri(h.TEXTURE_2D,h.TEXTURE_MAG_FILTER,h.LINEAR);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data);this.vertexBuff=h.createBuffer();
 h.bindBuffer(h.ARRAY_BUFFER,this.vertexBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.pixCoords),h.STATIC_DRAW);this.texBuff=h.createBuffer();h.bindBuffer(h.ARRAY_BUFFER,this.texBuff);h.bufferData(h.ARRAY_BUFFER,new Float32Array(this.texCoords),h.STATIC_DRAW);this.vloc=h.getAttribLocation(u,"aVertex");this.tloc=h.getAttribLocation(u,"aUV");this.scaleFactorLoc=h.getUniformLocation(u,"scaleFactor");this.layerLoc=h.getUniformLocation(u,"layer");this.depthLoc=h.getUniformLocation(u,"depth");
 this.projMatLoc=h.getUniformLocation(u,"uProjectionMatrix");this.viewMatLoc=h.getUniformLocation(u,"uModelViewMatrix");this.color1Loc=h.getUniformLocation(u,"color1");this.color2Loc=h.getUniformLocation(u,"color2");this.color3Loc=h.getUniformLocation(u,"color3")}update(){h.useProgram(u);h.bindTexture(h.TEXTURE_2D,this.tex);h.texImage2D(h.TEXTURE_2D,0,h.RGBA,h.RGBA,h.UNSIGNED_BYTE,this.data)}calcWidth(e){var m=0;for(let g of e){e=g.codePointAt(0);var l;for(l=0;l<this.glyphCodes.length&&this.glyphCodes[l]!=
@@ -2913,6 +2913,8 @@ class ColorTheme {
 		this.uiButtonGhost		= [0.2,0.2,0.2, 1];
 		this.uiLedger1				= [0.00,0.00,0.00, 1];
 		this.uiLedger2				= [0.05,0.05,0.05, 1];
+		this.uiSpeechCloud		= [0.05,0.05,0.05, 1];
+		this.uiSilverLining		= [0.10,0.10,0.10, 1];
 
 		// Derived colors (can be overridden).
 		// If this list is changed, the set function (below) must be updated to correspond.
@@ -2957,6 +2959,8 @@ class DefaultDarkTheme extends ColorTheme {
 		this.set('uiButtonGhost'		, [0.2,0.2,0.2, 1]);
 		this.set('uiLedger1'				, [0.00,0.00,0.00, 1]);
 		this.set('uiLedger2'				, [0.05,0.05,0.05, 1]);
+		this.set('uiSpeechCloud'		, [0.05,0.05,0.05, 1]);
+		this.set('uiSilverLining'		, [0.10,0.10,0.10, 1]);
 	}
 }
 class DefaultLightTheme extends ColorTheme {
@@ -2969,6 +2973,8 @@ class DefaultLightTheme extends ColorTheme {
 		this.set('uiButtonGhost'		, [0.8,0.8,0.8, 1]);
 		this.set('uiLedger1'				, [1.00,1.00,1.00, 1]);
 		this.set('uiLedger2'				, [0.95,0.95,0.95, 1]);
+		this.set('uiSpeechCloud'		, [1.00,1.00,1.00, 1]);
+		this.set('uiSilverLining'		, [0.90,0.90,0.90, 1]);
 	}
 }
 window['main']['de-DE'] = {
@@ -2981,6 +2987,7 @@ window['main']['de-DE'] = {
 "price":	"PREIS",
 "qty":	"QUANT.",
 "subtotal":	"ZWISCHENSUMME",
+"payment method":	"ZAHLUNGSART",
 "language":	"SPRACHE",
 "en-US":	"ENGLISCH",
 "es-PY":	"SPANISCH",
@@ -2988,6 +2995,7 @@ window['main']['de-DE'] = {
 "de-DE":	"DEUTSCH",
 "Customer Bill":	"KUNDENRECHNUNG",
 "Discard this invoice?":	"Diese Rechnung verwerfen?",
+"How would you like to pay?":	"Wie möchten Sie bezahlen?",
 }
 window['main']['en-US'] = {
 "about @":	"about @",
@@ -2999,6 +3007,7 @@ window['main']['en-US'] = {
 "price":	"PRICE",
 "qty":	"QTY",
 "subtotal":	"SUBTOTAL",
+"payment method":	"PAYMENT METHOD",
 "language":	"LANGUAGE",
 "en-US":	"ENGLISH",
 "es-PY":	"SPANISH",
@@ -3006,6 +3015,7 @@ window['main']['en-US'] = {
 "de-DE":	"GERMAN",
 "Customer Bill":	"CUSTOMER BILL",
 "Discard this invoice?":	"Discard this invoice?",
+"How would you like to pay?":	"How would you like to pay?",
 }
 window['main']['es-PY'] = {
 "about @":	"circa de @",
@@ -3017,6 +3027,7 @@ window['main']['es-PY'] = {
 "price":	"PRECIO",
 "qty":	"CANT.",
 "subtotal":	"IMPORTE TOTAL",
+"payment method":	"FORMA DE PAGO",
 "language":	"IDIOMA",
 "en-US":	"INGLÉS",
 "es-PY":	"ESPAÑOL",
@@ -3024,6 +3035,7 @@ window['main']['es-PY'] = {
 "de-DE":	"ALEMÁN",
 "Customer Bill":	"FACTURA CLIENTE",
 "Discard this invoice?":	"¿Descartar esta factura?",
+"How would you like to pay?":	"¿Cómo le gustaría pagar?",
 }
 window['main']['gn-PY'] = {
 "about @":	"@ rupi",
@@ -3035,6 +3047,7 @@ window['main']['gn-PY'] = {
 "price":	"HEPYKUE",
 "qty":	"HETAKUE",
 "subtotal":	"OPAITE",
+"payment method":	"AMBUÉICHA TEPYME'Ẽ",
 "language":	"ÑE'Ẽ",
 "en-US":	"INGLÉS",
 "es-PY":	"ESPAÑOL",
@@ -3042,6 +3055,7 @@ window['main']['gn-PY'] = {
 "de-DE":	"ALEMÁN",
 "Customer Bill":	"FACTURA CLIENTE",
 "Discard this invoice?":	"¿Emboyke ko factura?",
+"How would you like to pay?":	"Mbaʼéichapa repagase?",
 }
 const trs = {};
 const supportedLangs = ['de-DE', 'en-US', 'es-PY', 'gn-PY'];
@@ -3337,6 +3351,33 @@ addShape2('maximizer', gl.TRIANGLES,
 	1,0.1, 0.1,1, 0,0.9,
 	0,0.9, 0.9,0, 1,0.1,
 );
+{
+	var sl = rgb(vendorColors.uiSilverLining);
+	var sc = rgb(vendorColors.uiSpeechCloud);
+	var w = 22, h = 3, x = w-1, y = h-1;
+	addShape5('speech1o', gl.TRIANGLE_STRIP,
+		0,h-1, ...sl, 1,h-1, ...sc, 0,1, ...sl, 1,1, ...sc, // left
+		0.03,0.8,...sl, 1,1,...sc, 0.1,0.6,...sl, 1,1,...sc, 0.2,0.4,...sl, 1,1,...sc,
+		0.4,0.2,...sl, 1,1,...sc, 0.6,0.1,...sl, 1,1,...sc, 0.8,0.03,...sl, 1,1,...sc,
+		1,0,...sl, w-1,1,...sc, w-1,0,...sl, // top
+		x,1,...sc, w-0.8,0.03,...sl, x,1,...sc, w-0.6,0.1,...sl, x,1,...sc, w-0.4,0.2,...sl,
+		w-0.2,0.4,...sl, x,1,...sc, w-0.1,0.6,...sl, x,1,...sc, w-0.03,0.8,...sl, x,1,...sc,
+		w,1,...sl, w-1,h-1,...sc, w,h-1,...sl, // right
+		x,y,...sc, w-0.03,h-0.8,...sl, x,y,...sc, w-0.1,h-0.6,...sl, x,y,...sc, w-0.2,h-0.4,...sl, x,y,...sc,
+		w-0.4,h-0.2,...sl, x,y,...sc, w-0.6,h-0.1,...sl, x,y,...sc, w-0.8,h-0.03,...sl, x,y,...sc,
+		x,h,...sl, 1,y,...sc, 1,h,...sl, 1,y,...sc, // bottom
+		0.8,h-0.03,...sl, 1,y,...sc, 0.6,h-0.1,...sl, 1,y,...sc, 0.4,h-0.2,...sl,
+		0.2,h-0.4,...sl, 1,y,...sc, 0.1,h-0.6,...sl, 1,y,...sc, 0.03,h-0.8,...sl, 1,y,...sc,
+		0,y,...sl,
+	);
+	addShape5('speech1i', gl.TRIANGLE_STRIP,
+		1,1,...sc, x,1,...sc, 1,y,...sc, x,y,...sc,
+	);
+	addShape5('speech1j', gl.TRIANGLE_STRIP,
+		w,h-1.75,...sl, w+1,h-1.25,...sl, w,h-1,...sl,
+	);
+}
+
   // WEBGL INITIALIZATION
 
   const plainVertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -3682,81 +3723,349 @@ class LineItem {
 	}
 }
 
-
-var buttonbar = v = new vp.View(null);
-v.name = Object.keys({buttonbar}).pop();
-v.designFit = [400,50];
-v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
-	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
-	g.autoHull();
-	g.icon = "\x00";
+var choosemethod = v = new vp.View(null);
+v.name = Object.keys({choosemethod}).pop();
+//v.designFit = [240,80];
+v.designHeight = 80;
+v.gadgets.push(v.method = g = new vp.Gadget(v));
+	g.x = 250+5; g.y = 20; g.w = 230; g.h = 20;
+	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('subtotal'); g.autoHull();
 	g.renderFunc = function() {
+		var g = this, v = g.viewport;
+		var sel = vp.getInputGad() === g;
+		const th = this.viewport === choosemethod? vendorColors : customerColors;
+		const mat = mat4.create();
+		useProg5();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x-1, g.y-11, 0]);
+		mat4.scale(mat, mat, [g.w+2, g.h+12, 1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(th.uiTextLabelArea));
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w, g.h, 1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(th.uiTextField));
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		if (sel) {
+			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+				new Float32Array(th.uiTextFocus));
+			for (var i=0; i<4; i++) {
+				mat4.identity(mat);
+				switch (i) {
+				case 0: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [2, g.h+2, 1]); break;
+				case 1: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+				case 2: mat4.translate(mat, mat, [g.x-1, g.y+g.h-1, 0]);
+					mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+				case 3: mat4.translate(mat, mat, [g.x+g.w-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [2, g.h+2, 1]); break;
+				}
+				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+				gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			}
+		}
+		var str = g.text.toUpperCase();
+		if (g === v.qty && v.qty.text.trim() != '') {
+			str = (+g.text).toLocaleString(lcode, {});
+		}
+		mat4.identity(mat);
+		var tw = defaultFont.calcWidth(str);
+		if (g.align && g.align == 'r') {
+			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+		} else {
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+		}
+		defaultFont.draw(0,0, str, th.uiText, v.mat, mat);
+
+		// Add decorations.
+		if (g === v.unitprice) {
+			var s = v.unitprice.currency;
+			var c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
+			if (s == '₿') s = '🗲';
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+			defaultFont.draw(0,0, s, c, v.mat, mat);
+//		} else if (g == v.qty && v.qty.text.startsWith('.')) {
+//			mat4.identity(mat);
+//			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+//			defaultFont.draw(-defaultFont.calcWidth('0'),0, '0', th.uiGhostText, v.mat, mat);
+		} else if (g === v.taxrate && g.text != '') {
+			defaultFont.draw(0,0, '%', th.uiGhostText, v.mat, mat);
+		}
+	}
+	g.textBeginFunc = function() {
 		var g = this;
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
+	g.textNextFunc = function() { vp.beginInput(this.viewport.unitprice); }
+/*
+v.gadgets.push(v.currency = g = new vp.Gadget(v));
+	g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 4; g.y = 55;
+	g.autoHull();
+	g.label = tr('currency');
+	g.icon = defaultVendorCurrency;
+	g.renderFunc = function() {
+		var g = this, th = g.parent === choosemethod? vendorColors : customerColors;
 		var sel = clickTapActive.includes(g.gestureState);
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
-		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
+		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
+		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			sel?th.uiButtonSel:c,
 			g.viewport.mat, mat);
-	}
-	g.clickFunc = function() {
-		transitionTo(startpane, 'min');
-	}
-v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
-	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-	g.autoHull();
-	g.icon = "\x01";
-	g.renderFunc = v.homeGad.renderFunc;
-	g.clickFunc = function() {
-		console.log('pushGad');
-	}
-v.gadgets.push(v.popGad = g = new vp.Gadget(v));
-	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-	g.autoHull();
-	g.icon = "\x02";
-	g.enabled = false;
-	g.renderFunc = v.homeGad.renderFunc;
-	g.clickFunc = function() {
-		console.log('popGad');
-	}
-v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
-	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = 150 + (50 - g.w)/2; g.y = (50 - g.h)/2;
-	g.autoHull();
-	g.icon = "\x03";
-	g.renderFunc = v.homeGad.renderFunc;
-	g.clickFunc = function() {
-		if (window.confirm(tr("Discard this invoice?"))) {
-			dataentry.clearDataEntry();
-			invoicepane.invoiceitems = [];
-			invoicepane.setRenderFlag(true);
-			checkoutpages.toPage(0);
+		if (g.icon == '₿') {
+			iconFont.draw(0,0, '🗲',
+				sel?th.uiButtonSel:th.uiLightningPurple,
+				g.viewport.mat, mat);
 		}
 	}
-v.layoutFunc = function() {
-	var totalW = 0; for (const g of this.gadgets) totalW += g.w;
-	var space = (this.w / this.getScale() - totalW) / (this.gadgets.length * 2);
-	var x = 0;
-	for (const g of this.gadgets) {
-		g.x = x + space;
-		x += space + g.w + space;
+	g.clickFunc = function() {
+		this.viewport.unitprice.cycleCurrency();
 	}
-};
+*/
+v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
+	g.x = 5; g.y = 55; g.w = 139; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT | vp.GAF_CONTEXTMENU;
+	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.replace('.','').length >= 11; }
+	g.currency = defaultVendorCurrency;
+	g.contextMenuFunc = function() {
+		this.cycleCurrency();
+	}
+	g.cycleCurrency = function() {
+		var g = this;
+		var i = enabledVendorCurrencies.indexOf(g.icon);
+		i += 1;
+		if (i >= enabledVendorCurrencies.length) i = 0;
+		g.icon = enabledVendorCurrencies[i];
+		g.viewport.unitprice.currency = enabledVendorCurrencies[i];
+		choosemethod.setRenderFlag(true);
+	}
+	g.specialKeys = ['*', '$'];
+	g.align = 'r';
+	g.layoutFunc = function() {
+		var g = this, v = g.viewport, s = v.getScale();
+		g.W = v.w/s; //g.x = (g.W - g.w) / 2;
+		g.H = v.h/s; //g.y = g.h + 5; //(g.H - g.h) / 2 + 50;
+		g.autoHull();
+	}
+	g.renderFunc = v.method.renderFunc;
+	g.textBeginFunc = function() {
+		var g = this;
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.qty.text.trim() != ''
+		|| v.taxrate.text.trim() != '') && this.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.unitprice);
+		} else {
+			vp.beginInput(v.qty);
+		}
+	}
+	g.specialFunc = function(e) {
+		switch (e.key) {
+		case '*': this.textNextFunc(); break;
+		case '$':	this.cycleCurrency(); break;
+		}
+	}
+v.gadgets.push(v.qty = g = new vp.Gadget(v));
+	g.x = 149; g.y = 55; g.w = 46; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789.';
+	g.limitLenFunc = function() {
+		return this.text.replace('.','').length >= (this.text.startsWith('.')?3:4);
+	}
+	g.align = 'r';
+	g.layoutFunc = function() {
+		var g = this, v = g.viewport, s = v.getScale();
+		g.W = v.w/s; //g.x = (g.W - g.w) / 2;
+		g.H = v.h/s; //g.y = g.h + 5; //(g.H - g.h) / 2 + 50;
+		g.autoHull();
+	}
+	g.renderFunc = function() {
+		var g = this, v = g.viewport;
+		v.method.renderFunc.call(g);
+	}
+	g.textBeginFunc = function() {
+		var g = this, v = g.viewport;
+		if (g.text == '' && v.unitprice.text != '') {
+			g.text = '1';
+		}
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.unitprice); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.unitprice.text.trim() != ''
+		|| v.taxrate.text.trim() != '') && (+this.text) == 0) {
+			vp.beep();
+			vp.beginInput(v.qty);
+		} else {
+			vp.beginInput(v.taxrate);
+		}
+	}
+v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
+	g.x = 200; g.y = 55; g.w = 35; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('tax'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.length >= 2; }
+	g.align = 'r'; g.margin = 12;
+	g.autoHull();
+	g.renderFunc = v.method.renderFunc;
+	g.textBeginFunc = function() {
+		var g = this, v = g.viewport;
+		if (g.text == '' && v.unitprice.text != '') {
+			g.text = '10';
+		}
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.qty); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.unitprice.text.trim() != ''
+		|| v.qty.text.trim() != '') && this.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.taxrate);
+		} else if ((v.qty.text.trim() != '' || v.taxrate.text.trim() != '')
+		&& v.unitprice.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.unitprice);
+		} else {
+			var value = v.unitprice.text.trim();
+			if (value != '' && ['$', '€'].includes(v.unitprice.currency)) {
+				value = (v.unitprice.text * 100).toString();
+			}
+			var li = new LineItem(
+				v.method.text.trim(),
+				v.unitprice.currency, value,
+				v.qty.text.trim(),
+				v.taxrate.text.trim());
+			if (!li.isEmpty()) {
+				v.setConversionRates();
+//for (i=0; i<30; i++) {
+				invoicepane.invoiceitems.unshift(li);
+//}
+				invoicepane.setRenderFlag(true);
+				v.clearDataEntry();
+				vp.beginInput(v.method);
+			} else {
+				vp.endInput();
+				if (invoicepane.invoiceitems.length > 0)
+					checkoutpages.swipeGad.doSwipe(true);
+			}
+		}
+	}
+v.setConversionRates = function() {
+	this.conv = JSON.parse(JSON.stringify(conversionRates));
+}
+v.cconv = function(a, f, t) {
+	return Math.ceil(a /* * this.conv[f][t] */);
+}
+v.clearDataEntry = function() {
+	this.method.text = '';
+	this.unitprice.currency = defaultVendorCurrency;
+	this.unitprice.text = '';
+	this.qty.text = '';
+	this.taxrate.text = '';
+}
+v.layoutFunc = function() {
+	for (const g of this.gadgets) {
+		if (g.layoutFunc) g.layoutFunc.call(g);
+	}
+}
 v.renderFunc = function() {
 	const th = vendorColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
+
+	useProg5();
+	gl.enable(gl.BLEND);
+	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+		new Float32Array([1,1,1,1]));
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+
+	const m = mat4.create();
+	mat4.identity(m);
+	mat4.translate(m, m, [10, 10, 0]);
+	mat4.scale(m, m, [10, 10, 1]);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, m);
+	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+		new Float32Array([1,1,1,1]));
+	gl.drawArrays(typ5.speech1i, beg5.speech1i, len5.speech1i);
+	gl.drawArrays(typ5.speech1o, beg5.speech1o, len5.speech1o);
+	gl.drawArrays(typ5.speech1j, beg5.speech1j, len5.speech1j);
+	t = tr('How would you like to pay?');
+	w = defaultFont.calcWidth(t);
+	mat4.identity(m);
+	mat4.translate(m, m, [15, 15, 0]);
+	mat4.scale(m, m, [210/w, 210/w, 1]);
+	defaultFont.draw(0,14 + (20-16)/2, t, th.uiText, this.mat, m);
+
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);
 	}
-};
 
+/*
+	var m = mat4.create();
+	var scale = [0.5, 0.5, 1];
+	for (const g of this.gadgets) {
+		mat4.identity(m);
+		mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
+		mat4.scale(m, m, scale);
+		defaultFont.draw(0,0, g.label, th.uiTextLabel, this.mat, m);
+	}
+
+	if (this === choosemethod) {
+		var e = (this.method.text != ''
+					|| this.unitprice.text != ''
+					|| this.qty.text != ''
+					|| this.taxrate.text != ''
+					|| invoicepane.invoiceitems.length > 0);
+		if (e != buttonbar.trashGad.enabled) {
+			buttonbar.trashGad.enabled = e;
+			buttonbar.setRenderFlag(true);
+		}
+	}
+*/
+}
 var dataentry = v = new vp.View(null);
 v.name = Object.keys({dataentry}).pop();
 //v.designFit = [240,80];
@@ -4070,7 +4379,7 @@ v.renderFunc = function(flip = false) {
 		if (g.renderFunc) g.renderFunc.call(g);
 	}
 
-  var m = mat4.create();
+	var m = mat4.create();
 	var scale = [0.5, 0.5, 1];
 	for (const g of this.gadgets) {
 		mat4.identity(m);
@@ -4091,13 +4400,414 @@ v.renderFunc = function(flip = false) {
 		}
 	}
 }
-
 var receivepayment = v = new vp.View(null);
 v.name = Object.keys({receivepayment}).pop();
-v.renderFunc = function() {
-	gl.clearColor(1,0,0, 1);
-	gl.clear(gl.COLOR_BUFFER_BIT);
+//v.designFit = [240,80];
+v.designHeight = 80;
+v.gadgets.push(v.method = g = new vp.Gadget(v));
+	g.x = 5; g.y = 20; g.w = 230; g.h = 20;
+	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('payment method'); g.autoHull();
+	g.renderFunc = function() {
+		var g = this, v = g.viewport;
+		var sel = vp.getInputGad() === g;
+		const th = this.viewport === receivepayment? vendorColors : customerColors;
+		const mat = mat4.create();
+		useProg5();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x-1, g.y-11, 0]);
+		mat4.scale(mat, mat, [g.w+2, g.h+12, 1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(th.uiTextLabelArea));
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w, g.h, 1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array(th.uiTextField));
+		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		if (sel) {
+			gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+				new Float32Array(th.uiTextFocus));
+			for (var i=0; i<4; i++) {
+				mat4.identity(mat);
+				switch (i) {
+				case 0: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [2, g.h+2, 1]); break;
+				case 1: mat4.translate(mat, mat, [g.x-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+				case 2: mat4.translate(mat, mat, [g.x-1, g.y+g.h-1, 0]);
+					mat4.scale(mat, mat, [g.w+2, 2, 1]); break;
+				case 3: mat4.translate(mat, mat, [g.x+g.w-1, g.y-1, 0]);
+					mat4.scale(mat, mat, [2, g.h+2, 1]); break;
+				}
+				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+				gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			}
+		}
+		var str = g.text.toUpperCase();
+		if (g === v.qty && v.qty.text.trim() != '') {
+			str = (+g.text).toLocaleString(lcode, {});
+		}
+		mat4.identity(mat);
+		var tw = defaultFont.calcWidth(str);
+		if (g.align && g.align == 'r') {
+			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+		} else {
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+		}
+		defaultFont.draw(0,0, str, th.uiText, v.mat, mat);
+
+		// Add decorations.
+		if (g === v.unitprice) {
+			var s = v.unitprice.currency;
+			var c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
+			if (s == '₿') s = '🗲';
+			mat4.identity(mat);
+			mat4.translate(mat, mat, [g.x+2, g.y+16, 0]);
+			defaultFont.draw(0,0, s, c, v.mat, mat);
+//		} else if (g == v.qty && v.qty.text.startsWith('.')) {
+//			mat4.identity(mat);
+//			mat4.translate(mat, mat, [g.x+g.w-2-tw-(g.margin?g.margin:0), g.y+16, 0]);
+//			defaultFont.draw(-defaultFont.calcWidth('0'),0, '0', th.uiGhostText, v.mat, mat);
+		} else if (g === v.taxrate && g.text != '') {
+			defaultFont.draw(0,0, '%', th.uiGhostText, v.mat, mat);
+		}
+	}
+	g.textBeginFunc = function() {
+		var g = this;
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
+	g.textNextFunc = function() { vp.beginInput(this.viewport.unitprice); }
+/*
+v.gadgets.push(v.currency = g = new vp.Gadget(v));
+	g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 4; g.y = 55;
+	g.autoHull();
+	g.label = tr('currency');
+	g.icon = defaultVendorCurrency;
+	g.renderFunc = function() {
+		var g = this, th = g.parent === receivepayment? vendorColors : customerColors;
+		var sel = clickTapActive.includes(g.gestureState);
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
+		mat4.translate(mat, mat, [-1, 16, 0]);
+		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
+		iconFont.draw(0,0, g.icon,
+			sel?th.uiButtonSel:c,
+			g.viewport.mat, mat);
+		if (g.icon == '₿') {
+			iconFont.draw(0,0, '🗲',
+				sel?th.uiButtonSel:th.uiLightningPurple,
+				g.viewport.mat, mat);
+		}
+	}
+	g.clickFunc = function() {
+		this.viewport.unitprice.cycleCurrency();
+	}
+*/
+v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
+	g.x = 5; g.y = 55; g.w = 139; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT | vp.GAF_CONTEXTMENU;
+	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.replace('.','').length >= 11; }
+	g.currency = defaultVendorCurrency;
+	g.contextMenuFunc = function() {
+		this.cycleCurrency();
+	}
+	g.cycleCurrency = function() {
+		var g = this;
+		var i = enabledVendorCurrencies.indexOf(g.icon);
+		i += 1;
+		if (i >= enabledVendorCurrencies.length) i = 0;
+		g.icon = enabledVendorCurrencies[i];
+		g.viewport.unitprice.currency = enabledVendorCurrencies[i];
+		receivepayment.setRenderFlag(true);
+	}
+	g.specialKeys = ['*', '$'];
+	g.align = 'r';
+	g.layoutFunc = function() {
+		var g = this, v = g.viewport, s = v.getScale();
+		g.W = v.w/s; //g.x = (g.W - g.w) / 2;
+		g.H = v.h/s; //g.y = g.h + 5; //(g.H - g.h) / 2 + 50;
+		g.autoHull();
+	}
+	g.renderFunc = v.method.renderFunc;
+	g.textBeginFunc = function() {
+		var g = this;
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.qty.text.trim() != ''
+		|| v.taxrate.text.trim() != '') && this.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.unitprice);
+		} else {
+			vp.beginInput(v.qty);
+		}
+	}
+	g.specialFunc = function(e) {
+		switch (e.key) {
+		case '*': this.textNextFunc(); break;
+		case '$':	this.cycleCurrency(); break;
+		}
+	}
+v.gadgets.push(v.qty = g = new vp.Gadget(v));
+	g.x = 149; g.y = 55; g.w = 46; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789.';
+	g.limitLenFunc = function() {
+		return this.text.replace('.','').length >= (this.text.startsWith('.')?3:4);
+	}
+	g.align = 'r';
+	g.layoutFunc = function() {
+		var g = this, v = g.viewport, s = v.getScale();
+		g.W = v.w/s; //g.x = (g.W - g.w) / 2;
+		g.H = v.h/s; //g.y = g.h + 5; //(g.H - g.h) / 2 + 50;
+		g.autoHull();
+	}
+	g.renderFunc = function() {
+		var g = this, v = g.viewport;
+		v.method.renderFunc.call(g);
+	}
+	g.textBeginFunc = function() {
+		var g = this, v = g.viewport;
+		if (g.text == '' && v.unitprice.text != '') {
+			g.text = '1';
+		}
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.unitprice); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.unitprice.text.trim() != ''
+		|| v.taxrate.text.trim() != '') && (+this.text) == 0) {
+			vp.beep();
+			vp.beginInput(v.qty);
+		} else {
+			vp.beginInput(v.taxrate);
+		}
+	}
+v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
+	g.x = 200; g.y = 55; g.w = 35; g.h = 20;
+	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
+	g.text = ''; g.label = tr('tax'); g.limitChars = '0123456789';
+	g.limitLenFunc = function() { return this.text.length >= 2; }
+	g.align = 'r'; g.margin = 12;
+	g.autoHull();
+	g.renderFunc = v.method.renderFunc;
+	g.textBeginFunc = function() {
+		var g = this, v = g.viewport;
+		if (g.text == '' && v.unitprice.text != '') {
+			g.text = '10';
+		}
+		g.viewport.setRenderFlag(true);
+	}
+	g.textFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textEndFunc = function() {
+		this.viewport.setRenderFlag(true);
+	}
+	g.textPrevFunc = function() { vp.beginInput(this.viewport.qty); }
+	g.textNextFunc = function() {
+		var g = this, v = g.viewport;
+		if ((v.method.text.trim() != '' || v.unitprice.text.trim() != ''
+		|| v.qty.text.trim() != '') && this.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.taxrate);
+		} else if ((v.qty.text.trim() != '' || v.taxrate.text.trim() != '')
+		&& v.unitprice.text.trim() == '') {
+			vp.beep();
+			vp.beginInput(v.unitprice);
+		} else {
+			var value = v.unitprice.text.trim();
+			if (value != '' && ['$', '€'].includes(v.unitprice.currency)) {
+				value = (v.unitprice.text * 100).toString();
+			}
+			var li = new LineItem(
+				v.method.text.trim(),
+				v.unitprice.currency, value,
+				v.qty.text.trim(),
+				v.taxrate.text.trim());
+			if (!li.isEmpty()) {
+				v.setConversionRates();
+//for (i=0; i<30; i++) {
+				invoicepane.invoiceitems.unshift(li);
+//}
+				invoicepane.setRenderFlag(true);
+				v.clearDataEntry();
+				vp.beginInput(v.method);
+			} else {
+				vp.endInput();
+				if (invoicepane.invoiceitems.length > 0)
+					checkoutpages.swipeGad.doSwipe(true);
+			}
+		}
+	}
+v.setConversionRates = function() {
+	this.conv = JSON.parse(JSON.stringify(conversionRates));
 }
+v.cconv = function(a, f, t) {
+	return Math.ceil(a /* * this.conv[f][t] */);
+}
+v.clearDataEntry = function() {
+	this.method.text = '';
+	this.unitprice.currency = defaultVendorCurrency;
+	this.unitprice.text = '';
+	this.qty.text = '';
+	this.taxrate.text = '';
+}
+v.layoutFunc = function() {
+	for (const g of this.gadgets) {
+		if (g.layoutFunc) g.layoutFunc.call(g);
+	}
+}
+v.renderFunc = function(flip = false) {
+	// WARNING: This function is re-used by customertotal; "this" may vary!
+	const th = this === receivepayment? vendorColors : customerColors;
+	gl.clearColor(...th.uiBackground);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+
+	if (flip) {
+		this.rematrix();
+		var s = this.getScale();
+		mat4.translate(this.mat, this.mat, [this.sw/2, this.sh/2, 0]);
+		mat4.rotate(this.mat, this.mat, Math.PI, [0,0,1]);
+		mat4.translate(this.mat, this.mat, [-this.sw/2, -this.sh/2, 0]);
+		y = this.sh - 18; dir = -1;
+	}
+
+	useProg5();
+	gl.enable(gl.BLEND);
+	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+		new Float32Array(th.uiTextLabel));
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+
+	for (const g of this.gadgets) {
+		if (g.renderFunc) g.renderFunc.call(g);
+	}
+
+	var m = mat4.create();
+	var scale = [0.5, 0.5, 1];
+	for (const g of this.gadgets) {
+		mat4.identity(m);
+		mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
+		mat4.scale(m, m, scale);
+		defaultFont.draw(0,0, g.label, th.uiTextLabel, this.mat, m);
+	}
+
+	if (this === receivepayment) {
+		var e = (this.method.text != ''
+					|| this.unitprice.text != ''
+					|| this.qty.text != ''
+					|| this.taxrate.text != ''
+					|| invoicepane.invoiceitems.length > 0);
+		if (e != buttonbar.trashGad.enabled) {
+			buttonbar.trashGad.enabled = e;
+			buttonbar.setRenderFlag(true);
+		}
+	}
+}
+
+var buttonbar = v = new vp.View(null);
+v.name = Object.keys({buttonbar}).pop();
+v.designFit = [400,50];
+v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x00";
+	g.renderFunc = function() {
+		var g = this;
+		var sel = clickTapActive.includes(g.gestureState);
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
+		mat4.translate(mat, mat, [-1, 16, 0]);
+		iconFont.draw(0,0, g.icon,
+			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.viewport.mat, mat);
+	}
+	g.clickFunc = function() {
+		transitionTo(startpane, 'min');
+	}
+v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x01";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('pushGad');
+	}
+v.gadgets.push(v.popGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x02";
+	g.enabled = false;
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('popGad');
+	}
+v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 150 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x03";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		if (window.confirm(tr("Discard this invoice?"))) {
+			dataentry.clearDataEntry();
+			invoicepane.invoiceitems = [];
+			invoicepane.setRenderFlag(true);
+			checkoutpages.toPage(0);
+		}
+	}
+v.layoutFunc = function() {
+	var totalW = 0; for (const g of this.gadgets) totalW += g.w;
+	var space = (this.w / this.getScale() - totalW) / (this.gadgets.length * 2);
+	var x = 0;
+	for (const g of this.gadgets) {
+		g.x = x + space;
+		x += space + g.w + space;
+	}
+};
+v.renderFunc = function() {
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	for (const g of this.gadgets) {
+		if (g.renderFunc) g.renderFunc.call(g);
+	}
+};
 
 var extra1 = v = new vp.View(null);
 v.name = Object.keys({extra1}).pop();
@@ -4123,9 +4833,10 @@ v.swipeGad.swipeBeginFunc = function(p) {
 	g.swipeBeginFuncF.call(g, p);
 }
 v.pages.push(dataentry);
+v.pages.push(choosemethod);
 v.pages.push(receivepayment);
-v.pages.push(extra1);
-v.pages.push(extra2);
+//v.pages.push(extra1);
+//v.pages.push(extra2);
 v.pageChangeFunc = function() {
 	checkoutprogress.setRenderFlag(true);
 }
@@ -4175,7 +4886,7 @@ v.renderFunc = function(flip = false) {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	if (flip && !customerpane.parent) return;
 
-	var y = 16, h = 0, w, t, c, s, dir = 1;
+	var y = 16, h = 0, w, t, c, s, d, dir = 1;
 	if (flip) {
 		y = this.h/s - 18; dir = -1;
 	}
@@ -4235,10 +4946,51 @@ v.renderFunc = function(flip = false) {
 	}
 	if (!currencies.includes(customertotal.currency.icon))
 		currencies.push(customertotal.currency.icon);
+
+	var cust = (this === customerinvoice);
+	var lang = cust ? customertitlebar.language.lang : lcode;
+	if (true) {
+		function alpha(rgba, a) {
+			return [rgba[0], rgba[1], rgba[2], Math.min(1, Math.max(0, a))];
+		}
+		if (cust) y += 16;
+		mat4.identity(m); mat4.translate(m, m, [10, y - this.scrollY, 0]);
+		defaultFont.draw(0,0, tr('subtotal')+':',
+			alpha(th.uiText, 1 - Math.abs(this.scrollY) / 16), this.mat, m);
+
+		mat4.identity(m); mat4.translate(m, m, [10, y - this.scrollY, 0]);
+		var subtot = 0;
+		s = cust? customertotal.currency.icon : defaultVendorCurrency;
+		var sk = skip;
+		for (const li of invoicepane.invoiceitems) {
+			if (skip > 0) { skip -= 1; continue; }
+			subtot += dataentry.cconv(li.unitprice * li.qty, li.currency, s);
+		}
+		skip = sk;
+		t = (+subtot).toString();
+		if (['$', '€'].includes(s)) {
+			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
+		} else {
+			t = (+t).toLocaleString(lang, {maximumFractionDigits:0});
+		}
+		w = defaultFont.calcWidth(t);
+		defaultFont.draw(340-w,0, t,
+			alpha(th.uiText, 1 - Math.abs(this.scrollY) / 16), this.mat, m);
+		if (currencies.length > 1) {
+			d = s; if (d == '₿') d = '🗲';
+			c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
+			mat4.identity(m); mat4.translate(m, m, [10, y - this.scrollY, 0]);
+			defaultFont.draw(340-w-3-defaultFont.calcWidth(d),0, d,
+				alpha(c, 1 - Math.abs(this.scrollY) / 16), this.mat, m);
+		}
+
+		if (cust) y -= 16;
+		//y -= 16;
+		y += 32 * dir;
+		h += 32;
+	}
 	for (const li of invoicepane.invoiceitems) {
 		if (skip > 0) { skip -= 1; continue; }
-		var cust = (this === customerinvoice);
-		lang = cust ? customertitlebar.language.lang : lcode;
 		s = cust? customertotal.currency.icon : li.currency;
 		d = s; if (d == '₿') d = '🗲';
 		c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
@@ -4254,6 +5006,7 @@ v.renderFunc = function(flip = false) {
 			t = parseInt(li.qty).toString(); w = defaultFont.calcWidth(t);
 		}
 		defaultFont.draw(36-w,0, t + ' ×', th.uiText, this.mat, m);
+
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = (+dataentry.cconv(li.unitprice, li.currency, s)).toString();
 		if (['$', '€'].includes(s)) {
@@ -4267,6 +5020,7 @@ v.renderFunc = function(flip = false) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 			defaultFont.draw(180-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
 		}
+
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = (dataentry.cconv(li.unitprice * li.qty, li.currency, s).toString());
 		if (['$', '€'].includes(s)) {
@@ -4280,6 +5034,7 @@ v.renderFunc = function(flip = false) {
 			mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 			defaultFont.draw(340-w-3-defaultFont.calcWidth(d),0, d, c, this.mat, m);
 		}
+
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
 		t = +li.taxrate + '%'; w = defaultFont.calcWidth(t);
 		defaultFont.draw(380-w,0, t, th.uiText, this.mat, m);
