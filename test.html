@@ -3354,7 +3354,7 @@ addShape2('maximizer', gl.TRIANGLES,
 {
 	var sl = rgb(vendorColors.uiSilverLining);
 	var sc = rgb(vendorColors.uiSpeechCloud);
-	var w = 22, h = 3, x = w-1, y = h-1;
+	var w = 22.5, h = 3, x = w-1, y = h-1;
 	addShape5('speech1o', gl.TRIANGLE_STRIP,
 		0,h-1, ...sl, 1,h-1, ...sc, 0,1, ...sl, 1,1, ...sc, // left
 		0.03,0.8,...sl, 1,1,...sc, 0.1,0.6,...sl, 1,1,...sc, 0.2,0.4,...sl, 1,1,...sc,
@@ -4024,7 +4024,7 @@ v.renderFunc = function() {
 
 	const m = mat4.create();
 	mat4.identity(m);
-	mat4.translate(m, m, [10, 10, 0]);
+	mat4.translate(m, m, [5, 5, 0]);
 	mat4.scale(m, m, [10, 10, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, m);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -4035,7 +4035,7 @@ v.renderFunc = function() {
 	t = tr('How would you like to pay?');
 	w = defaultFont.calcWidth(t);
 	mat4.identity(m);
-	mat4.translate(m, m, [15, 15, 0]);
+	mat4.translate(m, m, [12.5, 10, 0]);
 	mat4.scale(m, m, [210/w, 210/w, 1]);
 	defaultFont.draw(0,14 + (20-16)/2, t, th.uiText, this.mat, m);
 
