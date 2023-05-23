@@ -2984,6 +2984,11 @@ window['main']['de-DE'] = {
 "item":	"ARTIKEL",
 "tax":	"STEUER",
 "currency":	"WÄHRUNG",
+"cash":	"BARGELD",
+"₿":	"BTC/LN",
+"₲":	"GUARANÍ",
+"$":	"DOLLAR",
+"€":	"EURO",
 "price":	"PREIS",
 "qty":	"QUANT.",
 "subtotal":	"ZWISCHENSUMME",
@@ -3004,6 +3009,11 @@ window['main']['en-US'] = {
 "item":	"ITEM",
 "tax":	"TAX",
 "currency":	"CURRENCY",
+"cash":	"CASH",
+"₿":	"BTC/LN",
+"₲":	"GUARANÍ",
+"$":	"DOLLAR",
+"€":	"EURO",
 "price":	"PRICE",
 "qty":	"QTY",
 "subtotal":	"SUBTOTAL",
@@ -3024,6 +3034,11 @@ window['main']['es-PY'] = {
 "item":	"ARTÍCULO",
 "tax":	"IVA",
 "currency":	"MONEDA",
+"cash":	"EFECTIVO",
+"₿":	"NUEVO GUARANÍ",
+"₲":	"GUARANÍ",
+"$":	"DÓLAR",
+"€":	"EURO",
 "price":	"PRECIO",
 "qty":	"CANT.",
 "subtotal":	"IMPORTE TOTAL",
@@ -3044,6 +3059,11 @@ window['main']['gn-PY'] = {
 "item":	"MBA'E",
 "tax":	"IVA",
 "currency":	"VIRU",
+"cash":	"VIRUETE",
+"₿":	"GUARANÍ PYAHU",
+"₲":	"GUARANÍ",
+"$":	"DÓLAR",
+"€":	"EURO",
 "price":	"HEPYKUE",
 "qty":	"HETAKUE",
 "subtotal":	"OPAITE",
@@ -3204,6 +3224,8 @@ function tr(s, l = lcode) {
 	const enabledCustomerCurrencies = ['₿','₲','$','€'];
 	var defaultCustomerCurrency = '₲';
 
+	const enabledPaymentMethods = ['₿','₲','$','€'];
+
 	vendorColors = new DefaultDarkTheme();
 	customerColors = new DefaultLightTheme();
 
@@ -3227,6 +3249,10 @@ function tr(s, l = lcode) {
 		if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
 		defaultVendorCurrency = enabledVendorCurrencies[
 			Math.floor(enabledVendorCurrencies.length * Math.random())];
+
+		for (var i=enabledPaymentMethods.length-1; i>=0; i--)
+			if (Math.random() > 0.5) enabledPaymentMethods.splice(i,1);
+		if (enabledPaymentMethods.length == 0) enabledPaymentMethods.push('₲');
 
 		for (var i=enabledCustomerCurrencies.length-1; i>=0; i--)
 			if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
@@ -3811,37 +3837,51 @@ v.gadgets.push(v.method = g = new vp.Gadget(v));
 	}
 	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
 	g.textNextFunc = function() { vp.beginInput(this.viewport.unitprice); }
-/*
-v.gadgets.push(v.currency = g = new vp.Gadget(v));
-	g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
-	g.x = 4; g.y = 55;
-	g.autoHull();
-	g.label = tr('currency');
-	g.icon = defaultVendorCurrency;
-	g.renderFunc = function() {
-		var g = this, th = g.parent === choosemethod? vendorColors : customerColors;
-		var sel = clickTapActive.includes(g.gestureState);
-		const mat = mat4.create();
-		mat4.identity(mat);
-		mat4.translate(mat, mat, [g.x, g.y, 0]);
-		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
-		mat4.translate(mat, mat, [-1, 16, 0]);
-		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
-		iconFont.draw(0,0, g.icon,
-			sel?th.uiButtonSel:c,
+v.methods = {};
+v.methodRenderFunc = function() {
+	var g = this, th = g.viewport === choosemethod? vendorColors : customerColors;
+	var sel = clickTapActive.includes(g.gestureState);
+	var c, t, w;
+	const mat = mat4.create();
+	mat4.identity(mat);
+	mat4.translate(mat, mat, [g.x, g.y, 0]);
+	mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
+	mat4.translate(mat, mat, [-1, 16, 0]);
+	c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
+	iconFont.draw(0,0, g.icon,
+		sel?th.uiButtonSel:c,
+		g.viewport.mat, mat);
+	if (g.icon == '₿') {
+		iconFont.draw(0,0, '🗲',
+			sel?th.uiButtonSel:th.uiLightningPurple,
 			g.viewport.mat, mat);
-		if (g.icon == '₿') {
-			iconFont.draw(0,0, '🗲',
-				sel?th.uiButtonSel:th.uiLightningPurple,
-				g.viewport.mat, mat);
-		}
 	}
-	g.clickFunc = function() {
-		this.viewport.unitprice.cycleCurrency();
-	}
-*/
+	t = tr("cash"), w = defaultFont.calcWidth(t);
+	mat4.identity(mat);
+	mat4.translate(mat, mat, [g.x, g.y, 0]);
+	mat4.scale(mat, mat, [g.w/36/3, g.w/36/3, 1]);
+	defaultFont.draw((112-w)/2,-2, t, th.uiText, g.viewport.mat, mat);
+	t = tr(g.icon), w = defaultFont.calcWidth(t);
+	mat4.identity(mat);
+	mat4.translate(mat, mat, [g.x, g.y, 0]);
+	mat4.scale(mat, mat, [g.w/36/3, g.w/36/3, 1]);
+	defaultFont.draw((112-w)/2,16*4+6, t, th.uiText, g.viewport.mat, mat);
+}
+v.methodClickFunc = function() {
+	vp.beep();
+}
+for (method of enabledPaymentMethods) {
+	v.gadgets.push(v.methods[method] = g = new vp.Gadget(v));
+		g.w = 42; g.h = 21; g.actionFlags = vp.GAF_CLICKABLE;
+		g.y = 48;
+		g.autoHull();
+		g.label = tr('currency');
+		g.icon = method;
+		g.renderFunc = v.methodRenderFunc;
+		g.clickFunc = v.methodClickFunc;
+}
 v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
-	g.x = 5; g.y = 55; g.w = 139; g.h = 20;
+	g.x = 500+5; g.y = 55; g.w = 139; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT | vp.GAF_CONTEXTMENU;
 	g.text = ''; g.label = tr('price'); g.limitChars = '0123456789';
 	g.limitLenFunc = function() { return this.text.replace('.','').length >= 11; }
@@ -3895,7 +3935,7 @@ v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
 		}
 	}
 v.gadgets.push(v.qty = g = new vp.Gadget(v));
-	g.x = 149; g.y = 55; g.w = 46; g.h = 20;
+	g.x = 500+149; g.y = 55; g.w = 46; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
 	g.text = ''; g.label = tr('qty'); g.limitChars = '0123456789.';
 	g.limitLenFunc = function() {
@@ -3937,7 +3977,7 @@ v.gadgets.push(v.qty = g = new vp.Gadget(v));
 		}
 	}
 v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
-	g.x = 200; g.y = 55; g.w = 35; g.h = 20;
+	g.x = 500+200; g.y = 55; g.w = 35; g.h = 20;
 	g.actionFlags = vp.GAF_NUMINPUT | vp.GAF_GONEXT;
 	g.text = ''; g.label = tr('tax'); g.limitChars = '0123456789';
 	g.limitLenFunc = function() { return this.text.length >= 2; }
@@ -4007,6 +4047,13 @@ v.clearDataEntry = function() {
 	this.taxrate.text = '';
 }
 v.layoutFunc = function() {
+	var totalW = 0; for (const g of Object.values(this.methods)) totalW += g.w;
+	var space = (240 - totalW) / (Object.values(this.methods).length * 2);
+	var x = 0;
+	for (const g of Object.values(this.methods)) {
+		g.x = x + space;
+		x += space + g.w + space;
+	}
 	for (const g of this.gadgets) {
 		if (g.layoutFunc) g.layoutFunc.call(g);
 	}
@@ -4799,7 +4846,7 @@ v.layoutFunc = function() {
 		g.x = x + space;
 		x += space + g.w + space;
 	}
-};
+}
 v.renderFunc = function() {
 	const th = vendorColors;
 	gl.clearColor(...th.uiBackground);
@@ -4807,7 +4854,7 @@ v.renderFunc = function() {
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);
 	}
-};
+}
 
 var extra1 = v = new vp.View(null);
 v.name = Object.keys({extra1}).pop();
