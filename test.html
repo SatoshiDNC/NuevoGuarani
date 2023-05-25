@@ -225,8 +225,8 @@ var vp = (function() {
 //    img.onload = function(){
         tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, tex);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texImage2D(gl.TEXTURE_2D, 0,  gl.RGBA,  gl.RGBA, gl.UNSIGNED_BYTE, img);
 
         gl.enableVertexAttribArray(vloc);
@@ -3785,7 +3785,7 @@ var invoicepane;
 		}
 		g.renderFunc = v.invoice.renderFunc;
 		g.clickFunc = function() {
-			transitionTo(invoicepane, 'max');
+			transitionTo(paymentpane, 'max');
 		}
 	v.minX = 0; v.maxX = 100;
 	v.minY = 0; v.maxY = 1000;
@@ -3887,8 +3887,8 @@ class LineItem {
 			return "#" + ((1 << 24) + (~~(r*255) << 16) + (~~(g*255) << 8) + ~~(b*255)).toString(16).slice(1);
 		}
 	var img = document.querySelector('#buf1');
-	var qrcontent = `
-{
+	var qrcontent = 
+`{
 	"m":1, "n":1,
 	"ln":"ln10234lksjdfghdfgk......dklgfhjdgfklhd",
 	"1":{"Vendor":"BIO-GRANJA EL DORADO E.I.R.L."},
@@ -3919,11 +3919,11 @@ class LineItem {
 		["8,465","PURE DE TOMATE LA HUERTA, 210G","1,000","4.000","4.000","10%"],
 		["5,520","BICARBONATO DE SODIO X KG","0,190","22.000","4.180","5%"],
 		["5,355","COCO RELLADO COPALSA, X KG","0,130","44.300","5.538","10%"],
+		["8,914","ALCAPARRAS G&G 90GR","1,000","16.200",
 	],
-}
-`;
+}`;
 console.log('rendering');
-  QrCreator.render({
+  result = QrCreator.render({
     text: qrcontent,
     radius: 0.0, // 0.0 to 0.5
     ecLevel: 'H', // L, M, Q, H
@@ -3931,8 +3931,7 @@ console.log('rendering');
     background: rgbToHex(...customerColors.uiBackground), // color or null for transparent
     size: 1280 // in pixels
   }, img);
-console.log(rgbToHex(...customerColors.uiForeground), rgbToHex(...customerColors.uiBackground));
-console.log('rendered');
+console.log('rendered', result);
 
 		var w = Math.min(canvas.width, canvas.height) * 0.8;
 		var x = (canvas.width - w) / 2;
@@ -3944,10 +3943,10 @@ console.log('copied');
 		w = Math.min(this.sw, this.sh);
 		for (i=-1; i<=1; i++) for (j=-1; j<=1; j++) {
 			mat4.identity(mat); mat4.scale(mat, mat, [this.sw/160, this.sh/160, 1]);
-			defaultFont.draw(75+i/2,87+j/2, '🗲', customerColors.uiBackground, this.mat, mat);
+			//defaultFont.draw(75+i/2,87+j/2, '🗲', customerColors.uiBackground, this.mat, mat);
 		}
 		mat4.identity(mat); mat4.scale(mat, mat, [this.sw/160, this.sh/160, 1]);
-		defaultFont.draw(75,87, '🗲', customerColors.uiLightningYellow, this.mat, mat);
+		//defaultFont.draw(75,87, '🗲', customerColors.uiLightningYellow, this.mat, mat);
 
 		setTimeout(this.timeoutFunc, 5000);
 	};
@@ -5998,6 +5997,119 @@ v.layoutEndFunc = function() {
 	v.ratioMin['h'] = (v.w/240*49) / v.h;
 	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*90) / v.h;
 }
+var pmtbuttonbar = v = new vp.View(null);
+v.name = Object.keys({pmtbuttonbar}).pop();
+v.designFit = [400,50];
+v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x00";
+	g.renderFunc = function() {
+		var g = this;
+		var sel = clickTapActive.includes(g.gestureState);
+		const mat = mat4.create();
+		mat4.identity(mat);
+		mat4.translate(mat, mat, [g.x, g.y, 0]);
+		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
+		mat4.translate(mat, mat, [-1, 16, 0]);
+		iconFont.draw(0,0, g.icon,
+			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.viewport.mat, mat);
+	}
+	g.clickFunc = function() {
+		transitionTo(startpane, 'min');
+	}
+v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x01";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('pushGad');
+	}
+v.gadgets.push(v.popGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x02";
+	g.enabled = false;
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		console.log('popGad');
+	}
+v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
+	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 150 + (50 - g.w)/2; g.y = (50 - g.h)/2;
+	g.autoHull();
+	g.icon = "\x03";
+	g.renderFunc = v.homeGad.renderFunc;
+	g.clickFunc = function() {
+		if (window.confirm(tr("Discard this invoice?"))) {
+			dataentry.clearDataEntry();
+			invoicepane.invoiceitems = [];
+			invoicepane.setRenderFlag(true);
+			checkoutpages.toPage(0);
+		}
+	}
+v.layoutFunc = function() {
+	var totalW = 0; for (const g of this.gadgets) totalW += g.w;
+	var space = (this.w / this.getScale() - totalW) / (this.gadgets.length * 2);
+	var x = 0;
+	for (const g of this.gadgets) {
+		g.x = x + space;
+		x += space + g.w + space;
+	}
+}
+v.renderFunc = function() {
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	for (const g of this.gadgets) {
+		if (g.renderFunc) g.renderFunc.call(g);
+	}
+}
+
+var vendorcustomerdiv = v = new vp.View();
+v.name = Object.keys({vendorcustomerdiv}).pop();
+v.designScale = 1;
+v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
+v.layoutFunc = function() { this.middleDividerGad.layout(); }
+v.renderFunc = function() {
+	const th = vendorColors;
+	gl.clearColor(...th.uiBackground);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	useProg5();
+	gl.enable(gl.BLEND);
+	const mat = mat4.create();
+	mat4.identity(mat);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
+	mat4.scale(mat, mat, [this.w, this.h, 0]);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+	//gl.drawArrays(typ5.divLine, beg5.divLine, len5.divLine);
+	if (this.parent.state == 'v') {
+		gl.drawArrays(typ5.divLineV, beg5.divLineV, len5.divLineV);
+	} else {
+		gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+	}
+};
+
+var paymentmain = v = new vp.View(null);
+v.name = Object.keys({paymentmain}).pop();
+v.layoutFunc = function() {
+}
+v.renderFunc = function() {
+	const th = vendorColors;
+	gl.clearColor(1,0,0,1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+}
+
+var paymentpane = v = new vp.SliceView(null, 'b', 0.125);
+v.name = Object.keys({paymentpane}).pop();
+v.prop = true;
+v.a = pmtbuttonbar; pmtbuttonbar.parent = v;
+v.b = paymentmain; paymentmain.parent = v;
   var menupane = v = new vp.View(null);
 	v.name = Object.keys({menupane}).pop();
   v.gadgets.push(g = new vp.MatrixGadget(v));
@@ -6371,7 +6483,7 @@ window.onload = function () {
 </head>
 <body style="text-align: center; touch-action: none; overflow: hidden; margin: 0; padding: 0;">
   <canvas id="app1"></canvas>
-  <canvas id="buf1" style="display: inline;"></canvas>
+  <canvas id="buf1" style="display: none;"></canvas>
   <input id="prev" type="text" style="position:fixed;left:-2000px; display: none;">
   <input id="numpad" type="number" style="position:fixed;left:-2000px;">
   <input id="kb" type="text" style="position:fixed;left:-2000px; display: none;">
