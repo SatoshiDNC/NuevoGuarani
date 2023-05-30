@@ -2531,7 +2531,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
         var skipflag = 0;
         for (const h of p.hitList.hits) {
           const g = h.gad;
-          skipDel = 0;
+          var skipDel = 0;
           if (g.ownedBy == index) {
             if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
             if (!skipflag) switch (g.gestureState) {
