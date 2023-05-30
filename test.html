@@ -4878,7 +4878,7 @@ v.renderFunc = function() {
 	gl.drawArrays(typ5.speech1i, beg5.speech1i, len5.speech1i);
 	gl.drawArrays(typ5.speech1o, beg5.speech1o, len5.speech1o);
 	gl.drawArrays(typ5.speech1j, beg5.speech1j, len5.speech1j);
-	t = tr('How would you like to pay?');
+	const t = tr('How would you like to pay?');
 	w = defaultFont.calcWidth(t);
 	mat4.identity(m);
 	mat4.translate(m, m, [12.5, 5 + 15, 0]);
