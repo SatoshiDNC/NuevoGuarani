@@ -1848,6 +1848,7 @@ function beginInput(g) {
 		kbnext.style.display = 'inline';
 		kbprev.style.display = 'inline';
 	}
+	var el;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
 	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
 	el.value = g.text;
@@ -2156,8 +2157,8 @@ var speak = 0;
 */
     var dir;
     function calcSwipeDir(p) {
-      xdiff = p.x - p.ox;
-      ydiff = p.y - p.oy;
+      const xdiff = p.x - p.ox;
+      const ydiff = p.y - p.oy;
       if (xdiff*xdiff > ydiff*ydiff) {
         if (xdiff > 0) return 'right'; else return 'left';
       } else {
