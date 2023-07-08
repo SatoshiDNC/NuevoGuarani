@@ -1,4 +1,4 @@
-	transitionTo = function(view, option = '') {
+	const transitionTo = function(view, option = '') {
 		v = allblack;
 		v.transitionOption = option;
 		v.root = menudiv;
@@ -42,6 +42,7 @@
 		case 'switch view':
 			this.root.b = this.target; this.target.parent = this.root
 			this.root.relayout();
+			if (this.target.switchedToFunc) this.target.switchedToFunc();
 			this.state = 'done';
 			break;
 		default:

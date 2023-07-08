@@ -1,7 +1,9 @@
+var inputSelected;
+
 function endInput() {
-  inputSelected = false;
+	inputSelected = false;
 	if (!inputGad) return;
-	var g = inputGad;
+	var g = inputGad, el;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
 	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
 	el.blur();
@@ -17,13 +19,14 @@ function beginInput(g) {
 		kbnext.style.display = 'inline';
 		kbprev.style.display = 'inline';
 	}
+	var el;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
 	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
 	el.value = g.text;
 	el.style.display = 'inline';
 	el.focus();
 	el.select();
-  inputSelected = true;
+	inputSelected = true;
 }
 
   function useProg() {
@@ -52,7 +55,7 @@ function refresher(timeStamp) {
 
 //if (delta < 10) console.log(delta);
 
-		const todoViews = [];
+		const todoViews = []; var lv;
 		while (lv = layoutViews.pop()) todoViews.push(lv);
 		if (layoutSignal) {
 			layoutSignal = false;
@@ -289,14 +292,14 @@ function resizeCanvas() {
 
 		// Helper: On commitment to drag, disown ambiguously selected click gadgets.
 		function DisownAllOtherGads(p, g) {
-      for (const o of p.hitList.hits) if (o.gad !== g) {
+			for (const o of p.hitList.hits) if (o.gad !== g) {
 				if (o.gad.ownedBy == index) {
 					o.gad.gestureState = o.gad.gestureState + '-disowned';
 					o.gad.viewport.setRenderFlag(true);
-          delete o.gad.ownedBy;
+					delete o.gad.ownedBy;
 				}
 			}
-    }
+		}
 
     if (action == 'touches' && e.touches && e.touches.length == 0) {
    //   window.speechSynthesis.speak(new SpeechSynthesisUtterance(' '+e.touches.length));
@@ -325,8 +328,8 @@ var speak = 0;
 */
     var dir;
     function calcSwipeDir(p) {
-      xdiff = p.x - p.ox;
-      ydiff = p.y - p.oy;
+      const xdiff = p.x - p.ox;
+      const ydiff = p.y - p.oy;
       if (xdiff*xdiff > ydiff*ydiff) {
         if (xdiff > 0) return 'right'; else return 'left';
       } else {
@@ -526,20 +529,30 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
                     g.gestureState = 'swipe'; p.swiping = true;
                     g.viewport.setRenderFlag(true);
                     for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+										delete p.cancel;
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
-                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+										if (p.cancel) {
+											g.gestureState = 'prog-cancel-swipe';
+										} else {
+	                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
   console.log('swipe '+dir);
   if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+										}
                   } else
                   if ( ((dir == 'up' || dir == 'down') && !!(g.actionFlags & vp.GAF_DRAGGABLE_UPDOWN))
                     || ((dir == 'left' || dir == 'right') && !!(g.actionFlags & vp.GAF_DRAGGABLE_LEFTRIGHT)) ) {
                     g.gestureState = 'drag'; p.swiping = true;
                     g.viewport.setRenderFlag(true);
 										DisownAllOtherGags(p, g);
+										delete p.cancel;
                     if (g.dragBeginFunc) g.dragBeginFunc.call(g, p);
-                    if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
+										if (p.cancel) {
+											g.gestureState = 'prog-cancel-drag';
+										} else {
+	                    if (g.dragMoveFunc) g.dragMoveFunc.call(g, p);
   console.log('drag '+dir);
   if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('drag '+dir));
+										}
                   }
                 }
               }
@@ -575,9 +588,14 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
                     g.gestureState = 'swipe'; p.swiping = true;
                     g.viewport.setRenderFlag(true);
 										DisownAllOtherGads(p, g);
+										delete p.cancel;
                     if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
-                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+										if (p.cancel) {
+											g.gestureState = 'prog-cancel-swipe';
+										} else {
+	                    if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
      if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('swipe '+dir));
+										}
                   }
                 }
               }
@@ -646,7 +664,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
       if (e.pointerType=='mouse') {
         if (e.button == 0) {
           var skipflag = 0;
-          for (const h of p.hitList.hits) {
+          if (p.hitList) for (const h of p.hitList.hits) {
             const g = h.gad;
             if (g.ownedBy == index) {
               if (!skipflag) switch (g.gestureState) {
@@ -654,7 +672,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
               case 'recover-click':
                 if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
                 if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
-                if (g.clickFunc) g.clickFunc.call(g);
+                if (g.clickFunc) g.clickFunc.call(g, p);
                 skipflag=1;
                 break;
               case 'begin-input':
@@ -700,14 +718,14 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
         var skipflag = 0;
         for (const h of p.hitList.hits) {
           const g = h.gad;
-          skipDel = 0;
+          var skipDel = 0;
           if (g.ownedBy == index) {
             if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
             if (!skipflag) switch (g.gestureState) {
             case 'begin-tap':
               if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
               if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
-              if (g.clickFunc) g.clickFunc.call(g);
+              if (g.clickFunc) g.clickFunc.call(g, p);
               skipflag=1;
               break;
             case 'begin-input':
@@ -781,21 +799,27 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('releasing')
               p = pointers[index]; p.e = e;
               p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
               p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+							delete p.cancel;
               if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
-              p.dx = 0; p.x = p.x;
-              p.dy = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.y = p.y + p.dy;
-              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
-              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+							if (!p.cancel) {
+		            p.dx = 0; p.x = p.x;
+		            p.dy = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.y = p.y + p.dy;
+		            if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+		            if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+							}
               skipflag=1;
             } else if (!!(g.actionFlags & vp.GAF_SCROLLABLE_LEFTRIGHT)) {
               p = pointers[index]; p.e = e;
               p.x = e.layerX * wi2px; p.ox = p.x; p.px = p.x;
               p.y = e.layerY * wi2px; p.oy = p.y; p.py = p.y;
+							delete p.cancel;
               if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
-              p.dx = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.x = p.x + p.dx;
-              p.dy = 0; p.y = p.y;
-              if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
-              if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+							if (!p.cancel) {
+		            p.dx = Math.sign(e.wheelDelta) * 0.8 * window.devicePixelRatio; p.x = p.x + p.dx;
+		            p.dy = 0; p.y = p.y;
+		            if (g.swipeMoveFunc) g.swipeMoveFunc.call(g, p);
+		            if (g.swipeEndFunc) g.swipeEndFunc.call(g, p);
+							}
               skipflag=1;
             } else if (!!(g.actionFlags & vp.GAF_PINCHABLE)) {
               p = pointers[index]; p.e = e;
@@ -869,7 +893,11 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('hold'));
               g.gestureState = 'swipe'; p.swiping = true;
               g.viewport.setRenderFlag(true);
               for (const o of p.hitList.hits) if (o.gad !== g && o.gad.ownedBy == index) delete o.gad.ownedBy;
+							delete p.cancel;
               if (g.swipeBeginFunc) g.swipeBeginFunc.call(g, p);
+							if (p.cancel) {
+								g.gestureState = 'prog-cancel-swipe';
+							}
             } else {
               g.gestureState = 'invalid-tap-and-hold';
               g.viewport.setRenderFlag(true);
@@ -957,7 +985,7 @@ function start(root) {
 	gl.enableVertexAttribArray(
 		gl.getAttribLocation(plainProgram, 'aVertexPosition'));
 
-	cum2 = []; // accumulator to build data for buffer
+	const cum2 = []; // accumulator to build data for buffer
 
 	beg2.unitLine = cum2.length/2; cum2.splice(cum2.length, 0,
 		0,0, 1,1,
@@ -968,7 +996,7 @@ function start(root) {
 	); len2.unitSquare = cum2.length/2 - beg2.unitSquare;
 
 	beg2.roundTouch = cum2.length/2;
-	for (i = 0; i < 36; i++) {
+	for (var i = 0; i < 36; i++) {
 		cum2.splice(cum2.length, 0,
 			touchRadius*Math.sin(i/18*Math.PI),
 			touchRadius*Math.cos(i/18*Math.PI));
@@ -983,7 +1011,7 @@ function start(root) {
 	); len2.squareTouch = cum2.length/2 - beg2.squareTouch;
 
 	beg2.roundMouse = cum2.length/2;
-	for (i = 0; i < 36; i++) {
+	for (var i = 0; i < 36; i++) {
 		cum2.splice(cum2.length, 0,
 			clickRadius*Math.sin(i/18*Math.PI),
 			clickRadius*Math.cos(i/18*Math.PI));
@@ -1017,16 +1045,37 @@ function start(root) {
                 super();
                 this.lastClick = 0;
                 this.wave = 0;
+                this.fx = 0;
               }
               process (inputs, outputs, parameters) {
                 const output = outputs[0];
                 output.forEach(channel => {
                   for (var i = 0; i < channel.length; i++) {
+                    var sfx = 0;
+                    if (parameters['beep'][0] != this.fx) {
+                      this.fx = parameters['beep'][0];
+                      this.wave = 0;
+                    }
+                    switch (this.fx) {
+                      case 1:
+                        if (this.wave >= 200) this.wave = 0;
+                        sfx = this.wave >= 100? -0.1 : 0.1;
+                        break;
+                      case 2:
+                        if (this.wave >= 100) this.wave = 0;
+                        sfx = this.wave >= 50? -0.1 : 0.1;
+                        break;
+                      case 3:
+                        if (this.wave >= 50) this.wave = 0;
+                        sfx = this.wave >= 25? -0.1 : 0.1;
+                        break;
+                    }
+                    this.wave += 1;
+                    var wind = (Math.random() * 2 - 1)
+                      * (0.000 + (parameters['windspeed'][0]));
                     channel[i] =
-                      (Math.random() * 2 - 1)*(0.000+(parameters['windspeed'][0])) +
-                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) +
-                      (this.wave >= 0? 1 : -1) * (parameters['beep'].length > 1 ? parameters['beep'][i] : parameters['beep'][0]);
-                    this.wave += 1; if (this.wave > 100) { this.wave = -100; };
+                      wind +
+                      0.5 * (parameters['click'].length > 1 ? parameters['click'][i] : parameters['click'][0]) + sfx;
                   }
                 });
                 return true;
@@ -1049,7 +1098,7 @@ function start(root) {
                   },
                   {
                     name: "beep",
-                    automationRate: "a-rate",
+                    automationRate: "k-rate",
                     defaultValue: 0,
                     minValue: 0,
                     maxValue: 1,
@@ -1093,7 +1142,13 @@ function hideAllTextInputs() {
 	kbalpha.addEventListener("keydown",
 		function(e) {
 			var g = inputGad;
-			if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
+			if (g && g.specialKeys && g.specialKeys.includes(e.key)) {
+				e.preventDefault();
+				if (g.specialFunc) g.specialFunc.call(g, e);
+			} else if (g && g.specialCodes && g.specialCodes.includes(e.code)) {
+				e.preventDefault();
+				if (g.specialFunc) g.specialFunc.call(g, e);
+			} else if (g && e.key.length == 1 && g.limitChars && !g.limitChars.includes(e.key)) {
 				e.preventDefault();
 				beep();
 			} else if (!inputSelected && g && e.key.length == 1

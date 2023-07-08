@@ -3,6 +3,7 @@ function loadCheck() {
   if ( loadPending
     && defaultFont.isReady()
     && iconFont.isReady()
+    && dotMatrixFont.isReady()
   ) { loadPending = false; main(); }
 }
 

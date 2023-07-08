@@ -2,19 +2,30 @@
 	const PARAGUAY = 1;
 	var style = PARAGUAY;
 
-	var lcode = 'es-PY';
+	const enabledLangs = ['en-US', 'es-PY', 'de-DE', 'gn-PY'];
+	var lcode;
+	const supportedCurrencies = ['₿','₲','$','€'];
 
 	const enabledCustomerLangs = ['gn-PY', 'es-PY', 'en-US', 'de-DE'];
 	var defaultCustomerLang = 'es-PY';
 
-	const enabledVendorCurrencies = ['₿','₲','$','€'];
-	var defaultVendorCurrency = '₲';
+//	const enabledVendorCurrencies = ['₿','₲','$','€'];
+//	var defaultVendorCurrency = '₲';
 
 	const enabledCustomerCurrencies = ['₿','₲','$','€'];
 	var defaultCustomerCurrency = '₲';
 
-	vendorColors = new DefaultDarkTheme();
-	customerColors = new DefaultLightTheme();
+	const enabledPaymentMethods = ['₿','₲','$','€'];
+
+	const enabledCashbackOptions = {
+		'₿': ['₲','$','€'],
+		'₲': ['₿','$','€'],
+		'$': ['₿','₲','€'],
+		'€': ['₿','₲','$'],
+	};
+
+	var vendorColors = new DefaultDarkTheme();
+	var customerColors = new DefaultLightTheme();
 
 	// Randomly produce a random configuration for testing.
 	if (Math.random() > 0.5) {
@@ -31,11 +42,17 @@
 		defaultCustomerLang = enabledCustomerLangs[
 			Math.floor(enabledCustomerLangs.length * Math.random())];
 
+/*
 		for (var i=enabledVendorCurrencies.length-1; i>=0; i--)
 			if (Math.random() > 0.5) enabledVendorCurrencies.splice(i,1);
 		if (enabledVendorCurrencies.length == 0) enabledVendorCurrencies.push('₲');
 		defaultVendorCurrency = enabledVendorCurrencies[
 			Math.floor(enabledVendorCurrencies.length * Math.random())];
+*/
+
+		for (var i=enabledPaymentMethods.length-1; i>=0; i--)
+			if (Math.random() > 0.5) enabledPaymentMethods.splice(i,1);
+		if (enabledPaymentMethods.length == 0) enabledPaymentMethods.push('₲');
 
 		for (var i=enabledCustomerCurrencies.length-1; i>=0; i--)
 			if (Math.random() > 0.5) enabledCustomerCurrencies.splice(i,1);
@@ -47,30 +64,51 @@
 		customerColors = Math.random() > 0.5? new DefaultLightTheme() : new DefaultDarkTheme();
 	}
 
-  // DEMO MODES
-	if (0) { // USD
+	// DEMO MODES
+	if (0) { // English demo for Paraguay usage.
+		style = PARAGUAY; lcode = 'en-US';
+		enabledCustomerLangs.splice(0,4,'en-US','es-PY');
+		defaultCustomerLang = 'en-US';
+//		enabledVendorCurrencies.splice(0,4,'₿','₲');
+		enabledCustomerCurrencies.splice(0,4,'₿','₲');
+		enabledPaymentMethods.splice(0,4,'₲','₿');
+		enabledCashbackOptions['₲'].splice(0,4);
+		enabledCashbackOptions['₿'].splice(0,4,'₲');
+//		defaultVendorCurrency = '₲';
+		defaultCustomerCurrency = '₲';
+		vendorColors = new DefaultDarkTheme();
+		customerColors = new DefaultLightTheme();
+	}
+	if (0) { // Spanish demo for Paraguay usage.
 		style = PARAGUAY; lcode = 'es-PY';
-		enabledVendorCurrencies.splice(0,4,'₿','$');
-		enabledCustomerCurrencies.splice(0,4,'₿','$');
-		defaultVendorCurrency = '$';
-		defaultCustomerCurrency = '$';
+		enabledCustomerLangs.splice(0,4,'en-US','es-PY');
+		defaultCustomerLang = 'es-PY';
+//		enabledVendorCurrencies.splice(0,4,'₿','₲');
+		enabledCustomerCurrencies.splice(0,4,'₿','₲');
+		enabledPaymentMethods.splice(0,4,'₲','₿');
+		enabledCashbackOptions['₲'].splice(0,4);
+		enabledCashbackOptions['₿'].splice(0,4,'₲');
+//		defaultVendorCurrency = '₲';
+		defaultCustomerCurrency = '₲';
+		vendorColors = new DefaultDarkTheme();
+		customerColors = new DefaultLightTheme();
 	}
 	if (0) { // EUR
 		style = GENERIC; lcode = 'en-US';
-		enabledVendorCurrencies.splice(0,4,'₿','€');
+//		enabledVendorCurrencies.splice(0,4,'₿','€');
 		enabledCustomerCurrencies.splice(0,4,'₿','€');
-		defaultVendorCurrency = '€';
+//		defaultVendorCurrency = '€';
 		defaultCustomerCurrency = '€';
 	}
 	if (0) { // USD
 		style = GENERIC; lcode = 'en-US';
-		enabledVendorCurrencies.splice(0,4,'$');
+//		enabledVendorCurrencies.splice(0,4,'$');
 		enabledCustomerCurrencies.splice(0,4,'$');
-		defaultVendorCurrency = '$';
+//		defaultVendorCurrency = '$';
 		defaultCustomerCurrency = '$';
 	}
 
-	conversionRates = {};
+	const conversionRates = {};
 	conversionRates['₿'] = {
 		'₿': 1.0, // calculated in sats
 		'₲': 1.5 + Math.random(),
@@ -91,6 +129,4 @@
 		return style == PARAGUAY? s * 2: s / 3600;
 	}
 
-	console.log(enabledVendorCurrencies, enabledCustomerCurrencies, enabledCustomerLangs);
-
-
+	const config = new Configuration();

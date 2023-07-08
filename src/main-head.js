@@ -1,3 +1,9 @@
+// Top of module
+
+var defaultFont, iconFont, dotMatrixFont, financeGraphicsFont;
+var clickTapActive = ['begin-click','recover-click','begin-tap'];
+var lang_db = {};
+
 function main() {
 	const canvas = document.querySelector('#app1');
 	vp.initialize(canvas,
@@ -11,7 +17,7 @@ function main() {
 	df.glSet(gl);
 	defaultFont.init();
 	iconFont.init();
+	dotMatrixFont.init();
 
-  clickTapActive = ['begin-click','recover-click','begin-tap'];
 
 	var v, g;

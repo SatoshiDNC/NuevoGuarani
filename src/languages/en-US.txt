@@ -1,16 +1,83 @@
+₿	Bitcoin
+€	Euro
+₲	Guaraní
+$	Dollar
+de-DE	German
+en-US	English
+es-PY	Spanish
+gn-PY	Guaraní
+account	Account
+account name:	Account name:
 about @	about @
+add new	Add new
+all data has been deleted and/or reset to installation defaults	All data has been deleted and/or reset to installation defaults.
+API auth token	API auth token
+API bearer token	API bearer token
+are you sure?	Are you sure?
+base URL	Base URL
 bill	INVOICE
-pay	PAYMENT
-item	ITEM
-tax	TAX
-currency	CURRENCY
-price	PRICE
-qty	QTY
-subtotal	SUBTOTAL
-language	LANGUAGE
-en-US	ENGLISH
-es-PY	SPANISH
-gn-PY	GUARANÍ
-de-DE	GERMAN
-Customer Bill	CUSTOMER BILL
+camera selection	Camera selection
+cash	CASH
+cash back amount	AMOUNT
+cash register number	cash reg
+cashier	cashier
+coinos compatible	Coinos compatible
+colors	colors
+confirm	CONFIRM
+currency	Currency
+currencies	Currencies
+customer bill	Customer Bill
+danger zone	Danger zone
+dark/light mode	Dark/light mode
+dark mode	Dark mode
+date	date
+default vendor currency	Currency for pricing items
+delete '@'?	Delete '@'?
+delete all data	Delete all data for all accounts
+delete data	Delete data
 Discard this invoice?	Discard this invoice?
+enabled currencies	Enabled currencies
+enabled payment methods	Enabled payment methods
+external	External
+financial	financial
+How would you like to pay?	How would you like to pay?
+instant	INSTANT
+invoice details	invoice details
+invoice number	invoice #
+invoice subtotal	subtotal
+item	ITEM
+language	Language
+layout	Layout
+license number	license #
+light mode	Light mode
+lnbc item description	PAYMENT OF LIGHNING INVOICE
+my business	My Business
+new account	New account
+no	NO
+not set	Not set
+payment	PAYMENT
+payment method	Payment method
+payment methods	Payment methods
+plain	plain
+price	PRICE
+pricing	Pricing
+QR code and barcode scanning	QR code and barcode scanning
+qty	QTY
+receipt	receipt
+rename	Rename
+set API key	Set API key
+settings	Settings
+strike compatible	Strike compatible
+subtotal	SUBTOTAL
+switch account	Switch account
+tax	tax
+tax included	tax included
+terms of sale	terms of sale
+textures	textures
+theme	Theme
+themes	Themes
+valid from	valid from
+valid till	valid till
+wallet	Wallet
+Would you like cash back?	Would you like cash back?
+Would you like money back?	Would you like money back?

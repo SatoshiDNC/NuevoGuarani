@@ -16,7 +16,7 @@ clean:
 	@-rm -f all.js
 
 # Textbook subdirectory recursion
-#SUBDIRS = tbd # ADD DIRS AS NEEDED
+#SUBDIRS = $(wildcard */)
 #.PHONY: subdirs $(SUBDIRS)
 #subdirs: $(SUBDIRS)
 #$(SUBDIRS):

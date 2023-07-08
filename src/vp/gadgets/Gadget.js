@@ -50,8 +50,8 @@
         rxy[1] = (hitList.y - v.y - this.y / ss);
         var inv = mat4.create(); mat4.invert(inv, v.userMat);
         vec3.transformMat4(rxy, rxy, inv);
-        var rx = rxy[0] * ss, ry = rxy[1] * ss;
-        //var rx = (hitList.x - v.x - v.ox) * ss + v.userX - this.x - this.xo, ry = (hitList.y - v.y - v.oy) * ss + v.userY - this.y - this.yo;
+        //var rx = rxy[0] * ss, ry = rxy[1] * ss;
+        var rx = (hitList.x - v.x - v.ox) * ss + v.userX - this.x - this.xo, ry = (hitList.y - v.y - v.oy) * ss + v.userY - this.y - this.yo;
         if (rx < bb.x1 || rx >= bb.x2 || ry < bb.y1 || ry >= bb.y2) return;
 
         // extended hull check

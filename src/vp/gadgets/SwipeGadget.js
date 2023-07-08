@@ -4,27 +4,32 @@ class SwipeGadget extends Gadget {
 		this.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 		this.flingFar = false;
 		this.followUp = false; this.animState = '';
-		this.doSwipe = function(next) {
-console.log('doSwipe()');
-			var v = this.viewport;
-			if (this.actionFlags & vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN) {
-				v.tempVX = next? -0.001: 0.001;
-				v.tempVY = 0;
-				v.userX = v.userX - v.tempVX;
-			} else {
+		this.doSwipe = function(next, snapIndex = undefined) {
+			var g = this, v = g.viewport;
+			var index; if (snapIndex !== undefined) index = clamp(snapIndex, 0, v.snaps.length);
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
 				v.tempVX = 0;
 				v.tempVY = next? -0.001: 0.001;
 				v.userY = v.userY - v.tempVY;
 			}
-			this.followUp = false;
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+				v.tempVX = next? -0.001: 0.001;
+				v.tempVY = 0;
+				v.userX = v.userX - v.tempVX;
+			}
+			g.followUp = false;
 			v.relayout();
 			v.setRenderFlag(true);
-			this.swipeEndFunc();
+			g.swipeEndFunc(undefined, snapIndex !== undefined? v.snaps[index] : undefined);
 		}
 		this.swipeBeginFunc = function(p) {
-			var v = this.viewport, s = v.getScale();
-			this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
-			this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
+			var g = this, v = g.viewport, s = v.getScale();
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
+				this.tempY = (p.oy - v.y - v.oy)/s + v.userY;
+			}
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+				this.tempX = (p.ox - v.x - v.ox)/s + v.userX;
+			}
 			this.followUp = false;
 		}
 		this.swipeMoveFunc = function(p) {
@@ -32,6 +37,8 @@ console.log('doSwipe()');
 			var v = this.viewport, s = v.getScale(), dx=0, dy=0, k=1, m=1;
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
+			if (this.maxX) maxX = Math.min(maxX, this.maxX - v.sw);
+			if (this.maxY) maxY = Math.min(maxY, this.maxY - v.sh);
 			switch (this.actionFlags & vp.GAF_SWIPEABLE) {
 			case vp.GAF_SWIPEABLE_UPDOWN:
 				dy = (p.y - v.y - v.oy)/s + v.userY - this.tempY;
@@ -62,7 +69,7 @@ console.log('doSwipe()');
 			v.relayout();
 			v.setRenderFlag(true);
 		}
-		this.swipeEndFunc = function(p) {
+		this.swipeEndFunc = function(p, restingPoint) {
 			var g = this, v = g.viewport;
 			function calcRestingPoint(o, r) {
 				var s = v.getScale(), x = o[0], y = o[1], dx = r[0], dy = r[1], m, n;
@@ -141,7 +148,7 @@ console.log('doSwipe()');
 				else
 					xy = calcNextPoint([v.userX, v.userY], [v.tempVX, v.tempVY], v.snaps);
 				var nxy = findNearest(xy, v.snaps);
-				this.targetRest = nxy;
+				this.targetRest = restingPoint? restingPoint : nxy;
 				//if (nxy[0] < v.userX) v.whenLessX = true; else v.whenLessX = false;
 				//if (nxy[1] < v.userY) v.whenLessY = true; else v.whenLessY = false;
 				if (nxy[0] < v.userX && v.tempVX > 0) this.animState = 'accel';
@@ -150,13 +157,13 @@ console.log('doSwipe()');
 				if (nxy[1] > v.userY && v.tempVY < 0) this.animState = 'accel';
 			}
 			v.origVX = v.tempVX;
-			v.origVY = v.tempVY;
 			v.newX = v.userX;
+			v.origVY = v.tempVY;
 			v.newY = v.userY;
       v.magOrig = Math.sqrt(v.tempVX * v.tempVX + v.tempVY * v.tempVY);
       v.magCur = v.magOrig;
 			this.followUp = true;
-			this.viewport.requeueLayout();
+			this.viewport.queueLayout();
 		}
 		this.followUpFunc = function() {
 			if (!this.followUp) return;
@@ -171,7 +178,7 @@ console.log('doSwipe()');
 			default:
 				g.followUp = false;
 			}
-			v.requeueLayout();
+			v.queueLayout();
 		}
 		this.coast = function(accel) {
 			var g = this, v = g.viewport;
@@ -179,6 +186,8 @@ console.log('doSwipe()');
       var s = a.getScale();
 			var minX = v.minX, maxX = Math.max(v.maxX - v.sw, minX);
 			var minY = v.minY, maxY = Math.max(v.maxY - v.sh, minY);
+			if (this.maxX) maxX = Math.min(maxX, this.maxX - v.sw);
+			if (this.maxY) maxY = Math.min(maxY, this.maxY - v.sh);
       var newX = v.newX - (v.tempVX * 1000/30 / s /*- fx*/);
       var newY = v.newY - (v.tempVY * 1000/30 / s /*- fy*/);
 			if (g.targetRest && (accel || g.inflect)) {
@@ -188,15 +197,23 @@ console.log('doSwipe()');
 					delete v.tempVX; delete v.tempVY;
 					delete v.origVX; delete v.origVY;
 					delete v.magOrig; delete v.magCur;
-					v.userX = g.targetRest[0];
-					v.userY = g.targetRest[1];
+					if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+						v.userX = g.targetRest[0];
+					}
+					if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
+						v.userY = g.targetRest[1];
+					}
 					return true;
 				}
 			}
 			v.newX = newX;
 			v.newY = newY;
-			v.userX = clamp(newX, minX, maxX);
-			v.userY = clamp(newY, minY, maxY);
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+				v.userX = clamp(newX, minX, maxX);
+			}
+			if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
+				v.userY = clamp(newY, minY, maxY);
+			}
 			var magCur = accel ? v.magCur + 0.1 : v.magCur - 0.1;
 			if (g.animState == 'decel' && Math.sign(magCur) != Math.sign(v.magCur)) {
 				if (g.targetRest) {
@@ -217,14 +234,22 @@ console.log('doSwipe()');
 	}
 	layout() {
 		var g=this, v=g.viewport;
+		if (v.maxX - v.minX <= 0
+		||  v.maxY - v.minY <= 0
+		||  v.sw <= 0 || v.sh <= 0)
+			return;
 		g.convexHull = g.computeHull([
 			Math.min(v.minX, 0), Math.min(v.minY, 0),
 			Math.min(v.minX, 0), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.max(v.maxY, v.sh),
 			Math.max(v.maxX, v.sw), Math.min(v.minY, 0)]);
 		g.extendedHulls = {}; g.boundingBoxes = {};
-		v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
-		v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
+		if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
+			v.userX = clamp(v.userX, v.minX, Math.max(v.maxX - v.sw, v.minX));
+		}
+		if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
+			v.userY = clamp(v.userY, v.minY, Math.max(v.maxY - v.sh, v.minY));
+		}
 		if (g.followUp && g.followUpFunc) g.followUpFunc.call(g);
 	}
 }

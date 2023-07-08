@@ -1,16 +1,83 @@
+₿	BTC/LN
+€	Euro
+₲	Guaraní
+$	Dollar
+de-DE	Deutsch
+en-US	Englisch
+es-PY	Spanisch
+gn-PY	Guaraní
+account	Konto
+account name:	Name des Kontos:
 about @	etwa @
+add new	Neu hinzufügen
+all data has been deleted and/or reset to installation defaults	Alle Daten wurden gelöscht und/oder auf die Standardeinstellungen der Installation zurückgesetzt.
+API auth token	API-Authentifizierungs-Token
+API bearer token	API-Authentifizierungs-Token
+are you sure?	Sind Sie sicher?
+base URL	Basis-URL
 bill	RECHNUNG
-pay	ZAHLUNG
-item	ARTIKEL
-tax	STEUER
-currency	WÄHRUNG
-price	PREIS
-qty	QUANT.	QUANTITÄT
-subtotal	ZWISCHENSUMME
-language	SPRACHE
-en-US	ENGLISCH
-es-PY	SPANISCH
-gn-PY	GUARANÍ
-de-DE	DEUTSCH
-Customer Bill	KUNDENRECHNUNG
+camera selection	Auswahl der Kamera
+cash	BARGELD
+cash back amount	BETRÄGE
+cash register number	Kassennummer
+cashier	Kassierer
+coinos compatible	Coinos-kompatibel
+colors	Farben
+confirm	BESTÄTIGEN
+currency	Währung
+currencies	Währungen
+customer bill	Kundenrechnung
+danger zone	Gefahrenzone
+dark/light mode	Dunkel-/Hellmodus
+dark mode	Dunkelmodus
+date	Datum
+default vendor currency	Währung für die Preisgestaltung der Artikel
+delete '@'?	'@' löschen?
+delete all data	Alle Daten für alle Konten löschen
+delete data	Daten löschen
 Discard this invoice?	Diese Rechnung verwerfen?
+enabled currencies	Aktivierte Währungen
+enabled payment methods	Aktivierte Zahlungsarten
+external	Extern
+financial	finanzielle
+How would you like to pay?	Wie möchten Sie bezahlen?
+instant	DIREKT
+invoice details	Rechnungsdaten
+invoice number	Rechnungsnummer
+invoice subtotal	Rechnungszwischensumme
+item	ARTIKEL
+language	Sprache
+layout	Gestaltung
+license number	Lizenznummer
+light mode	Hellmodus
+lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
+my business	Mein Geschäft
+new account	Neues Konto
+no	NEIN
+not set	Nicht eingestellt
+payment	ZAHLUNG
+payment method	Zahlungsart
+payment methods	Zahlungsverfahren
+plain	einfach
+price	PREIS
+pricing	Preisgestaltung
+QR code and barcode scanning	QR-Code und Barcode-Scannen
+qty	QUANT.	QUANTITÄT
+receipt	Rechnung
+rename	Umbenennen
+set API key	API-Schlüssel einstellen
+settings	Einstellungen
+strike compatible	Strike-kompatibel
+subtotal	ZWISCHENSUMME
+switch account	Konto wechseln
+tax	Steuer
+tax included	Steuer inbegriffen
+terms of sale	Verkaufsbedingungen
+textures	Texturen
+theme	Theme
+themes	Themen
+valid from	gültig ab
+valid till	gültig bis
+wallet	Geldbeutel
+Would you like cash back?	Möchten Sie Bargeld zurückerhalten?
+Would you like money back?	Möchten Sie Bargeld zurückerhalten?

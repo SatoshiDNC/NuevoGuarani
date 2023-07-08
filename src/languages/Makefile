@@ -11,7 +11,7 @@ all.js: $(JS)
 	cat $(JS) > all.js
 
 $(JS): %.js: %.txt
-	echo "window['main']['$(patsubst %.txt,%,$<)'] = {" > $@
+	echo "lang_db['$(patsubst %.txt,%,$<)'] = {" > $@
 	cat $< \
 		| sed 's/^\([^\t]*\)\t\([^\t]*\)\t.*$$/\1\t\2/' \
 		| sed 's/"/\\"/' \
@@ -26,7 +26,7 @@ clean:
 	@-rm -f all.js $(JS)
 
 # Textbook subdirectory recursion
-#SUBDIRS = tbd # ADD DIRS AS NEEDED
+#SUBDIRS = $(wildcard */)
 #.PHONY: subdirs $(SUBDIRS)
 #subdirs: $(SUBDIRS)
 #$(SUBDIRS):

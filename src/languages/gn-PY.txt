@@ -1,16 +1,83 @@
+₿	Guaraní pyahu
+€	Euro
+₲	Guaraní
+$	Dólar
+de-DE	Alemán
+en-US	Inglés
+es-PY	Español
+gn-PY	Guaraní
+	account	Cuenta
+	account name:	Nombre de la cuenta:
 about @	@ rupi
+	add new	Añadir nuevo
+	all data has been deleted and/or reset to installation defaults	Se han borrado todos los datos y/o se han restablecido los valores predeterminados de instalación.
+	API auth token	Token de autenticación API
+	API bearer token	Token de autenticación API
+	are you sure?	¿Está seguro?
+	base URL	URL básica
 bill	ÑEMUMBYREHAI
-pay	HEPYME'Ẽ
-item	MBA'E
-tax	IVA
-currency	VIRU
-price	HEPYKUE
-qty	HETAKUE
-subtotal	OPAITE
-language	ÑE'Ẽ
-en-US	INGLÉS
-es-PY	ESPAÑOL
-gn-PY	GUARANÍ
-de-DE	ALEMÁN
-Customer Bill	FACTURA CLIENTE
+	camera selection	Selección de cámara
+cash	VIRUETE
+cash back amount	MONTO EFECTIVO REHEGUA
+	cash register number	caja na
+	cashier	cajero
+	coinos compatible	Compatible con coinos
+	colors	colores
+confirm	OMOAÑETE
+currency	Viru
+	currencies	Monedas
+customer bill	Factura cliente
+	danger zone	Zona de peligro
+	dark/light mode	Modo oscuro/claro
+	dark mode	Modo oscuro
+	date	fecha
+	default vendor currency	Moneda para la fijación de precios
+	delete '@'?	¿Borrar '@'?
+	delete all data	Borrar todos los datos de todas las cuentas
+	delete data	Borrar datos
 Discard this invoice?	¿Emboyke ko factura?
+	enabled currencies	Monedas habilitadas
+	enabled payment methods	Métodos de pago habilitados
+	external	Exterior
+	financial	financiero
+How would you like to pay?	¿Mba'éichapa repagase?
+instant	KO'AG̃AITE
+	invoice details	factura contado
+	invoice number	factura na
+	invoice subtotal	importe total
+item	MBA'E
+	language	ÑE'Ẽ
+	layout	Presentación
+	license number	timbrado na
+	light mode	Modo claro
+lnbc item description	HEPYME'Ẽ FACTURA GUARANÍ PYAHU
+	my business	Mi negocio
+	new account	Nueva cuenta
+no	NO
+	not set	No configurado
+payment	HEPYME'Ẽ
+payment method	AMBUÉICHA TEPYME'Ẽ
+	payment methods	Formas de pagos
+	plain	simple
+price	HEPYKUE
+	pricing	Fijación de precios
+	QR code and barcode scanning	Escaneado de códigos QR y códigos de barras
+qty	HETAKUE
+	receipt	ticket
+	rename	Cambiar nombre
+	set API key	Establecer clave API
+	settings	Ajustes
+	strike compatible	Compatible con strike
+subtotal	OPAITE
+	switch account	Cambiar de cuenta
+tax	IVA
+	tax included	IVA incluido
+	terms of sale	condición de venta contado
+	textures	texturas
+	theme	Tema
+	themes	Temas
+	valid from	valido desde
+	valid till	valido hasta
+	wallet	Monedero
+Would you like cash back?	¿Reipotápa jey nde pláta?
+Would you like money back?	¿Reipotápa jey nde pláta?

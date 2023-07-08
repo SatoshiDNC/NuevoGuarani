@@ -8,6 +8,10 @@ class SliceView extends View {
 		this.a = undefined; this.b = undefined;
 		this.prevTime = 0;
 		this.wideState = ''; this.tallState = '';
+
+		// Sanity checks.
+		if (!['t','l','r','b','tl','tr','bl','br'].includes(this.type))
+			console.error("Warning: Invalid 'type' for SliceView.");
 	}
 	layoutAll(s) {
 		super.layoutAll(s);

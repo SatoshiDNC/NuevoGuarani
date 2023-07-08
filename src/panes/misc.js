@@ -33,7 +33,7 @@
     const mat = mat4.create();
     for (const g of this.gadgets) {
       var h = g.convexHull;
-      for (p = 0; p < h.length; p += 2) {
+      for (var p = 0; p < h.length; p += 2) {
       mat4.identity(mat);
       mat4.translate(mat, mat, [h[p+0]+g.x, h[p+1]+g.y, 0]);
       mat4.scale(mat, mat, [h[(p+2)%h.length]-h[p+0], h[(p+3)%h.length]-h[p+1], 0]);

@@ -32,14 +32,16 @@ v.c = vendorcustomerdiv; vendorcustomerdiv.parent = v;
 v.ratioMin['v'] = 0.25;
 v.ratioMax['v'] = 0.75;
 v.layoutFunc = function() {
-	var v = this, h = v.h/v.getScale();
-	inflection1 = (v.w/240*49 + v.w/customertitlebar.neededWidth*20) / v.h;
-  if (v.state == 'h' && v.ratio < inflection1) {
-		v.a = customermain; customermain.parent = v;
-		customerpane.parent = undefined;
-	} else {
-		v.a = customerpane; customerpane.parent = v;
-		customermain.parent = customerpane;
+	const v = this, h = v.h/v.getScale();
+	if (v.a === customerpane || v.a === customermain) {
+		const inflection1 = (v.w/240*49 + v.w/customertitlebar.neededWidth*20) / v.h;
+		if (v.state == 'h' && v.ratio < inflection1) {
+			v.a = customermain; customermain.parent = v;
+			customerpane.parent = undefined;
+		} else {
+			v.a = customerpane; customerpane.parent = v;
+			customermain.parent = customerpane;
+		}
 	}
 }
 v.layoutEndFunc = function() {

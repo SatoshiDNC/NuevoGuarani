@@ -6,6 +6,8 @@
 AUTOGEN_FILES = \
 	defaultFont.js \
 	iconFont.js \
+	dotMatrixFont.js \
+	financeGraphicsFont.js \
 
 all.js: $(AUTOGEN_FILES)
 	cat $(AUTOGEN_FILES) > all.js
@@ -30,6 +32,26 @@ iconFont.js: icon.font.png
 		>> $(ICONFONT_OUTFILE)
 	echo "  );" >> $(ICONFONT_OUTFILE)
 
+DOTMATRIXFONT_OUTFILE = dotMatrixFont.js
+dotMatrixFont.js: dot-matrix.font.png
+	echo "  dotMatrixFont = new df.GlyphSet();" > $(DOTMATRIXFONT_OUTFILE)
+	echo "  dotMatrixFont.loadFromURL(" >> $(DOTMATRIXFONT_OUTFILE)
+	echo "    \"dotMatrixFont\"," >> $(DOTMATRIXFONT_OUTFILE)
+	echo "    loadCheck," >> $(DOTMATRIXFONT_OUTFILE)
+	echo "    \"data:application/octet-stream;base64,`cat dot-matrix.font.png | base64 | tr -d '\r\n'`\"," \
+		>> $(DOTMATRIXFONT_OUTFILE)
+	echo "  );" >> $(DOTMATRIXFONT_OUTFILE)
+
+FINANCEGRAPHICS_OUTFILE = financeGraphicsFont.js
+financeGraphicsFont.js: finance-theme.font.png
+	echo "  financeGraphicsFont = new df.GlyphSet();" > $(FINANCEGRAPHICS_OUTFILE)
+	echo "  financeGraphicsFont.loadFromURL(" >> $(FINANCEGRAPHICS_OUTFILE)
+	echo "    \"financeGraphicsFont\"," >> $(FINANCEGRAPHICS_OUTFILE)
+	echo "    loadCheck," >> $(FINANCEGRAPHICS_OUTFILE)
+	echo "    \"data:application/octet-stream;base64,`cat finance-theme.font.png | base64 | tr -d '\r\n'`\"," \
+		>> $(FINANCEGRAPHICS_OUTFILE)
+	echo "  );" >> $(FINANCEGRAPHICS_OUTFILE)
+
 # Clean files from subdirs and this dir
 .PHONY: clean
 clean:
@@ -37,7 +59,7 @@ clean:
 	@-rm -f all.js $(AUTOGEN_FILES)
 
 # Textbook subdirectory recursion
-#SUBDIRS = tbd # ADD DIRS AS NEEDED
+#SUBDIRS = $(wildcard */)
 #.PHONY: subdirs $(SUBDIRS)
 #subdirs: $(SUBDIRS)
 #$(SUBDIRS):

@@ -3,6 +3,8 @@ all: subdirs all.js # Textbook subdirectory recursion
 FILES = \
 	startpane.js \
 	invoice/all.js \
+	payment/all.js \
+	settings/all.js \
 	misc.js \
 	allblack.js \
 	menudiv.js \
@@ -14,10 +16,12 @@ all.js: $(FILES)
 .PHONY: clean
 clean:
 	@$(MAKE) -sC invoice clean # ADD DIRS AS NEEDED
+	@$(MAKE) -sC payment clean # ADD DIRS AS NEEDED
+	@$(MAKE) -sC settings clean # ADD DIRS AS NEEDED
 	@-rm -f all.js
 
 # Textbook subdirectory recursion
-SUBDIRS = invoice # ADD DIRS AS NEEDED
+SUBDIRS = $(wildcard */)
 .PHONY: subdirs $(SUBDIRS)
 subdirs: $(SUBDIRS)
 $(SUBDIRS):

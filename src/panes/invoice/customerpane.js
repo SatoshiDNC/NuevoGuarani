@@ -13,7 +13,7 @@ v.gadgets.push(v.language = g = new vp.Gadget(v));
 		if (i >= enabledCustomerLangs.length) i = 0;
 		g.lang = enabledCustomerLangs[i];
 		g.viewport.label += ' ';
-		customertitlebar.requeueLayout();
+		customertitlebar.queueLayout();
 		customerpane.setRenderFlag(true);
 	}
 v.skipUpdate = false;
@@ -25,7 +25,7 @@ v.layoutFunc = function() {
 		v.neededWidth = defaultFont.calcWidth(v.label)+8;
 		v.designWidth = v.neededWidth;
 		customerpane.sizeH = customerpane.sizeV = 18/v.neededWidth;
-		customerpane.requeueLayout();
+		customerpane.queueLayout();
 		v.skipUpdate = true;
 	}
 	var g = v.language;
@@ -82,7 +82,7 @@ v.gadgets.push(v.currency = g = new vp.Gadget(v));
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w/36, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
-		c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
+		const c = (g.icon == '₿') ? th.uiPillOrange : th.uiFiatGreen;
 		iconFont.draw(0,0, g.icon, sel?th.uiButtonSel:c, g.viewport.mat, mat);
 		if (g.icon == '₿') {
 			iconFont.draw(0,0, '🗲',

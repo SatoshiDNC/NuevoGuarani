@@ -1,7 +1,24 @@
   function setDebugFlags(debug, cont) { showdebug=!!debug; continuous=!!cont; }
-  function beep() {
-		if (beepSound) beepSound.setValueAtTime(1, ac.currentTime);
-		if (beepSound) beepSound.setValueAtTime(0, ac.currentTime+0.1);
+  function beep(type = '') {
+		if (!beepSound) return;
+		switch (type) {
+		case 'qr-scan':
+			beepSound.setValueAtTime(2, ac.currentTime);
+			beepSound.setValueAtTime(3, ac.currentTime+0.05);
+			beepSound.setValueAtTime(0, ac.currentTime+0.1);
+			break;
+		case 'qr-part':
+			beepSound.setValueAtTime(2, ac.currentTime);
+			beepSound.setValueAtTime(0, ac.currentTime+0.05);
+			break;
+		case 'click':
+			clickSound.setValueAtTime(0.1, ac.currentTime);
+			clickSound.setValueAtTime(0, ac.currentTime+0.001);
+			break;
+		default:
+			beepSound.setValueAtTime(1, ac.currentTime);
+			beepSound.setValueAtTime(0, ac.currentTime+0.1);
+		}
 	};
 
   return {
@@ -14,6 +31,8 @@
 		getInputGad: getInputGad,
 		beginInput: beginInput,
 		endInput: endInput,
+		setImage: setImage,
+		drawImage: drawImage,
 		beep: beep,
     View: View,
     DividerView: DividerView,

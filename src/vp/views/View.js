@@ -12,7 +12,7 @@ class View {
     this.mat = mat4.create();
     this.needsRender = true; this.childRender = true;
   }
-	requeueLayout() {
+	queueLayout() {
 		if (layoutViews.indexOf(this) === -1) layoutViews.push(this);
 	}
   insideFit(w,h) { this.viewScale = (this.w/w < this.h/h)? this.w/w: this.h/h; }
@@ -47,6 +47,9 @@ this.viewScale = 1;
     mat4.translate(this.mat, this.mat, [this.ox, this.oy, 0]);
     mat4.scale(this.mat, this.mat, [this.viewScale, this.viewScale, 1]);
     mat4.translate(this.mat, this.mat, [-this.userX, -this.userY, 0]);
+  }
+  getRawMatrix() {
+		return pixelPM;
   }
   relayout() {
     var s = new LayoutState();
