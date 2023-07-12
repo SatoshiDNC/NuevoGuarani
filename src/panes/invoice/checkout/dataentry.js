@@ -38,10 +38,111 @@ function getDefaultsByBarcode(barcode, found, notfound) {
 */
 }
 
+function readInvoiceBuiltIn(invoice) {
+//	console.group('readInvoiceBuiltIn()');
+	const getDetails = async () => {
+		const desc = 'lightning invoice';
+		var msats = 'some';
+		{
+			var temp = invoice.substr(4,20);
+			var digs = '';
+			while (temp != '' && "0123456789".includes(temp.substr(0,1))) {
+				digs = digs + temp.substr(0,1);
+				temp = temp.substr(1);
+			}
+			if (digs != '' && temp != '') {
+				var n = +digs;
+				switch (temp.substr(0,1)) {
+				case 'm': msats = Math.round(n*(0.001*100000000*1000)); break;
+				case 'u': msats = Math.round(n*(0.000001*100000000*1000)); break;
+				case 'n': msats = Math.round(n*(0.000000001*100000000*1000)); break;
+				case 'p': msats = Math.round(n*(0.000000000001*100000000*1000)); break;
+				default:
+				}
+			}
+		}
+		if (!dataentry.readInvoiceCanceled) {
+			{
+				var temp = tr('pay {AMNT} sats for {DESC}');
+				temp = temp.replace('{AMNT}', isNumber(msats)? Math.round(msats/1000).toString(): tr(msats) );
+				temp = temp.replace('{DESC}', tr(desc));
+				temp = icap(temp);
+				dataentry.item.text = temp;
+			}
+			if (isNumber(msats)) dataentry.unitprice.text = Math.round(cconv(msats/1000, '₿', dataentry.unitprice.currency)).toString();
+			dataentry.qty.text = "1";
+			dataentry.taxrate.text = "0";
+			vp.beep();
+			dataentry.setRenderFlag(true);
+		}
+	}
+	getDetails();
+//	console.groupEnd();
+}
+function readLNbitsInvoice(invoice) {
+	const getDetails = async () => {
+		console.group('getDetails()');
+/*
+		const response = await fetch(config.walletLNbitsURL+'/payments/decode', {
+			method: 'POST',
+			headers: {
+			  'Accept': 'application/json',
+			  'Content-Type': 'application/json',
+			  'X-API-KEY': config.walletLNbitsKey,
+			},
+			body: `{"data": "`+ invoice +`"}`,
+		});
+		const myJson = await response.json(); //extract JSON from the http response
+*/
+		const myJson = { payment_hash: "a37ea5ff05f41891262720e0567e9442f9463c6d12c59ded5cfca8a406c50522", amount_msat: 123000, description: "my business", description_hash: null, payee: "022bd0aa893db4ac890e457cca8c83f112518d6941bf9153dab4bf904620503a78", date: 1688946937, expiry: 600, secret: "11fa0043a6da2fc6873e28903a9e00e6e86a1f93cf432382f1c41249de5213f4", route_hints: [], min_final_cltv_expiry: 18 }; //	lnbc1230n1pj2kj8esp5z8aqqsaxmghudpe79zgr48squm5x58uneapj8qh3csfynhjjz06qpp55dl2tlc97svfzf38yrs9vl55gtu5v0rdztzemm2ulj52gpk9q53qdqjd4ujqcn4wd5kuetnwvxqzjccqpjrzjqgp7tvtwh6rmpz0j9cv82tcl0fn2r00h0pualrgun6xeztdlhxltgzm59cqq8zcqqyqqqqlgqqqqn3qqvs9qyysgqv0tg90xhcddfk2w2s9pd0c9jrm9znvxujn5w8kunlzcp74yfrqjpnkc9pfqzqjemsrmn4s2lupyfkmhwn3eu58lvl3vfckvyrugv77cqyutv6g
+		// do something with myJson
+		console.log('myJson', myJson);
+		const desc = myJson.description;
+		const date = myJson.date;
+		const msats = myJson.amount_msat;
+		if (!dataentry.readInvoiceCanceled) {
+			{
+				var temp = tr('pay {AMNT} sats for {DESC}');
+				temp = temp.replace('{AMNT}', Math.round(msats/1000).toString() );
+				temp = temp.replace('{DESC}', tr(desc));
+				temp = icap(temp);
+				dataentry.item.text = temp;
+			}
+			//dataentry.unitprice.icon = '₿';
+			//dataentry.unitprice.text = Math.round(msats/1000).toString();
+			dataentry.unitprice.text = Math.round(cconv(msats/1000, '₿', dataentry.unitprice.currency)).toString();
+			dataentry.qty.text = "1";
+			dataentry.taxrate.text = "0";
+			vp.beep();
+			dataentry.setRenderFlag(true);
+		}
+		console.groupEnd();
+	}
+	console.group('readLNbitsInvoice()');
+	//lightningqr.busySignal = true;
+	getDetails();
+	//genInv();
+	console.groupEnd();
+}
+function readInvoice(invoice) {
+	dataentry.readInvoiceCanceled = false;
+	dataentry.item.linkedInvoice = invoice;
+	switch (config.walletType) {
+	case 'manual': alert("You don't have a wallet linked, so lightning invoice details are unavailable."); readInvoiceBuiltIn(invoice); break;
+	case 'LNbits compatible': readLNbitsInvoice(invoice); break;
+	default: alert("Wallet configuration error");
+	}
+}
+
 var dataentry = v = new vp.View(null);
 v.name = Object.keys({dataentry}).pop();
 //v.designFit = [240,80];
 //v.designHeight = 80;
+v.changed = false;
+v.markChanged = function() {
+	dataentry.changed = true;
+	delete buttonbar.popGad.lastLoadedKey;
+}
 v.tryAddItem = function() {
 		var g = dataentry.taxrate, v = g.viewport;
 		if ((v.item.text.trim() != '' || v.unitprice.text.trim() != ''
@@ -64,40 +165,28 @@ v.tryAddItem = function() {
 				v.taxrate.text.trim());
 			if (dataentry.item.linkedBarcode && dataentry.item.linkedBarcode != '')
 				li.barcode = dataentry.item.linkedBarcode;
+			if (dataentry.item.linkedInvoice && dataentry.item.linkedInvoice != '')
+				li.invoicetopay = dataentry.item.linkedInvoice;
 			if (!li.isEmpty()) {
-				v.setConversionRates();
-/*
-				var req = db.transaction(["items"], "readwrite")
-				  .objectStore("items")
-					.add({
-						desc: li.item,
-						unitprice: li.unitprice,
-						taxrate: li.taxrate
-					});
-				req.onsuccess = (event) => {
-					console.log("success1", event);
-					if (li.barcode) {
-						console.log(event.target.result, li.barcode);
-						var req = db.transaction(["barcodes"], "readwrite")
-							.objectStore("barcodes")
-							.add(event.target.result, li.barcode);
-						req.onsuccess = (event) => {
-							console.log("success2", event);
-						};
-					}
-				};
-*/
+				if (invoicepane.invoiceitems.length == 0) setConversionRates();
 				invoicepane.invoiceitems.unshift(li);
 				delete checkoutpages.swipeGad.maxX;
 				invoicepane.setRenderFlag(true);
 				vendorpane.setRenderFlag(true);
 				v.clearDataEntry();
+				dataentry.markChanged();
 				dataentry.preCalculateQR();
 				vp.beginInput(v.item);
 			} else {
 				vp.endInput();
-				if (invoicepane.invoiceitems.length > 0)
+				if (invoicepane.invoiceitems.length > 0) {
+					if (invoicepane.countInvoicesToPay() > 0) {
+						checkoutpages.addPage(paypurchasedinvoices);
+					} else {
+						checkoutpages.remPage(paypurchasedinvoices);
+					}
 					checkoutpages.swipeGad.doSwipe(true);
+				}
 			}
 		}
 }
@@ -108,7 +197,7 @@ v.preCalculateQR = function() {
 'lnbc15u1p3xnhl2pp5jptserfk3zk4qy42tlucycrfwxhydvlemu9pqr93tuzlv9cc7g3sdqsvfhkcap3xyhx7un8cqzpgxqzjcsp5f8c52y2stc300gl6s4xswtjpc37hrnnr3c9wvtgjfuvqmpm35evq9qyyssqy4lgd8tj637qcjp05rdpxxykjenthxftej7a2zzmwrmrl70fyj9hvj0rewhzj7jfyuwkwcg9g2jpwtk3wkjtwnkdks84hsnu8xps5vsq4gj5hs'
 	);
 */
-	var r = new Receipt();
+	var r = invoicepane.receipt = new Receipt();
 	r.sequenceNum = config.lastInvoiceNum + 1;
 	//r.addVendorHeaders();
 
@@ -171,7 +260,7 @@ v.preCalculateQR = function() {
 	for (const li of invoicepane.invoiceitems) {
 		r.appendListItem(Receipt.LIST_ITEM, [
 			li.item, li.qty, li.unitprice, (li.unitprice * li.qty).toString(), li.taxrate]);
-		subtot += dataentry.cconv(li.unitprice * li.qty, li.currency, config.defaultCurrency);
+		subtot += cconv(li.unitprice * li.qty, li.currency, config.defaultCurrency);
 	}
 	r.append(Receipt.SEP+0.3, "", "-");
 	r.appendTabFmt(Receipt.TAB+0.2, 17, "---->", 17);
@@ -245,7 +334,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x + 2, g.y - 2, 0]);
 		mat4.scale(mat, mat, [0.5, 0.5, 1]);
-		defaultFont.draw(0,0, tr(g.label), th.uiTextLabel, v.mat, mat);
+		defaultFont.draw(0,0, cap(tr(g.label)), th.uiTextLabel, v.mat, mat);
 		
 		if (sel) {
 			useProg5();
@@ -300,6 +389,27 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 				mat4.translate(mat, mat, [-w, 0, 0]);
 				defaultFont.draw(0,0, g.linkedBarcode, th.uiTextLabel, v.mat, mat);
 			}
+			if (g.linkedInvoice && g.linkedInvoice != '') {
+				var hint = 'invoice';
+				var w = defaultFont.calcWidth(hint);
+/*
+				if (!g.linkedBarcodeFound) {
+					useProg5();
+					mat4.identity(mat);
+					mat4.translate(mat, mat, [g.x+g.w-w/2-3, g.y-10, 0]);
+					mat4.scale(mat, mat, [w/2+2, 9, 1]);
+					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
+					gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+						new Float32Array([1,0,0,1]));
+					gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+				}
+*/
+				mat4.identity(mat);
+				mat4.translate(mat, mat, [g.x + g.w - 2, g.y - 2, 0]);
+				mat4.scale(mat, mat, [0.5, 0.5, 1]);
+				mat4.translate(mat, mat, [-w, 0, 0]);
+				defaultFont.draw(0,0, hint, th.uiTextLabel, v.mat, mat);
+			}
 		} else if (g === v.unitprice) {
 			var s = v.unitprice.currency;
 			var c = (s == '₿')? th.uiLightningYellow : th.uiFiatGreen;
@@ -330,6 +440,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 				vp.beep('qr-scan');
 				g.linkedBarcode = '';
 				li.qty = "1";
+				if (invoicepane.invoiceitems.length == 0) setConversionRates();
 				invoicepane.invoiceitems.unshift(li);
 				invoicepane.setRenderFlag(true);
 			},
@@ -355,6 +466,7 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		this.viewport.setRenderFlag(true);
 	}
 	g.textFunc = function() {
+		dataentry.markChanged();
 		if (camerasettings.itemscan.state === true) {
 			if (this.text == '') {
 				this.startScanner(false);
@@ -368,6 +480,9 @@ v.gadgets.push(v.item = g = new vp.Gadget(v));
 		if (camerasettings.itemscan.state === true) {
 			this.stopScanner();
 			if (this.text.trim() == '') this.linkedBarcode = '';
+		}
+		if (this.text.trim().toLowerCase().startsWith('lnbc')) {
+			readInvoice(this.text.trim());
 		}
 		this.viewport.setRenderFlag(true);
 	}
@@ -418,11 +533,13 @@ v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
 	}
 	g.cycleCurrency = function() {
 		var g = this;
-		var i = config.enabledCurrencies.indexOf(g.icon);
+console.log('icon',g.icon, g.currency, config.defaultCurrency);
+		var i = config.enabledCurrencies.indexOf(g.currency);
 		i += 1;
 		if (i >= config.enabledCurrencies.length) i = 0;
 		g.icon = config.enabledCurrencies[i];
 //	g.currency = config.enabledCurrencies[i];
+		dataentry.markChanged();
 		dataentry.setRenderFlag(true);
 	}
 	g.specialKeys = ['*', '$'];
@@ -439,6 +556,7 @@ v.gadgets.push(v.unitprice = g = new vp.Gadget(v));
 		g.viewport.setRenderFlag(true);
 	}
 	g.textFunc = function() {
+		dataentry.markChanged();
 		this.viewport.setRenderFlag(true);
 	}
 	g.textEndFunc = function() {
@@ -487,6 +605,7 @@ v.gadgets.push(v.qty = g = new vp.Gadget(v));
 		g.viewport.setRenderFlag(true);
 	}
 	g.textFunc = function() {
+		dataentry.markChanged();
 		this.viewport.setRenderFlag(true);
 	}
 	g.textEndFunc = function() {
@@ -519,6 +638,7 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 		g.viewport.setRenderFlag(true);
 	}
 	g.textFunc = function() {
+		dataentry.markChanged();
 		this.viewport.setRenderFlag(true);
 	}
 	g.textEndFunc = function() {
@@ -526,14 +646,10 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 	}
 	g.textPrevFunc = function() { vp.beginInput(this.viewport.qty); }
 	g.textNextFunc = function() { dataentry.tryAddItem(); }
-v.setConversionRates = function() {
-	this.conv = JSON.parse(JSON.stringify(conversionRates));
-}
-v.cconv = function(a, f, t) {
-	return Math.ceil(a * this.conv[f][t]);
-}
 v.clearDataEntry = function() {
 	this.item.text = '';
+	this.item.linkedBarcode = '';
+	this.item.linkedInvoice = '';
 	this.unitprice.icon = config.defaultCurrency;
 	this.unitprice.text = '';
 	this.qty.text = '';
@@ -569,13 +685,14 @@ v.renderFunc = function(flip = false) {
 	}
 
 	if (this === dataentry) {
-		var e = (this.item.text != ''
+		var d = (this.item.text != ''
 					|| this.unitprice.text != ''
 					|| this.qty.text != ''
 					|| this.taxrate.text != ''
 					|| invoicepane.invoiceitems.length > 0);
-		if (e != buttonbar.trashGad.enabled) {
-			buttonbar.trashGad.enabled = e;
+		if (d != buttonbar.trashGad.enabled || (d && dataentry.changed) != buttonbar.pushGad.enabled) {
+			buttonbar.trashGad.enabled = d;
+			buttonbar.pushGad.enabled = d && dataentry.changed;
 			buttonbar.setRenderFlag(true);
 		}
 	}

@@ -49,3 +49,17 @@ v.layoutEndFunc = function() {
 	v.ratioMin['h'] = (v.w/240*49) / v.h;
 	v.ratioMax['h'] = (v.h - v.w/400*50 - v.w/240*90) / v.h;
 }
+v.countInvoicesToPay = function() {
+	var n = 0;
+	for (const li of this.invoiceitems) {
+		if (li.invoicetopay) n++;
+	}
+	return n;
+}
+v.getSubtotal = function() {
+	var subtot = 0;
+	for (const li of this.invoiceitems) {
+		subtot += cconv(li.unitprice * li.qty, li.currency, config.defaultCurrency);
+	}
+	return subtot;
+}

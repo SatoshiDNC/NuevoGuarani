@@ -35,4 +35,11 @@ class Configuration {
 		var g = colorsettings.texturelist;
 		try { return g.list[g.index].scale; } catch (e) {}
 	}
+	get walletType() { try { return wallettypes[walletsettings.typelist.index]; } catch (e) {} }
+	get walletLNbitsURL() { try { return walletsettings.lnbitsurl.value; } catch (e) {} }
+	get walletLNbitsKey() { try { return walletsettings.lnbitskey.value; } catch (e) {} }
+	get walletStrikeURL() { try { return walletsettings.strikeurl.value; } catch (e) {} }
+	get walletStrikeKey() { try { return walletsettings.strikekey.value; } catch (e) {} }
+	get walletCoinosURL() { try { return walletsettings.coinosurl.value; } catch (e) {} }
+	get walletCoinosKey() { try { return walletsettings.coinoskey.value; } catch (e) {} }
 }

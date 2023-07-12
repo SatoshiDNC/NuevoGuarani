@@ -70,7 +70,7 @@ v.subOptionClickFunc = function(pane) {
 }
 v.listClickFunc = function(p) {
 	const g = this, v = g.viewport;
-	const y = (p.y - v.y) / v.getScale();
+	const y = (p.y - v.y) / v.getScale() + v.userY;
 	const index = Math.min(Math.max(Math.floor((y - g.y) / 50), 0),
 		g.list.length-(g.canAdd?0:1));
 	if (g.canAdd && index == g.list.length)
@@ -101,7 +101,7 @@ v.renderFunc = function() {
 	mat4.scale(mat,mat, [1.5,1.5,1]);
 	var str = settingspages.pages[settingspages.index].title;
 	if (str) {
-		str = tr(str);
+		str = icap(tr(str));
 		defaultFont.draw(0,14,str,th.uiText, this.mat, mat);
 	}
 }

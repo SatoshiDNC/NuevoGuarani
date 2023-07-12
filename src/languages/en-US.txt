@@ -14,27 +14,33 @@ all data has been deleted and/or reset to installation defaults	All data has bee
 API auth token	API auth token
 API bearer token	API bearer token
 are you sure?	Are you sure?
+barcode scanning	barcode scanning
 base URL	Base URL
 bill	INVOICE
+business address	business address
+business telephone	business telephone
 camera selection	Camera selection
-cash	CASH
-cash back amount	AMOUNT
+cash	cash
+cash back amount	amount
 cash register number	cash reg
+cash tendered	cash tendered
 cashier	cashier
+city	city
 coinos compatible	Coinos compatible
 colors	colors
 confirm	CONFIRM
-currency	Currency
-currencies	Currencies
+currency	currency
+currencies	currencies
 customer bill	Customer Bill
 danger zone	Danger zone
 dark/light mode	Dark/light mode
 dark mode	Dark mode
 date	date
-default vendor currency	Currency for pricing items
+default vendor currency	currency for pricing items
+default vendor currency (title)	currency for pricing
 delete '@'?	Delete '@'?
-delete all data	Delete all data for all accounts
-delete data	Delete data
+delete all data	delete all data for all accounts
+delete data	delete data
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
 enabled payment methods	Enabled payment methods
@@ -45,37 +51,46 @@ instant	INSTANT
 invoice details	invoice details
 invoice number	invoice #
 invoice subtotal	subtotal
-item	ITEM
+item	item
 language	Language
 layout	Layout
 license number	license #
 light mode	Light mode
+lightning invoice	lightning invoice
 lnbc item description	PAYMENT OF LIGHNING INVOICE
 my business	My Business
 new account	New account
 no	NO
 not set	Not set
+pay {AMNT} sats for {DESC}	pay {AMNT} sats for {DESC}
+pay {DESC} {AMNT} sats on {DATE}	pay {DESC} {AMNT} sats on {DATE}
 payment	PAYMENT
 payment method	Payment method
 payment methods	Payment methods
 plain	plain
-price	PRICE
+postal code	ZIP code
+price	price
 pricing	Pricing
-QR code and barcode scanning	QR code and barcode scanning
-qty	QTY
+QR code and barcode scanning	QR and barcode scanning
+qty	qty
 receipt	receipt
 rename	Rename
+scan product barcodes into description field	scan product barcodes into description field
 set API key	Set API key
 settings	Settings
+some	some
+state	state
 strike compatible	Strike compatible
 subtotal	SUBTOTAL
 switch account	Switch account
 tax	tax
+tax id	taxpayer identification number
 tax included	tax included
 terms of sale	terms of sale
 textures	textures
 theme	Theme
 themes	Themes
+tradfi	TradFi
 valid from	valid from
 valid till	valid till
 wallet	Wallet

@@ -1,6 +1,11 @@
 const layoutsettings = v = new vp.View(null);
 v.name = Object.keys({layoutsettings}).pop();
 v.title = 'layout';
+v.minX = 0; v.maxX = 0;
+v.minY = 0; v.maxY = 0;
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+v.swipeGad.hide = true;
 v.gadgets.push(v.countermode = g = new vp.Gadget(v));
 	g.key = 'enableCustomerPane';
 	g.type = 'enable';

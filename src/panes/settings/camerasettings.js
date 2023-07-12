@@ -65,7 +65,12 @@ function loadCameraSettingGuarded() {
 
 const camerasettings = v = new vp.View(null);
 v.name = Object.keys({camerasettings}).pop();
-v.title = 'Camera Selection';
+v.title = 'camera selection';
+v.minX = 0; v.maxX = 0;
+v.minY = 0; v.maxY = 0;
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+v.swipeGad.hide = true;
 v.gadgets.push(v.cameralist = g = new vp.Gadget(v));
 	g.list = cameras;
   g.index = -1;
@@ -150,7 +155,8 @@ v.renderFunc = function() {
 v.gadgets.push(v.itemscan = g = new vp.Gadget(v));
 	g.key = 'enableItemScan';
 	g.type = 'enable';
-	g.title = 'scan barcodes into description field';
+	g.title = 'barcode scanning';
+	g.subtitle = 'scan product barcodes into description field';
   g.state = false;
 	Object.defineProperty(g, "icon", {
 		get : function () { return this.state? "\x0E":"\x0D"; }

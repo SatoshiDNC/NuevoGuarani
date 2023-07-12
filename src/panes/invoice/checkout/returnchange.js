@@ -1,15 +1,15 @@
-var presentreceipt = v = new vp.View(null);
-v.name = Object.keys({presentreceipt}).pop();
+var returnchange = v = new vp.View(null);
+v.name = Object.keys({returnchange}).pop();
 //v.designFit = [240,80];
 //v.designHeight = 80;
-v.gadgets.push(v.method = g = new vp.Gadget(v));
+v.gadgets.push(v.change = g = new vp.Gadget(v));
 	g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
-	g.text = ''; g.label = tr('payment method'); g.autoHull();
+	g.text = ''; g.label = 'change due'; g.autoHull();
 	g.renderFunc = function() {
 		var g = this, v = g.viewport;
 		var sel = vp.getInputGad() === g;
-		const th = this.viewport === presentreceipt? vendorColors : customerColors;
+		const th = this.viewport === receivepayment? vendorColors : customerColors;
 		const mat = mat4.create();
 		useProg5();
 		mat4.identity(mat);
@@ -84,14 +84,15 @@ v.gadgets.push(v.method = g = new vp.Gadget(v));
 	g.textEndFunc = function() {
 		this.viewport.setRenderFlag(true);
 	}
-	g.textPrevFunc = function() { vp.beginInput(this.viewport.method); }
-	g.textNextFunc = function() { vp.beginInput(this.viewport.unitprice); }
+	g.textPrevFunc = function() {
+//		vp.beginInput(this.viewport.method);
+		checkoutpages.swipeGad.doSwipe(false);
+	}
+	g.textNextFunc = function() {
+		checkoutpages.swipeGad.doSwipe(true);
+	}
 v.clearDataEntry = function() {
-	this.method.text = '';
-	this.unitprice.currency = defaultVendorCurrency;
-	this.unitprice.text = '';
-	this.qty.text = '';
-	this.taxrate.text = '';
+	this.change.text = '';
 }
 v.layoutFunc = function() {
 	for (const g of this.gadgets) {
@@ -100,7 +101,7 @@ v.layoutFunc = function() {
 }
 v.renderFunc = function(flip = false) {
 	// WARNING: This function is re-used by customertotal; "this" may vary!
-	const th = this === presentreceipt? vendorColors : customerColors;
+	const th = this === receivepayment? vendorColors : customerColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -128,10 +129,11 @@ v.renderFunc = function(flip = false) {
 		mat4.identity(m);
 		mat4.translate(m, m, [g.x + 2, g.y - 2, 0]);
 		mat4.scale(m, m, scale);
-		defaultFont.draw(0,0, g.label, th.uiTextLabel, this.mat, m);
+		defaultFont.draw(0,0, tr(g.label).toUpperCase(), th.uiTextLabel, this.mat, m);
 	}
 
-	if (this === presentreceipt) {
+/*
+	if (this === receivepayment) {
 		var e = (this.method.text != ''
 					|| this.unitprice.text != ''
 					|| this.qty.text != ''
@@ -142,7 +144,9 @@ v.renderFunc = function(flip = false) {
 			buttonbar.setRenderFlag(true);
 		}
 	}
+*/
 }
 v.pageFocusFunc = function() {
-console.log(this.name, 'pageFocus');
+	returnchange.change.text = (receivepayment.cash.text - invoicepane.getSubtotal()).toString();
+	vp.beginInput(returnchange.change);
 }

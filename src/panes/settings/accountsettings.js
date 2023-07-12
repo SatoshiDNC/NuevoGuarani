@@ -94,7 +94,6 @@ function dateToID(d) {
 }
 
 function loadAccount() {
-console.log('loadAccount');
 	accountsettings.load();
 	languagesettings.load();
 	enabledcurrencies.load();
@@ -103,13 +102,14 @@ console.log('loadAccount');
 	camerasettings.load();
 	layoutsettings.load();
 	colorsettings.load();
+	buttonbar.popGad.enabled = true;
 }
 
 const accountsettings = v = new vp.View(null);
 v.name = Object.keys({accountsettings}).pop();
 v.title = 'account';
-v.minX = 0; v.maxX = 400;
-v.minY = 0; v.maxY = 32;
+v.minX = 0; v.maxX = 0;
+v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
@@ -350,7 +350,7 @@ v.gadgets.push(v.licensevalidfrom = g = new vp.Gadget(v));
 v.gadgets.push(v.licensevalidtill = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'businessLicenseValidTill';
-	g.title = 'valid to';
+	g.title = 'valid till';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value != '') {

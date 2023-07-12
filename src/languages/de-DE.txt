@@ -14,13 +14,18 @@ all data has been deleted and/or reset to installation defaults	Alle Daten wurde
 API auth token	API-Authentifizierungs-Token
 API bearer token	API-Authentifizierungs-Token
 are you sure?	Sind Sie sicher?
+barcode scanning	Barcode-Scannen
 base URL	Basis-URL
 bill	RECHNUNG
+business address	Geschäftsadresse
+business telephone	Geschäftstelefon
 camera selection	Auswahl der Kamera
-cash	BARGELD
-cash back amount	BETRÄGE
+cash	Bargeld
+cash back amount	Betrage
 cash register number	Kassennummer
+cash tendered	angedientes Geld
 cashier	Kassierer
+city	Stadt
 coinos compatible	Coinos-kompatibel
 colors	Farben
 confirm	BESTÄTIGEN
@@ -32,6 +37,7 @@ dark/light mode	Dunkel-/Hellmodus
 dark mode	Dunkelmodus
 date	Datum
 default vendor currency	Währung für die Preisgestaltung der Artikel
+default vendor currency (title)	für die Preisgestaltung
 delete '@'?	'@' löschen?
 delete all data	Alle Daten für alle Konten löschen
 delete data	Daten löschen
@@ -45,37 +51,46 @@ instant	DIREKT
 invoice details	Rechnungsdaten
 invoice number	Rechnungsnummer
 invoice subtotal	Rechnungszwischensumme
-item	ARTIKEL
+item	Artikel
 language	Sprache
 layout	Gestaltung
 license number	Lizenznummer
 light mode	Hellmodus
+lightning invoice	Lightningrechnung
 lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
 my business	Mein Geschäft
 new account	Neues Konto
 no	NEIN
 not set	Nicht eingestellt
+pay {AMNT} sats for {DESC}	{AMNT} sats für {DESC} bezahlen
+pay {DESC} {AMNT} sats on {DATE}	{DESC} am {DATE} {AMNT} sats zahlen
 payment	ZAHLUNG
 payment method	Zahlungsart
 payment methods	Zahlungsverfahren
 plain	einfach
-price	PREIS
+postal code	PLZ
+price	Preis
 pricing	Preisgestaltung
-QR code and barcode scanning	QR-Code und Barcode-Scannen
-qty	QUANT.	QUANTITÄT
+QR code and barcode scanning	QR- und Barcode-Scannen
+qty	Quant.	Quantität
 receipt	Rechnung
 rename	Umbenennen
+scan product barcodes into description field	Produkt-Barcodes in das Beschreibungsfeld scannen
 set API key	API-Schlüssel einstellen
 settings	Einstellungen
+some	einige
+state	Staat
 strike compatible	Strike-kompatibel
 subtotal	ZWISCHENSUMME
 switch account	Konto wechseln
 tax	Steuer
+tax id	Steueridentifikationsnummer
 tax included	Steuer inbegriffen
 terms of sale	Verkaufsbedingungen
 textures	Texturen
 theme	Theme
 themes	Themen
+tradfi	TradFi
 valid from	gültig ab
 valid till	gültig bis
 wallet	Geldbeutel

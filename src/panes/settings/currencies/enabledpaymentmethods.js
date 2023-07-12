@@ -1,16 +1,21 @@
 const enabledpaymentmethods = v = new vp.View(null);
 v.name = Object.keys({enabledpaymentmethods}).pop();
 v.title = 'payment methods';
+v.minX = 0; v.maxX = 0;
+v.minY = 0; v.maxY = 0;
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+v.swipeGad.hide = true;
 v.gadgets.push(v.list = g = new vp.Gadget(v));
 	g.key = 'enabledPaymentMethods';
 	g.list = enabledPaymentMethods;
 	g.selection = [];
 	g.appFunction = function() {
 		const g = this;
-		mainsettings.walletsettings.hide = !g.selection.includes('₿');
-		mainsettings.walletsettings.enabled = !mainsettings.walletsettings.hide;
-		mainsettings.currencysettings.daisychain =
-			!mainsettings.walletsettings.hide;
+//		mainsettings.walletsettings.hide = !g.selection.includes('₿');
+//		mainsettings.walletsettings.enabled = !mainsettings.walletsettings.hide;
+//		mainsettings.currencysettings.daisychain =
+//			!mainsettings.walletsettings.hide;
 
 		checkoutpages.index = 0;
 

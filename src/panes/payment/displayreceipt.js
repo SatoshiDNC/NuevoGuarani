@@ -78,17 +78,27 @@ v.renderFunc = function() {
 var pmtrcptmain = v = new vp.View(null);
 v.name = Object.keys({pmtrcptmain}).pop();
 v.designWidth = 460;
+v.backgroundDisabled = false;
+v.lastH = 0;
 v.minX = 0; v.maxX = v.designWidth;
 v.minY = 0; v.maxY = 1000;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.layoutFunc = function() {
 	this.swipeGad.layout.call(this.swipeGad);
+	if (this.sh != this.lastH) {
+		this.lastH = this.sh;
+		this.backgroundDisabled = false;
+	}
 };
 v.renderFunc = function() {
 	const th = vendorColors, th2 = customerColors, v = this;
-	gl.clearColor(...th2.uiReceiptBg);
-	gl.clear(gl.COLOR_BUFFER_BIT);
+	if (this.backgroundDisabled) {
+		gl.clearColor(...th.uiBackground);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+	} else {
+		drawThemeBackdrop(this, th);
+	}
 
 	const linespacing = 23;
 	const charspacing = 10;
@@ -167,17 +177,32 @@ v.renderFunc = function() {
 			}
 		}
 	}
+
+	var y = 0;
+
+	// Start the receipt "paper" with the top and bottom margin sizes.
+	useProg2();
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
+	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+		new Float32Array(th2.uiReceiptBg));
+	const m = mat4.create();
+	mat4.identity(m);
+	mat4.translate(m,m,[0,y,0]);
+	mat4.scale(m,m,[v.sw,margintop+marginbottom,1]);
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
+	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+
+	// Draw the serrated leading edge of the receipt.
 	useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array([0,0,0,1]));
-	const m = mat4.create();
 	mat4.identity(m);
 	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
 
-	var y = margintop;
+	y += margintop;
 	var inlist = false;
 	for (var i=0; i<displayreceipt.data.length; i++) {
 		var o = displayreceipt.data[i];
@@ -195,10 +220,10 @@ v.renderFunc = function() {
 					if (x > this.designWidth
 					|| (f+1 < widths.length && x + widths[f+1] > this.designWidth)) {
 						x = marginleft;
-						y+=linespacing;
+						y += linespacing;
 					}
 				}
-				y+=linespacing;
+				y += linespacing;
 			} else if (fieldcode == Receipt.LIST_ITEM) {
 				var x = marginleft;
 				for (var f=0; f<so.length; f++) {
@@ -206,12 +231,12 @@ v.renderFunc = function() {
 					if (x > this.designWidth
 					|| (f+1 < widths.length && x + widths[f+1] > this.designWidth)) {
 						x = marginleft;
-						y+=linespacing;
+						y += linespacing;
 					}
 				}
-				y+=linespacing;
+				y += linespacing;
 			} else {
-				y+=linespacing;
+				y += linespacing;
 			}
 			continue;
 		} else if (y - this.userY > this.sh) {
@@ -234,10 +259,10 @@ v.renderFunc = function() {
 				if (x > this.designWidth
 				|| (f+1 < widths.length && x + widths[f+1] > this.designWidth)) {
 					x = marginleft;
-					y+=linespacing;
+					y += linespacing;
 				}
 			}
-			y+=linespacing;
+			y += linespacing;
 		} else if (fieldcode == Receipt.LIST_ITEM) {
 			inlist = true;
 			var x = marginleft;
@@ -252,10 +277,10 @@ v.renderFunc = function() {
 				if (x > this.designWidth
 				|| (f+1 < widths.length && x + widths[f+1] > this.designWidth)) {
 					x = marginleft;
-					y+=linespacing;
+					y += linespacing;
 				}
 			}
-			y+=linespacing;
+			y += linespacing;
 		} else if (fieldcode == Receipt.SEP) {
 			name = so[0];
 			value = so[1];
@@ -269,7 +294,7 @@ v.renderFunc = function() {
 			mat4.identity(m);
 			mat4.translate(m,m,[marginleft,y+14,0]);
 			dotMatrixFont.draw(0,0, value, th2.uiReceiptText, this.mat, m);
-			y+=linespacing;
+			y += linespacing;
 		} else if (fieldcode <= 42) {
 			if (inlist) {
 				inlist = false;
@@ -295,7 +320,7 @@ v.renderFunc = function() {
 			var p = 0;
 			if (nums[1]) p = Math.max(w, widths.length>1?widths[1]:0) - w;
 			dotMatrixFont.draw(p,0, value, th2.uiReceiptText, this.mat, m);
-			y+=linespacing;
+			y += linespacing;
 		} else {
 			name = '';
 			value = JSON.stringify(so);
@@ -303,26 +328,44 @@ v.renderFunc = function() {
 			mat4.translate(m,m,[marginleft,y,0]);
 			var s = (name!=''?name+': ':'')+value;
 			dotMatrixFont.draw(0,14, s, th2.uiReceiptText, this.mat, m);
-			y+=linespacing;
+			y += linespacing;
 		}
+
+		// Extend the receipt "paper" by the bottom margin size.
+		useProg2();
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
+		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+			new Float32Array(th2.uiReceiptBg));
+		mat4.identity(m);
+		mat4.translate(m,m,[0,y,0]);
+		mat4.scale(m,m,[v.sw,marginbottom,1]);
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
+		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
 	}
 	y += marginbottom;
 
+	// Draw the serrated trailing edge of the receipt.
 	useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-		new Float32Array(th.uiBackground));
+		new Float32Array(th2.uiReceiptBg));
 	mat4.identity(m);
 	mat4.translate(m,m,[0,y,0]);
-	mat4.scale(m,m,[v.sw,-v.sw,1]);
+	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
+	y += (v.sw/49)*Math.sqrt(3)/2;
 
+/*
 	mat4.identity(m);
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,v.sh,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+*/
+	if (y > v.sh) {
+		this.backgroundDisabled = true;
+	}
 
 	this.maxY = y;
 	this.swipeGad.layout.call(this.swipeGad);
@@ -333,6 +376,10 @@ v.name = Object.keys({displayreceipt}).pop();
 v.prop = true;
 v.a = pmtrcptbuttonbar; pmtrcptbuttonbar.parent = v;
 v.b = pmtrcptmain; pmtrcptmain.parent = v;
+v.setData = function(data) {
+	this.data = data;
+	pmtrcptmain.backgroundDisabled = false;
+}
 v.switchedToFunc = function() {
 }
 

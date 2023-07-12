@@ -204,24 +204,19 @@ function drawThemeBackdrop(v, th) {
 	const pixelPM = v.getRawMatrix();
 	if (gr && gr.font) {
 		const m = mat4.create();
-//		mat4.copy(m, v.mat);
-//		mat4.translate(m, m, [0, v.userY, 0]);
-//		mat4.scale(m, m, [v.sw/gr.width/2, v.sw/gr.width/2, 1]);
-
-//		mat4.copy(m, pixelPM);
-//    mat4.scale(m, m, [canvas.width/240, canvas.width/240, 1]);
-//    mat4.scale(m, m, [1/gr.width, 1/gr.width, 1]);
-
+		const repeatX = 2, repeatY = Math.ceil(4/gr.height*gr.width);
 		mat4.identity(m);
     mat4.translate(m, m, [-1, 1, 1]);
     mat4.scale(m, m, [2/v.w, -2/v.h, 1]);
     mat4.translate(m, m, [-v.x, -v.y, 0]);
-    mat4.scale(m, m, [canvas.width/240, canvas.width/240, 1]);
-
-		for (var i=0; i<3; i++) for (var j=0; j<5; j++) {
+		const scaleX = 1.1*canvas.width/(gr.width*repeatX);
+		const scaleY = 1.1*canvas.height/(gr.height*repeatY);
+		const scaleF = scaleX>scaleY? scaleX: scaleY;
+    mat4.scale(m, m, [scaleF, scaleF, 1]);
+		for (var i=0; i<repeatX; i++) for (var j=0; j<repeatY; j++) {
 			mat4.identity(mat);
-			gr.font.draw(i*gr.width-gr.width/2, j*gr.height-gr.height/2,
-				gr.pattern, th.uiSettingsBubble, m, mat);
+			gr.font.draw(i*gr.width-0.05*gr.width, j*gr.height-0.05*gr.height,
+				gr.pattern, th.uiBackgroundPattern, m, mat);
 		}
 	}
 }

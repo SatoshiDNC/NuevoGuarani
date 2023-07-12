@@ -47,3 +47,24 @@ function tryParseJSONObject(jsonString) {
                         return false;
                 }
 
+// Scales color value to range delimited by b and c.
+// Returns a new color that is to b and c what the input color is to black and white.
+// All parameters are color vectors.
+// The order of b and c generally does not matter.
+function colorize(color,b,c) {
+	var d = b, e = c; if (b[0]>c[0] && b[1]>c[1] && b[2]>c[2]) { d = c; e = b; }
+	function f(a,b,c) { return a*(c-b)+b; }
+	return [f(color[0],d[0],e[0]), f(color[1],d[1],e[1]), f(color[2],d[2],e[2]), color[3]];
+}
+
+var isNumber = function isNumber(value) 
+{
+   return typeof value === 'number' && isFinite(value);
+}
+
+function cconv(a, f, t) {
+	return Math.ceil(a * cconv.prototype.conv[f][t] );
+}
+function setConversionRates() {
+	cconv.prototype.conv = JSON.parse(JSON.stringify(conversionRates));
+}

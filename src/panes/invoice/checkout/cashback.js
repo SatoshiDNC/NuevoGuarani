@@ -328,7 +328,6 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 				v.qty.text.trim(),
 				v.taxrate.text.trim());
 			if (!li.isEmpty()) {
-				v.setConversionRates();
 //for (i=0; i<30; i++) {
 				invoicepane.invoiceitems.unshift(li);
 //}
@@ -342,12 +341,6 @@ v.gadgets.push(v.taxrate = g = new vp.Gadget(v));
 			}
 		}
 	}
-v.setConversionRates = function() {
-	this.conv = JSON.parse(JSON.stringify(conversionRates));
-}
-v.cconv = function(a, f, t) {
-	return Math.ceil(a /* * this.conv[f][t] */);
-}
 v.clearDataEntry = function() {
 	this.option.text = '';
 	this.amount.currency = config.defaultCurrency;

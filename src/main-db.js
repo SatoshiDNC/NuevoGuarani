@@ -29,8 +29,9 @@ function openDatabase() {
 		const db = event.target.result;
 		var objectStore;
 		if (event.oldVersion < 1) {
-			objectStore = db.createObjectStore("settings");
 			objectStore = db.createObjectStore("accounts");
+			objectStore = db.createObjectStore("settings");
+			objectStore = db.createObjectStore("sales", { autoIncrement: true });
 			objectStore = db.createObjectStore("items", { autoIncrement: true });
 			objectStore = db.createObjectStore("barcodes");
 		}

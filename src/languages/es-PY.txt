@@ -14,27 +14,33 @@ all data has been deleted and/or reset to installation defaults	Se han borrado t
 API auth token	Token de autenticación API
 API bearer token	Token de autenticación API
 are you sure?	¿Está seguro?
+barcode scanning	escaneo de códigos de barras
 base URL	URL básica
 bill	FACTURA
+business address	dirección de la empresa
+business telephone	teléfono de empressa
 camera selection	Selección de cámara
-cash	EFECTIVO
-cash back amount	IMPORTE
+cash	efectivo
+cash back amount	importe
 cash register number	caja na
+cash tendered	efectivo
 cashier	cajero
+city	ciudad
 coinos compatible	Compatible con coinos
 colors	colores
 confirm	CONFIRME
-currency	Moneda
-currencies	Monedas
+currency	moneda
+currencies	monedas
 customer bill	Factura cliente
 danger zone	Zona de peligro
 dark/light mode	Modo oscuro/claro
 dark mode	Modo oscuro
 date	fecha
-default vendor currency	Moneda para la fijación de precios
+default vendor currency	moneda para la fijación de precios
+default vendor currency (title)	fijación de precios
 delete '@'?	¿Borrar '@'?
-delete all data	Borrar todos los datos de todas las cuentas
-delete data	Borrar datos
+delete all data	borrar todos los datos de las cuentas
+delete data	borrar datos
 Discard this invoice?	¿Descartar esta factura?
 enabled currencies	Monedas habilitadas
 enabled payment methods	Formas de pago habilitados
@@ -45,37 +51,46 @@ instant	INSTANTE
 invoice details	factura contado
 invoice number	factura na
 invoice subtotal	importe total
-item	ARTÍCULO
+item	artículo
 language	Idioma
 layout	Presentación
 license number	timbrado na
 light mode	Modo claro
+lightning invoice	factura relámpago
 lnbc item description	PAGO DE FACTURA NUEVO GUARANÍ
 my business	Mi negocio
 new account	Nueva cuenta
 no	NO
 not set	No configurado
+pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
+pay {DESC} {AMNT} sats on {DATE}	pagar a {DESC} {AMNT} sats el {DATE}
 payment	PAGO
 payment method	Forma de pago
 payment methods	Formas de pagos
 plain	simple
-price	PRECIO
+postal code	código postal
+price	precio
 pricing	Fijación de precios
-QR code and barcode scanning	Escaneado de códigos QR y códigos de barras
-qty	CANT.	CANTIDAD
+QR code and barcode scanning	escaneo de códigos de barras y QR
+qty	cant.	cantidad
 receipt	ticket
 rename	Cambiar nombre
+scan product barcodes into description field	escanear los códigos de los productos en el descripción
 set API key	Establecer clave API
 settings	Ajustes
+some	algunos
+state	departamento
 strike compatible	Compatible con strike
 subtotal	IMPORTE TOTAL
 switch account	Cambiar de cuenta
 tax	IVA
+tax id	RUC
 tax included	IVA incluido
 terms of sale	condición de venta contado
 textures	texturas
 theme	Tema
 themes	Temas
+tradfi	TradFi
 valid from	valido desde
 valid till	valido hasta
 wallet	Monedero

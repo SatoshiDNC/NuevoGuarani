@@ -39,6 +39,7 @@ class ColorTheme {
 		this.uiSettingsSubText	= this.uiGhostText;
 		this.uiSettingSelect		= this.uiButtonSel;
 	}
+	get uiBackgroundPattern() { return colorize([0.5,0.5,0.5,1], this.uiBackground, this.uiSettingsBubble); }
 	set(variable, value) {
 
 		// Helper.

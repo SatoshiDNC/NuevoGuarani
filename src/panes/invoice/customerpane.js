@@ -119,7 +119,7 @@ v.gadgets.push(v.subtotal = g = new vp.Gadget(v));
 		var c = (s == '₿')? customerColors.uiLightningYellow : customerColors.uiFiatGreen;
 		for (const li of invoicepane.invoiceitems) {
 			//	'⃀' temporary approximately equal sign
-			subtotal += dataentry.cconv(li.qty * li.unitprice, li.currency, s);
+			subtotal += cconv(li.qty * li.unitprice, li.currency, s);
 		}
 
 		var t = subtotal, w, m = mat4.create();

@@ -6,7 +6,7 @@
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		var pageindex = checkoutpages.index;
 		var earlyreturn = 0;
-		if (pageindex < 0 || Math.abs(checkoutpages.getPageOffset(pageindex)) > 0.01) {
+		if (pageindex < 0 || Math.abs(checkoutpages.getPageOffset(pageindex)) > 0.01 || checkoutpages.idealSize != vendormain.sizeH) {
 			this.pad = 1;
 			this.setRenderFlag(true);
 			earlyreturn = 1;

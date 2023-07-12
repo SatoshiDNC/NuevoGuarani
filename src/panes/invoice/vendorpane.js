@@ -1,6 +1,96 @@
 var buttonbar = v = new vp.View(null);
 v.name = Object.keys({buttonbar}).pop();
 v.designFit = [400,50];
+
+// Reset the UI for the next sale.
+v.helperClearData = function() {
+	dataentry.clearDataEntry();
+	invoicepane.invoiceitems = [];
+	vendorinvoice.countN = invoicepane.invoiceitems.length;
+	dataentry.changed = false;
+	vendorpane.setRenderFlag(true);
+	buttonbar.setRenderFlag(true);
+	checkoutpages.toPage(0);
+}
+
+// Save the data pertaining to this sale.
+v.helperSaveData = function() {
+	var currentState = 'draft';
+	if (invoicepane.receipt) {
+		if (invoicepane.receipt.has(Receipt.INV_SUBTOTAL)) currentState = 'order';
+		//if (invoicepane.receipt.has(Receipt.INV_SUBTOTAL)) currentState = 'partial';
+	}
+console.log('about to save dataentry');
+console.log(dataentry.item.text);
+	const newItem = {
+		store: getCurrentAccount().id,
+		status: currentState,
+		date: new Date(),
+		"dataentry": {
+			item: dataentry.item.text,
+			currency: dataentry.unitprice.currency,
+			unitprice: dataentry.unitprice.text,
+			qty: dataentry.qty.text,
+			taxrate: dataentry.taxrate.text,
+		},
+		items: invoicepane.invoiceitems,
+		subtotal: invoicepane.getSubtotal(),
+		amountTendered: receivepayment.cash.text,
+		amountToReturn: returnchange.change.text,
+	};
+	console.log('Saving', newItem);
+	const tx = db.transaction(["sales"], "readwrite");
+	tx.onerror = (event) => { console.log("Save transaction failed."); };
+	tx.oncomplete = (event) => { console.log("Save completed."); };
+	const req = tx.objectStore("sales").add(newItem);
+	req.onerror = (event) => { console.log("Save request failed."); };
+	req.onsuccess = (event) => {
+		console.log("Save request successful.");
+		buttonbar.popGad.enabled = true;
+		buttonbar.setRenderFlag(true);
+	};
+}
+
+// Load the data from a previous or saved sale.
+v.helperLoadData = function() {
+	console.log('Loading...');
+	const tx = db.transaction(["sales"], "readonly");
+	const os = tx.objectStore("sales");
+	const range = buttonbar.popGad.lastLoadedKey? IDBKeyRange.upperBound(buttonbar.popGad.lastLoadedKey, true): undefined;
+	const req = os.openCursor(range, 'prev');
+	req.onsuccess = (event) => {
+		const cursor = event.target.result;
+		if (cursor) {
+			if (cursor.value.store == getCurrentAccount().id) {
+				this.popGad.lastLoadedKey = cursor.key;
+				console.log(cursor.key, cursor.value.status, cursor.value.items);
+				setConversionRates();
+				dataentry.clearDataEntry();
+				dataentry.item.text = cursor.value.dataentry.item;
+				dataentry.unitprice.icon = cursor.value.dataentry.currency;
+				dataentry.unitprice.text = cursor.value.dataentry.unitprice;
+				dataentry.qty.text = cursor.value.dataentry.qty;
+				dataentry.taxrate.text = cursor.value.dataentry.taxrate;
+				invoicepane.invoiceitems = cursor.value.items;
+				vendorinvoice.countN = invoicepane.invoiceitems.length;
+				dataentry.changed = false;
+				vendorpane.setRenderFlag(true);
+				buttonbar.setRenderFlag(true);
+				checkoutpages.toPage(0);
+			} else cursor.continue();
+		} else {
+			console.log("Entries all displayed.");
+			delete buttonbar.popGad.lastLoadedKey;
+			this.helperClearData();
+			//vp.beep('bad');
+			alert(tr('no more invoices'));
+		}
+	};
+	req.onerror = (event) => {
+		console.log("Cursor error.");
+	};
+}
+
 v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
@@ -19,26 +109,37 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
-		transitionTo(home, 'min');
+		if (!dataentry.changed || window.confirm(tr("Discard this invoice?"))) {
+			buttonbar.helperClearData();
+			delete buttonbar.popGad.lastLoadedKey;
+			transitionTo(home, 'min');
+		}
 	}
 v.gadgets.push(v.pushGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = 50 + (50 - g.w)/2; g.y = (50 - g.h)/2;
 	g.autoHull();
 	g.icon = "\x01";
+	g.enabled = false;
 	g.renderFunc = v.homeGad.renderFunc;
 	g.clickFunc = function() {
 		console.log('pushGad');
+		buttonbar.helperSaveData();
+		buttonbar.helperClearData();
+		delete buttonbar.popGad.lastLoadedKey;
 	}
 v.gadgets.push(v.popGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = 100 + (50 - g.w)/2; g.y = (50 - g.h)/2;
 	g.autoHull();
 	g.icon = "\x02";
-	g.enabled = false;
+	g.enabled = true;
 	g.renderFunc = v.homeGad.renderFunc;
 	g.clickFunc = function() {
 		console.log('popGad');
+		if (!dataentry.changed || window.confirm(tr("Discard this invoice?"))) {
+			buttonbar.helperLoadData();
+		}
 	}
 v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
@@ -47,12 +148,9 @@ v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 	g.icon = "\x03";
 	g.renderFunc = v.homeGad.renderFunc;
 	g.clickFunc = function() {
-		if (window.confirm(tr("Discard this invoice?"))) {
-			dataentry.clearDataEntry();
-			invoicepane.invoiceitems = [];
-			vendorpane.setRenderFlag(true);
-			buttonbar.setRenderFlag(true);
-			checkoutpages.toPage(0);
+		if (!dataentry.changed || window.confirm(tr("Discard this invoice?"))) {
+			buttonbar.helperClearData();
+			delete buttonbar.popGad.lastLoadedKey;
 		}
 	}
 v.layoutFunc = function() {
@@ -107,8 +205,14 @@ v.swipeGad.swipeBeginFunc = function(p) {
 	g.swipeBeginFuncF.call(g, p);
 }
 
-v.pages.push(dataentry);
-v.pages.push(choosemethod);
+v.pageOrder = [dataentry, choosemethod, receivepayment, paypurchasedinvoices, lightningqr, returnchange, receiptqr];
+{
+	for (var page of v.pageOrder) {
+		v.pages.push(page);
+	}
+}
+//v.pages.push(dataentry);
+//v.pages.push(choosemethod);
 /*
 if (enabledPaymentMethods.length > 1) v.pages.push(choosemethod);
 else {
@@ -120,11 +224,39 @@ else {
 */
 //v.pages.push(cashback);
 //v.pages.push(receivepayment);
-v.pages.push(lightningqr);
-v.pages.push(receiptqr);
+//v.pages.push(paypurchasedinvoices);
+//v.pages.push(lightningqr);
+//v.pages.push(returnchange);
+//v.pages.push(receiptqr);
 //v.pages.push(presentreceipt);
 //v.pages.push(extra1);
 //v.pages.push(extra2);
+
+v.addPage = function(page) {
+console.log('addPage',page.name);
+	var existing = checkoutpages.getPageIndex(page);
+	if (existing >= 0) return;
+
+	// Find index of previous page (whatever it happens to be in the current configuration)
+	const v = this;
+	var p = -1;
+	var trigger = false;
+	for (var i = v.pageOrder.length-1; i >= 0; i--) {
+		if (trigger) {
+			p = checkoutpages.getPageIndex(v.pageOrder[i]);
+			if (p != -1) break;
+		}
+		if (v.pageOrder[i] === page) trigger = true;
+	}
+
+	checkoutpages.pages.splice(p+1, 0, page);
+}
+v.remPage = function(page) {
+console.log('remPage',page.name);
+	var existing = checkoutpages.getPageIndex(page);
+	if (existing < 0) return;
+	checkoutpages.pages.splice(existing, 1);
+}
 
 v.pageChangeFunc = function() {
 	const v = this;
@@ -266,7 +398,7 @@ v.renderFunc = function(flip = false) {
 		var sk = skip;
 		for (const li of invoicepane.invoiceitems) {
 			if (skip > 0) { skip -= 1; continue; }
-			subtot += dataentry.cconv(li.unitprice * li.qty, li.currency, s);
+			subtot += cconv(li.unitprice * li.qty, li.currency, s);
 		}
 		skip = sk;
 		t = (+subtot).toString();
@@ -310,7 +442,7 @@ v.renderFunc = function(flip = false) {
 		defaultFont.draw(36-w,0, t + ' ×', th.uiText, this.mat, m);
 
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		t = (+dataentry.cconv(li.unitprice, li.currency, s)).toString();
+		t = (+cconv(li.unitprice, li.currency, s)).toString();
 		if (['$', '€'].includes(s)) {
 			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
 		} else {
@@ -324,7 +456,7 @@ v.renderFunc = function(flip = false) {
 		}
 
 		mat4.identity(m); mat4.translate(m, m, [10, y, 0]);
-		t = (dataentry.cconv(li.unitprice * li.qty, li.currency, s).toString());
+		t = (cconv(li.unitprice * li.qty, li.currency, s).toString());
 		if (['$', '€'].includes(s)) {
 			t = (t/100).toLocaleString(lang, {minimumFractionDigits:2, maximumFractionDigits:2});
 		} else {

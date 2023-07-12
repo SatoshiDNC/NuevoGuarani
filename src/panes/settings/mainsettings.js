@@ -1,13 +1,14 @@
 var mainsettings = v = new vp.View(null);
 v.name = Object.keys({mainsettings}).pop();
 v.title = 'settings';
-v.minX = 0; v.maxX = 400;
-v.minY = 0; v.maxY = 32;
+v.minX = 0; v.maxX = 0;
+v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 v.layoutFunc = function() {
 	const v = this;
+	v.maxX = v.sw;
 	if (v.swipeGad) v.swipeGad.layout.call(v.swipeGad);
 	var y = 25;
 	var x = v.sw;
@@ -81,16 +82,11 @@ v.renderFunc = function() {
 			var color = th.uiSettingsText;
 			iconFont.draw(0,0,g.icon,color, this.mat, mat);
 		} else {
-			function mul(a,b,c) {
-				var d = b, e = c; if (b[0]>c[0] && b[1]>c[1] && b[2]>c[2]) { d = c; e = b; }
-				function ch(a,b,c) { return a*(c-b)+b; }
-				return [ch(a[0],d[0],e[0]), ch(a[1],d[1],e[1]), ch(a[2],d[2],e[2]), a[3]];
-			}
 			useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-				new Float32Array(g.color?mul(g.color, vendorColors.uiBackground, vendorColors.uiSettingsBubble):vendorColors.uiSettingsBubble));
+				new Float32Array(g.color?colorize(g.color, vendorColors.uiBackground, vendorColors.uiSettingsBubble):vendorColors.uiSettingsBubble));
 			mat4.identity(mat);
 			mat4.translate(mat,mat, [g.x+margin,g.y,0]);
 			mat4.scale(mat,mat, [g.w-2*margin,25,1]);
@@ -210,9 +206,10 @@ v.renderFunc = function() {
 					var color = th.uiSettingsSubText;
 					var str;
 					if (typeof g.subtitle === 'object') {
-						str = g.subtitle.map(a => icap(tr(a))).join(' · ');
+						str = g.subtitle.map(a => icap(tr(a)).trim()).join(' · ');
 					} else {
-						str = icap(tr(g.subtitle));
+						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
+						else str = icap(tr(g.subtitle));
 					}
 					defaultFont.draw(0,14,str,color, this.mat, mat);
 				}
@@ -232,7 +229,8 @@ v.renderFunc = function() {
 				if (typeof g.subtitle === 'object') {
 					str = g.subtitle.map(a => icap(tr(a))).join(' · ');
 				} else {
-					str = icap(tr(g.subtitle));
+					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
+					else str = icap(tr(g.subtitle));
 				}
 				defaultFont.draw(0,14,str,color, this.mat, mat);
 			}
@@ -275,6 +273,7 @@ v.gadgets.push(g = new vp.Gadget(v));
 	g.pane = camerasettings;
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;
+/*
 v.gadgets.push(g = new vp.Gadget(v));
 	g.title = 'layout';
 	g.subtitle = 'layout';
@@ -282,6 +281,7 @@ v.gadgets.push(g = new vp.Gadget(v));
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;
 	g.daisychain = true;
+*/
 v.gadgets.push(g = new vp.Gadget(v));
 	g.title = 'themes';
 	g.subtitle = ['dark/light mode', 'colors', 'textures'];

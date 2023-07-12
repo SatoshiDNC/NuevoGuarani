@@ -1,11 +1,11 @@
-var receivepayment = v = new vp.View(null);
-v.name = Object.keys({receivepayment}).pop();
+var paypurchasedinvoices = v = new vp.View(null);
+v.name = Object.keys({paypurchasedinvoices}).pop();
 //v.designFit = [240,80];
 //v.designHeight = 80;
-v.gadgets.push(v.cash = g = new vp.Gadget(v));
+v.gadgets.push(v.change = g = new vp.Gadget(v));
 	g.x = 5; g.y = 20; g.w = 230; g.h = 20;
 	g.actionFlags = vp.GAF_TEXTINPUT | vp.GAF_GONEXT;
-	g.text = ''; g.label = 'cash tendered'; g.autoHull();
+	g.text = ''; g.label = 'pay purchased invoices'; g.autoHull();
 	g.renderFunc = function() {
 		var g = this, v = g.viewport;
 		var sel = vp.getInputGad() === g;
@@ -89,18 +89,48 @@ v.gadgets.push(v.cash = g = new vp.Gadget(v));
 		checkoutpages.swipeGad.doSwipe(false);
 	}
 	g.textNextFunc = function() {
-		var g = this, v = g.viewport;
-		const subtotal = invoicepane.getSubtotal();
-console.log('comp',(+g.text), subtotal,(+g.text) < subtotal);
-		if (g.text.trim() == '' || ((+g.text) < subtotal)) {
-			vp.beep();
-			vp.beginInput(g);
-		} else {
-			checkoutpages.swipeGad.doSwipe(true);
+		console.group('paying invoice(s)');
+
+		// Count how many invoices were purchased.
+		var n = 0;
+		for (const li of invoicepane.invoiceitems) {
+			if (li.invoicetopay) n++;
 		}
+
+		// If wallet type is manual, advise user on how to proceed.
+		if (config.walletType == 'manual' && n > 0) {
+			if (n == 1) {
+				alert("You don't have a wallet linked, so the purchased lightning invoice has to be paid manually.");
+			} else {
+				alert("You don't have a wallet linked, so "+ n +" purchased lightning invoices have to be paid manually.");
+			}
+		}
+
+		// Pay the purchased invoice(s), one by one.
+		var m = 0;
+		for (const li of invoicepane.invoiceitems) {
+			if (li.invoicetopay) {
+				m++;
+	console.log(m, 'paying invoice:',li.invoicetopay);
+				switch (config.walletType) {
+				case 'manual':
+	//				var result = confirm("Invoice "+ m +" of "+ n +" has been copied to the clipboard. If paid successfully, tap OK. If you cancel, a refund will be calculated.");
+	//console.log('response',result);
+					break;
+				case 'LNbits compatible':
+					payLNbitsInvoice(li.invoicetopay);
+					delete li.invoicetopay;
+					break;
+				default: alert("Wallet configuration error");
+				}
+			}
+		}
+
+		console.groupEnd();
+		//checkoutpages.swipeGad.doSwipe(true);
 	}
 v.clearDataEntry = function() {
-	this.cash.text = '';
+	this.change.text = '';
 }
 v.layoutFunc = function() {
 	for (const g of this.gadgets) {
@@ -154,53 +184,63 @@ v.renderFunc = function(flip = false) {
 	}
 */
 }
-v.pageFocusFunc = function() {
-	vp.beginInput(receivepayment.cash);
-}
-v.xpageFocusFunc = function() {
-console.log(this.name, 'pageFocus');
-	qrcodepane.qr = [];
-	qrcodepane.qr.push(
-'lnbc15u1p3xnhl2pp5jptserfk3zk4qy42tlucycrfwxhydvlemu9pqr93tuzlv9cc7g3sdqsvfhkcap3xyhx7un8cqzpgxqzjcsp5f8c52y2stc300gl6s4xswtjpc37hrnnr3c9wvtgjfuvqmpm35evq9qyyssqy4lgd8tj637qcjp05rdpxxykjenthxftej7a2zzmwrmrl70fyj9hvj0rewhzj7jfyuwkwcg9g2jpwtk3wkjtwnkdks84hsnu8xps5vsq4gj5hs'
-	);
+
+function payLNbitsInvoice(invoice) {
+	console.group('payLNbitsInvoice()');
+console.log(invoice);
+	const getDetails = async () => {
 /*
-	qrcodepane.qr.push(
-`{
-	"m":1, "n":1,
-	"ln":"ln10234lksjdfghdfgk......dklgfhjdgfklhd",
-	"1":{"Vendor":"BIO-GRANJA EL DORADO E.I.R.L."},
-	"2":{"":"M. Auxiliadora 9002"},
-	"3":{"":"+595 986 124 208"},
-	"4":{"R.U.C.":"80064237-6"},
-	"5":{"Timbrado Na":"15856902"},
-	"6":{"Valido Desde":"1/09/2022"},
-	"7":{"Valido Hasta":"30/09/2023"},
-	"8":{"Factura Na":"001-003-0022282"},
-	"9":{"I.V.A. Incluido":"true"},
-	"10":{"Caja Na":1},
-	"11":{"Fecha":"19/05/2023 11:36:11"},
-	"12":{"Cajero":"Caja Perla"},
-	"13":{"Cliente":"CLIENTE SIN NOMBRE"},
-	"14":{"R.U.C.":"00000000-0"},
-	"22":{
-		"23":"Articulo",
-		"24":"Descripcion",
-		"25":"Cantidad",
-		"26":"Precio",
-		"27":"Total",
-		"28":"TI",
-	},
-	"15":[
-		["8,914","ALCAPARRAS G&G 90GR","1,000","16.200","16.200","10%"],
-		["8,465","PURE DE TOMATE LA HUERTA, 210G","1,000","4.000","4.000","10%"],
-		["8,465","PURE DE TOMATE LA HUERTA, 210G","1,000","4.000","4.000","10%"],
-		["5,520","BICARBONATO DE SODIO X KG","0,190","22.000","4.180","5%"],
-		["5,355","COCO RELLADO COPALSA, X KG","0,130","44.300","5.538","10%"],
-		["8,914","ALCAPARRAS G&G 90GR","1,000","16.200",
-	],
-}`);
+		const response = await fetch(config.walletLNbitsURL+'/payments/decode', {
+			method: 'POST',
+			headers: {
+			  'Accept': 'application/json',
+			  'Content-Type': 'application/json',
+			  'X-API-KEY': config.walletLNbitsKey,
+			},
+			body: `{"data": "`+ invoice +`"}`,
+		});
+		const myJson = await response.json(); //extract JSON from the http response
 */
-	invoicepane.a = qrcodepane; qrcodepane.parent = invoicepane;
-	invoicepane.queueLayout();
-//	qrcodepane.setRenderFlag(true);
+		const myJson = { payment_hash: "a37ea5ff05f41891262720e0567e9442f9463c6d12c59ded5cfca8a406c50522", amount_msat: 123000, description: "my business", description_hash: null, payee: "022bd0aa893db4ac890e457cca8c83f112518d6941bf9153dab4bf904620503a78", date: 1688946937, expiry: 600, secret: "11fa0043a6da2fc6873e28903a9e00e6e86a1f93cf432382f1c41249de5213f4", route_hints: [], min_final_cltv_expiry: 18 }; //	lnbc1230n1pj2kj8esp5z8aqqsaxmghudpe79zgr48squm5x58uneapj8qh3csfynhjjz06qpp55dl2tlc97svfzf38yrs9vl55gtu5v0rdztzemm2ulj52gpk9q53qdqjd4ujqcn4wd5kuetnwvxqzjccqpjrzjqgp7tvtwh6rmpz0j9cv82tcl0fn2r00h0pualrgun6xeztdlhxltgzm59cqq8zcqqyqqqqlgqqqqn3qqvs9qyysgqv0tg90xhcddfk2w2s9pd0c9jrm9znvxujn5w8kunlzcp74yfrqjpnkc9pfqzqjemsrmn4s2lupyfkmhwn3eu58lvl3vfckvyrugv77cqyutv6g
+		// do something with myJson
+		console.log('myJson', myJson);
+		const desc = myJson.description;
+		const date = myJson.date;
+		const msats = myJson.amount_msat;
+		if (!dataentry.readInvoiceCanceled) {
+			{
+				var temp = tr('pay {AMNT} sats for {DESC}');
+				temp = temp.replace('{AMNT}', Math.round(msats/1000).toString() );
+				temp = temp.replace('{DESC}', tr(desc));
+				temp = icap(temp);
+				dataentry.item.text = temp;
+			}
+			//dataentry.unitprice.icon = '₿';
+			//dataentry.unitprice.text = Math.round(msats/1000).toString();
+			dataentry.unitprice.text = Math.round(cconv(msats/1000, '₿', dataentry.unitprice.currency)).toString();
+			dataentry.qty.text = "1";
+			dataentry.taxrate.text = "0";
+			vp.beep();
+			dataentry.setRenderFlag(true);
+		}
+	}
+	//lightningqr.busySignal = true;
+	//getDetails();
+	//genInv();
+	console.groupEnd();
+}
+/*
+function payInvoice(invoice) {
+	dataentry.readInvoiceCanceled = false;
+	dataentry.item.linkedInvoice = invoice;
+	switch (config.walletType) {
+	case 'manual': alert("You don't have a wallet linked, so lightning invoice details are unavailable."); readInvoiceBuiltIn(invoice); break;
+	case 'LNbits compatible': readLNbitsInvoice(invoice); break;
+	default: alert("Wallet configuration error");
+	}
+}
+*/
+
+v.pageFocusFunc = function() {
+	vp.beginInput(paypurchasedinvoices.change);
 }

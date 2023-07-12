@@ -548,7 +548,7 @@ v.switchedToFunc = function() {
 							paymentpane.timeupdate = false;
 							paymentpane.updateFlag = false;
 							delete paymentmain.designFit;
-							displayreceipt.data = data;
+							displayreceipt.setData(data);
 							pmtrcptmain.userY = 0;
 							var root = menudiv, v = displayreceipt;
 							root.b = v; v.parent = root;

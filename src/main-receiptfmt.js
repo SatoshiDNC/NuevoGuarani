@@ -152,6 +152,12 @@ class Receipt {
 	clear() {
 		this.data = [];
 	}
+	has(key) {
+		if (key === undefined) console.log('undefined key for:', name, value);
+		for (var o of this.data) {
+			if (Object.keys(o).includes(key.toString())) return true;
+		}
+	}
 	append(key, name, value) {
 		if (key === undefined) console.log('undefined key for:', name, value);
 		var temp = {}
