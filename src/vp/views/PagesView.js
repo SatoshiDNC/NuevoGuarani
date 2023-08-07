@@ -6,6 +6,7 @@ class PagesView extends View {
 		this.pages = [];
 		this.snaps = [];
 		this.prevTime = 0;
+		this.keepPageFlag = false;
 
 		this.gadgets.push(this.swipeGad = new vp.SwipeGadget(this));
 		switch (this.type) {
@@ -44,6 +45,9 @@ class PagesView extends View {
 			}
 		}
 	}
+	keepPage() {
+		this.keepPageFlag = true;
+	}
 	getPageIndex(page) {
 		for (var i=0; i<this.pages.length; i++) if (this.pages[i] === page) return i;
 		return -1;
@@ -74,6 +78,12 @@ class PagesView extends View {
 				this.snaps.push([
 					this.sw * i * (h?1:0),
 					this.sh * i * (v?1:0)]);
+			}
+
+			if (this.viewScale != this.prevScale || this.keepPageFlag) {
+				this.userX = this.index*this.sw;
+				this.prevScale = this.viewScale;
+				this.keepPageFlag = false;
 			}
 
 			// Get the index of the page that should be mostly visible.

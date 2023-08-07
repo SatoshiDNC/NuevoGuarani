@@ -12,13 +12,15 @@
 	var allblack = v = new vp.View(null);
 	v.name = Object.keys({allblack}).pop();
 	v.renderFunc = function() {
+/*
 		if (false) {
 			if (this.counter)
 				console.log('transition state:', this.state, this.counter);
 			else
 				console.log('transition state:', this.state);
 		}
-		gl.clearColor(0,0,0, 1);
+*/
+		gl.clearColor(...vendorColors.uiBackground);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		switch (this.state) {
 		case 'begin':

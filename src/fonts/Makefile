@@ -8,6 +8,7 @@ AUTOGEN_FILES = \
 	iconFont.js \
 	dotMatrixFont.js \
 	financeGraphicsFont.js \
+	emojis.js \
 
 all.js: $(AUTOGEN_FILES)
 	cat $(AUTOGEN_FILES) > all.js
@@ -18,6 +19,7 @@ defaultFont.js: guarani.font.png
 	echo "  defaultFont.loadFromURL(" >> $(DEFAULTFONT_OUTFILE)
 	echo "    \"defaultFont\"," >> $(DEFAULTFONT_OUTFILE)
 	echo "    loadCheck," >> $(DEFAULTFONT_OUTFILE)
+#	echo "    \"src/fonts/guarani.font.png\"," >> $(DEFAULTFONT_OUTFILE)
 	echo "    \"data:application/octet-stream;base64,`cat guarani.font.png | base64 | tr -d '\r\n'`\"," \
 		>> $(DEFAULTFONT_OUTFILE)
 	echo "  );" >> $(DEFAULTFONT_OUTFILE)
@@ -28,6 +30,7 @@ iconFont.js: icon.font.png
 	echo "  iconFont.loadFromURL(" >> $(ICONFONT_OUTFILE)
 	echo "    \"iconFont\"," >> $(ICONFONT_OUTFILE)
 	echo "    loadCheck," >> $(ICONFONT_OUTFILE)
+#	echo "    \"src/fonts/icon.font.png\"," >> $(ICONFONT_OUTFILE)
 	echo "    \"data:application/octet-stream;base64,`cat icon.font.png | base64 | tr -d '\r\n'`\"," \
 		>> $(ICONFONT_OUTFILE)
 	echo "  );" >> $(ICONFONT_OUTFILE)
@@ -38,6 +41,7 @@ dotMatrixFont.js: dot-matrix.font.png
 	echo "  dotMatrixFont.loadFromURL(" >> $(DOTMATRIXFONT_OUTFILE)
 	echo "    \"dotMatrixFont\"," >> $(DOTMATRIXFONT_OUTFILE)
 	echo "    loadCheck," >> $(DOTMATRIXFONT_OUTFILE)
+#	echo "    \"src/fonts/dot-matrix.font.png\"," >> $(DOTMATRIXFONT_OUTFILE)
 	echo "    \"data:application/octet-stream;base64,`cat dot-matrix.font.png | base64 | tr -d '\r\n'`\"," \
 		>> $(DOTMATRIXFONT_OUTFILE)
 	echo "  );" >> $(DOTMATRIXFONT_OUTFILE)
@@ -48,9 +52,17 @@ financeGraphicsFont.js: finance-theme.font.png
 	echo "  financeGraphicsFont.loadFromURL(" >> $(FINANCEGRAPHICS_OUTFILE)
 	echo "    \"financeGraphicsFont\"," >> $(FINANCEGRAPHICS_OUTFILE)
 	echo "    loadCheck," >> $(FINANCEGRAPHICS_OUTFILE)
+#	echo "    \"src/fonts/finance-theme.font.png\"," >> $(FINANCEGRAPHICS_OUTFILE)
 	echo "    \"data:application/octet-stream;base64,`cat finance-theme.font.png | base64 | tr -d '\r\n'`\"," \
 		>> $(FINANCEGRAPHICS_OUTFILE)
 	echo "  );" >> $(FINANCEGRAPHICS_OUTFILE)
+
+EMOJIS_OUTFILE = emojis.js
+emojis.js: google-emoji-spritesheet.png
+#	echo "emojiFile = \"data:application/octet-stream;base64,`cat google-emoji-spritesheet.png | base64 | tr -d '\r\n'`\";" \
+#		>> $(EMOJIS_OUTFILE)
+	echo "emojiFile = \"google-emoji-spritesheet.png\";" \
+		>> $(EMOJIS_OUTFILE)
 
 # Clean files from subdirs and this dir
 .PHONY: clean

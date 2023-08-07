@@ -196,15 +196,104 @@
 		gl.enableVertexAttribArray(a);
 	}
 
+function initTexture(gl) {
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // Because video has to be download over the internet
+  // they might take a moment until it's ready so
+  // put a single pixel in the texture so we can
+  // use it immediately.
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const width = 1;
+  const height = 1;
+  const border = 0;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    level,
+    internalFormat,
+    width,
+    height,
+    border,
+    srcFormat,
+    srcType,
+    pixel
+  );
+
+  // Turn off mips and set wrapping to clamp to edge so it
+  // will work regardless of the dimensions of the video.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+  return texture;
+}
+function updateTexture(gl, texture, el) {
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    level,
+    internalFormat,
+    srcFormat,
+    srcType,
+    el,
+  );
+}
+
+const emojiTex = initTexture(gl);
+const emojiEl = document.createElement('img');
+emojiEl.addEventListener('load', function() {
+	updateTexture(gl, emojiTex, emojiEl);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	emojiReady = true;
+	loadCheck();
+});
+emojiEl.src = emojiFile;
+
 function drawThemeBackdrop(v, th) {
+//	var startTime = performance.now();
+	function baseline(f,c) { return f.glyphHeights[c]-f.glyphY1[c]; }
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	const mat = mat4.create();
 	const gr = config.themeGraphics;
 	const pixelPM = v.getRawMatrix();
 	if (gr && gr.font) {
+		var repeatX, repeatY;
+		if (canvas.height / gr.height > canvas.width / gr.width) {
+			repeatX = 2;
+			repeatY = Math.ceil(4/gr.height*gr.width);
+		} else {
+			repeatY = 2;
+			repeatX = Math.ceil(4/gr.width*gr.height);
+		}
+
+		if (!drawThemeBackdrop.prototype.buf) {
+			drawThemeBackdrop.prototype.buf = gl.createBuffer();
+			gr.font.beginObj();
+			gr.font.textObj(0, baseline(gr.font,gr.pattern.codePointAt(0)), gr.pattern, th.uiBackgroundPattern);
+			const data = gr.font.endObj();
+
+			drawThemeBackdrop.prototype.beg = {}; drawThemeBackdrop.prototype.len = {}; drawThemeBackdrop.prototype.typ = {}; drawThemeBackdrop.prototype.all = [];
+			function addShape4(o, name, typ, ...points) {
+				o.beg[name] = o.all.length/4; o.typ[name] = typ;
+				o.all.splice (o.all.length, 0, ...points);
+				o.len[name] = o.all.length/4 - o.beg[name];
+			}
+			addShape4(drawThemeBackdrop.prototype, 'bgThemeTex', gl.TRIANGLE_FAN, ...data );
+			gl.bindBuffer(gl.ARRAY_BUFFER, drawThemeBackdrop.prototype.buf);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(drawThemeBackdrop.prototype.all), gl.STATIC_DRAW);
+		}
+
 		const m = mat4.create();
-		const repeatX = 2, repeatY = Math.ceil(4/gr.height*gr.width);
 		mat4.identity(m);
     mat4.translate(m, m, [-1, 1, 1]);
     mat4.scale(m, m, [2/v.w, -2/v.h, 1]);
@@ -215,8 +304,12 @@ function drawThemeBackdrop(v, th) {
     mat4.scale(m, m, [scaleF, scaleF, 1]);
 		for (var i=0; i<repeatX; i++) for (var j=0; j<repeatY; j++) {
 			mat4.identity(mat);
-			gr.font.draw(i*gr.width-0.05*gr.width, j*gr.height-0.05*gr.height,
-				gr.pattern, th.uiBackgroundPattern, m, mat);
+//			gr.font.draw(i*gr.width-0.05*gr.width, j*gr.height+0.05*gr.height+baseline(gr.font,gr.pattern.codePointAt(0)),
+//				gr.pattern, th.uiBackgroundPattern, m, mat);
+			mat4.translate(mat, mat, [i*gr.width-0.05*gr.width, j*gr.height+0.05*gr.height, 0]);
+			gr.font.drawBuf(drawThemeBackdrop.prototype.buf, drawThemeBackdrop.prototype.beg.bgThemeTex, drawThemeBackdrop.prototype.len.bgThemeTex, th.uiBackgroundPattern, m, mat, 1);
 		}
 	}
+//	var stopTime = performance.now();
+//	console.log("bg:",stopTime - startTime);
 }

@@ -2,7 +2,9 @@
 var beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
 var beg4 = {}, len4 = {}, typ4 = {}; var all4 = [], buf4;
 var beg5 = {}, len5 = {}, typ5 = {}; var all5 = [], buf5;
+var beg19= {}, len19= {}, typ19= {}; var all19= [], buf19;
 var shapeInit = false;
+var emojiPoints = [];
 
 // Helper functions
 function rgb(rgba) { return [rgba[0], rgba[1], rgba[2]]; }
@@ -26,9 +28,13 @@ function addShape5(name, typ, ...points) {
 	all5.splice (all5.length, 0, ...points);
 	len5[name] = all5.length/5 - beg5[name];
 }
+function addShape19(name, typ, ...points) {
+	beg19[name] = all19.length/19; typ19[name] = typ;
+	all19.splice (all19.length, 0, ...points);
+	len19[name] = all19.length/19 - beg19[name];
+}
 
 function buildShapes() {
-console.log('buildShapes()');
 	beg2 = {}; len2 = {}; typ2 = {}; all2 = [];
 	beg4 = {}; len4 = {}; typ4 = {}; all4 = [];
 	beg5 = {}; len5 = {}; typ5 = {}; all5 = [];
@@ -174,6 +180,30 @@ console.log('buildShapes()');
 		);
 	}
 	{
+		function addShape2_roundedRect(name, type, w, h) {
+			var x = w-1, y = h-1;
+			addShape2(name, type,
+				0      /w,y       /h, 1       /w,y      /h, 0      /w,1      /h, 1      /w,1      /h, // left
+				0.03   /w,0.8     /h, 1       /w,1      /h, 0.1    /w,0.6    /h, 1      /w,1      /h, 0.2     /w,0.4     /h, 1      /w,1      /h,
+				0.4    /w,0.2     /h, 1       /w,1      /h, 0.6    /w,0.1    /h, 1      /w,1      /h, 0.8     /w,0.03    /h, 1      /w,1      /h,
+				1      /w,0       /h, x       /w,1      /h, x      /w,0      /h, // top
+				x      /w,1       /h, (w-0.8) /w,0.03   /h, x      /w,1      /h, (w-0.6)/w,0.1    /h, x       /w,1       /h, (w-0.4)/w,0.2    /h,
+				(w-0.2)/w,0.4     /h, x       /w,1      /h, (w-0.1)/w,0.6    /h, x      /w,1      /h, (w-0.03)/w,0.8     /h, x      /w,1      /h,
+				w      /w,1       /h, x       /w,y      /h, w      /w,y      /h, // right
+				x      /w,y       /h, (w-0.03)/w,(h-0.8)/h, x      /w,y      /h, (w-0.1)/w,(h-0.6)/h, x       /w,y       /h, (w-0.2)/w,(h-0.4)/h, x/w,y/h,
+				(w-0.4)/w,(h-0.2) /h, x       /w,y      /h, (w-0.6)/w,(h-0.1)/h, x      /w,y      /h, (w-0.8) /w,(h-0.03)/h, x      /w,y      /h,
+				x      /w,h       /h, 1       /w,y      /h, 1      /w,h      /h, 1      /w,y      /h, // bottom
+				0.8    /w,(h-0.03)/h, 1       /w,y      /h, 0.6    /w,(h-0.1)/h, 1      /w,y      /h, 0.4     /w,(h-0.2) /h,
+				0.2    /w,(h-0.4 )/h, 1       /w,y      /h, 0.1    /w,(h-0.6)/h, 1      /w,y      /h, 0.03    /w,(h-0.8) /h, 1      /w,y      /h,
+				0      /w,y       /h, 1       /w,y      /h, 1      /w,y      /h,
+				1      /w,1       /h, x       /w,y      /h, x      /w,1      /h,
+			);
+		}
+		addShape2_roundedRect('keypad', gl.TRIANGLE_STRIP, 4, 4);
+		addShape2_roundedRect('keypadwide', gl.TRIANGLE_STRIP, 8, 4);
+		addShape2_roundedRect('keypadtall', gl.TRIANGLE_STRIP, 4, 8);
+	}
+	{
 		const n = 50;
 		var r = n-1, s = 1/r, t = s/2, h = s*Math.sqrt(3)/2;
 		const v = [];
@@ -183,11 +213,26 @@ console.log('buildShapes()');
 		addShape2('tear', gl.TRIANGLES, ...v);
 	}
 
+	function addShape4Emoji(name, typ, x, y) {
+		const nx = 57, ny = 57;
+		const u = x+1, v = y+1;
+		beg4[name] = all4.length/4; typ4[name] = typ;
+		all4.splice (all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,);
+		len4[name] = all4.length/4 - beg4[name];
+	}
+	{
+		for (const e of emojiData) {
+			addShape4Emoji(e.label, gl.TRIANGLE_STRIP, e.x, e.y);
+		}
+	}
+	addShape4('emojis', gl.TRIANGLE_STRIP, ...emojiPoints);
+
 	if (!shapeInit) {
 		shapeInit = true;
 		buf2 = gl.createBuffer(); // buffer for 2-value vertices
 		buf4 = gl.createBuffer(); // buffer for 4-value vertices
 		buf5 = gl.createBuffer(); // buffer for 5-value vertices
+		buf19= gl.createBuffer(); // buffer for 19-value vertices
 	}
 
   gl.bindBuffer(gl.ARRAY_BUFFER, buf2);

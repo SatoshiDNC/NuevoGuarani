@@ -1,9 +1,8 @@
 all: subdirs all.js # Textbook subdirectory recursion
 
 FILES = \
-	defaultvendorcurrency.js \
-	enabledpaymentmethods.js \
-	enabledcurrencies.js \
+	maincurrency.js \
+	cashcurrency.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js

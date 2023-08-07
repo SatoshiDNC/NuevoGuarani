@@ -34,7 +34,6 @@ var vp = (function() {
 	var uLoc;
 	function setImage(img) {
 		if (!progObj) {
-console.log('creating program');
 			// create shaders
 			var vertexShaderSrc = 
 			"attribute vec2 aVertex;" +
@@ -83,7 +82,6 @@ console.log('creating program');
 			tloc = gl.getAttribLocation(progObj, "aUV");
 			uLoc = gl.getUniformLocation(progObj, "pos");
 		}
-console.log('setting image');
 
 		tex = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, tex);

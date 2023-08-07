@@ -8,6 +8,15 @@ v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
+Object.defineProperty(v, "wallet", {
+	get : function () {
+		const i = walletsettings.typelist.index;
+		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
+		case 'LNbits compatible': return new LNbitsWallet(); break;
+		}
+		return new Wallet();
+	}
+});
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 	g.key = 'walletType';
 	g.list = wallettypes;
@@ -280,12 +289,12 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
 			};
 		}
 	}
-v.load = function() {
+v.load = function(cb) {
 	const debuglog = false;
 	{
 		const g = this.typelist, v = this;
 		g.tempValue = '';
-		function finishInit(v) {
+		function finishInit(cb, v) {
 			const g = v.typelist;
 			var index = -1;
 			for (var i=0; i<wallettypes.length; i++) {
@@ -328,6 +337,7 @@ v.load = function() {
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue);
+			v.loadComplete = true; cb();
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
 		var req = db.transaction(["settings"], "readonly")
@@ -336,11 +346,11 @@ v.load = function() {
 		req.onsuccess = (event) => {
 			g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(this);
+			finishInit(cb, this);
 		};
 		req.onerror = (event) => {
 			console.log(`error getting ${g.key}`, event);
-			finishInit(this);
+			finishInit(cb, this);
 		};
 	}
 	for (const gad of [
@@ -376,10 +386,3 @@ v.load = function() {
 		};
 	}
 }
-
-//function getWalletType() { return wallettypes[walletsettings.typelist.index]; }
-//function getStrikeURL() { return walletsettings.strikeurl.value; }
-//function getStrikeKey() { return walletsettings.strikekey.value; }
-//function getCoinosURL() { return walletsettings.coinosurl.value; }
-//function getCoinosKey() { return walletsettings.coinoskey.value; }
-

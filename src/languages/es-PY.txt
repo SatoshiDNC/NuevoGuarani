@@ -1,3 +1,5 @@
+.	,
+,	.
 ₿	Nuevo Guaraní
 €	Euro
 ₲	Guaraní
@@ -14,6 +16,7 @@ all data has been deleted and/or reset to installation defaults	Se han borrado t
 API auth token	Token de autenticación API
 API bearer token	Token de autenticación API
 are you sure?	¿Está seguro?
+back	retro
 barcode scanning	escaneo de códigos de barras
 base URL	URL básica
 bill	FACTURA
@@ -25,6 +28,7 @@ cash back amount	importe
 cash register number	caja na
 cash tendered	efectivo
 cashier	cajero
+change due	su vuelto
 city	ciudad
 coinos compatible	Compatible con coinos
 colors	colores
@@ -44,6 +48,8 @@ delete data	borrar datos
 Discard this invoice?	¿Descartar esta factura?
 enabled currencies	Monedas habilitadas
 enabled payment methods	Formas de pago habilitados
+enter	intro
+enumerate change due	enumere su vuelto
 external	Exterior
 financial	financiero
 How would you like to pay?	¿Cómo le gustaría pagar?
@@ -58,10 +64,12 @@ license number	timbrado na
 light mode	Modo claro
 lightning invoice	factura relámpago
 lnbc item description	PAGO DE FACTURA NUEVO GUARANÍ
+main currency	moneda principal
 my business	Mi negocio
 new account	Nueva cuenta
 no	NO
 not set	No configurado
+orders	pedidos
 pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
 pay {DESC} {AMNT} sats on {DATE}	pagar a {DESC} {AMNT} sats el {DATE}
 payment	PAGO
@@ -78,10 +86,12 @@ rename	Cambiar nombre
 scan product barcodes into description field	escanear los códigos de los productos en el descripción
 set API key	Establecer clave API
 settings	Ajustes
+shows how many of each denomination to return	muestra cuántos ejemplares de cada denominación
 some	algunos
 state	departamento
 strike compatible	Compatible con strike
-subtotal	IMPORTE TOTAL
+subtotal	importe total
+subtotal: #	subtotal: #
 switch account	Cambiar de cuenta
 tax	IVA
 tax id	RUC

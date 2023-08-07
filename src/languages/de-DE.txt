@@ -1,3 +1,5 @@
+.	,
+,	.
 ₿	BTC/LN
 €	Euro
 ₲	Guaraní
@@ -14,6 +16,7 @@ all data has been deleted and/or reset to installation defaults	Alle Daten wurde
 API auth token	API-Authentifizierungs-Token
 API bearer token	API-Authentifizierungs-Token
 are you sure?	Sind Sie sicher?
+back	Rück
 barcode scanning	Barcode-Scannen
 base URL	Basis-URL
 bill	RECHNUNG
@@ -25,6 +28,7 @@ cash back amount	Betrage
 cash register number	Kassennummer
 cash tendered	angedientes Geld
 cashier	Kassierer
+change due	Wechselgeld
 city	Stadt
 coinos compatible	Coinos-kompatibel
 colors	Farben
@@ -44,6 +48,8 @@ delete data	Daten löschen
 Discard this invoice?	Diese Rechnung verwerfen?
 enabled currencies	Aktivierte Währungen
 enabled payment methods	Aktivierte Zahlungsarten
+enter	Eingabe
+enumerate change due	Wechselgeld aufzählen
 external	Extern
 financial	finanzielle
 How would you like to pay?	Wie möchten Sie bezahlen?
@@ -58,10 +64,12 @@ license number	Lizenznummer
 light mode	Hellmodus
 lightning invoice	Lightningrechnung
 lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
+main currency	Hauptwährung
 my business	Mein Geschäft
 new account	Neues Konto
 no	NEIN
 not set	Nicht eingestellt
+orders	Bestellungen
 pay {AMNT} sats for {DESC}	{AMNT} sats für {DESC} bezahlen
 pay {DESC} {AMNT} sats on {DATE}	{DESC} am {DATE} {AMNT} sats zahlen
 payment	ZAHLUNG
@@ -78,10 +86,12 @@ rename	Umbenennen
 scan product barcodes into description field	Produkt-Barcodes in das Beschreibungsfeld scannen
 set API key	API-Schlüssel einstellen
 settings	Einstellungen
+shows how many of each denomination to return	zeigt an, wie viele der einzelnen Stückelungen
 some	einige
 state	Staat
 strike compatible	Strike-kompatibel
-subtotal	ZWISCHENSUMME
+subtotal	Zwischensumme
+subtotal: #	Zwischensumme: #
 switch account	Konto wechseln
 tax	Steuer
 tax id	Steueridentifikationsnummer

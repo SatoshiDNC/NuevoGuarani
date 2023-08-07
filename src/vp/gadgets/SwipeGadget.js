@@ -5,15 +5,18 @@ class SwipeGadget extends Gadget {
 		this.flingFar = false;
 		this.followUp = false; this.animState = '';
 		this.doSwipe = function(next, snapIndex = undefined) {
+//console.group('doSwipe');
 			var g = this, v = g.viewport;
 			var index; if (snapIndex !== undefined) index = clamp(snapIndex, 0, v.snaps.length);
 			if (g.actionFlags & (vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN)) {
 				v.tempVX = 0;
-				v.tempVY = next? -0.001: 0.001;
+				if (v.tempVY === undefined) v.tempVY = 0;
+				v.tempVY = next? Math.min(v.tempVY, -0.001): Math.max(v.tempVY, 0.001);
 				v.userY = v.userY - v.tempVY;
 			}
 			if (g.actionFlags & (vp.GAF_SWIPEABLE_LEFTRIGHT | vp.GAF_SCROLLABLE_LEFTRIGHT)) {
-				v.tempVX = next? -0.001: 0.001;
+				if (v.tempVX === undefined) v.tempVX = 0;
+				v.tempVX = next? Math.min(v.tempVX, -0.001): Math.max(v.tempVX, 0.001);
 				v.tempVY = 0;
 				v.userX = v.userX - v.tempVX;
 			}
@@ -21,6 +24,7 @@ class SwipeGadget extends Gadget {
 			v.relayout();
 			v.setRenderFlag(true);
 			g.swipeEndFunc(undefined, snapIndex !== undefined? v.snaps[index] : undefined);
+//console.groupEnd();
 		}
 		this.swipeBeginFunc = function(p) {
 			var g = this, v = g.viewport, s = v.getScale();
@@ -166,8 +170,10 @@ class SwipeGadget extends Gadget {
 			this.viewport.queueLayout();
 		}
 		this.followUpFunc = function() {
+//console.log('followUpFunc', this.followUp);
 			if (!this.followUp) return;
 			var g = this, v = g.viewport;
+//console.log('animState', g.animState);
 			switch (g.animState) {
 			case 'decel':
 				if (g.coast(false)) g.animState = 'done';

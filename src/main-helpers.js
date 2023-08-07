@@ -54,7 +54,23 @@ function tryParseJSONObject(jsonString) {
 function colorize(color,b,c) {
 	var d = b, e = c; if (b[0]>c[0] && b[1]>c[1] && b[2]>c[2]) { d = c; e = b; }
 	function f(a,b,c) { return a*(c-b)+b; }
-	return [f(color[0],d[0],e[0]), f(color[1],d[1],e[1]), f(color[2],d[2],e[2]), color[3]];
+	return [
+		f(color[0],d[0],e[0]),
+		f(color[1],d[1],e[1]),
+		f(color[2],d[2],e[2]),
+		  color[3],
+	];
+}
+
+// Blends two colors based on alpha factor.
+function blend(color1,color0,alpha) {
+	let onema = 1-alpha;
+	return [
+		color1[0]*alpha+color0[0]*onema,
+		color1[1]*alpha+color0[1]*onema,
+		color1[2]*alpha+color0[2]*onema,
+		color1[3]*alpha+color0[3]*onema,
+	];
 }
 
 var isNumber = function isNumber(value) 

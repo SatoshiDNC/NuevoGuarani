@@ -1,5 +1,6 @@
 const trs = {};
 const supportedLangs = ['de-DE', 'en-US', 'es-PY', 'gn-PY'];
+const langFallbacks = {'gn-PY': ['es-PY']};
 function tr(s, l = lcode) {
 	const enableWarnings = false;
 	if (!(s in trs)) {
@@ -22,8 +23,22 @@ function tr(s, l = lcode) {
 	if (l in trs[s]) {
 		return trs[s][l];
 	} else {
+		var fallbacks;
+		if (!(l in langFallbacks)) {
+			fallbacks = ['en-US'];
+		} else {
+			fallbacks = [...langFallbacks[l], 'en-US'];
+		}
+		var best = -1, bestL = '';
 		for(var v in trs[s]) {
 			if(!trs[s].hasOwnProperty(v) || v == 'source') continue;
+			var i = fallbacks.indexOf(v);
+			if ((i >= 0 && i < best) || best == -1) {
+				best = i;
+				bestL = v;
+			}
+		}
+		if (bestL) {
 			if (enableWarnings) console.log("WARNING: Using '"+v+"' instead of '"+l+"' for", trs[s]);
 			return trs[s][v];
 		}

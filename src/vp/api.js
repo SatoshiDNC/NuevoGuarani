@@ -6,8 +6,10 @@ function endInput() {
 	var g = inputGad, el;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
 	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
-	el.blur();
-	el.style.display = 'none';
+	if (el) {
+		el.blur();
+		el.style.display = 'none';
+	}
 	inputGad = undefined;
 }
 
@@ -19,14 +21,16 @@ function beginInput(g) {
 		kbnext.style.display = 'inline';
 		kbprev.style.display = 'inline';
 	}
-	var el;
+	let el;
 	if (g.actionFlags & vp.GAF_NUMINPUT) el = kbnum;
 	if (g.actionFlags & vp.GAF_TEXTINPUT) el = kbalpha;
-	el.value = g.text;
-	el.style.display = 'inline';
-	el.focus();
-	el.select();
-	inputSelected = true;
+	if (el) {
+		el.value = g.text;
+		el.style.display = 'inline';
+		el.focus();
+		el.select();
+		inputSelected = true;
+	}
 }
 
   function useProg() {
@@ -43,6 +47,20 @@ function beginInput(g) {
     gl.enableVertexAttribArray(a);
   }
 
+let vpStack = [];
+function pushRoot(viewport) {
+	vpStack.push(rootViewport);
+	rootViewport = viewport;
+	rootViewport.queueLayout();
+console.log('pushRoot');
+	resizeCanvas();
+}
+function popRoot() {
+	rootViewport = vpStack.pop();
+	rootViewport.queueLayout();
+console.log('popRoot');
+	resizeCanvas();
+}
 
 rootViewport = new ViewPicker();
 var refresherTimeStamp = -1, refresherFrame = 0;
@@ -270,6 +288,7 @@ function resizeCanvas() {
 	if (debug1) console.log('resizeCanvas()');
 	nframes = 10;
 	var w = window.innerWidth, h = window.innerHeight;
+//console.log(w, h, 'window.inner');
 	if (1) {
 		canvas.width = w * window.visualViewport.scale * window.devicePixelRatio;
 		canvas.height = h * window.visualViewport.scale * window.devicePixelRatio;
@@ -377,20 +396,20 @@ var speak = 0;
               g.viewport.setRenderFlag(true);
               if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
               if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
-console.log('menu down', g.gestureState, g.ownedBy);
             }
           }
         }
       } else { // not mouse (down)
+        var clickableAlreadyFound = false;
         for (const h of p.hitList.hits) {
           const g = h.gad;
           if (!g.ownedBy) {
-            if (!!(g.actionFlags & vp.GAF_CLICKABLE)) {
-              g.gestureState = 'begin-tap'; g.ownedBy = index;
+            if (!!(g.actionFlags & vp.GAF_CLICKABLE) && !clickableAlreadyFound) {
+              g.gestureState = 'begin-tap'; g.ownedBy = index; clickableAlreadyFound = true;
               g.viewport.setRenderFlag(true);
               g.gestureBeginTime = e.timeStamp;
               if (!!(g.actionFlags & (
-								vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE))) {
+              vp.GAF_CONTEXTMENU | vp.GAF_HOLDABLE | vp.GAF_DRAGGABLE))) {
                 g.gestureTimerId = setTimeout(eventHandler, TAP_WINDOW, e, 'tap-and-hold time reached');
      if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap hold'));
               } else
@@ -705,7 +724,7 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
             if (g.ownedBy == index) {
               switch (g.gestureState) {
               case 'begin-menu':
-								if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
+                if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
                 break;
               }
               delete g.gestureState; delete g.ownedBy;
@@ -875,8 +894,8 @@ console.log('tap-and-hold time reached');
             if (!!(g.actionFlags & vp.GAF_CONTEXTMENU) && !p.swiping) {
               g.gestureState = 'menu-hold';
               g.viewport.setRenderFlag(true);
-							DisownAllOtherGads(p, g);
-		          if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
+              DisownAllOtherGads(p, g);
+              if (g.contextMenuFunc) g.contextMenuFunc.call(g, p);
             } else if (!!(g.actionFlags & vp.GAF_HOLDABLE) && !p.swiping) {
               g.gestureState = 'hold';
 console.log('hold');
@@ -1139,6 +1158,7 @@ function hideAllTextInputs() {
 	window.addEventListener("resize",
 		function(e) { resizeCanvas(); }, false); resizeCanvas();
 	window.requestAnimationFrame(refresher);
+/*
 	kbalpha.addEventListener("keydown",
 		function(e) {
 			var g = inputGad;
@@ -1230,6 +1250,7 @@ function hideAllTextInputs() {
 			inputGad = undefined;
 			if (g && g.textPrevFunc) g.textPrevFunc.call(g);
 		}, false);
+*/
 	canvas.addEventListener("touchend",
 		function(e) { eventHandler(e, 'touches'); }, false);
 	canvas.addEventListener("pointerdown",
@@ -1250,12 +1271,23 @@ function hideAllTextInputs() {
 		function(e) { e.preventDefault(); }, false);
 	canvas.addEventListener("wheel",
 		function(e) { e.preventDefault(); eventHandler(e, 'wheel'); }, false);
+	document.addEventListener('paste', function(e) {
+		var g = inputGad;
+		if (g && g.pasteFunc) {
+			g.pasteFunc.call(g, e);
+		}
+	});
 	document.addEventListener('keydown', function(e) {
 		var g = inputGad;
+		if (g && g.keydownFunc) {
+			g.keydownFunc.call(g, e);
+		}
+/*
 		if (e.key == 'Enter' && g && g.textNextFunc) {
 			e.preventDefault();
 			g.textNextFunc.call(g);
 		}
+*/
 	});
 }
 

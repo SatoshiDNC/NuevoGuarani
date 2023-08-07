@@ -33,10 +33,10 @@ console.log('clck');
 			};
 		}
 	}
-v.load = function() {
+v.load = function(cb) {
 	const debuglog = false, g = this.countermode;
 	var selectedValue = false;
-	function finishInit(v) {
+	function finishInit(cb, v) {
 		const g = v.countermode;
 		g.state = selectedValue? true: false;
 		{ // For the GUI.
@@ -46,6 +46,7 @@ v.load = function() {
 		} { // For persistence.
 		}
 		if (debuglog) console.log(`${g.key} ready`, g.state);
+		v.loadComplete = true; cb();
 	}
 	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
 	var req = db.transaction(["settings"], "readonly")
@@ -54,10 +55,10 @@ v.load = function() {
 	req.onsuccess = (event) => {
 		selectedValue = event.target.result
 		if (debuglog) console.log(`${g.key} restored`, selectedValue);
-		finishInit(this);
+		finishInit(cb, this);
 	};
 	req.onerror = (event) => {
 		console.log(`error getting ${g.key}`, event);
-		finishInit(this);
+		finishInit(cb, this);
 	};
 }

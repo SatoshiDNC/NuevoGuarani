@@ -1,4 +1,5 @@
 var loadPending = true;
+var emojiReady = false;
 function loadCheck() {
   if ( loadPending
     && defaultFont.isReady()

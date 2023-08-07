@@ -295,9 +295,7 @@ v.gadgets.push(g = new vp.Gadget(v));
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;
 
-	enabledcurrencies.layoutFunc = mainsettings.layoutFunc;
-	enabledcurrencies.renderFunc = mainsettings.renderFunc;
-	enabledpaymentmethods.layoutFunc = mainsettings.layoutFunc;
-	enabledpaymentmethods.renderFunc = mainsettings.renderFunc;
-	defaultvendorcurrency.layoutFunc = mainsettings.layoutFunc;
-	defaultvendorcurrency.renderFunc = mainsettings.renderFunc;
+	maincurrency.layoutFunc = mainsettings.layoutFunc;
+	maincurrency.renderFunc = mainsettings.renderFunc;
+	cashcurrency.layoutFunc = mainsettings.layoutFunc;
+	cashcurrency.renderFunc = mainsettings.renderFunc;

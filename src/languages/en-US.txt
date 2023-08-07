@@ -1,3 +1,5 @@
+.	.
+,	,
 ₿	Bitcoin
 €	Euro
 ₲	Guaraní
@@ -14,6 +16,7 @@ all data has been deleted and/or reset to installation defaults	All data has bee
 API auth token	API auth token
 API bearer token	API bearer token
 are you sure?	Are you sure?
+back	back
 barcode scanning	barcode scanning
 base URL	Base URL
 bill	INVOICE
@@ -25,6 +28,7 @@ cash back amount	amount
 cash register number	cash reg
 cash tendered	cash tendered
 cashier	cashier
+change due	change due
 city	city
 coinos compatible	Coinos compatible
 colors	colors
@@ -44,6 +48,8 @@ delete data	delete data
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
 enabled payment methods	Enabled payment methods
+enter	enter
+enumerate change due	enumerate change due
 external	External
 financial	financial
 How would you like to pay?	How would you like to pay?
@@ -58,10 +64,12 @@ license number	license #
 light mode	Light mode
 lightning invoice	lightning invoice
 lnbc item description	PAYMENT OF LIGHNING INVOICE
+main currency	main currency
 my business	My Business
 new account	New account
 no	NO
 not set	Not set
+orders	orders
 pay {AMNT} sats for {DESC}	pay {AMNT} sats for {DESC}
 pay {DESC} {AMNT} sats on {DATE}	pay {DESC} {AMNT} sats on {DATE}
 payment	PAYMENT
@@ -78,10 +86,12 @@ rename	Rename
 scan product barcodes into description field	scan product barcodes into description field
 set API key	Set API key
 settings	Settings
+shows how many of each denomination to return	shows how many of each denomination to return
 some	some
 state	state
 strike compatible	Strike compatible
-subtotal	SUBTOTAL
+subtotal	subtotal
+subtotal: #	subtotal: #
 switch account	Switch account
 tax	tax
 tax id	taxpayer identification number

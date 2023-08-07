@@ -6,11 +6,16 @@ class ColorTheme {
 		this.uiLightningPurple = [0.5, 0, 1, 1];
 		this.uiLightningYellow = [1, 0.9, 0, 1];
 		this.uiFiatGreen = [112/255, 130/255, 56/255, 1];
+		this.uiCoinSilver = [212/255, 212/255, 220/255, 1];
+		this.uiCoinCopper = [0xb8/255, 0x73/255, 0x33/255, 1];
+		this.uiBarcodeScannerBeam = [1,0,0, 1];
+		this.uiErrorRed = [1,0,0, 1];
+		this.uiSuccessGreen = [0,1,0, 1];
 
 		// Colors that generally should be set for each theme.
 		this.uiBackground			= [0,0,0, 1];
 		this.uiForeground			= [1,1,1, 1];
-		this.uiButton					= [0.6,0.6,0.6, 1];
+		this.uiButton					= [0.7,0.7,0.7, 1];
 		this.uiButtonSel			= [0.2,1.0,0.2, 1];
 		this.uiButtonGhost		= [0.2,0.2,0.2, 1];
 		this.uiVideoOverlayButton					= [1.0,1.0,1.0, 1];
@@ -38,6 +43,31 @@ class ColorTheme {
 		this.uiSettingsText			= this.uiForeground;
 		this.uiSettingsSubText	= this.uiGhostText;
 		this.uiSettingSelect		= this.uiButtonSel;
+
+		// For the checkout panes
+
+		// Data entry textbox
+		Object.defineProperty(this, "uiDataEntryArea", { get : function () { return this.uiSettingsBubble; } } );
+		Object.defineProperty(this, "uiDataEntryText", { get : function () { return this.uiText; } } );
+		Object.defineProperty(this, "uiDataEntryGhostText", { get : function () { return blend(this.uiDataEntryText, this.uiDataEntryArea, 0.1); } } );
+		Object.defineProperty(this, "uiDataEntryCursor", { get : function () { return this.uiPillOrange; } } );
+
+		// Bill of items
+		Object.defineProperty(this, "uiBillChargeText",				{ get : function () { return this.uiText; } } );
+		Object.defineProperty(this, "uiBillCharge",						{ get : function () { return colorize(this.uiBillChargeText, this.uiBackground, this.uiSettingsBubble); } } );
+		Object.defineProperty(this, "uiBillChargeTextLight",	{ get : function () { return blend(this.uiBillChargeText, this.uiBillCharge, 0.5); } } );
+		Object.defineProperty(this, "uiBillCredit",						{ get : function () { return [1,1,0,1]; } } );
+		Object.defineProperty(this, "uiBillCreditText",				{ get : function () { return [0,0,0,1]; } } );
+		Object.defineProperty(this, "uiBillCreditTextLight",	{ get : function () { return blend(this.uiBillCreditText, this.uiBillCredit, 0.5); } } );
+
+		// Subtotal bar
+		Object.defineProperty(this, "uiBillSubtotalArea",				{ get : function () { return this.uiDataEntryArea; } } );
+		Object.defineProperty(this, "uiBillSubtotalText",				{ get : function () { return this.uiDataEntryText; } } );
+		Object.defineProperty(this, "uiBillSubtotalLabel",			{ get : function () { return this.uiButton; } } );
+		Object.defineProperty(this, "uiBillSubtotalLabelGhost",	{ get : function () { return this.uiButtonGhost; } } );
+
+
+
 	}
 	get uiBackgroundPattern() { return colorize([0.5,0.5,0.5,1], this.uiBackground, this.uiSettingsBubble); }
 	set(variable, value) {

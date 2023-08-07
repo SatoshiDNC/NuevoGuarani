@@ -2,9 +2,19 @@
 	const PARAGUAY = 1;
 	var style = PARAGUAY;
 
-	const enabledLangs = ['en-US', 'es-PY', 'de-DE', 'gn-PY'];
+	const enabledLangs = ['en-US', 'es-PY', 'de-DE'];
 	var lcode;
 	const supportedCurrencies = ['₿','₲','$','€'];
+	{
+		let urlParams = new URLSearchParams(window.location.search);
+		let lang = urlParams.get('lang');
+//		if (!lang) lang = 'en-US';
+		if (!lang) lang = '';
+		if (enabledLangs.includes(lang)) lcode = lang;
+		//if (lang == 'es-PY') supportedCurrencies.splice(0,4,'₲'/*,'₿'*//*,'$','€'*/);
+		//if (lang.startsWith('de')) supportedCurrencies.splice(0,4,'€'/*,'₿'*//*,'₲','$'*/);
+		//if (lang == 'en-US') supportedCurrencies.splice(0,4,'$'/*,'₿'*//*,'₲','€'*/);
+	}
 
 	const enabledCustomerLangs = ['gn-PY', 'es-PY', 'en-US', 'de-DE'];
 	var defaultCustomerLang = 'es-PY';
@@ -28,7 +38,7 @@
 	var customerColors = new DefaultLightTheme();
 
 	// Randomly produce a random configuration for testing.
-	if (Math.random() > 0.5) {
+	if (!releasebuild && Math.random() > 0.5) {
 
 		style = Math.round(Math.random() * 1);
 
@@ -65,6 +75,7 @@
 	}
 
 	// DEMO MODES
+/*
 	if (0) { // English demo for Paraguay usage.
 		style = PARAGUAY; lcode = 'en-US';
 		enabledCustomerLangs.splice(0,4,'en-US','es-PY');
@@ -107,11 +118,11 @@
 //		defaultVendorCurrency = '$';
 		defaultCustomerCurrency = '$';
 	}
-
+*/
 	const conversionRates = {};
 	conversionRates['₿'] = {
 		'₿': 1.0, // calculated in sats
-		'₲': 1.5 + Math.random(),
+		'₲': 2.0, // 1.5 + Math.random(),
 		'$': 1/(40 + 10 * Math.random()), // calculated in cents
 		'€': 1/(45 + 10 * Math.random()), // calculated in cents
 	};

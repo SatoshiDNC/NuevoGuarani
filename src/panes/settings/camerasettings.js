@@ -156,16 +156,22 @@ v.gadgets.push(v.itemscan = g = new vp.Gadget(v));
 	g.key = 'enableItemScan';
 	g.type = 'enable';
 	g.title = 'barcode scanning';
-	g.subtitle = 'scan product barcodes into description field';
+	g.subtitle = 'enable barcode scanning function';
   g.state = false;
 	Object.defineProperty(g, "icon", {
 		get : function () { return this.state? "\x0E":"\x0D"; }
 	});
+	g.appFunction = function() {
+		const g = this;
+		camerasettings.lnscan.hide = !g.state;
+		camerasettings.lnscan.enabled = !camerasettings.lnscan.hide;
+	}
 	g.clickFunc = function(index) {
 		const g = this;
 		{ // For the GUI.
 			g.state = !g.state; v.setRenderFlag(true);
 		} { // For the app function.
+			if (g.appFunction) g.appFunction();
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -179,34 +185,64 @@ v.gadgets.push(v.itemscan = g = new vp.Gadget(v));
 			};
 		}
 	}
-v.load = function() {
+v.gadgets.push(v.lnscan = g = new vp.Gadget(v));
+	g.key = 'enableLightningScan';
+	g.type = 'enable';
+	g.title = 'lightning invoice scanning';
+	g.subtitle = 'to pay lightning invoices on behalf of customer';
+  g.state = false;
+	Object.defineProperty(g, "icon", {
+		get : function () { return this.state? "\x0E":"\x0D"; }
+	});
+	g.clickFunc = v.itemscan.clickFunc;
+
+v.load = function(cb) {
 	cameraSettingTrigger = true;
 	loadCameraSettingGuarded();
 
-	const debuglog = false, g = this.itemscan;
-	var selectedValue = false;
-	function finishInit(v) {
-		const g = v.itemscan;
-		g.state = selectedValue? true: false;
-		{ // For the GUI.
-			v.setRenderFlag(true);
-		} { // For the app function.
-			//defaultVendorCurrency = g.list[index];
-		} { // For persistence.
+	const debuglog = false;
+	const gads = [
+		'itemscan', 'lnscan',
+	];
+	function icb(cb, v) {
+		let allComplete = true;
+		for (let gad of gads) {
+			if (v[gad].loadComplete) {
+			} else {
+				allComplete = false;
+				break;
+			}
+			if (allComplete) {
+				v.loadComplete = true; cb();
+			}
 		}
-		if (debuglog) console.log(`${g.key} ready`, g.state);
 	}
-	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-	var req = db.transaction(["settings"], "readonly")
-		.objectStore("settings")
-		.get(`${getCurrentAccount().id}-${g.key}`);
-	req.onsuccess = (event) => {
-		selectedValue = event.target.result
-		if (debuglog) console.log(`${g.key} restored`, selectedValue);
-		finishInit(this);
-	};
-	req.onerror = (event) => {
-		console.log(`error getting ${g.key}`, event);
-		finishInit(this);
-	};
+	for (const gad of gads) {
+		const g = this[gad];
+		g.tempValue = g.defaultValue;
+		function finishInit(cb, v, g) {
+			g.state = g.tempValue? true: false;
+			{ // For the GUI.
+				v.setRenderFlag(true);
+			} { // For the app function.
+				if (g.appFunction) g.appFunction();
+			} { // For persistence.
+			}
+			if (debuglog) console.log(`${g.key} ready`, g.state);
+			v.loadComplete = true; icb(cb, v);
+		}
+		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
+		var req = db.transaction(["settings"], "readonly")
+			.objectStore("settings")
+			.get(`${getCurrentAccount().id}-${g.key}`);
+		req.onsuccess = (event) => {
+			g.tempValue = event.target.result
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
+			finishInit(cb, this, g);
+		};
+		req.onerror = (event) => {
+			console.log(`error getting ${g.key}`, event);
+			finishInit(cb, this, g);
+		};
+	}
 }

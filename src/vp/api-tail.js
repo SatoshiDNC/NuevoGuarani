@@ -24,6 +24,8 @@
   return {
     initialize: initialize,
     start: start,
+		pushRoot: pushRoot,
+		popRoot: popRoot,
     setDebugFlags: setDebugFlags,
     getContext: getContext,
     getPointerRadius: getPointerRadius,

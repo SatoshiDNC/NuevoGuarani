@@ -1,3 +1,5 @@
+.	,
+,	.
 ₿	Guaraní pyahu
 €	Euro
 ₲	Guaraní
@@ -14,6 +16,7 @@ about @	@ rupi
 	API auth token	Token de autenticación API
 	API bearer token	Token de autenticación API
 	are you sure?	¿Está seguro?
+	back	retro
 	barcode scanning	escaneo de códigos de barras
 	base URL	URL básica
 bill	ÑEMUMBYREHAI
@@ -25,6 +28,7 @@ cash back amount	monto efectivo rehegua
 	cash register number	caja na
 	cash tendered	efectivo
 	cashier	cajero
+	change due	su vuelto
 	city	ciudad
 	coinos compatible	Compatible con coinos
 	colors	colores
@@ -44,6 +48,8 @@ customer bill	Factura cliente
 Discard this invoice?	¿Emboyke ko factura?
 	enabled currencies	Monedas habilitadas
 	enabled payment methods	Métodos de pago habilitados
+	enter	intro
+	enumerate change due	enumere su vuelto
 	external	Exterior
 	financial	financiero
 How would you like to pay?	¿Mba'éichapa repagase?
@@ -58,10 +64,12 @@ item	mba'e
 	light mode	Modo claro
 	lightning invoice	factura relámpago
 lnbc item description	HEPYME'Ẽ FACTURA GUARANÍ PYAHU
+	main currency	moneda principal
 	my business	Mi negocio
 	new account	Nueva cuenta
 no	NO
 	not set	No configurado
+	orders	pedidos
 	pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
 	pay {DESC} {AMNT} sats on {DATE}	pagar a {DESC} {AMNT} sats el {DATE}
 payment	HEPYME'Ẽ
@@ -78,10 +86,12 @@ qty	hetakue
 	scan product barcodes into description field	escanear los códigos de los productos en el descripción
 	set API key	Establecer clave API
 	settings	Ajustes
+	shows how many of each denomination to return	muestra cuántos ejemplares de cada denominación
 	some	algunos
 	state	departamento
 	strike compatible	Compatible con strike
 subtotal	OPAITE
+	subtotal: #	subtotal: #
 	switch account	Cambiar de cuenta
 tax	IVA
 tax id	RUC

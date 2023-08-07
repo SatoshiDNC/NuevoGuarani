@@ -93,16 +93,46 @@ function dateToID(d) {
 	};
 }
 
+let showConfigOnlyOnce = true;
 function loadAccount() {
-	accountsettings.load();
-	languagesettings.load();
-	enabledcurrencies.load();
-	defaultvendorcurrency.load();
-	walletsettings.load();
-	camerasettings.load();
-	layoutsettings.load();
-	colorsettings.load();
-	buttonbar.popGad.enabled = true;
+	const panes = [
+		accountsettings,
+		languagesettings,
+		maincurrency,
+		cashcurrency,
+		currencysettings,
+		walletsettings,
+		camerasettings,
+		layoutsettings,
+		colorsettings,
+	];
+
+	function cb() {
+		let allComplete = true;
+		let n = 0;
+		for (const pane of panes) {
+			if (pane.loadComplete) {
+				n++;
+			} else {
+				allComplete = false;
+				break;
+			}
+		}
+		if (allComplete && showConfigOnlyOnce) {
+			showConfigOnlyOnce = false;
+			config.log();
+			startpane2.invoice.clickFunc();
+		} else {
+//			console.log(n);
+		}
+	}
+
+	for (const pane of panes) {
+		pane.load(cb);
+	//walletsettings.load(); // TODO
+	//camerasettings.load(); // TODO
+	}
+//	buttonbar.popGad.enabled = true;
 }
 
 const accountsettings = v = new vp.View(null);
@@ -197,6 +227,7 @@ v.gadgets.push(v.editaccount = g = new vp.Gadget(v));
 			tx.onerror = (event) => {
 				console.log("error updating account", event);
 			};
+			settingsbuttons2.setRenderFlag(true);
 		}
 	}
 v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
@@ -395,16 +426,30 @@ v.gadgets.push(v.cashier = g = new vp.Gadget(v));
 	g.defaultValue = '';
 	g.daisychain = false;
 	g.clickFunc = v.locaddress.clickFunc;
-v.load = function() {
+v.load = function(cb) {
 	const debuglog = false;
-	for (const gad of [
+	const gads = [
 		'locaddress', 'loccity', 'locstate', 'locpostalcode', 'telephone',
 		'taxid', 'license', 'licensevalidfrom', 'licensevalidtill',
 		'cashreg', 'cashier',
-	]) {
+	];
+	function icb(cb, v) {
+		let allComplete = true;
+		for (let gad of gads) {
+			if (v[gad].loadComplete) {
+			} else {
+				allComplete = false;
+				break;
+			}
+			if (allComplete) {
+				v.loadComplete = true; cb();
+			}
+		}
+	}
+	for (const gad of gads) {
 		const g = this[gad];
 		g.tempValue = g.defaultValue;
-		function finishInit(v, g) {
+		function finishInit(cb, v, g) {
 			{ // For the GUI.
 				g.viewport.queueLayout();
 			} { // For the app function.
@@ -413,6 +458,7 @@ v.load = function() {
 			}
 			delete g.tempValue;
 			if (debuglog) console.log(`${g.key} ready`, g.value);
+			g.loadComplete = true; icb(cb, v);
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
 		var req = db.transaction(["settings"], "readonly")
@@ -422,11 +468,11 @@ v.load = function() {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result;
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(this, g);
+			finishInit(cb, this, g);
 		};
 		req.onerror = (event) => {
 			console.log(`error getting ${g.key}`, event);
-			finishInit(this, g);
+			finishInit(cb, this, g);
 		};
 	}
 }

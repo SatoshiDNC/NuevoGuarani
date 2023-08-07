@@ -36,15 +36,32 @@ v.gadgets.push(v.langlist = g = new vp.Gadget(v));
 			};
 		}
 	}
-v.load = function() {
+v.load = function(cb) {
 	const debuglog = false;
 	var selectedValue = '';
-	function finishInit() {
-		var index = -1;
-		for (var i=0; i<languages.length; i++) {
+	function finishInit(cb, v) {
+		let index = -1;
+		for (let i=0; i<languages.length; i++) {
 			if (languages[i].title == selectedValue) {
 				index = i;
 				break;
+			}
+		}
+		if (index < 0) {
+			let urlParams = new URLSearchParams(window.location.search);
+			let lang = urlParams.get('lang');
+			if (!lang) lang = 'en-US';
+			for (let i=0; i<languages.length; i++) {
+				if (languages[i].title == tr(lang,lang)) {
+					index = i;
+					break;
+				}
+				for (let l of enabledLangs) {
+					if (l.startsWith(lang) && languages[i].title == tr(l,l)) {
+						index = i;
+						break;
+					}
+				}
 			}
 		}
 		if (index < 0) index = 0;
@@ -57,6 +74,7 @@ v.load = function() {
 		} { // For persistence.
 		}
 		if (debuglog) console.log("lang ready", languagesettings.langlist.index);
+		v.loadComplete = true; cb();
 	}
 	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-mainLanguage`);
 	var req = db.transaction(["settings"], "readonly")
@@ -65,10 +83,10 @@ v.load = function() {
 	req.onsuccess = (event) => {
 		selectedValue = event.target.result
 		if (debuglog) console.log("mainLanguage restored", selectedValue);
-		finishInit();
+		finishInit(cb, this);
 	};
 	req.onerror = (event) => {
 		console.log("error getting mainLanguage", event);
-		finishInit();
+		finishInit(cb, this);
 	};
 }

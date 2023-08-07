@@ -151,6 +151,7 @@ v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 			checkoutpages.toPage(0);
 		}
 	}
+/*
 function initTexture(gl) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -199,9 +200,10 @@ function updateTexture(gl, texture, video) {
     internalFormat,
     srcFormat,
     srcType,
-    paymentpane.videoEl,
+    video,
   );
 }
+*/
 v.layoutFunc = function() {
 	const v = this;
 	if (!paymentpane.videoEl) return;

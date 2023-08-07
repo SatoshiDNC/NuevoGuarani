@@ -14,6 +14,7 @@ class DividerView extends View {
 		var s2 = new LayoutState(s.totalWidth, s.totalHeight);
 		var s3 = new LayoutState(s.totalWidth, s.totalHeight);
 		if (s.hasArea()) {
+			if (this.layoutBeginFunc) this.layoutBeginFunc.call(this);
 			var size = ~~(this.size * this.getScale());
 
 			// Horizontal/vertical state init/transitions

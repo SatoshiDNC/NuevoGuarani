@@ -1,6 +1,6 @@
 // Top of module
 
-var defaultFont, iconFont, dotMatrixFont, financeGraphicsFont;
+var defaultFont, iconFont, dotMatrixFont, financeGraphicsFont, emojiFile;
 var clickTapActive = ['begin-click','recover-click','begin-tap'];
 var lang_db = {};
 

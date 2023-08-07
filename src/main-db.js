@@ -1,5 +1,6 @@
 var db, dbNotifier;
 
+/*
 if (false) { // wipe database for testing purposes
 	const req = indexedDB.deleteDatabase("DB");
 	req.onsuccess = (e) => {
@@ -9,6 +10,7 @@ if (false) { // wipe database for testing purposes
 		console.log('Error deleting database.');
 	};
 }
+*/
 
 function openDatabase() {
 	const dbreq = indexedDB.open("DB", 1);
@@ -17,7 +19,7 @@ function openDatabase() {
 		console.error(event);
 	};
 	dbreq.onsuccess = (event) => {
-		console.log("Database opened");
+//		console.log("Database opened");
 		db = event.target.result;
 		db.onerror = (event) => {
 			console.error(`Database error: ${event.target.errorCode}`);
@@ -32,7 +34,8 @@ function openDatabase() {
 			objectStore = db.createObjectStore("accounts");
 			objectStore = db.createObjectStore("settings");
 			objectStore = db.createObjectStore("sales", { autoIncrement: true });
-			objectStore = db.createObjectStore("items", { autoIncrement: true });
+			objectStore = db.createObjectStore("prices");
+			objectStore = db.createObjectStore("inventory", { autoIncrement: true });
 			objectStore = db.createObjectStore("barcodes");
 		}
 	};

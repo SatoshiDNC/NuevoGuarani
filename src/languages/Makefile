@@ -3,7 +3,7 @@
 # Note: this Makefile differs from the others in that it builds the JavaScript
 # files on the fly before packaging them.
 
-LANGS	:= de-DE en-US es-PY gn-PY
+LANGS	:= de-DE en-US es-PY #gn-PY
 JS	:= $(patsubst %,%.js,$(LANGS))
 TXT	:= $(patsubst %,%.txt,$(LANGS))
 
