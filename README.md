@@ -86,8 +86,7 @@ adoption not only in my area but everywhere.
 
 Anyone is welcome to jump in and help out! But if you like what I'm
 doing, I'd love to continue, but I can only do it with your financial
-support. It doesn't take much! Watch the [video about the desktop
-version](https://www.youtube.com/watch?v=3WPWIPnS_KU) for details.
+support. It doesn't take much! Watch [these 20 seconds](https://www.youtube.com/watch?v=3WPWIPnS_KU&t=633s) for details.
 
 ## Contact
 
