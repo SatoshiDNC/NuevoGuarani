@@ -1,6 +1,6 @@
 ## Quick links
 
-To add (or improve) a language, currency, or theme, go to the respective [languages](src/languages/), [currencies](src/currencies/), or [themes](src/themes/) folder.
+To add (or improve) a language, currency, theme, or wallet, go to the respective [languages](src/languages/), [currencies](src/currencies/), [themes](src/themes/), or [wallets](src/wallets/) folder.
 To download the latest version of the app, go to the [release](release/) folder.
 Contact info is down below.
 
