@@ -84,7 +84,7 @@ far as I am aware, and I hope it will raise the bar for what apps
 should do, provoke others to innovation, and hopefully speed Bitcoin
 adoption not only in my area but everywhere.
 
-# Contact
+## Contact
 
 Nostr: [npub1rjlw0khf7sj33kpmehmhvay9sz8zg877cyxmu6tnyglnyv37zc4sr4786s](nostr:npub1rjlw0khf7sj33kpmehmhvay9sz8zg877cyxmu6tnyglnyv37zc4sr4786s)
 Watch for updates on YouTube: [@myDevUpdates](https://www.youtube.com/channel/UCwiikbsKzH2_3HxCou2I54A)
