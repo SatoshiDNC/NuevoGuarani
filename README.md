@@ -2,7 +2,7 @@
 
 To add (or improve) a language, currency, theme, or wallet, go to the respective [languages](src/languages/), [currencies](src/currencies/), [themes](src/themes/), or [wallets](src/wallets/) folder.
 To download the latest version of the app, go to the [release](release/) folder.
-Contact info is down below.
+Contact info and demo videos are down below.
 
 # PoSSe - Point of Sale System Extraordinaire
 
@@ -87,4 +87,11 @@ adoption not only in my area but everywhere.
 ## Contact
 
 Nostr: [npub1rjlw0khf7sj33kpmehmhvay9sz8zg877cyxmu6tnyglnyv37zc4sr4786s](nostr:npub1rjlw0khf7sj33kpmehmhvay9sz8zg877cyxmu6tnyglnyv37zc4sr4786s)
-Watch for updates on YouTube: [@myDevUpdates](https://www.youtube.com/channel/UCwiikbsKzH2_3HxCou2I54A)
+
+Watch for updates on YouTube [@myDevUpdates](https://www.youtube.com/channel/UCwiikbsKzH2_3HxCou2I54A) or jump to a topic:
+- [Introduction and basic usage of calculator and emoji shortcuts](https://www.youtube.com/watch?v=BDu3N_zaUZQ) (15 minutes)
+- [Demonstration of the barcode scanning feature](https://www.youtube.com/watch?v=lJfWOVZkPZo) (6 minutes)
+- [How to accept Lightning payments from customers](https://www.youtube.com/watch?v=bGXnmi_6lNA) (6 minutes)
+- [How to pay Lightning invoices with fiat currency](https://www.youtube.com/watch?v=MFxb75zWNtY) (8 minutes)
+- [Possibilities for desktop builds like this demo under Windows](https://www.youtube.com/watch?v=3WPWIPnS_KU) (11 minutes)
+- [Overview of GitHub repo](https://www.youtube.com/watch?v=mm39tArBqEo) (10 minutes)
