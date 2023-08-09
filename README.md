@@ -39,8 +39,8 @@ smartphone into a handy checkout register, and I have already begun
 development on such an app and brought it to a functional level of
 completion. It leverages JavaScript ES6 as its platform so that it can
 run on any device, allowing businesses to keep using this same PoS app
-as they grow from smartphone to mini-computer. My 11-minute video
-demonstrating the desktop version of the app speaks about this.
+as they grow from smartphone to mini-computer. My [11-minute video
+demonstrating the desktop version of the app](https://www.youtube.com/watch?v=3WPWIPnS_KU) speaks about this.
 
 My vision is for this product to serve as a benevolent “Trojan horse”
 per say to orange pill business owners through various means such as
@@ -61,7 +61,7 @@ independent accounts for separate businesses within a single app
 instance (implemented), color and texture themes (implemented). As I
 get ideas and feedback/experience, I pivot as needed. This was
 exemplified by a redesign of the UI to a simpler format, as I
-mentioned in my 15-minute introduction video.
+mentioned in my [15-minute introduction video](https://www.youtube.com/watch?v=BDu3N_zaUZQ).
 
 For wallet operations, the app can be configured to use any
 LNbits-compatible wallet for custodial or non-custodial operation.
@@ -80,9 +80,14 @@ Bitcoin proponent in my area, I am personally dedicated to this
 project for the benefit of my own community, but I have designed it
 with the flexibility to be configured and/or extended to serve any
 locale. It is an app that is currently missing from the ecosystem as
-far as I am aware, and I hope it will raise the bar for what apps
+far as I can tell, and I hope it will raise the bar for what apps
 should do, provoke others to innovation, and hopefully speed Bitcoin
 adoption not only in my area but everywhere.
+
+Anyone is welcome to jump in and help out! But if you like what I'm
+doing, I'd love to continue, but I can only do it with your financial
+support. It doesn't take much! Watch the [video about the desktop
+version](https://www.youtube.com/watch?v=3WPWIPnS_KU) for details.
 
 ## Contact
 
