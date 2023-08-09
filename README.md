@@ -1,7 +1,7 @@
 ## Quick links
 
-To add (or improve) a language, currency, or theme, go to the respective [languages](languages/), [currencies](currencies/), or [themes](themes/) folder.
-To download the latest version of the app, go to the [release/](tbd) folder.
+To add (or improve) a language, currency, or theme, go to the respective [languages](src/languages/), [currencies](src/currencies/), or [themes](src/themes/) folder.
+To download the latest version of the app, go to the [release](release/) folder.
 Contact info is down below.
 
 # PoSSe - Point of Sale System Extraordinaire
