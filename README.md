@@ -28,7 +28,7 @@ have scarcely a calculator and a scale to assist them in the checkout
 process, need a PoS solution that makes their life easier today (and
 which could advantageously preempt their adoption of credit-based PoS
 systems tomorrow). The fact is, these operators unwittingly already
-have a capable device in their pocket with a working barcode scanner,
+have a capable device in their pocket with a [working barcode scanner](https://www.youtube.com/watch?v=lJfWOVZkPZo),
 computation capability, Internet connectivity, and more—all in their
 smartphone, waiting to be utilized. And yet, existing wallets do not
 adequately address their use case.
@@ -65,7 +65,7 @@ mentioned in my [15-minute introduction video](https://www.youtube.com/watch?v=B
 
 For wallet operations, the app can be configured to use any
 LNbits-compatible wallet for custodial or non-custodial operation.
-With the desktop version of the app, I intend to leverage LDK to
+With the [desktop version](https://www.youtube.com/watch?v=3WPWIPnS_KU) of the app, I intend to leverage LDK to
 provide a third in-between option that will allow business owners to
 self-custody the funds in a built-in Lightning node without the burden
 of managing the channels. Some business owners have expressed that
