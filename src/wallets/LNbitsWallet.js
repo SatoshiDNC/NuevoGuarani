@@ -30,7 +30,7 @@ class LNbitsWallet extends Wallet {
 			"to": "${to_}"
 		}`;
 				console.log('request body', body);
-				const response = await fetch(config.walletLNbitsURL+'/conversion', {
+				const response = await fetch(/*config.walletLNbitsURL*/'https://lnbits.satoshibox.io/api/v1'+'/conversion', {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
