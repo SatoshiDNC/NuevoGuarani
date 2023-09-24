@@ -11,7 +11,7 @@ class LNbitsWallet extends Wallet {
 		const asyncLogic = async () => {
 			function toLNbitsCurrency(c) {
 				switch(c) {
-				case '₿': return 'sat';
+				case '₿': return 'BTC';
 				case '₲': return 'PYG';
 				case '$': return 'USD';
 				case '€': return 'EUR';
@@ -48,8 +48,8 @@ class LNbitsWallet extends Wallet {
 			}
 			console.log(json);
 
-			if (from_ == 'sat') from_ = 'sats';
-			if (to_ == 'sat') to_ = 'sats';
+			if (from_ == 'BTC') from_ = 'sats';
+			if (to_ == 'BTC') to_ = 'sats';
 
 			let convRate = 0;
 			if (json && json[from_] && json[to_]) {
