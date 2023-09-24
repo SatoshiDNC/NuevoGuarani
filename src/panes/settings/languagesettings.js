@@ -50,7 +50,7 @@ v.load = function(cb) {
 		if (index < 0) {
 			let urlParams = new URLSearchParams(window.location.search);
 			let lang = urlParams.get('lang');
-			if (!lang) lang = 'en-US';
+			if (!lang) lang = 'es-PY';
 			for (let i=0; i<languages.length; i++) {
 				if (languages[i].title == tr(lang,lang)) {
 					index = i;
