@@ -29,7 +29,7 @@ release: src/program-release.html
 .PHONY: clean
 clean:
 	@$(MAKE) -sC src clean
-	@-rm -f test.html
+	@-rm -f index.html
 
 # Textbook subdirectory recursion
 SUBDIRS = src
