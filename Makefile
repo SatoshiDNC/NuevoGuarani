@@ -21,9 +21,9 @@ relbuild: subdirs
 # Build the intended version.
 .PHONY: debug release
 debug: src/program-debug.html
-	cp src/program-debug.html test.html
+	cp src/program-debug.html index.html
 release: src/program-release.html
-	cp src/program-release.html test.html
+	cp src/program-release.html index.html
 
 # Recursive cleanup.
 .PHONY: clean
