@@ -80,7 +80,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
 		}
 	});
 	g.value = '';
-	g.defaultValue = 'https://legend.lnbits.com/api/v1';
+	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1';
 	g.hide = true;
 	g.daisychain = true;
 	g.clickFunc = function() {
