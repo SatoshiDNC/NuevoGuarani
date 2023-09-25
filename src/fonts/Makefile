@@ -61,7 +61,7 @@ EMOJIS_OUTFILE = emojis.js
 emojis.js: google-emoji-spritesheet.png
 #	echo "emojiFile = \"data:application/octet-stream;base64,`cat google-emoji-spritesheet.png | base64 | tr -d '\r\n'`\";" \
 #		>> $(EMOJIS_OUTFILE)
-	echo "emojiFile = \"google-emoji-spritesheet.png\";" \
+	echo "emojiFile = \"src/fonts/google-emoji-spritesheet.png\";" \
 		>> $(EMOJIS_OUTFILE)
 
 # Clean files from subdirs and this dir
