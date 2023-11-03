@@ -3,9 +3,9 @@
 # * When no target is specified, recursively make all subdirectories.
 # * When "clean" target is specified, recursively clean all subdirectories.
 # * When "rel" target is specified, recursively make all subdirectories and
-#   the release (compressed) version of the JavaScript in the src directory.
+#   the release version (with compressed JavaScript) in the src directory.
 # * This makefile just copies the appropriate result from the src directory
-#   to the final output filename test.html in this directory.
+#   to the final output filename index.html in this directory.
 # * All subdirectory Makefiles should follow the same recursion pattern for
 #   when no target is specified and for the "clean" target, and they should
 #   combine their subtree into their own all.js file.
