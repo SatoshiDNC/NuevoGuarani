@@ -4,7 +4,7 @@
 * To download the latest version of the app, go to the [release](release/) folder.
 * To build the app from a fresh repo:
   - Copy `closure-compiler-v20230802.jar` (or similar) into the `3rd-party` folder.
-  - Go into `3rd-party` folder and execute a command such as:
+  - Go into `3rd-party` folder and execute this command (or similar):
     `java -jar closure-compiler-v20230802.jar --js gl-dumbfont.js --js_output_file gl-dumbfont.min.js`
   - Go back to repo root and run `make rel` (see Makefile comments for more info).
 * Contact info and demo videos are down below.
