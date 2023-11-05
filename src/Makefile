@@ -40,7 +40,7 @@ program-debug.html: \
 		> program-debug.html
 
 all.min.js: all.js
-	java -jar ../3rd-party/closure-compiler-v20230502.jar \
+	java -jar ../3rd-party/closure-compiler-v20230802.jar \
 		--js all.js \
 		--js_output_file all.min.js
 
