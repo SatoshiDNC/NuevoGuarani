@@ -1,6 +1,8 @@
 all: subdirs program-debug.html # Textbook subdirectory recursion
 rel: subdirs program-release.html # to build the release version
 
+CLOSURE = java -jar ../3rd-party/closure-compiler-v20230802.jar
+
 program-release.html: \
 	head.html \
 	head-release.js \
@@ -40,7 +42,7 @@ program-debug.html: \
 		> program-debug.html
 
 all.min.js: all.js
-	java -jar ../3rd-party/closure-compiler-v20230802.jar \
+	$(CLOSURE) \
 		--js all.js \
 		--js_output_file all.min.js
 
