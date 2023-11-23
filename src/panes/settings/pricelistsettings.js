@@ -3,7 +3,7 @@ var pricelisttypes = ['none', 'manual', 'NostrMarket compatible'];
 
 const nostrmarketstall = v = new vp.View(null);
 v.name = Object.keys({nostrmarketstall}).pop();
-v.title = 'stall';
+v.title = 'NostrMarket stall';
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -13,7 +13,26 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 	g.key = 'nostrMarketStall';
 	Object.defineProperty(g, "list", {
 		get : function () {
-			return ['tbd'];
+      console.groupCollapsed(this.constructor.name+'.get()');
+      const url = pricelistsettings.nostrmarketurl.value
+      const key = pricelistsettings.nostrmarketwalletkey.value
+      console.log(url, key)
+
+      const asyncLogic = async () => {
+        console.log('getting stalls for', key);
+        const response = await fetch(url+'/stall?pending=false&api-key='+key, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        const json = await response.json();
+        console.log(json);
+      }
+      asyncLogic();
+  
+      console.groupEnd();
+      return ['tbd'];
 		}
 	});
   g.index = -1;
@@ -212,6 +231,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 	});
 	g.value = '';
 	g.hide = true;
+  g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
 		var val = prompt(tr('API admin or invoice/read key')+':');
