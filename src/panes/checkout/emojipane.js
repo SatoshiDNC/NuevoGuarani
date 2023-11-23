@@ -75,7 +75,7 @@ v.renderFunc = function() {
 	mat4.identity(m);
   mat4.translate(m,m, [0, 0, 0]);
   mat4.scale(m,m, [v.sw/v.gridX/24, v.sw/v.gridX/24, 1]);
-  iconFont.draw(4,16+4, "\x07", config.themeColors.uiText, v.mat, m);
+  iconFont.draw(2,16+4, "\x07", config.themeColors.uiText, v.mat, m);
 
 /*
 	if (0) {
