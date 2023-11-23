@@ -305,6 +305,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	});
 	g.value = '';
 	g.defaultValue = '';
+	g.hide = true;
 	g.clickFunc = function() {
 		const g = this;
 		var val = prompt(tr('base URL')+':', g.defaultValue);
