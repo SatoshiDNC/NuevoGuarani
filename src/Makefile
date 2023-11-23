@@ -55,6 +55,7 @@ all.js: \
 	ColorTheme.js \
 	Configuration.js \
 	Wallet.js \
+	PriceList.js \
 	themes/all.js \
 	languages/all.js \
 	main-translations.js \
@@ -64,6 +65,7 @@ all.js: \
 	main-shapes.js \
 	main-helpers.js \
 	wallets/all.js \
+	pricelists/all.js \
 	panes/all.js \
 	main-tail.js \
 	load-head.js \
@@ -85,6 +87,7 @@ all.js: \
 		ColorTheme.js \
 		Configuration.js \
 		Wallet.js \
+		PriceList.js \
 		themes/all.js \
 		languages/all.js \
 		main-translations.js \
@@ -94,6 +97,7 @@ all.js: \
 		main-gl.js \
 		main-helpers.js \
 		wallets/all.js \
+		pricelists/all.js \
 		panes/all.js \
 		main-tail.js \
 		load-head.js \
