@@ -70,6 +70,11 @@ v.renderFunc = function() {
 	const v = this;
 	const m = mat4.create();
 
+	mat4.identity(m);
+  mat4.translate(m,m, [0, 0, 0]);
+  mat4.scale(m,m, [v.sw/v.gridX, v.sw/v.gridX, 1]);
+  iconFont.draw(0,16, "\x15", config.themeColors.uiText, v.mat, m);
+
 /*
 	if (0) {
 		mat4.identity(m);
