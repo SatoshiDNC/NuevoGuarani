@@ -102,7 +102,7 @@ function loadAccount() {
 		cashcurrency,
 		currencysettings,
 		walletsettings,
-		productsettings,
+		pricelistsettings,
 		camerasettings,
 		layoutsettings,
 		colorsettings,
