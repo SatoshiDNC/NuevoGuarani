@@ -5,8 +5,8 @@ class NostrMarketPriceList extends PriceList {
  	}
 
   static loadData(url, key, stall) {
-    console.group(this.constructor.name+'(', url, key, stall, ')')
-    console.log('searching for stall', key != '')
+    console.group(this.constructor.name+'loadData(...)')
+    console.log('searching for stall', key != '', stall)
     const asyncLogic = async () => {
       console.log('getting stalls', url)
       const response = await fetch(url+'/stall?pending=false&api-key='+key, {
@@ -17,7 +17,7 @@ class NostrMarketPriceList extends PriceList {
       });
       const json = await response.json()
       console.log(json)
-      const stallId = ''
+      let stallId = ''
       json.map(e => { const { id, name } = e; if (name == stall) stallId = id })
       console.log(stallId)
 
