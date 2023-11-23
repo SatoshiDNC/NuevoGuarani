@@ -270,7 +270,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
   v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return nostrmarketstall.list.value; } catch (e) {} }
+		get : function () { try { return nostrmarketstall.list.value + '(' + String(this?.viewport?.pricelist?.count()) + ' items)' } catch (e) {} }
 	});
 	g.pane = nostrmarketstall;
 /*
