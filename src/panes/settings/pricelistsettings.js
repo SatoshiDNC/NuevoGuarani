@@ -1,8 +1,8 @@
-var productdbtypes = ['manual', 'NostrMarket compatible'];
+var pricelisttypes = ['none', 'manual', 'NostrMarket compatible'];
 
 const productsettings = v = new vp.View(null);
 v.name = Object.keys({productsettings}).pop();
-v.title = 'products';
+v.title = 'price list';
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -11,15 +11,15 @@ v.swipeGad.hide = true;
 //Object.defineProperty(v, "products", {
 //	get : function () {
 //		const i = productsettings.typelist.index;
-//		if (i >= 0 && i < productdbtypes.length) switch (productdbtypes[i]) {
+//		if (i >= 0 && i < pricelisttypes.length) switch (pricelisttypes[i]) {
 //		// case 'LNbits compatible': return new LNbitsWallet(); break;
 //		}
-//		return new ProductDB();
+//		return new PriceList();
 //	}
 //});
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
-	g.key = 'productDbType';
-	g.list = productdbtypes;
+	g.key = 'priceListType';
+	g.list = pricelisttypes;
 	g.index = -1;
 	g.listItemClick = function(index) {
 		const g = this, v = g.viewport;
@@ -29,7 +29,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			v.setRenderFlag(true);
 		} { // For the app function.
 
-			if (productdbtypes[index] == 'NostrMarket compatible') {
+			if (pricelisttypes[index] == 'NostrMarket compatible') {
 				delete v.nostrmarketurl.hide;
 				delete v.nostrmarketwalletkey.hide;
 			} else {
@@ -301,8 +301,8 @@ v.load = function(cb) {
 		function finishInit(cb, v) {
 			const g = v.typelist;
 			var index = -1;
-			for (var i=0; i<productdbtypes.length; i++) {
-				if (productdbtypes[i] == g.tempValue) {
+			for (var i=0; i<pricelisttypes.length; i++) {
+				if (pricelisttypes[i] == g.tempValue) {
 					index = i;
 					break;
 				}
@@ -313,7 +313,7 @@ v.load = function(cb) {
 				productsettings.setRenderFlag(true);
 			} { // For the app function.
 
-				if (productdbtypes[index] == 'NostrMarket compatible') {
+				if (pricelisttypes[index] == 'NostrMarket compatible') {
 					delete v.nostrmarketurl.hide;
 					delete v.nostrmarketwalletkey.hide;
 				} else {
