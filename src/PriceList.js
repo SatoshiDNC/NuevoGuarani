@@ -4,5 +4,5 @@ class PriceList {
   count() {
     return 0;
   }
-
+  get length() { return this.count() }
 }

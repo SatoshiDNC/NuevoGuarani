@@ -27,10 +27,10 @@ v.layoutFunc = function() {
 		let data = [];
 		const nx = 57, ny = 57;
 		let category = '';
-    const priceList = config.priceList()
+    const priceList = config.priceList
     let n = 0
 		for (let e of emojiData) {
-      n++; if (n > priceList.count()) break;
+      n++; if (n > priceList.length) break;
 //			if (category != '' && e.category != category && i>0) {
 //				i=0; j++;
 //				data.splice(data.length,0, data[data.length-4],data[data.length-3],data[data.length-2],data[data.length-1], );
