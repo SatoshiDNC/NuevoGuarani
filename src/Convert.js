@@ -7,12 +7,12 @@ class Convert {
     { app: '€', LNbits: 'EUR' },
 ]
   static LNbitsCurrencyToAppCurrency(input) {
-    for (c of Convert.currencies) {
+    for (const c of Convert.currencies) {
       if (c.LNbits == input) return c.app
     }
   }
   static AppCurrencyToLNbitsCurrency(input) {
-    for (c of Convert.currencies) {
+    for (const c of Convert.currencies) {
       if (c.app == input) return c.LNbits
     }
   }
