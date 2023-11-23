@@ -14,9 +14,9 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
   g.state = 0;
   Object.defineProperty(g, "list", {
     get : function () {
-      if (g.state == 2) return this.stallList
-      if (g.state == 1) return ['tbd']
-      state = 1
+      if (this.state == 2) return this.stallList
+      if (this.state == 1) return ['tbd']
+      this.state = 1
       console.groupCollapsed(this.constructor.name+'.get()');
       const url = pricelistsettings.nostrmarketurl.value
       const key = pricelistsettings.nostrmarketwalletkey.value
