@@ -23,7 +23,7 @@ v.layoutFunc = function() {
 	let w = Math.round(Math.sqrt(100 * v.sw / v.sh));
 	if (w != v.lastBuilt) {
 		v.lastBuilt = w;
-		let i=0, j=0, x=w, y=0;
+		let i=1, j=0, x=w, y=0;
 		let data = [];
 		const nx = 57, ny = 57;
 		let category = '';
