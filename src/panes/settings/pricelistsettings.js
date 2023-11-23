@@ -11,35 +11,34 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 v.gadgets.push(v.list = g = new vp.Gadget(v));
   g.key = 'nostrMarketStall';
-  g.initialized = false;
+  g.state = 0;
   Object.defineProperty(g, "list", {
     get : function () {
+      if (g.state == 2) return this.stallList
+      if (g.state == 1) return ['tbd']
+      state = 1
       console.groupCollapsed(this.constructor.name+'.get()');
       const url = pricelistsettings.nostrmarketurl.value
       const key = pricelistsettings.nostrmarketwalletkey.value
-      if (!this.initialized) {
-        console.log('initializing')
-        const asyncLogic = async () => {
-          console.log('getting stalls for', key);
-          const response = await fetch(url+'/stall?pending=false&api-key='+key, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-            },
-          });
-          const json = await response.json();
-          console.log(json);
-          const tempList = []
-          json.map(e => { const { id, name } = e; tempList.push(name) })
-          this.stallList = tempList
-          this.initialized = true
-          this.viewport.setRenderFlag(true)
-        }
-        asyncLogic()
+      console.log('initializing')
+      const asyncLogic = async () => {
+        console.log('getting stalls for', key);
+        const response = await fetch(url+'/stall?pending=false&api-key='+key, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        const json = await response.json();
+        console.log(json);
+        const tempList = []
+        json.map(e => { const { id, name } = e; tempList.push(name) })
+        this.stallList = tempList
+        this.state = 2
+        this.viewport.setRenderFlag(true)
       }
-
+      asyncLogic()
       console.groupEnd()
-      return this.initialized ? this.stallList : ['tbd']
     }
   });
   g.index = -1;
