@@ -306,3 +306,5 @@ v.gadgets.push(g = new vp.Gadget(v));
 	maincurrency.renderFunc = mainsettings.renderFunc;
 	cashcurrency.layoutFunc = mainsettings.layoutFunc;
 	cashcurrency.renderFunc = mainsettings.renderFunc;
+	nostrmarketstall.layoutFunc = mainsettings.layoutFunc;
+	nostrmarketstall.renderFunc = mainsettings.renderFunc;
