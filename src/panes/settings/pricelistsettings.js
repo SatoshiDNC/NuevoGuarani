@@ -300,7 +300,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	g.title = 'manage price list';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
-			return '0' + ' items';
+			return String(0) + ' items';
 		}
 	});
 	g.value = '';
