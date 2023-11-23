@@ -300,12 +300,11 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	g.title = 'manage price list';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
-			return this.viewport.pricelist.count() + ' items';
+			return 'tbd'; // this.viewport.pricelist.count() + ' items';
 		}
 	});
 	g.value = '';
 	g.defaultValue = '';
-	g.hide = true;
 	g.clickFunc = function() {
 		const g = this;
 		var val = prompt(tr('base URL')+':', g.defaultValue);
