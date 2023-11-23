@@ -16,13 +16,14 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     get : function () {
       if (this.state == 2) return this.stallList
       if (this.state == 1) return ['tbd']
-      this.state = 1
-      console.groupCollapsed(this.constructor.name+'.get()');
       const url = pricelistsettings.nostrmarketurl.value
       const key = pricelistsettings.nostrmarketwalletkey.value
-      console.log('initializing')
+      if (!url || !key) return ['tbd']
+      this.state = 1
+      console.groupCollapsed(this.constructor.name+'.get()');
+      console.log('initializing', key != '')
       const asyncLogic = async () => {
-        console.log('getting stalls for', key);
+        console.log('getting stalls', url)
         try {
           const response = await fetch(url+'/stall?pending=false&api-key='+key, {
             method: 'GET',
@@ -31,7 +32,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
             },
           });
           const json = await response.json()
-          console.log(json);
+          console.log(json)
           const tempList = []
           json.map(e => { const { id, name } = e; tempList.push(name) })
           this.stallList = tempList
