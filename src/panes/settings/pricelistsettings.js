@@ -454,7 +454,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 			};
 		}
 	}
-v.load = function(cb, gads) {
+v.load = function(cb) {
 	const debuglog = false;
 	{
 		const g = this.typelist, v = this;
@@ -520,7 +520,7 @@ v.load = function(cb, gads) {
 			finishInit(cb, this);
 		};
 	}
-	for (const gad of gads || [
+	for (const gad of [
 		'nostrmarketurl', 'nostrmarketwalletkey',
 //		'strikeurl', 'strikekey',
 //		'coinosurl', 'coinoskey',
@@ -546,7 +546,9 @@ v.load = function(cb, gads) {
 				g.tempValue = event.target.result;
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
 			finishInit(this, g);
-      pricelistsettings.load(cb, 'nostrmarketstall');
+      if (['nostrmarketurl', 'nostrmarketwalletkey'].includes(gad)) {
+        nostrmarketstall.load(() => {})
+      }
 		};
 		req.onerror = (event) => {
 			console.log(`error getting ${g.key}`, event);
