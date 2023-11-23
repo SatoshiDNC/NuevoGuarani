@@ -119,4 +119,6 @@ class Configuration {
 	get walletStrikeKey() { try { return walletsettings.strikekey.value; } catch (e) {} }
 	get walletCoinosURL() { try { return walletsettings.coinosurl.value; } catch (e) {} }
 	get walletCoinosKey() { try { return walletsettings.coinoskey.value; } catch (e) {} }
+  
+  get priceList() { try { return pricelistsettings.pricelist; } catch {} }
 }
