@@ -10,11 +10,13 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 v.gadgets.push(v.list = g = new vp.Gadget(v));
-	g.key = 'nostrMarketStall';
+  g.key = 'nostrMarketStall';
   g.initialized = false;
-	Object.defineProperty(g, "list", {
-		get : function () {
+  Object.defineProperty(g, "list", {
+    get : function () {
       console.groupCollapsed(this.constructor.name+'.get()');
+      const url = pricelistsettings.nostrmarketurl.value
+      const key = pricelistsettings.nostrmarketwalletkey.value
       if (!this.initialized) {
         console.log('initializing')
         const asyncLogic = async () => {
@@ -38,8 +40,8 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 
       console.groupEnd()
       return this.initialized ? this.stallList : ['tbd']
-		}
-	});
+    }
+  });
   g.index = -1;
 	Object.defineProperty(g, "value", {
 		get : function () {
