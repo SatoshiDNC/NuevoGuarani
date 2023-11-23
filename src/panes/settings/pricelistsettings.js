@@ -39,7 +39,6 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
           this.state = 2
           this.viewport.setRenderFlag(true)
           pricelistsettings.setRenderFlag(true)
-          NostrMarketPriceList.loadData()
         } catch {
           this.state = 0
         }
@@ -59,6 +58,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 	});
 	g.appFunction = function() {
 		pricelistsettings.queueLayout();
+    NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
 	}
 	g.listItemClick = function(index) {
 		const g = this;
