@@ -520,7 +520,7 @@ v.load = function(cb) {
 		};
 	}
 	for (const gad of [
-		'nostrmarketurl', 'nostrmarketwalletkey', 'notstrmarketstall',
+		'nostrmarketurl', 'nostrmarketwalletkey', 'nostrmarketstall',
 //		'strikeurl', 'strikekey',
 //		'coinosurl', 'coinoskey',
 	]) {
