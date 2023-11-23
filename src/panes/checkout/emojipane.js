@@ -16,7 +16,7 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
     if (index == -1) { // cancel
 			vp.popRoot()
 			if (this.viewport.callback) this.viewport.callback.call(undefined, undefined)
-    } else if (index < emojiData.length) {
+    } else if (index < this.length) {
 			vp.popRoot()
 			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[index].label)
 		}
@@ -32,9 +32,10 @@ v.layoutFunc = function() {
 		const nx = 57, ny = 57;
 		let category = '';
     const priceList = config.priceList
+    const maxLength = priceList.length || emojiData.length
     let n = 0
 		for (let e of emojiData) {
-      n++; if (n > priceList.length) break;
+      n++; if (n > maxLength) break;
 //			if (category != '' && e.category != category && i>0) {
 //				i=0; j++;
 //				data.splice(data.length,0, data[data.length-4],data[data.length-3],data[data.length-2],data[data.length-1], );
@@ -54,6 +55,7 @@ v.layoutFunc = function() {
 		}
 		this.gridX = x;
 		this.gridY = y;
+    this.length = priceList.length || emojiData.length;
 		emojiPoints = data;
 		buildShapes();
 	}
