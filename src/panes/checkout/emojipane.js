@@ -9,12 +9,16 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = 0; g.y = 0;
 	g.clickFunc = function(e) {
-		const g = this, v = g.viewport;
-		let i = Math.floor((e.x+v.userX*v.viewScale)/v.w*v.gridX);
-		let j = Math.floor((e.y+v.userY*v.viewScale)/v.w*v.gridX);
-		if (i+j*v.gridX < emojiData.length) {
-			vp.popRoot();
-			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[i+j*v.gridX].label);
+		const g = this, v = g.viewport
+		const i = Math.floor((e.x+v.userX*v.viewScale)/v.w*v.gridX)
+		const j = Math.floor((e.y+v.userY*v.viewScale)/v.w*v.gridX)
+    const index = i+j*v.gridX - 1
+    if (index == -1) { // cancel
+			vp.popRoot()
+			if (this.viewport.callback) this.viewport.callback.call(undefined, undefined)
+    } else if (index < emojiData.length) {
+			vp.popRoot()
+			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[index].label)
 		}
 	}
 v.layoutFunc = function() {

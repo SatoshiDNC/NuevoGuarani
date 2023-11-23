@@ -32,12 +32,14 @@ v.gadgets.push(v.itemGad = g = new vp.Gadget(v));
 	g.autoHull();
 	g.clickFunc = function() {
 		emojipane.callback = function(label) {
-			billpane.textbox.options.emoji = label;
-			delete billpane.textbox.options.barcode;
-			billpane.textbox.queryPrice(label);
-			billpane.textbox.resetGads();
-			billpane.changed = true;
-			billpane.subtotal.enableGads();
+      if (label) {
+        billpane.textbox.options.emoji = label;
+        delete billpane.textbox.options.barcode;
+        billpane.textbox.queryPrice(label);
+        billpane.textbox.resetGads();
+        billpane.changed = true;
+        billpane.subtotal.enableGads();
+      }
 		}
 		vp.pushRoot(emojipane);
 	}
