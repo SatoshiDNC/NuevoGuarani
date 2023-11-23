@@ -23,19 +23,23 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
       console.log('initializing')
       const asyncLogic = async () => {
         console.log('getting stalls for', key);
-        const response = await fetch(url+'/stall?pending=false&api-key='+key, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
-        const json = await response.json();
-        console.log(json);
-        const tempList = []
-        json.map(e => { const { id, name } = e; tempList.push(name) })
-        this.stallList = tempList
-        this.state = 2
-        this.viewport.setRenderFlag(true)
+        try {
+          const response = await fetch(url+'/stall?pending=false&api-key='+key, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+          const json = await response.json()
+          console.log(json);
+          const tempList = []
+          json.map(e => { const { id, name } = e; tempList.push(name) })
+          this.stallList = tempList
+          this.state = 2
+          this.viewport.setRenderFlag(true)
+        } catch {
+          this.state = 0
+        }
       }
       asyncLogic()
       console.groupEnd()
