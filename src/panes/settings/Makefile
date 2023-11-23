@@ -6,6 +6,7 @@ FILES = \
 	currencies/all.js \
 	currencysettings.js \
 	walletsettings.js \
+	productsettings.js \
 	layoutsettings.js \
 	colorsettings.js \
 	camerasettings.js \
