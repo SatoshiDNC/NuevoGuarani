@@ -40,8 +40,8 @@ class NostrMarketPriceList extends PriceList {
         console.log(json)
         json.map(e => {
           const { name, price } = e
-          cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
-          amt = price
+          const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
+          const amt = price
           NostrMarketPriceList.list.push({ name, cur, amt, qty: 1, unit: 'ea' })
           console.log(e)
         })
