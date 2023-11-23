@@ -37,6 +37,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
           this.stallList = tempList
           this.state = 2
           this.viewport.setRenderFlag(true)
+          pricelistsettings.setRenderFlag(true)
         } catch {
           this.state = 0
         }
