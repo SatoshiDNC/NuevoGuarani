@@ -1,4 +1,4 @@
-var productdbtypes = ['manual', 'nostr compatible'];
+var productdbtypes = ['manual', 'NostrMarket compatible'];
 
 const productsettings = v = new vp.View(null);
 v.name = Object.keys({productsettings}).pop();
@@ -18,7 +18,7 @@ v.swipeGad.hide = true;
 //	}
 //});
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
-	g.key = 'productdbType';
+	g.key = 'productDbType';
 	g.list = productdbtypes;
 	g.index = -1;
 	g.listItemClick = function(index) {
@@ -29,15 +29,15 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			v.setRenderFlag(true);
 		} { // For the app function.
 
-/*
-			if (wallettypes[index] == 'LNbits compatible') {
-				delete v.lnbitsurl.hide;
-				delete v.lnbitskey.hide;
+			if (productdbtypes[index] == 'NostrMarket compatible') {
+				delete v.nostrmarketurl.hide;
+				delete v.nostrmarketwalletkey.hide;
 			} else {
-				v.lnbitsurl.hide = true;
-				v.lnbitskey.hide = true;
+				v.nostrmarketurl.hide = true;
+				v.nostrmarketwalletkey.hide = true;
 			}
 
+/*
 			if (wallettypes[index] == 'strike compatible') {
 				delete v.strikeurl.hide;
 				delete v.strikekey.hide;
@@ -69,10 +69,9 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			};
 		}
 	}
-/*
-v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
+v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 	g.type = 'button';
-	g.key = 'LNbitsURL';
+	g.key = 'NostrMarketURL';
 	g.title = 'base URL';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -83,7 +82,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
 		}
 	});
 	g.value = '';
-	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1';
+	g.defaultValue = 'https://lnbits.satoshidnc.com/nostrmarket/api/v1';
 	g.hide = true;
 	g.daisychain = true;
 	g.clickFunc = function() {
@@ -107,9 +106,9 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
 			};
 		}
 	}
-v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
+v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 	g.type = 'button';
-	g.key = 'lnbitsKey';
+	g.key = 'nostrMarketWalletKey';
 	g.title = 'key';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -144,6 +143,7 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 			};
 		}
 	}
+/*
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'strikeURL';
@@ -313,15 +313,15 @@ v.load = function(cb) {
 				productsettings.setRenderFlag(true);
 			} { // For the app function.
 
-/*
-				if (prouctdbtypes[index] == 'LNbits compatible') {
-					delete v.lnbitsurl.hide;
-					delete v.lnbitskey.hide;
+				if (productdbtypes[index] == 'NostrMarket compatible') {
+					delete v.nostrmarketurl.hide;
+					delete v.nostrmarketwalletkey.hide;
 				} else {
-					v.lnbitsurl.hide = true;
-					v.lnbitskey.hide = true;
+					v.nostrmarketurl.hide = true;
+					v.nostrmarketwalletkey.hide = true;
 				}
 
+/*
 				if (wallettypes[index] == 'strike compatible') {
 					delete v.strikeurl.hide;
 					delete v.strikekey.hide;
@@ -360,7 +360,7 @@ v.load = function(cb) {
 		};
 	}
 	for (const gad of [
-//		'lnbitsurl', 'lnbitskey',
+		'nostrmarketurl', 'nostrmarketwalletkey',
 //		'strikeurl', 'strikekey',
 //		'coinosurl', 'coinoskey',
 	]) {
