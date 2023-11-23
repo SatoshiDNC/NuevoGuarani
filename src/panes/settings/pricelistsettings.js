@@ -15,10 +15,10 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
   Object.defineProperty(g, "list", {
     get : function () {
       if (this.state == 2) return this.stallList
-      if (this.state == 1) return ['tbd']
+      if (this.state == 1) return ['']
       const url = pricelistsettings.nostrmarketurl.value
       const key = pricelistsettings.nostrmarketwalletkey.value
-      if (!url || !key) return ['tbd']
+      if (!url || !key) return ['']
       this.state = 1
       console.groupCollapsed(this.constructor.name+'.get()');
       console.log('initializing', key != '')
@@ -46,7 +46,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
       }
       asyncLogic()
       console.groupEnd()
-      return ['tbd']
+      return ['']
     }
   });
   g.index = -1;
@@ -59,7 +59,9 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 	});
 	g.appFunction = function() {
 		pricelistsettings.queueLayout();
-    NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
+    if (this.value) {
+      NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
+    }
 	}
 	g.listItemClick = function(index) {
 		const g = this;
