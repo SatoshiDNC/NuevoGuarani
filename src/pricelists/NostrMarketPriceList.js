@@ -7,7 +7,7 @@ class NostrMarketPriceList extends PriceList {
   static loadData(url, key, stall) {
     console.group(this.constructor.name+'loadData(...)')
     const asyncLogic = async () => {
-      let stallId
+      let stallId, stallCurrency
       {
         console.log('searching for stall', key != '', stall)
         console.log('getting stalls', url)
@@ -19,10 +19,15 @@ class NostrMarketPriceList extends PriceList {
         });
         const json = await response.json()
         console.log(json)
-        json.map(e => { const { id, name } = e; if (name == stall) stallId = id })
+        json.map(e => {
+          const { id, name, currency } = e
+          if (name == stall) {
+            stallId = id
+            stallCurrency = currency
+          }
+        })
         console.log(stallId)
       }
-
       {
         console.log('getting products', stallId)
         const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
@@ -34,14 +39,14 @@ class NostrMarketPriceList extends PriceList {
         const json = await response.json()
         console.log(json)
         json.map(e => {
+          const { name, price } = e
+          cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
+          amt = price
+          NostrMarketPriceList.list.push({ name, cur, amt, qty: 1, unit: 'ea' })
           console.log(e)
         })
       }
-
-      NostrMarketPriceList.list = [
-        { name: 'Product XYZ', cur: '₲', amt: 12000, qty: 1, unit: 'ea' },
-        { name: 'Product UVW', cur: '₲', amt: 22000, qty: 1000, unit: 'g' },
-      ]
+      console.log(NostrMarketPriceList.list)
     }
     asyncLogic()
     console.groupEnd()

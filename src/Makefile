@@ -52,6 +52,7 @@ all.js: \
 	main-head.js \
 	emoji.js \
 	main-db.js \
+	Convert.js \
 	ColorTheme.js \
 	Configuration.js \
 	Wallet.js \
@@ -84,6 +85,7 @@ all.js: \
 		main-head.js \
 		emoji.js \
 		main-db.js \
+		Convert.js \
 		ColorTheme.js \
 		Configuration.js \
 		Wallet.js \
