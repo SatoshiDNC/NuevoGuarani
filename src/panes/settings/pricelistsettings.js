@@ -62,6 +62,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
       delete emojipane.lastBuilt
+      emojipane.relayout()
     }
 	}
 	g.listItemClick = function(index) {
