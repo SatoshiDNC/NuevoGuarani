@@ -1,6 +1,6 @@
 var pricelisttypes = ['none', 'manual', 'NostrMarket compatible'];
 
-const productsettings = v = new vp.View(null);
+const pricelistsettings = v = new vp.View(null);
 v.name = Object.keys({productsettings}).pop();
 v.title = 'price list';
 v.minX = 0; v.maxX = 0;
