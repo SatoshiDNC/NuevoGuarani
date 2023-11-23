@@ -71,9 +71,9 @@ v.renderFunc = function() {
 	const m = mat4.create();
 
 	mat4.identity(m);
-  mat4.translate(m,m, [4, 4, 0]);
+  mat4.translate(m,m, [0, 0, 0]);
   mat4.scale(m,m, [v.sw/v.gridX/24, v.sw/v.gridX/24, 1]);
-  iconFont.draw(0,16, "\x07", config.themeColors.uiText, v.mat, m);
+  iconFont.draw(4,16+4, "\x07", config.themeColors.uiText, v.mat, m);
 
 /*
 	if (0) {
