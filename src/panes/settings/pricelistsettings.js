@@ -1,7 +1,7 @@
 var pricelisttypes = ['none', 'manual', 'NostrMarket compatible'];
 
 const pricelistsettings = v = new vp.View(null);
-v.name = Object.keys({productsettings}).pop();
+v.name = Object.keys({pricelistsettings}).pop();
 v.title = 'price list';
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
@@ -342,8 +342,8 @@ v.load = function(cb) {
 			}
 			if (index < 0) index = 0;
 			{ // For the GUI.
-				productsettings.typelist.index = index;
-				productsettings.setRenderFlag(true);
+				pricelistsettings.typelist.index = index;
+				pricelistsettings.setRenderFlag(true);
 			} { // For the app function.
 
 				if (pricelisttypes[index] == 'NostrMarket compatible') {
