@@ -43,6 +43,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
       }
       asyncLogic()
       console.groupEnd()
+      return ['tbd']
     }
   });
   g.index = -1;
