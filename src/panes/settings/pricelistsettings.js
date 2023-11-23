@@ -8,15 +8,16 @@ v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
-//Object.defineProperty(v, "products", {
-//	get : function () {
-//		const i = productsettings.typelist.index;
-//		if (i >= 0 && i < pricelisttypes.length) switch (pricelisttypes[i]) {
-//		// case 'LNbits compatible': return new LNbitsWallet(); break;
-//		}
-//		return new PriceList();
-//	}
-//});
+Object.defineProperty(v, "pricelist", {
+	get : function () {
+		const i = pricelistsettings.typelist.index;
+		if (i >= 0 && i < pricelisttypes.length) switch (pricelisttypes[i]) {
+      case 'manual': return new ManualPriceList(); break;
+      case 'NostrMarket compatible': return new NostrMarketPriceList(); break;
+		}
+		return new PriceList();
+	}
+});
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 	g.key = 'priceListType';
 	g.list = pricelisttypes;
@@ -293,6 +294,39 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
 		}
 	}
 */
+v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
+	g.type = 'button';
+	g.key = 'managePrices';
+	g.title = 'manage price list';
+	Object.defineProperty(g, "subtitle", {
+		get : function () {
+			return this.viewport.pricelist.count() + ' items';
+		}
+	});
+	g.value = '';
+	g.defaultValue = '';
+	g.hide = true;
+	g.clickFunc = function() {
+		const g = this;
+		var val = prompt(tr('base URL')+':', g.defaultValue);
+		if (!val) return;
+		{ // For the GUI.
+			g.viewport.queueLayout();
+		} { // For the app function.
+			g.value = val;
+		} { // For persistence.
+			var req = db.transaction(["settings"], "readwrite");
+			req.objectStore("settings")
+				.put(g.value,
+					`${getCurrentAccount().id}-${g.key}`);
+			req.onsuccess = (event) => {
+				console.log(`successfully selected ${g.key}`, event);
+			};
+			req.onerror = (event) => {
+				console.log(`error selecting ${g.key}`, event);
+			};
+		}
+	}
 v.load = function(cb) {
 	const debuglog = false;
 	{
