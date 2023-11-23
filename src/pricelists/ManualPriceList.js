@@ -5,7 +5,7 @@ class ManualPriceList extends PriceList {
 	}
 
 	count() {
-    return this.list.count;
+    return this.list.length;
 	}
 
 }

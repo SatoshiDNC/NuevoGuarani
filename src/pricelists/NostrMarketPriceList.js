@@ -8,7 +8,7 @@ class NostrMarketPriceList extends PriceList {
 	}
 
 	count() {
-    return this.list.count;
+    return this.list.length;
 	}
 
 }
