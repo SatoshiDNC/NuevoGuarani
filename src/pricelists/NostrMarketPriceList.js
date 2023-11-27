@@ -95,6 +95,7 @@ class NostrMarketPriceList extends PriceList {
           imageUrls.map(url => {
             console.log('loading', url)
             const img = document.createElement('img')
+            img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
               console.log('loaded', url)
               textureContext.drawImage(img, 0, 0)
