@@ -97,6 +97,7 @@ class NostrMarketPriceList extends PriceList {
             const img = document.createElement('img')
             img.addEventListener('load', function() {
               console.log('loaded', url)
+              textureContext.drawImage(img, 0, 0)
               pending -= 1
               if (pending == 0) {
                 console.log('done loading, regenerating texture')
