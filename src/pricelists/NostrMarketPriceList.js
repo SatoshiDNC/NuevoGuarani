@@ -89,16 +89,16 @@ class NostrMarketPriceList extends PriceList {
         updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
         gl.generateMipmap(gl.TEXTURE_2D)
 
-        for (let i = 0; i < textureWidth; i += 1) {
-          for (let j = 0; j < textureWidth; j += 1) {
-            let index = (j * textureWidth + i) * 4
-            textureImage.data[index + 0] = 127
-            textureImage.data[index + 1] = 127
-            textureImage.data[index + 2] = 127
-            textureImage.data[index + 3] = 0
-          }
-        }
-        textureContext.putImageData(textureImage, 0, 0)
+        // for (let i = 0; i < textureWidth; i += 1) {
+        //   for (let j = 0; j < textureWidth; j += 1) {
+        //     let index = (j * textureWidth + i) * 4
+        //     textureImage.data[index + 0] = 127
+        //     textureImage.data[index + 1] = 127
+        //     textureImage.data[index + 2] = 127
+        //     textureImage.data[index + 3] = 0
+        //   }
+        // }
+        // textureContext.putImageData(textureImage, 0, 0)
 
         console.log(imageUrls)
         {
@@ -116,6 +116,7 @@ class NostrMarketPriceList extends PriceList {
               } else {
                 targetWidth = targetHeight * img.width / img.height
               }
+              textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
               textureContext.drawImage(img,
                 i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
                 j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
