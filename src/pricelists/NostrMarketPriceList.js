@@ -72,9 +72,9 @@ class NostrMarketPriceList extends PriceList {
         for (var i = 0; i < textureWidth; i += 1) {
           for (var j = 0; j < textureWidth; j += 1) {
             var index = (j * textureWidth + i) * 4;
-            textureImage.data[index + 0] = i;
-            textureImage.data[index + 1] = Math.floor((i + j) / 2);
-            textureImage.data[index + 2] = j;
+            textureImage.data[index + 0] = i/textureWidth*255;
+            textureImage.data[index + 1] = Math.floor((i + j) / 2)/textureWidth*255;
+            textureImage.data[index + 2] = j/textureWidth*255;
             textureImage.data[index + 3] = 255;
           }
         }
