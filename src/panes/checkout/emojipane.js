@@ -101,7 +101,7 @@ v.renderFunc = function() {
 		mat4.identity(m);
 		mat4.translate(m,m, [0, 0, 0]);
 		mat4.scale(m,m, [v.sw/v.gridX, v.sw/v.gridX, 1]);
-		mainShapes.useProg4();
+		emojiShapes.useProg4();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
@@ -110,7 +110,7 @@ v.renderFunc = function() {
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-		mainShapes.drawArrays4('emojis');
+		emojiShapes.drawArrays4('emojis');
 	}
 
 };
