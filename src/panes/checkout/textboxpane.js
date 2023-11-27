@@ -31,9 +31,17 @@ v.gadgets.push(v.itemGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30;
 	g.autoHull();
 	g.clickFunc = function() {
-		emojipane.callback = function(label) {
+		emojipane.callback = function(label, command) {
       if (label) {
         billpane.textbox.options.emoji = label;
+        delete billpane.textbox.options.barcode;
+        billpane.textbox.queryPrice(label);
+        billpane.textbox.resetGads();
+        billpane.changed = true;
+        billpane.subtotal.enableGads();
+      }
+      if (command == 'clear') {
+        delete billpane.textbox.options.emoji;
         delete billpane.textbox.options.barcode;
         billpane.textbox.queryPrice(label);
         billpane.textbox.resetGads();

@@ -20,7 +20,7 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
     } else if (index == -1) { // clear
       vp.popRoot()
       if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'clear')
-    } else if (index < this.length) {
+    } else if (index < this.viewport.length) {
 			vp.popRoot()
 			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[index].label)
 		}
