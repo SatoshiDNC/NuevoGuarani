@@ -64,6 +64,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
       delete emojipane.lastBuilt
+      console.log('here')
       emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
       emojipane.queueLayout()
     }
@@ -172,7 +173,8 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 		}
 	}
   g.appFunction = function() {
-    if (pricelisttypes[index] == 'NostrMarket compatible') {
+    const v = this.viewport
+    if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
       delete v.nostrmarketurl.hide;
       delete v.nostrmarketwalletkey.hide;
       delete v.nostrmarketstall.hide;
