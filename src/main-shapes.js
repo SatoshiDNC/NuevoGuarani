@@ -154,9 +154,9 @@ const mainShapes = new ShapeBuffer(function() {
 	}
 
 	{
-		function addShape2_roundedRect(name, type, w, h) {
+		function addShape2_roundedRect(obj, name, type, w, h) {
 			var x = w-1, y = h-1;
-			this.addShape2(name, type,
+			obj.addShape2(name, type,
 				0      /w,y       /h, 1       /w,y      /h, 0      /w,1      /h, 1      /w,1      /h, // left
 				0.03   /w,0.8     /h, 1       /w,1      /h, 0.1    /w,0.6    /h, 1      /w,1      /h, 0.2     /w,0.4     /h, 1      /w,1      /h,
 				0.4    /w,0.2     /h, 1       /w,1      /h, 0.6    /w,0.1    /h, 1      /w,1      /h, 0.8     /w,0.03    /h, 1      /w,1      /h,
@@ -173,9 +173,9 @@ const mainShapes = new ShapeBuffer(function() {
 				1      /w,1       /h, x       /w,y      /h, x      /w,1      /h,
 			);
 		}
-		addShape2_roundedRect('keypad', gl.TRIANGLE_STRIP, 4, 4);
-		addShape2_roundedRect('keypadwide', gl.TRIANGLE_STRIP, 8, 4);
-		addShape2_roundedRect('keypadtall', gl.TRIANGLE_STRIP, 4, 8);
+		addShape2_roundedRect(this, 'keypad', gl.TRIANGLE_STRIP, 4, 4);
+		addShape2_roundedRect(this, 'keypadwide', gl.TRIANGLE_STRIP, 8, 4);
+		addShape2_roundedRect(this, 'keypadtall', gl.TRIANGLE_STRIP, 4, 8);
 	}
 
 	{
