@@ -4,7 +4,7 @@ function alpha(rgba, a) {
 	return [rgba[0], rgba[1], rgba[2], Math.min(1, Math.max(0, a))];
 }
 
-const mainShapes = new ShapeBuffer(() => {
+const mainShapes = new ShapeBuffer(function() {
 
 	// Shape definitions
 	this.addShape2('unitLine', gl.LINE_LOOP, 0,0, 1,1, );
@@ -190,7 +190,7 @@ const mainShapes = new ShapeBuffer(() => {
 
 })
 
-const emojiShapes = new ShapeBuffer((emojiData, emojisPerRow, emojisPerColumn) => {
+const emojiShapes = new ShapeBuffer(function(emojiData, emojisPerRow, emojisPerColumn) {
 
   // Specialized shape-building function for emoji textures
 	function addEmojiShape4(name, typ, x, y) {
