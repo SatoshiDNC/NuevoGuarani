@@ -40,27 +40,21 @@ v.layoutFunc = function() {
     let n = 0
 		for (let e of config.priceList.thumbnailData) {
       n++; if (n > maxLength) break;
-//			if (category != '' && e.category != category && i>0) {
-//				i=0; j++;
-//				data.splice(data.length,0, data[data.length-4],data[data.length-3],data[data.length-2],data[data.length-1], );
-//				data.splice(data.length,0, i,j+1,e.x/nx,(e.y+1)/ny, );
-//			}
 			let u = e.x+1, v = e.y+1;
 			data.splice(data.length,0, i,j+1,e.x/nx,v/ny, i,j,e.x/nx,e.y/ny, );
 			data.splice(data.length,0, i+1,j+1,u/nx,v/ny, i+1,j,u/nx,e.y/ny, );
 			y = j+1;
 			i++; if (i>=w) {
 				i=0; j++;
-//				data.splice(data.length,0, data[data.length-4],data[data.length-3],data[data.length-2],data[data.length-1], );
 				data.splice(data.length,0, data[data.length-4],data[data.length-3],data[data.length-2],data[data.length-1], i,j+1,e.x/nx,(e.y+1)/ny, );
-//				data.splice(data.length,0, i,j+1,e.x/nx,(e.y+1)/ny, i,j,e.x/nx,e.y/ny, );
 			}
 			category = e.category;
 		}
 		this.gridX = x;
 		this.gridY = y;
     this.length = priceList.length || config.priceList.thumbnailData.length;
-    emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, data)
+    v.emojiPoints = data
+    emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
 	}
 	v.maxX = v.sw;
 	v.maxY = this.gridY * v.sw/v.gridX;
