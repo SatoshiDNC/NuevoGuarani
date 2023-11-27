@@ -6,6 +6,7 @@ class NostrMarketPriceList extends PriceList {
 
   get length() { return NostrMarketPriceList.list.length }
   get thumbnails() { return NostrMarketPriceList.texture }
+  get thumbnailData() { return NostrMarketPriceList.emojiData }
 
   static loadData(url, key, stall) {
     console.group(this.constructor.name+'loadData(...)')
@@ -32,6 +33,7 @@ class NostrMarketPriceList extends PriceList {
         console.log(stallId)
       }
       const imageUrls = []
+      PriceList.emojiData = []
       {
         console.log('getting products', stallId)
         const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
@@ -49,6 +51,7 @@ class NostrMarketPriceList extends PriceList {
           const amt = price
           tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
           imageUrls.push(e.images[0])
+          PriceList.emojiData.push({ x:  6, y: 29, category: 'product', label: name, })
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
