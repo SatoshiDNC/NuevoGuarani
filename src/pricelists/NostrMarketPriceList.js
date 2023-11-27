@@ -92,13 +92,13 @@ class NostrMarketPriceList extends PriceList {
         console.log(imageUrls)
         {
           let pending = imageUrls.length
-          let i = 0, j = 0
-          imageUrls.map(url => {
+          imageUrls.map(url, index => {
             console.log('loading', url)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
               console.log('loaded', url)
+              let i = index % NostrMarketPriceList.emojiBase, j = Math.floor(index / NostrMarketPriceList.emojiBase)
               textureContext.drawImage(img, i * iconWidth, j * iconWidth, iconWidth, iconWidth)
               i += 1
               if (i >= NostrMarketPriceList.emojiBase) {
@@ -108,7 +108,6 @@ class NostrMarketPriceList extends PriceList {
               pending -= 1
               if (pending == 0 || true) {
                 console.log('done loading, regenerating texture')
-                textureContext.putImageData(textureImage, 0, 0)
                 updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
                 gl.generateMipmap(gl.TEXTURE_2D)
               }
