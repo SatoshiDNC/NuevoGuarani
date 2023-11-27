@@ -52,7 +52,7 @@ class NostrMarketPriceList extends PriceList {
       {
         console.log('initializing texture')
         this.emojiTex = initTexture(gl);
-        this.emojiEl = document.createElement('img');
+        this.emojiEl = document.createElement('canvas');
         this.emojiEl.addEventListener('load', function() {
           updateTexture(gl, this.emojiTex, this.emojiEl);
           gl.generateMipmap(gl.TEXTURE_2D);
