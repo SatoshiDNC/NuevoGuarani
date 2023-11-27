@@ -84,7 +84,7 @@ class NostrMarketPriceList extends PriceList {
             textureImage.data[index + 0] = i/textureWidth*127+64;
             textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64;
             textureImage.data[index + 2] = j/textureWidth*127+64;
-            textureImage.data[index + 3] = ((i - iconWidth/2)**2 + (j - iconWidth/2)**2 < (iconWidth/2)**2) ? 255 : 0;
+            textureImage.data[index + 3] = (((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2 < (iconWidth/2)**2) ? 255 : 0;
           }
         }
         console.log(textureImage.data)
