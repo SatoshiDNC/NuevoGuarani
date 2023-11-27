@@ -248,7 +248,7 @@ function updateTexture(gl, texture, el) {
   );
 }
 
-const emojiTex = initTexture(gl);
+var emojiTex = initTexture(gl);
 const emojiEl = document.createElement('img');
 emojiEl.addEventListener('load', function() {
 	updateTexture(gl, emojiTex, emojiEl);
