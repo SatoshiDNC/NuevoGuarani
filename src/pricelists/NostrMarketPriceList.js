@@ -110,11 +110,13 @@ class NostrMarketPriceList extends PriceList {
             img.addEventListener('load', function() {
               console.log('loaded', url)
               let i = index % NostrMarketPriceList.emojiBase, j = Math.floor(index / NostrMarketPriceList.emojiBase)
-              let targetWidth = iconWidth, targetHeight = iconWidth
+              let targetWidth, targetHeight
               if (img.width > img.height) {
+                targetWidth = iconWidth - 2
                 targetHeight = targetWidth * img.height / img.width
               } else {
                 targetWidth = targetHeight * img.width / img.height
+                targetHeight = iconWidth - 2
               }
               textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
               textureContext.drawImage(img,
