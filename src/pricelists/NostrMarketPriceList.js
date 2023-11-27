@@ -12,6 +12,7 @@ class NostrMarketPriceList extends PriceList {
 
   static loadData(url, key, stall) {
     if (!url || !key || !stall) return
+    console.log(url, key, stall)
     const asyncLogic = async () => {
       let stallId, stallCurrency
       {
