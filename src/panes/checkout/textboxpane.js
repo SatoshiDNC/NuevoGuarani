@@ -708,19 +708,19 @@ v.renderFunc = function() {
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(config.themeColors.uiDataEntryArea));
-	gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+	mainShapes.drawArrays2('circle');
 	mat4.identity(m);
 	mat4.translate(m,m, [v.sw, 0, 0]);
 	mat4.scale(m,m, [50/32, 50/32, 1]);
 	mat4.translate(m,m, [-4, 2, 0]);
 	mat4.scale(m,m, [-32, 32, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+	mainShapes.drawArrays2('circle');
 	mat4.identity(m);
 	mat4.translate(m,m, [(4+16) * 50/32, 2 * 50/32, 0]);
 	mat4.scale(m,m, [v.sw-(8+32) * 50/32, 32 * 50/32, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 
 	if (!billpane.textbox.options.change) {
 		if (v.cursorState) {
@@ -732,7 +732,7 @@ v.renderFunc = function() {
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 				new Float32Array(config.themeColors.uiDataEntryCursor));
-			gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+			mainShapes.drawArrays2('rect');
 		}
 	}
 
@@ -781,7 +781,7 @@ v.renderFunc = function() {
 				mat4.translate(m,m, [g.x-4, g.y+g.h/2-0.5, 0]);
 				mat4.scale(m,m, [g.w+8, 1, 1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-				gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+				mainShapes.drawArrays2('rect');
 			}
 			if (v.beam != v.beamPrev) {
 				v.beamPrev = v.beam;

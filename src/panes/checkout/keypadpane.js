@@ -115,7 +115,7 @@ v.renderFunc = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(sel?config.themeColors.uiPillOrange:config.themeColors.uiSettingsBubble));
-		gl.drawArrays(typ2[g.shape], beg2[g.shape], len2[g.shape]);
+		mainShapes.drawArrays2(g.shape);
 	}
 	for (var g of v.keypad) {
 		var sel = g.clicked || ['begin-tap','begin-click','recover-click'].includes(g.gestureState);

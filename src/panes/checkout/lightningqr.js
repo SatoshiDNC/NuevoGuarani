@@ -82,7 +82,7 @@ v.renderFunc = function() {
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]));
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 //console.log(this.busySignal, this.busyCounter);
 	if (this.busySignal) {
 		this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2;
@@ -186,14 +186,14 @@ v.renderFunc = function() {
 		mat4.translate(mat,mat,[0.425,0.425,0]);
 		mat4.scale(mat,mat,[0.15,0.15,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([1,1,1,1]));
 		mat4.copy(mat, m);
 		mat4.translate(mat,mat,[0.43,0.43,0]);
 		mat4.scale(mat,mat,[0.14,0.14,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,0,0,1]));
 		mat4.copy(mat, m);
@@ -202,7 +202,7 @@ v.renderFunc = function() {
 		mat4.translate(mat,mat,[-0.003,0,0]);
 		mat4.scale(mat,mat,[0.006,-0.06,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		//setTimeout(this.timeoutFunc, 1000);
 		this.setRenderFlag(true);

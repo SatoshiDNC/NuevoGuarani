@@ -425,8 +425,8 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 		for (var i=0; i<parts; i++) if (paymentpane.scanner.results[i] != '') {
 			var beg = Math.round(tris * i / parts);
 			var end = Math.round(tris * (i + 1) / parts);
-			gl.drawArrays(typ2.pies,
-				beg2.pies + beg * 3,
+			gl.drawArrays(mainShapes.typ2.pies,
+				mainShapes.beg2.pies + beg * 3,
 				(end - beg) * 3);
 		}
 		paymentpane.scanner.intensity *= 0.95;
@@ -452,7 +452,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 						mat4.scale(mat, mat, [v.sw, (v.sh-h)/2, 1]); break;
 		}
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 	}
 */
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]));
@@ -460,7 +460,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	mat4.translate(mat, mat, [x + (v.designFit[0] - w)/2, y + (v.designFit[1] - h)/2, 0]);
 	mat4.scale(mat, mat, [w, h, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-	gl.drawArrays(typ2.scanbox, beg2.scanbox, len2.scanbox);
+	mainShapes.drawArrays2('scanbox');
 
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);

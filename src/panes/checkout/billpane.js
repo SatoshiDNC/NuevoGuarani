@@ -500,32 +500,32 @@ v.renderFunc = function() {
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2), y, 0]);
 		mat4.scale(m,m, [bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2), y-exh, 0]);
 		mat4.scale(m,m, [bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.min(v.sw-sideMargin, left?sideMargin+w+bubbleRadius*2-coziness*2:v.sw), y, 0]);
 		mat4.scale(m,m, [-bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.min(v.sw-sideMargin, left?sideMargin+w+bubbleRadius*2-coziness*2:v.sw), y-exh, 0]);
 		mat4.scale(m,m, [-bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin+bubbleRadius, left?0:v.sw-sideMargin-bubbleRadius+coziness*2-w) * 1, y-exh, 0]);
 		mat4.scale(m,m, [v.sw-sideMargin-bubbleRadius-Math.max(sideMargin+bubbleRadius, v.sw-sideMargin-bubbleRadius+coziness*2-w) * 1, 32 * 1 + exh, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2) * 1, y-exh+bubbleRadius, 0]);
 		mat4.scale(m,m, [v.sw-sideMargin-Math.max(sideMargin, v.sw-sideMargin-w-bubbleRadius*2+coziness*2) * 1, 32 * 1 + exh - bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		if (icon) {
 			let emoji = item.options.emoji;
@@ -735,19 +735,19 @@ v.renderFunc = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(subtotal < 0 && !v.includesCash()? config.themeColors.uiBillCredit: config.themeColors.uiBillCharge));
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [(v.sw+w)/2 - 16, y, 0]);
 		//mat4.scale(m,m, [50/32, 50/32, 1]);
 //		mat4.translate(m,m, [-8/2, y, 0]);
 		mat4.scale(m,m, [32, 32, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [(v.sw-w)/2, y, 0]);
 		mat4.scale(m,m, [w * 1, 32 * 1, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		mat4.identity(m);
 		//mat4.translate(m,m, [v.sw/2, y, 0]);

@@ -92,11 +92,11 @@ v.renderFunc = function() {
 			mat4.scale(mat,mat, [g.w-2*margin,25,1]);
 			if (daisychain) {
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+				mainShapes.drawArrays2('rect');
 			} else {
 				mat4.scale(mat,mat, [1/16,1/1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.settingstop, beg2.settingstop, len2.settingstop);
+				mainShapes.drawArrays2('settingstop');
 			}
 
 			if (g.daisychain) {
@@ -110,14 +110,14 @@ v.renderFunc = function() {
 				mat4.scale(mat,mat, [g.w-2*margin,25,1]);
 				mat4.scale(mat,mat, [1/16,1/1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.settingsbot, beg2.settingsbot, len2.settingsbot);
+				mainShapes.drawArrays2('settingsbot');
 
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+margin,g.y+25,0]);
 				mat4.scale(mat,mat, [g.w-2*margin,g.h-50,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 			}
-			gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+			nainShapes.drawArrays2('rect');
 
 			if (daisychain) {
 				useProg5();

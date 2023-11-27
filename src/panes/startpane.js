@@ -36,17 +36,17 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(config.themeColors.uiDataEntryText));
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x+g.w, g.y, 0]);
 		mat4.scale(mat,mat, [-g.h, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x+g.h/2, g.y, 0]);
 		mat4.scale(mat,mat, [g.w-g.h, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);

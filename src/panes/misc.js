@@ -40,7 +40,7 @@
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+      mainShapes.drawArrays2('unitLine');
       }
     }
   };
@@ -74,7 +74,7 @@
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+      mainShapes.drawArrays2('unitLine');
       }
     }
   };
@@ -112,7 +112,7 @@
         gl.uniformMatrix4fv(
           gl.getUniformLocation(prog2, 'uModelViewMatrix'),
           false, mat);
-        gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+        mainShapes.drawArrays2('unitLine');
       }
     }
   };

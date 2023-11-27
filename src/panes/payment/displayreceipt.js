@@ -190,7 +190,7 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,margintop+marginbottom,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 
 	// Draw the serrated leading edge of the receipt.
 	useProg2();
@@ -200,7 +200,7 @@ v.renderFunc = function() {
 	mat4.identity(m);
 	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
+	mainShapes.drawArrays2('tear');
 
 	y += margintop;
 	var inlist = false;
@@ -340,7 +340,7 @@ v.renderFunc = function() {
 		mat4.translate(m,m,[0,y,0]);
 		mat4.scale(m,m,[v.sw,marginbottom,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 	}
 	y += marginbottom;
 
@@ -353,7 +353,7 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
+	mainShapes.drawArrays2('tear');
 	y += (v.sw/49)*Math.sqrt(3)/2;
 
 /*
@@ -361,7 +361,7 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,v.sh,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 */
 	if (y > v.sh) {
 		this.backgroundDisabled = true;
