@@ -208,6 +208,7 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 			g.viewport.queueLayout();
 		} { // For the app function.
 			g.value = val;
+      nostrmarketstall.load(() => {})
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -246,6 +247,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 			g.viewport.queueLayout();
 		} { // For the app function.
 			g.value = val;
+      nostrmarketstall.load(() => {})
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -300,7 +302,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	}
 */
 v.load = function(cb) {
-	const debuglog = false;
+	const debuglog = true;
 	{
 		const g = this.typelist, v = this;
 		g.tempValue = '';
