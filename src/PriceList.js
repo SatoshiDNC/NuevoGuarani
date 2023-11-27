@@ -6,7 +6,7 @@ class PriceList {
       const emojiEl = document.createElement('img')
       emojiEl.addEventListener('load', function() {
         console.log('updating PriceList texture')
-        updateTexture(gl, emojiTex, emojiEl)
+        updateTexture(gl, PriceList.texture, emojiEl)
         gl.generateMipmap(gl.TEXTURE_2D)
         // emojiReady = true
         // loadCheck()
