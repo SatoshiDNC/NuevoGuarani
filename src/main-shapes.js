@@ -1,3 +1,5 @@
+const mainShapes = new ShapeBuffer()
+
 // Shape data storage
 var beg2 = {}, len2 = {}, typ2 = {}; var all2 = [], buf2;
 var beg4 = {}, len4 = {}, typ4 = {}; var all4 = [], buf4;

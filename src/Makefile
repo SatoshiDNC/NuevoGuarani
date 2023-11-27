@@ -63,6 +63,7 @@ all.js: \
 	main-receiptfmt.js \
 	main-config.js \
 	main-gl.js \
+	ShapeBuffer.js \
 	main-shapes.js \
 	main-helpers.js \
 	wallets/all.js \
@@ -95,6 +96,7 @@ all.js: \
 		main-translations.js \
 		main-receiptfmt.js \
 		main-config.js \
+		ShapeBuffer.js \
 		main-shapes.js \
 		main-gl.js \
 		main-helpers.js \
