@@ -65,6 +65,7 @@ v.layoutFunc = function() {
 	g.autoHull();
 }
 v.renderFunc = function() {
+  console.log('render emojipane')
 	drawThemeBackdrop(this, config.themeColors);
 	const v = this;
 	const m = mat4.create();
@@ -79,38 +80,14 @@ v.renderFunc = function() {
   mat4.scale(m,m, [v.sw/v.gridX/24, v.sw/v.gridX/24, 1]);
   iconFont.draw(2+24-2,16+4, "\x03", config.themeColors.uiText, v.mat, m);
 
-/*
-	if (0) {
-		mat4.identity(m);
-		mat4.translate(m,m, [0, 0, 0]);
-		mat4.scale(m,m, [50, 50, 1]);
-		mainShapes.useProg4();
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
-		gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
-			new Float32Array([1,1,1,1]));
-	  gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
-//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-		mainShapes.drawArrays4('tomato');
-	}
-*/
-
-	{
-		mat4.identity(m);
-		mat4.translate(m,m, [0, 0, 0]);
-		mat4.scale(m,m, [v.sw/v.gridX, v.sw/v.gridX, 1]);
-		emojiShapes.useProg4();
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
-		gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
-			new Float32Array([1,1,1,1]));
-	  gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
-//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-		emojiShapes.drawArrays4('emojis');
-	}
-
+  mat4.identity(m);
+  mat4.translate(m,m, [0, 0, 0]);
+  mat4.scale(m,m, [v.sw/v.gridX, v.sw/v.gridX, 1]);
+  emojiShapes.useProg4();
+  gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
+  gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
+  gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]));
+  gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  emojiShapes.drawArrays4('emojis');
 };
