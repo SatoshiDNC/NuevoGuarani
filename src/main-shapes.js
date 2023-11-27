@@ -190,20 +190,20 @@ const mainShapes = new ShapeBuffer(function() {
 
 })
 
-const emojiShapes = new ShapeBuffer(function(emojiData, emojisPerRow, emojisPerColumn) {
+const emojiShapes = new ShapeBuffer(function(obj, emojiData, emojisPerRow, emojisPerColumn) {
 
   // Specialized shape-building function for emoji textures
 	function addEmojiShape4(name, typ, x, y) {
 		const nx = emojisPerRow, ny = emojisPerColumn
 		const u = x+1, v = y+1
-		this.beg4[name] = this.all4.length/4; this.typ4[name] = typ
-		this.all4.splice (this.all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,)
-		this.len4[name] = this.all4.length/4 - this.beg4[name]
+		obj.beg4[name] = obj.all4.length/4; obj.typ4[name] = typ
+		obj.all4.splice (obj.all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,)
+		obj.len4[name] = obj.all4.length/4 - obj.beg4[name]
 	}
 
 	if (emojiData) {
 		for (const e of emojiData) {
-			addEmojiShape4(e.label, gl.TRIANGLE_STRIP, e.x, e.y);
+			addEmojiShape4(this, e.label, gl.TRIANGLE_STRIP, e.x, e.y);
 		}
 	}
 	this.addShape4('emojis', gl.TRIANGLE_STRIP, ...emojiPoints);
