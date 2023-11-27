@@ -14,7 +14,6 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
   g.state = 0;
   Object.defineProperty(g, "list", {
     get : function () {
-      console.log('this.state', this.state)
       if (this.state == 2) return this.stallList
       if (this.state == 1) return ['']
       const url = pricelistsettings.nostrmarketurl.value
