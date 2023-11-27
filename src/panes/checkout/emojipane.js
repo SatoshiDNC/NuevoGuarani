@@ -33,7 +33,7 @@ v.layoutFunc = function() {
 		v.lastBuilt = w;
 		let i=v.controlOffset, j=0, x=w, y=0;
 		let data = [];
-		const nx = 57, ny = 57;
+		const nx = config.priceList.thumbnailsPerRow, ny = config.priceList.thumbnailsPerColumn;
 		let category = '';
     const priceList = config.priceList
     const maxLength = priceList.length || config.priceList.thumbnailData.length
