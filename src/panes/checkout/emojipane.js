@@ -5,6 +5,7 @@ v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
+v.controlOffset = 2; // number of control icons
 v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = 0; g.y = 0;
@@ -12,10 +13,13 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
 		const g = this, v = g.viewport
 		const i = Math.floor((e.x+v.userX*v.viewScale)/v.w*v.gridX)
 		const j = Math.floor((e.y+v.userY*v.viewScale)/v.w*v.gridX)
-    const index = i+j*v.gridX - 1
-    if (index == -1) { // cancel
+    const index = i+j*v.gridX - v.controlOffset
+    if (index == -2) { // cancel
 			vp.popRoot()
-			if (this.viewport.callback) this.viewport.callback.call(undefined, undefined)
+			if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'cancel')
+    } else if (index == -1) { // clear
+      vp.popRoot()
+      if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'clear')
     } else if (index < this.length) {
 			vp.popRoot()
 			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[index].label)
@@ -27,7 +31,7 @@ v.layoutFunc = function() {
 	let w = Math.round(Math.sqrt(100 * v.sw / v.sh));
 	if (w != v.lastBuilt) {
 		v.lastBuilt = w;
-		let i=1, j=0, x=w, y=0;
+		let i=v.controlOffset, j=0, x=w, y=0;
 		let data = [];
 		const nx = 57, ny = 57;
 		let category = '';
