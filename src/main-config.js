@@ -34,7 +34,6 @@
 		'€': ['₿','₲','$'],
 	};
 
-	// var vendorColors = new DefaultDarkTheme();
 	var customerColors = new DefaultLightTheme();
 
 	// Randomly produce a random configuration for testing.
@@ -70,7 +69,6 @@
 		defaultCustomerCurrency = enabledCustomerCurrencies[
 			Math.floor(enabledCustomerCurrencies.length * Math.random())];
 
-		// vendorColors = Math.random() > 0.5? new DefaultLightTheme() : new DefaultDarkTheme();
 		customerColors = Math.random() > 0.5? new DefaultLightTheme() : new DefaultDarkTheme();
 	}
 
@@ -87,7 +85,6 @@
 		enabledCashbackOptions['₿'].splice(0,4,'₲');
 //		defaultVendorCurrency = '₲';
 		defaultCustomerCurrency = '₲';
-		// vendorColors = new DefaultDarkTheme();
 		customerColors = new DefaultLightTheme();
 	}
 	if (0) { // Spanish demo for Paraguay usage.
@@ -101,7 +98,6 @@
 		enabledCashbackOptions['₿'].splice(0,4,'₲');
 //		defaultVendorCurrency = '₲';
 		defaultCustomerCurrency = '₲';
-		// vendorColors = new DefaultDarkTheme();
 		customerColors = new DefaultLightTheme();
 	}
 	if (0) { // EUR
