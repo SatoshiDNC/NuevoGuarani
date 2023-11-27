@@ -59,8 +59,8 @@ class ShapeBuffer {
 
   // shape-drawing functions
   drawArrays2(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
-  drawArrays4(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
-  drawArrays5(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
+  drawArrays4(name) { gl.drawArrays(this.typ4[name], this.beg4[name], this.len4[name]) }
+  drawArrays5(name) { gl.drawArrays(this.typ5[name], this.beg5[name], this.len5[name]) }
 
   useProg2() {
 		gl.useProgram(prog2);
