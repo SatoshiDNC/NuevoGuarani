@@ -80,17 +80,26 @@ class NostrMarketPriceList extends PriceList {
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
         for (var i = 0; i < textureWidth; i += 1) {
           for (var j = 0; j < textureWidth; j += 1) {
-            var index = (j * textureWidth + i) * 4;
-            textureImage.data[index + 0] = i/textureWidth*127+64;
-            textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64;
-            textureImage.data[index + 2] = j/textureWidth*127+64;
-            textureImage.data[index + 3] = (((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2 < (iconWidth/2)**2) ? 255 : 0;
+            var index = (j * textureWidth + i) * 4
+            textureImage.data[index + 0] = i/textureWidth*127+64
+            textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64
+            textureImage.data[index + 2] = j/textureWidth*127+64
+            textureImage.data[index + 3] = (((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2 < (iconWidth/2)**2) ? 255 : 0
           }
         }
         console.log(textureImage.data)
-        textureContext.putImageData(textureImage, 0, 0);
-        updateTexture(gl, NostrMarketPriceList.texture, emojiEl);
-        gl.generateMipmap(gl.TEXTURE_2D);
+        textureContext.putImageData(textureImage, 0, 0)
+        updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
+        gl.generateMipmap(gl.TEXTURE_2D)
+      }
+      {
+        imageUrls.map(url => {
+          const emojiEl = document.createElement('canvas')
+          emojiEl.addEventListener('load', function() {
+            console.log('loaded', url)
+          });
+          emojiEl.src = url
+        })
 
         // this.emojiEl.addEventListener('load', function() {
         //   updateTexture(gl, this.emojiTex, this.emojiEl);
