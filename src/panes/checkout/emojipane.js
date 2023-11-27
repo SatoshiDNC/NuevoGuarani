@@ -60,8 +60,7 @@ v.layoutFunc = function() {
 		this.gridX = x;
 		this.gridY = y;
     this.length = priceList.length || config.priceList.thumbnailData.length;
-		emojiPoints = data;
-    emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn)
+    emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, data)
 	}
 	v.maxX = v.sw;
 	v.maxY = this.gridY * v.sw/v.gridX;

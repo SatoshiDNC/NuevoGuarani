@@ -13,7 +13,6 @@ class ShapeBuffer {
     this.buf2 = gl.createBuffer(); // graphics buffer for 2-value vertices
     this.buf4 = gl.createBuffer(); // graphics buffer for 4-value vertices
     this.buf5 = gl.createBuffer(); // graphics buffer for 5-value vertices
-    this.emojiPoints = [];
   }
 
   clear() {
