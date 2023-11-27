@@ -45,7 +45,6 @@ class NostrMarketPriceList extends PriceList {
         const json = await response.json()
         const tempList = []
         NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(json.length))
-        emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
         let xIter = 0, yIter = 0
         json.map(e => {
           const { name, price } = e
@@ -62,6 +61,8 @@ class NostrMarketPriceList extends PriceList {
         })
         NostrMarketPriceList.list = tempList
       }
+
+      emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
 
       {
         console.log('initializing texture')
