@@ -7,6 +7,8 @@ class NostrMarketPriceList extends PriceList {
   get length() { return NostrMarketPriceList.list.length }
   get thumbnails() { return NostrMarketPriceList.texture }
   get thumbnailData() { return NostrMarketPriceList.emojiData }
+  get thumbnailsPerRow() { return NostrMarketPriceList.emojiBase }
+  get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
 
   static loadData(url, key, stall) {
     console.group(this.constructor.name+'loadData(...)')
@@ -55,6 +57,7 @@ class NostrMarketPriceList extends PriceList {
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
+        NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(NostrMarketPriceList.emojiData.length))
       }
       console.log(NostrMarketPriceList.list)
       console.log(imageUrls)
@@ -62,7 +65,7 @@ class NostrMarketPriceList extends PriceList {
         console.log('initializing texture')
         NostrMarketPriceList.texture = initTexture(gl)
         const emojiEl = document.createElement('canvas')
-        const textureWidth = 128
+        const textureWidth = NostrMarketPriceList.emojiBase * 66
         emojiEl.width = emojiEl.height = textureWidth
         const textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);

@@ -4,6 +4,8 @@ class PriceList {
   get length() { return 0 }
   get thumbnails() { return PriceList.texture }
   get thumbnailData() { return PriceList.emojiData }
+  get thumbnailsPerRow() { return 57 }
+  get thumbnailsPerColumn() { return 57 }
 
   static init() {
     if (!PriceList.texture) {

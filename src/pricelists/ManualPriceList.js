@@ -7,5 +7,7 @@ class ManualPriceList extends PriceList {
   get length() { return this.list.length }
   get thumbnails() { return PriceList.texture }
   get thumbnailData() { return PriceList.emojiData }
+  get thumbnailsPerRow() { return 57 }
+  get thumbnailsPerColumn() { return 57 }
 
 }
