@@ -43,12 +43,25 @@ class NostrMarketPriceList extends PriceList {
           const { name, price } = e
           const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
           const amt = price
-          tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
+          tempList.push({ name, cur, amt, qty: 1, unit: 'ea', imgUrl: e.images[0] })
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
       }
       console.log(NostrMarketPriceList.list)
+      {
+        console.log('initializing texture')
+        this.emojiTex = initTexture(gl);
+        this.emojiEl = document.createElement('img');
+        this.emojiEl.addEventListener('load', function() {
+          updateTexture(gl, this.emojiTex, this.emojiEl);
+          gl.generateMipmap(gl.TEXTURE_2D);
+          // emojiReady = true;
+          // loadCheck();
+          emojiTex = this.emojiTex
+        });
+        emojiEl.src = tempList[0].imgUrl
+      }
     }
     asyncLogic()
     console.groupEnd()
