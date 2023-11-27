@@ -76,9 +76,9 @@ class NostrMarketPriceList extends PriceList {
         emojiEl.width = emojiEl.height = textureWidth
         const textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
-        for (var i = 0; i < textureWidth; i += 1) {
-          for (var j = 0; j < textureWidth; j += 1) {
-            var index = (j * textureWidth + i) * 4
+        for (let i = 0; i < textureWidth; i += 1) {
+          for (let j = 0; j < textureWidth; j += 1) {
+            let index = (j * textureWidth + i) * 4
             textureImage.data[index + 0] = i/textureWidth*127+64
             textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64
             textureImage.data[index + 2] = j/textureWidth*127+64
@@ -92,13 +92,19 @@ class NostrMarketPriceList extends PriceList {
         console.log(imageUrls)
         {
           let pending = imageUrls.length
+          let i = 0, j = 0
           imageUrls.map(url => {
             console.log('loading', url)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
               console.log('loaded', url)
-              textureContext.drawImage(img, 0, 0)
+              textureContext.drawImage(img, i * iconWidth, j * iconWidth, iconWidth, iconWidth)
+              i += 1
+              if (i >= NostrMarketPriceList.emojiBase) {
+                i = 0
+                j += 1
+              }
               pending -= 1
               if (pending == 0) {
                 console.log('done loading, regenerating texture')
