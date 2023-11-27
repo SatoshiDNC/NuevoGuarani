@@ -22,13 +22,13 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
-		useProg5();
+		mainShapes.useProg5();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
 		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
 */
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
@@ -83,7 +83,7 @@ v.layoutFunc = function() {
 v.renderFunc = function() {
 	const th = vendorColors;
 	drawThemeBackdrop(this, th);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));

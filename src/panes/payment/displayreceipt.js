@@ -181,7 +181,7 @@ v.renderFunc = function() {
 	var y = 0;
 
 	// Start the receipt "paper" with the top and bottom margin sizes.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(th2.uiReceiptBg));
@@ -193,7 +193,7 @@ v.renderFunc = function() {
 	mainShapes.drawArrays2('rect');
 
 	// Draw the serrated leading edge of the receipt.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array([0,0,0,1]));
@@ -332,7 +332,7 @@ v.renderFunc = function() {
 		}
 
 		// Extend the receipt "paper" by the bottom margin size.
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(th2.uiReceiptBg));
@@ -345,7 +345,7 @@ v.renderFunc = function() {
 	y += marginbottom;
 
 	// Draw the serrated trailing edge of the receipt.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(th2.uiReceiptBg));

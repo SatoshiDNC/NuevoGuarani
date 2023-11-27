@@ -492,7 +492,7 @@ v.renderFunc = function() {
 
 		let w = (exw > emw)? exw: emw;
 
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array((item.options.negate && !item.options.cash)? config.themeColors.uiBillCredit: config.themeColors.uiBillCharge));
@@ -533,7 +533,7 @@ v.renderFunc = function() {
 			mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
 			mat4.scale(m,m, [24, 24, 1]);
 			if (emoji) {
-				useProg4();
+				mainShapes.useProg4();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 				gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
@@ -726,7 +726,7 @@ v.renderFunc = function() {
 		let str2 = billpane.formatMoney(Math.round(Math.sign(subtotal)*subtotal).toString());
 		let w = defaultFont.calcWidth(str + str2);
 
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 		mat4.identity(m);
 		//mat4.scale(m,m, [50/32, 50/32, 1]);
@@ -757,7 +757,7 @@ v.renderFunc = function() {
 		defaultFont.draw(0,0, str2, subtotal < 0 && !v.includesCash()? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
 	}
 
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array([1,1,1,1]));

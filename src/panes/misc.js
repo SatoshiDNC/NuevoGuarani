@@ -26,7 +26,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.380, 0.588, 0.259, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.enable(gl.BLEND);
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
@@ -61,7 +61,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.882, 0.647, 0.353, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
@@ -97,7 +97,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.416, 0.533, 0.573, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.enable(gl.BLEND);
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
@@ -176,7 +176,7 @@ function scrollUpDn(g, amt) {
 		var sel;
 		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		useProg5();
+		mainShapes.useProg5();
 		gl.enable(gl.BLEND);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		const mat = mat4.create();
@@ -254,7 +254,7 @@ function scrollUpDn(g, amt) {
 		const th = vendorColors;
 		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		useProg5();
+		mainShapes.useProg5();
 		gl.enable(gl.BLEND);
 		const mat = mat4.create();
 		mat4.identity(mat);

@@ -84,7 +84,7 @@ v.renderFunc = function() {
 		mat4.identity(m);
 		mat4.translate(m,m, [0, 0, 0]);
 		mat4.scale(m,m, [50, 50, 1]);
-		useProg4();
+		mainShapes.useProg4();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
@@ -101,7 +101,7 @@ v.renderFunc = function() {
 		mat4.identity(m);
 		mat4.translate(m,m, [0, 0, 0]);
 		mat4.scale(m,m, [v.sw/v.gridX, v.sw/v.gridX, 1]);
-		useProg4();
+		mainShapes.useProg4();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),

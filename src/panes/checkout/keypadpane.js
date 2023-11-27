@@ -104,7 +104,7 @@ v.renderFunc = function() {
 	gl.clearColor(...config.themeColors.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	const v = this;
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 	const m = mat4.create();
 	for (var g of v.keypad) {

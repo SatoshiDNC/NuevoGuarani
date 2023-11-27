@@ -698,7 +698,7 @@ v.renderFunc = function() {
 
 	vp.beginInput(keypadpane.inputGad); // TODO: This gets reset by clicks/taps. Need to fix.
 
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 
 	mat4.identity(m);
@@ -750,7 +750,7 @@ v.renderFunc = function() {
 			mat4.identity(m);
 			mat4.translate(m,m, [g.x, g.y, 0]);
 			mat4.scale(m,m, [g.w, g.h, 1]);
-			useProg4();
+			mainShapes.useProg4();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 			gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
@@ -773,7 +773,7 @@ v.renderFunc = function() {
 		iconFont.draw(0,16, "\x04", v.scanMode? alpha(config.themeColors.uiDataEntryText, 0.5): config.themeColors.uiDataEntryGhostText, v.mat, m);
 		if (v.scanMode) {
 			if (v.beam) {
-				useProg2();
+				mainShapes.();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 				gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 					new Float32Array(config.themeColors.uiBarcodeScannerBeam));

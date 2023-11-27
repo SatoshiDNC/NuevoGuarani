@@ -62,4 +62,69 @@ class ShapeBuffer {
   drawArrays4(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
   drawArrays5(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
 
+  useProg2() {
+		gl.useProgram(prog2);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf2);
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'aVertexPosition'));
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog5, 'overallColor'));
+		var a = gl.getAttribLocation(prog2, 'aVertexPosition')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			0, // stride
+			0); // offset
+		gl.enableVertexAttribArray(a);
+	}
+
+	useProg4() {
+		gl.useProgram(prog4);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf4);
+		var a = gl.getAttribLocation(prog4, 'aVertexPosition')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 4, // stride
+			4 * 0); // offset
+		gl.enableVertexAttribArray(a);
+		a = gl.getAttribLocation(prog4, 'uv')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 4, // stride
+			4 * 2); // offset
+		gl.enableVertexAttribArray(a);
+	}
+
+	useProg5() {
+		gl.useProgram(prog5);
+		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+			new Float32Array([1,1,1, 1]));
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf5);
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
+		var a = gl.getAttribLocation(prog5, 'aVertexPosition')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 5, // stride
+			4 * 0); // offset
+		gl.enableVertexAttribArray(a);
+		a = gl.getAttribLocation(prog5, 'vertexColor')
+		gl.vertexAttribPointer(
+			a,
+			3, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 5, // stride
+			4 * 2); // offset
+		gl.enableVertexAttribArray(a);
+	}
+
 }

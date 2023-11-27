@@ -73,7 +73,7 @@ v.renderFunc = function() {
 	var w = Math.min(this.sw, this.sh) * (earlyreturn?0.9:1);
 	var x = (this.sw - w) / 2;
 	var y = (this.sh - w) / 2;
-	useProg2();
+	mainShapes.useProg2();
 	const m = mat4.create();
 	mat4.identity(m);
 	mat4.translate(m,m,[x,y,0]);
@@ -178,7 +178,7 @@ v.renderFunc = function() {
 	}
 
 	if (this.qr.length > 1) {
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,0,0,1]));

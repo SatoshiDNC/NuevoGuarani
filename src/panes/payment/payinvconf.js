@@ -94,7 +94,7 @@ v.gadgets.push(v.pay = g = new vp.Gadget(v));
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
-		useProg5();
+		mainShapes.useProg5();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
@@ -120,7 +120,7 @@ v.renderFunc = function() {
 	const th = vendorColors, th2 = customerColors, v = this;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);

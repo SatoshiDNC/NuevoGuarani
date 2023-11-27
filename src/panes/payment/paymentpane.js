@@ -394,7 +394,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	mat4.identity(mat);
 	mat4.translate(mat, mat, [x, y, 0]);
 	mat4.scale(mat, mat, [w, h, 1]);
-	useProg4();
+	mainShapes.useProg4();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, this.mat);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat);
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]));
@@ -403,7 +403,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	if (paymentpane.scanner
 	&& paymentpane.scanner.lastresult.data != ''
 	&& paymentpane.scanner.results.length > 1) {
-	  useProg2();
+	  mainShapes.useProg2();
 		var p = paymentpane.scanner.lastresult.cornerPoints;
 		var t = transform2d(undefined,
 			p[0].x+x, p[0].y+y, p[1].x+x, p[1].y+y, p[3].x+x, p[3].y+y, p[2].x+x, p[2].y+y);
@@ -432,7 +432,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 		paymentpane.scanner.intensity *= 0.95;
 	}
 
-  useProg2();
+  mainShapes.useProg2();
 	var s = v.designFit[0] < v.designFit[1]? v.designFit[0]: v.designFit[1];
 	w = s * 0.9; h = s * 0.9;
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);

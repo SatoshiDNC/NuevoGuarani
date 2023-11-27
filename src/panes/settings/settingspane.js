@@ -86,7 +86,7 @@ v.renderFunc = function() {
 	const th = vendorColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));
@@ -158,7 +158,7 @@ v.renderFunc = function() {
 	const th = vendorColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));

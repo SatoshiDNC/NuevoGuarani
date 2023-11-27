@@ -58,7 +58,7 @@ v.layoutFunc = function() {
 v.renderFunc = function() {
 	const th = vendorColors;
 	drawThemeBackdrop(this, th);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));
@@ -71,7 +71,7 @@ v.renderFunc = function() {
 		} else if (g.renderFunc) {
 			g.renderFunc.call(g);
 		} else if (g.listToOverlay) {
-			useProg2();
+			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -82,7 +82,7 @@ v.renderFunc = function() {
 			var color = th.uiSettingsText;
 			iconFont.draw(0,0,g.icon,color, this.mat, mat);
 		} else {
-			useProg2();
+			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -120,7 +120,7 @@ v.renderFunc = function() {
 			nainShapes.drawArrays2('rect');
 
 			if (daisychain) {
-				useProg5();
+				mainShapes.useProg5();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
 					false, this.mat);
 				gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -176,7 +176,7 @@ v.renderFunc = function() {
 					defaultFont.draw(0,0,str,color, this.mat, mat);
 
 					if (i==0) continue;
-					useProg5();
+					mainShapes.useProg5();
 					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
 						false, this.mat);
 					gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
