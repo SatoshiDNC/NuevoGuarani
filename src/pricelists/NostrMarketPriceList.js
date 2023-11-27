@@ -23,6 +23,7 @@ class NostrMarketPriceList extends PriceList {
           },
         });
         const json = await response.json()
+        console.log(json)
         json.map(e => {
           const { id, name, currency } = e
           if (name == stall) {
