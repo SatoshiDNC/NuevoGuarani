@@ -257,7 +257,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
   v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return nostrmarketstall.list.value + ' (' + String(this?.viewport?.pricelist?.count()) + ' items)' } catch (e) {} }
+		get : function () { try { return nostrmarketstall.list.value + ' (' + String(this?.viewport?.pricelist?.length) + ' items)' } catch (e) {} }
 	});
 	g.pane = nostrmarketstall;
 /*
@@ -267,7 +267,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	g.title = 'manage price list';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
-			return String(this?.viewport?.pricelist?.count()) + ' items';
+			return String(this?.viewport?.pricelist?.length) + ' items';
 		}
 	});
 	g.value = '';

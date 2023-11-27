@@ -4,6 +4,9 @@ class NostrMarketPriceList extends PriceList {
 		super();
  	}
 
+  get length() { return NostrMarketPriceList.list.length }
+  get thumbnails() { return NostrMarketPriceList.texture }
+
   static loadData(url, key, stall) {
     console.group(this.constructor.name+'loadData(...)')
     const asyncLogic = async () => {
@@ -28,6 +31,7 @@ class NostrMarketPriceList extends PriceList {
         })
         console.log(stallId)
       }
+      const imageUrls = []
       {
         console.log('getting products', stallId)
         const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
@@ -43,19 +47,21 @@ class NostrMarketPriceList extends PriceList {
           const { name, price } = e
           const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
           const amt = price
-          tempList.push({ name, cur, amt, qty: 1, unit: 'ea', imgUrl: e.images[0] })
+          tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
+          imageUrls.push(e.images[0])
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
       }
       console.log(NostrMarketPriceList.list)
+      console.log(imageUrls)
       {
         console.log('initializing texture')
-        this.emojiTex = initTexture(gl)
-        this.emojiEl = document.createElement('canvas')
+        NostrMarketPriceList.texture = initTexture(gl)
+        const emojiEl = document.createElement('canvas')
         const textureWidth = 128
-        this.emojiEl.width = this.emojiEl.height = textureWidth
-        const textureContext = this.emojiEl.getContext("2d")
+        emojiEl.width = emojiEl.height = textureWidth
+        const textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
         for (var i = 0; i < textureWidth; i += 1) {
           for (var j = 0; j < textureWidth; j += 1) {
@@ -67,9 +73,8 @@ class NostrMarketPriceList extends PriceList {
           }
         }
         textureContext.putImageData(textureImage, 0, 0);
-        updateTexture(gl, this.emojiTex, this.emojiEl);
+        updateTexture(gl, NostrMarketPriceList.texture, emojiEl);
         gl.generateMipmap(gl.TEXTURE_2D);
-        emojiTex = this.emojiTex
 
         // this.emojiEl.addEventListener('load', function() {
         //   updateTexture(gl, this.emojiTex, this.emojiEl);
@@ -84,9 +89,5 @@ class NostrMarketPriceList extends PriceList {
     asyncLogic()
     console.groupEnd()
   }
-
-	count() {
-    return NostrMarketPriceList.list.length;
-	}
 
 }
