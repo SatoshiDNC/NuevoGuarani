@@ -11,12 +11,10 @@ class NostrMarketPriceList extends PriceList {
   get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
 
   static loadData(url, key, stall) {
-    console.group(this.constructor.name+'loadData(...)')
     const asyncLogic = async () => {
       let stallId, stallCurrency
       {
         console.log('searching for stall', key != '', stall)
-        console.log('getting stalls', url)
         const response = await fetch(url+'/stall?pending=false&api-key='+key, {
           method: 'GET',
           headers: {
@@ -32,12 +30,11 @@ class NostrMarketPriceList extends PriceList {
             stallCurrency = currency
           }
         })
-        console.log(stallId)
       }
       const imageUrls = []
       NostrMarketPriceList.emojiData = []
       {
-        console.log('getting products', stallId)
+        console.log('getting products for', stall, '(', stallId, ')')
         const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
           method: 'GET',
           headers: {
@@ -70,7 +67,7 @@ class NostrMarketPriceList extends PriceList {
         const emojiEl = document.createElement('canvas')
         const iconWidth = 66
         const textureWidth = NostrMarketPriceList.emojiBase * iconWidth
-        console.log('textureWidth', textureWidth)
+        console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
         const textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
@@ -114,25 +111,15 @@ class NostrMarketPriceList extends PriceList {
               gl.generateMipmap(gl.TEXTURE_2D)
               pending -= 1
               if (pending == 0) {
-                console.log('done loading emojis')
+                console.log('done loading', imageUrls.length, 'emojis')
               }
             });
             img.src = url
           })
-
-          // this.emojiEl.addEventListener('load', function() {
-          //   updateTexture(gl, this.emojiTex, this.emojiEl);
-          //   gl.generateMipmap(gl.TEXTURE_2D);
-          //   // emojiReady = true;
-          //   // loadCheck();
-          //   emojiTex = this.emojiTex
-          // });
-          // emojiEl.src = NostrMarketPriceList.list[0].imgUrl
         }
       }
     }
     asyncLogic()
-    console.groupEnd()
   }
 
 }
