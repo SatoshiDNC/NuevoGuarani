@@ -60,7 +60,7 @@ class NostrMarketPriceList extends PriceList {
           // loadCheck();
           emojiTex = this.emojiTex
         });
-        emojiEl.src = tempList[0].imgUrl
+        emojiEl.src = NostrMarketPriceList.list[0].imgUrl
       }
     }
     asyncLogic()
