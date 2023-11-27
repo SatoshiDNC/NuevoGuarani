@@ -93,7 +93,7 @@ class NostrMarketPriceList extends PriceList {
       {
         imageUrls.map(url => {
           console.log('loading', url)
-          const emojiEl = document.createElement('canvas')
+          const emojiEl = document.createElement('img')
           emojiEl.addEventListener('load', function() {
             console.log('loaded', url)
           });
