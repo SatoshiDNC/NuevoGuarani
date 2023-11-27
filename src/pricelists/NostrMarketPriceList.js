@@ -61,13 +61,11 @@ class NostrMarketPriceList extends PriceList {
             xIter = 0
             yIter += 1
           }
-          console.log(e)
         })
         NostrMarketPriceList.list = tempList
       }
       console.log(NostrMarketPriceList.list)
       console.log(NostrMarketPriceList.emojiData)
-      console.log(imageUrls)
       {
         console.log('initializing texture')
         NostrMarketPriceList.texture = initTexture(gl)
@@ -87,13 +85,14 @@ class NostrMarketPriceList extends PriceList {
             textureImage.data[index + 3] = (((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2 < (iconWidth/2)**2) ? 255 : 0
           }
         }
-        console.log(textureImage.data)
         textureContext.putImageData(textureImage, 0, 0)
         updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
         gl.generateMipmap(gl.TEXTURE_2D)
       }
+      console.log(imageUrls)
       {
         imageUrls.map(url => {
+          console.log('loading', url)
           const emojiEl = document.createElement('canvas')
           emojiEl.addEventListener('load', function() {
             console.log('loaded', url)
