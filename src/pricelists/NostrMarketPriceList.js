@@ -66,6 +66,7 @@ class NostrMarketPriceList extends PriceList {
         NostrMarketPriceList.texture = initTexture(gl)
         const emojiEl = document.createElement('canvas')
         const textureWidth = NostrMarketPriceList.emojiBase * 66
+        console.log('textureWidth', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
         const textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
