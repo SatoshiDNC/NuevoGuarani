@@ -45,7 +45,6 @@ class NostrMarketPriceList extends PriceList {
           },
         });
         const json = await response.json()
-        console.log(json)
         const tempList = []
         NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(json.length))
         let xIter = 0, yIter = 0
@@ -64,8 +63,7 @@ class NostrMarketPriceList extends PriceList {
         })
         NostrMarketPriceList.list = tempList
       }
-      console.log(NostrMarketPriceList.list)
-      console.log(NostrMarketPriceList.emojiData)
+
       {
         console.log('initializing texture')
         NostrMarketPriceList.texture = initTexture(gl)
@@ -89,27 +87,13 @@ class NostrMarketPriceList extends PriceList {
         updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
         gl.generateMipmap(gl.TEXTURE_2D)
 
-        // for (let i = 0; i < textureWidth; i += 1) {
-        //   for (let j = 0; j < textureWidth; j += 1) {
-        //     let index = (j * textureWidth + i) * 4
-        //     textureImage.data[index + 0] = 127
-        //     textureImage.data[index + 1] = 127
-        //     textureImage.data[index + 2] = 127
-        //     textureImage.data[index + 3] = 0
-        //   }
-        // }
-        // textureContext.putImageData(textureImage, 0, 0)
-
-        console.log(imageUrls)
-        textureContext.imageSmoothingQuality = 'high'
         {
+          textureContext.imageSmoothingQuality = 'high'
           let pending = imageUrls.length
           imageUrls.map((url, index) => {
-            console.log('loading', url)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
-              console.log('loaded', url)
               let i = index % NostrMarketPriceList.emojiBase, j = Math.floor(index / NostrMarketPriceList.emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
@@ -130,7 +114,7 @@ class NostrMarketPriceList extends PriceList {
               gl.generateMipmap(gl.TEXTURE_2D)
               pending -= 1
               if (pending == 0) {
-                console.log('done loading')
+                console.log('done loading emojis')
               }
             });
             img.src = url
