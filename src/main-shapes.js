@@ -220,6 +220,7 @@ function buildShapes(emojiData, emojisPerRow, emojisPerColumn) {
 		beg4[name] = all4.length/4; typ4[name] = typ
 		all4.splice (all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,)
 		len4[name] = all4.length/4 - beg4[name]
+    console.log(nx, ny, emojisPerRow, emojisPerColumn)
     console.log(all4.slice(beg4[name]))
 	}
 	if (emojiData) {
