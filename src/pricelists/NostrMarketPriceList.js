@@ -94,8 +94,8 @@ class NostrMarketPriceList extends PriceList {
           let pending = imageUrls.length
           imageUrls.map(url => {
             console.log('loading', url)
-            const emojiEl = document.createElement('img')
-            emojiEl.addEventListener('load', function() {
+            const img = document.createElement('img')
+            img.addEventListener('load', function() {
               console.log('loaded', url)
               pending -= 1
               if (pending == 0) {
@@ -105,7 +105,7 @@ class NostrMarketPriceList extends PriceList {
                 gl.generateMipmap(gl.TEXTURE_2D)
               }
             });
-            emojiEl.src = url
+            img.src = url
           })
 
           // this.emojiEl.addEventListener('load', function() {
