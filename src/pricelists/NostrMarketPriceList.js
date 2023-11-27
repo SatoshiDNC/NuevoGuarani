@@ -5,7 +5,7 @@ class NostrMarketPriceList extends PriceList {
  	}
 
   get length() { return NostrMarketPriceList.list.length }
-  get thumbnails() { return NostrMarketPriceList.texture }
+  get thumbnails() { return PriceList.texture }
   get thumbnailData() { return NostrMarketPriceList.emojiData }
   get thumbnailsPerRow() { return NostrMarketPriceList.emojiBase }
   get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
