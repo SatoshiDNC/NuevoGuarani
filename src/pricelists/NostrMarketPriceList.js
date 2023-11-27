@@ -47,19 +47,26 @@ class NostrMarketPriceList extends PriceList {
         const json = await response.json()
         console.log(json)
         const tempList = []
+        NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(json.length))
+        let xIter = 0, yIter = 0
         json.map(e => {
           const { name, price } = e
           const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
           const amt = price
           tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
           imageUrls.push(e.images[0])
-          NostrMarketPriceList.emojiData.push({ x: 0, y: tempList.length - 1, category: 'product', label: name, })
+          NostrMarketPriceList.emojiData.push({ x: xIter, y: yIter, category: 'product', label: name, })
+          xIter += 1
+          if (xIter >= NostrMarketPriceList.emojiBase) {
+            xIter = 0
+            yIter += 1
+          }
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
-        NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(NostrMarketPriceList.emojiData.length))
       }
       console.log(NostrMarketPriceList.list)
+      console.log(NostrMarketPriceList.emojiData)
       console.log(imageUrls)
       {
         console.log('initializing texture')
