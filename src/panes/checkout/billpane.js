@@ -533,14 +533,12 @@ v.renderFunc = function() {
 			mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
 			mat4.scale(m,m, [24, 24, 1]);
 			if (emoji) {
-				mainShapes.useProg4();
+				emojiShapes.useProg4();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 				gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
-		//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-				mainShapes.drawArrays4(emoji);
+				emojiShapes.drawArrays4(emoji);
 				if (emoji == 'lightning invoice' && item.options.success === true) {
 					mat4.identity(m);
 					mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
