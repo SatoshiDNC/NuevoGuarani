@@ -92,7 +92,7 @@ class NostrMarketPriceList extends PriceList {
         console.log(imageUrls)
         {
           let pending = imageUrls.length
-          imageUrls.map(url, index => {
+          imageUrls.map((url, index) => {
             console.log('loading', url)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
