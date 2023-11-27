@@ -35,6 +35,7 @@ function addShape19(name, typ, ...points) {
 }
 
 function buildShapes(emojiData, emojisPerRow, emojisPerColumn) {
+  console.log('buildShapes(', emojiData, emojisPerRow, emojisPerColumn, ')')
 	beg2 = {}; len2 = {}; typ2 = {}; all2 = [];
 	beg4 = {}; len4 = {}; typ4 = {}; all4 = [];
 	beg5 = {}; len5 = {}; typ5 = {}; all5 = [];
