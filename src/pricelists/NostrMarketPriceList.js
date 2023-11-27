@@ -101,6 +101,7 @@ class NostrMarketPriceList extends PriceList {
         // textureContext.putImageData(textureImage, 0, 0)
 
         console.log(imageUrls)
+        textureContext.imageSmoothingQuality = 'high'
         {
           let pending = imageUrls.length
           imageUrls.map((url, index) => {
