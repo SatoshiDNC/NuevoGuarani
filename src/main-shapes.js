@@ -211,4 +211,4 @@ const emojiShapes = new ShapeBuffer(function(emojiData, emojisPerRow, emojisPerC
 })
 
 mainShapes.build()
-emojiShapes.build(emojiData, emojisPerRow, emojisPerColumn)
+//emojiShapes.build(emojiData, emojisPerRow, emojisPerColumn)
