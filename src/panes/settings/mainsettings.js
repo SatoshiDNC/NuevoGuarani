@@ -117,7 +117,7 @@ v.renderFunc = function() {
 				mat4.scale(mat,mat, [g.w-2*margin,g.h-50,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 			}
-			nainShapes.drawArrays2('rect');
+			mainShapes.drawArrays2('rect');
 
 			if (daisychain) {
 				mainShapes.useProg5();
