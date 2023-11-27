@@ -40,7 +40,8 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
           this.viewport.setRenderFlag(true)
           pricelistsettings.setRenderFlag(true)
           nostrmarketstall.list.appFunction()
-        } catch {
+        } catch (e) {
+          console.error(e)
           this.state = 0
         }
       }
