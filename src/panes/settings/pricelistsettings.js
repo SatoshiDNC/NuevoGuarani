@@ -64,7 +64,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
       delete emojipane.lastBuilt
-      if (!layoutViews.includes(emojipane)) layoutViews.push(emojipane)
+      emojipane.queueLayout()
     }
 	}
 	g.listItemClick = function(index) {
