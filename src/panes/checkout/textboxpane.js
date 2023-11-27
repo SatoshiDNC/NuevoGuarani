@@ -773,7 +773,7 @@ v.renderFunc = function() {
 		iconFont.draw(0,16, "\x04", v.scanMode? alpha(config.themeColors.uiDataEntryText, 0.5): config.themeColors.uiDataEntryGhostText, v.mat, m);
 		if (v.scanMode) {
 			if (v.beam) {
-				mainShapes.();
+				mainShapes.useProg2();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 				gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 					new Float32Array(config.themeColors.uiBarcodeScannerBeam));
