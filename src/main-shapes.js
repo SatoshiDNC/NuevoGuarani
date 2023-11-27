@@ -34,7 +34,7 @@ function addShape19(name, typ, ...points) {
 	len19[name] = all19.length/19 - beg19[name];
 }
 
-function buildShapes() {
+function buildShapes(emojiData) {
 	beg2 = {}; len2 = {}; typ2 = {}; all2 = [];
 	beg4 = {}; len4 = {}; typ4 = {}; all4 = [];
 	beg5 = {}; len5 = {}; typ5 = {}; all5 = [];
@@ -220,7 +220,7 @@ function buildShapes() {
 		all4.splice (all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,);
 		len4[name] = all4.length/4 - beg4[name];
 	}
-	{
+	if (emojiData) {
 		for (const e of emojiData) {
 			addShape4Emoji(e.label, gl.TRIANGLE_STRIP, e.x, e.y);
 		}

@@ -38,7 +38,7 @@ v.gadgets.push(v.themelist = g = new vp.Gadget(v));
 		} { // For the app function.
 			vendorColors = themes[index].theme;
 			customerColors = themes[index].theme;
-			buildShapes();
+			buildShapes(config.priceList.thumbnailData);
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -101,7 +101,7 @@ v.load = function(cb) {
 			if (g === v.themelist) {
 				vendorColors = themes[(index >= 0)? index: 0].theme;
 				customerColors = themes[(index >= 0)? index: 1].theme;
-				buildShapes();
+				buildShapes(config.priceList.thumbnailData);
 			}
 			if (g === v.texturelist) {
 				if (textures[index].font) textures[index].font.init();

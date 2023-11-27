@@ -22,7 +22,7 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
       if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'clear')
     } else if (index < this.viewport.length) {
 			vp.popRoot()
-			if (this.viewport.callback) this.viewport.callback.call(undefined, emojiData[index].label)
+			if (this.viewport.callback) this.viewport.callback.call(undefined, config.priceList.thumbnailData[index].label)
 		}
 	}
 v.layoutFunc = function() {
@@ -36,9 +36,9 @@ v.layoutFunc = function() {
 		const nx = 57, ny = 57;
 		let category = '';
     const priceList = config.priceList
-    const maxLength = priceList.length || emojiData.length
+    const maxLength = priceList.length || config.priceList.thumbnailData.length
     let n = 0
-		for (let e of emojiData) {
+		for (let e of config.priceList.thumbnailData) {
       n++; if (n > maxLength) break;
 //			if (category != '' && e.category != category && i>0) {
 //				i=0; j++;
@@ -59,9 +59,9 @@ v.layoutFunc = function() {
 		}
 		this.gridX = x;
 		this.gridY = y;
-    this.length = priceList.length || emojiData.length;
+    this.length = priceList.length || config.priceList.thumbnailData.length;
 		emojiPoints = data;
-		buildShapes();
+		buildShapes(config.priceList.thumbnailData);
 	}
 	v.maxX = v.sw;
 	v.maxY = this.gridY * v.sw/v.gridX;
