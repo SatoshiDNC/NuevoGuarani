@@ -248,16 +248,6 @@ function updateTexture(gl, texture, el) {
   );
 }
 
-// var emojiTex = initTexture(gl);
-// const emojiEl = document.createElement('img');
-// emojiEl.addEventListener('load', function() {
-// 	updateTexture(gl, emojiTex, emojiEl);
-// 	gl.generateMipmap(gl.TEXTURE_2D);
-// 	emojiReady = true;
-// 	loadCheck();
-// });
-// emojiEl.src = emojiFile;
-
 function drawThemeBackdrop(v, th) {
 //	var startTime = performance.now();
 	function baseline(f,c) { return f.glyphHeights[c]-f.glyphY1[c]; }

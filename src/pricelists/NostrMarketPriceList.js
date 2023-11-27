@@ -51,7 +51,7 @@ class NostrMarketPriceList extends PriceList {
           const amt = price
           tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
           imageUrls.push(e.images[0])
-          NostrMarketPriceList.emojiData.push({ x:  6, y: 29, category: 'product', label: name, })
+          NostrMarketPriceList.emojiData.push({ x: 0, y: tempList.length - 1, category: 'product', label: name, })
           console.log(e)
         })
         NostrMarketPriceList.list = tempList
