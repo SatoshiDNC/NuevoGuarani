@@ -35,7 +35,7 @@ function addShape19(name, typ, ...points) {
 }
 
 function buildShapes(emojiData, emojisPerRow, emojisPerColumn) {
-  console.log('buildShapes(', emojiData, emojisPerRow, emojisPerColumn, ')')
+  console.group('buildShapes(', emojiData, emojisPerRow, emojisPerColumn, ')')
 	beg2 = {}; len2 = {}; typ2 = {}; all2 = [];
 	beg4 = {}; len4 = {}; typ4 = {}; all4 = [];
 	beg5 = {}; len5 = {}; typ5 = {}; all5 = [];
@@ -215,11 +215,12 @@ function buildShapes(emojiData, emojisPerRow, emojisPerColumn) {
 	}
 
 	function addShape4Emoji(name, typ, x, y) {
-		const nx = emojisPerRow, ny = emojisPerColumn;
-		const u = x+1, v = y+1;
-		beg4[name] = all4.length/4; typ4[name] = typ;
-		all4.splice (all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,);
-		len4[name] = all4.length/4 - beg4[name];
+		const nx = emojisPerRow, ny = emojisPerColumn
+		const u = x+1, v = y+1
+		beg4[name] = all4.length/4; typ4[name] = typ
+		all4.splice (all4.length, 0, 0,1,x/nx,v/ny, 0,0,x/nx,y/ny, 1,1,u/nx,v/ny, 1,0,u/nx,y/ny,)
+		len4[name] = all4.length/4 - beg4[name]
+    console.log(all4.slice(beg4[name]))
 	}
 	if (emojiData) {
 		for (const e of emojiData) {
@@ -244,5 +245,6 @@ function buildShapes(emojiData, emojisPerRow, emojisPerColumn) {
 
   gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
+  console.groupEnd()
 }
 buildShapes();
