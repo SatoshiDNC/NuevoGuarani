@@ -11,20 +11,20 @@ const mainShapes = new ShapeBuffer(function() {
 	this.addShape5('unitLine', gl.LINE_LOOP, 0,0,1,1,0, 1,1,0,1,0, );
 	this.addShape5('divLine', gl.LINE_STRIP, 0,0,0,0,0, 0.4,0.4,1,1,1, 0.6,0.6,1,1,1, 1,1,0,0,0, );
 	this.addShape5('divLineV', gl.TRIANGLE_STRIP,
-		1,0.0,...rgb(vendorColors.uiBackground), 0,0.0,...rgb(vendorColors.uiBackground),
-		1,0.4,...rgb(vendorColors.uiForeground), 0,0.4,...rgb(vendorColors.uiForeground),
-		1,0.6,...rgb(vendorColors.uiForeground), 0,0.6,...rgb(vendorColors.uiForeground),
-		1,1.0,...rgb(vendorColors.uiBackground), 0,1.0,...rgb(vendorColors.uiBackground), );
+		1,0.0,...rgb(config.themeColors.uiBackground), 0,0.0,...rgb(config.themeColors.uiBackground),
+		1,0.4,...rgb(config.themeColors.uiForeground), 0,0.4,...rgb(config.themeColors.uiForeground),
+		1,0.6,...rgb(config.themeColors.uiForeground), 0,0.6,...rgb(config.themeColors.uiForeground),
+		1,1.0,...rgb(config.themeColors.uiBackground), 0,1.0,...rgb(config.themeColors.uiBackground), );
 	this.addShape5('divLineH', gl.TRIANGLE_STRIP,
-		0.0,1,...rgb(vendorColors.uiBackground), 0.0,0,...rgb(vendorColors.uiBackground),
-		0.4,1,...rgb(vendorColors.uiForeground), 0.4,0,...rgb(vendorColors.uiForeground),
-		0.6,1,...rgb(vendorColors.uiForeground), 0.6,0,...rgb(vendorColors.uiForeground),
-		1.0,1,...rgb(vendorColors.uiBackground), 1.0,0,...rgb(vendorColors.uiBackground), );
+		0.0,1,...rgb(config.themeColors.uiBackground), 0.0,0,...rgb(config.themeColors.uiBackground),
+		0.4,1,...rgb(config.themeColors.uiForeground), 0.4,0,...rgb(config.themeColors.uiForeground),
+		0.6,1,...rgb(config.themeColors.uiForeground), 0.6,0,...rgb(config.themeColors.uiForeground),
+		1.0,1,...rgb(config.themeColors.uiBackground), 1.0,0,...rgb(config.themeColors.uiBackground), );
 	this.addShape5('divSettings', gl.TRIANGLE_STRIP,
-		0.0,1,...rgb(vendorColors.uiSettingsBubble), 0.0,0,...rgb(vendorColors.uiSettingsBubble),
-		0.4,1,...rgb(vendorColors.uiSettingsDivider), 0.4,0,...rgb(vendorColors.uiSettingsDivider),
-		0.6,1,...rgb(vendorColors.uiSettingsDivider), 0.6,0,...rgb(vendorColors.uiSettingsDivider),
-		1.0,1,...rgb(vendorColors.uiSettingsBubble), 1.0,0,...rgb(vendorColors.uiSettingsBubble), );
+		0.0,1,...rgb(config.themeColors.uiSettingsBubble), 0.0,0,...rgb(config.themeColors.uiSettingsBubble),
+		0.4,1,...rgb(config.themeColors.uiSettingsDivider), 0.4,0,...rgb(config.themeColors.uiSettingsDivider),
+		0.6,1,...rgb(config.themeColors.uiSettingsDivider), 0.6,0,...rgb(config.themeColors.uiSettingsDivider),
+		1.0,1,...rgb(config.themeColors.uiSettingsBubble), 1.0,0,...rgb(config.themeColors.uiSettingsBubble), );
 	this.addShape2('rect', gl.TRIANGLE_STRIP,
 		0.0,1, 0.0,0, 1.0,1, 1.0,0, );
 	this.addShape4('rect', gl.TRIANGLE_STRIP,
@@ -71,8 +71,8 @@ const mainShapes = new ShapeBuffer(function() {
 	}
 
 	this.addShape5('vendorLedger', gl.TRIANGLE_STRIP,
-		0.0,1,...rgb(vendorColors.uiLedger1), 0.0,0,...rgb(vendorColors.uiLedger2),
-		1.0,1,...rgb(vendorColors.uiLedger1), 1.0,0,...rgb(vendorColors.uiLedger2), );
+		0.0,1,...rgb(config.themeColors.uiLedger1), 0.0,0,...rgb(config.themeColors.uiLedger2),
+		1.0,1,...rgb(config.themeColors.uiLedger1), 1.0,0,...rgb(config.themeColors.uiLedger2), );
 	this.addShape5('customerLedger', gl.TRIANGLE_STRIP,
 		0.0,1,...rgb(customerColors.uiLedger1), 0.0,0,...rgb(customerColors.uiLedger2),
 		1.0,1,...rgb(customerColors.uiLedger1), 1.0,0,...rgb(customerColors.uiLedger2), );
@@ -101,8 +101,8 @@ const mainShapes = new ShapeBuffer(function() {
 	);
 
   {
-		var sl = rgb(vendorColors.uiSilverLining);
-		var sc = rgb(vendorColors.uiSpeechCloud);
+		var sl = rgb(config.themeColors.uiSilverLining);
+		var sc = rgb(config.themeColors.uiSpeechCloud);
 		var w = 22.5, h = 3, x = w-1, y = h-1;
 		this.addShape5('speech1o', gl.TRIANGLE_STRIP,
 			0,y,...sl, 1,y,...sc, 0,1,...sl, 1,1,...sc, // left
@@ -128,8 +128,8 @@ const mainShapes = new ShapeBuffer(function() {
 	}
 
 	{
-		var sl = rgb(vendorColors.uiSilverLining);
-		var sc = rgb(vendorColors.uiSilverLining);
+		var sl = rgb(config.themeColors.uiSilverLining);
+		var sc = rgb(config.themeColors.uiSilverLining);
 		var w = 16, h = 1, x = w-1, y = h-1;
 		this.addShape2('settingstop', gl.TRIANGLE_STRIP,
 			0,h, 1,h, 0,1, 1,1, // left

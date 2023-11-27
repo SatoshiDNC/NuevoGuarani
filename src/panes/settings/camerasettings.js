@@ -120,7 +120,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	mainShapes.useProg5();

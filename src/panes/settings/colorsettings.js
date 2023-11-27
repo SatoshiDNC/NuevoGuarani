@@ -36,7 +36,7 @@ v.gadgets.push(v.themelist = g = new vp.Gadget(v));
 			g.index = index;
 			home.setRenderFlag(true);
 		} { // For the app function.
-			vendorColors = themes[index].theme;
+			// vendorColors = themes[index].theme;
 			customerColors = themes[index].theme;
       emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
 		} { // For persistence.
@@ -99,7 +99,7 @@ v.load = function(cb) {
 			g.index = index;
 			settingspane.setRenderFlag(true);
 			if (g === v.themelist) {
-				vendorColors = themes[(index >= 0)? index: 0].theme;
+				// vendorColors = themes[(index >= 0)? index: 0].theme;
 				customerColors = themes[(index >= 0)? index: 1].theme;
         emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
 			}

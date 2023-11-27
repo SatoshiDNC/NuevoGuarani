@@ -91,18 +91,18 @@ v.renderFunc = function() {
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
 		//mat4.scale(m,m,[w,w,1]);
 		mat4.rotate(m,m, this.busyCounter, [0,0,1]);
-		iconFont.draw(-10,7,"\x0A",vendorColors.uiText,this.mat, m);
+		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,this.mat, m);
 
 	} else if (this.walletSignal) {
 		mat4.identity(m);
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
-		financeGraphicsFont.draw(-8.5,8.5,"\x08",vendorColors.uiText,this.mat, m);
+		financeGraphicsFont.draw(-8.5,8.5,"\x08",config.themeColors.uiText,this.mat, m);
 	} else if (this.errorSignal) {
 		mat4.identity(m);
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
 		//mat4.scale(m,m,[w,w,1]);
 		//mat4.rotate(m,m, this.busyCounter, [0,0,1]);
-		iconFont.draw(-10,7,"\x0F",vendorColors.uiLightningYellow,this.mat, m);
+		iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,this.mat, m);
 	} else if (this.copiedSignal) {
 		let str = icap(tr("copied"));
 		let tw = defaultFont.calcWidth(str);

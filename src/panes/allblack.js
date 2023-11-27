@@ -20,7 +20,7 @@
 				console.log('transition state:', this.state);
 		}
 */
-		gl.clearColor(...vendorColors.uiBackground);
+		gl.clearColor(...config.themeColors.uiBackground);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		switch (this.state) {
 		case 'begin':

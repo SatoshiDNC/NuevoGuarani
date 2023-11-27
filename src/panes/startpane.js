@@ -16,7 +16,7 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 	g.renderFunc = function() {
 		var g = this;
 		var sel = clickTapActive.includes(g.gestureState);
-		const th = vendorColors;
+		const th = config.themeColors;
 		const mat = mat4.create();
 /*
 		mat4.identity(mat);
@@ -25,7 +25,7 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		mainShapes.useProg5();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
+			new Float32Array(sel?config.themeColors.uiForeground:config.themeColors.uiPillOrange));
 		mainShapes.drawArrays5('rect');
 */
 		mainShapes.useProg2();
@@ -81,7 +81,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
 	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
@@ -102,7 +102,7 @@ v.renderFunc = function() {
 const bottommargin = v = new vp.View(null);
 v.name = Object.keys({bottommargin}).pop();
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
 }
 

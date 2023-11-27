@@ -16,7 +16,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.enabled?(sel?config.themeColors.uiButtonSel:config.themeColors.uiButton):config.themeColors.uiButtonGhost,
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
@@ -75,7 +75,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	for (const g of this.gadgets) {
@@ -92,7 +92,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 	g.autoHull();
 	g.icon = "\x00";
 	g.renderFunc = function() {
-		const th = vendorColors, g = this;
+		const th = config.themeColors, g = this;
 		var sel = clickTapActive.includes(g.gestureState);
 		var color = g.enabled? th.uiButton: th.uiButtonGhost;
 		if (g.viewport.overlaymode)
@@ -378,7 +378,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 */
 }
 
-	const th = vendorColors, v = this;
+	const th = config.themeColors, v = this;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	this.setRenderFlag(true);

@@ -251,7 +251,7 @@ function scrollUpDn(g, amt) {
 	v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
 	v.layoutFunc = function() { this.middleDividerGad.layout(); }
 	v.renderFunc = function() {
-		const th = vendorColors;
+		const th = config.themeColors;
 		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		mainShapes.useProg5();

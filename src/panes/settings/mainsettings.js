@@ -56,7 +56,7 @@ v.layoutFunc = function() {
 	v.maxY = y;
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
 	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
@@ -86,7 +86,7 @@ v.renderFunc = function() {
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-				new Float32Array(g.color?colorize(g.color, vendorColors.uiBackground, vendorColors.uiSettingsBubble):vendorColors.uiSettingsBubble));
+				new Float32Array(g.color?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiSettingsBubble));
 			mat4.identity(mat);
 			mat4.translate(mat,mat, [g.x+margin,g.y,0]);
 			mat4.scale(mat,mat, [g.w-2*margin,25,1]);
