@@ -106,7 +106,7 @@ class NostrMarketPriceList extends PriceList {
                 j += 1
               }
               pending -= 1
-              if (pending == 0) {
+              if (pending == 0 || true) {
                 console.log('done loading, regenerating texture')
                 textureContext.putImageData(textureImage, 0, 0)
                 updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
