@@ -86,6 +86,7 @@ class NostrMarketPriceList extends PriceList {
             textureImage.data[index + 3] = 255;
           }
         }
+        console.log(textureImage.data)
         textureContext.putImageData(textureImage, 0, 0);
         updateTexture(gl, NostrMarketPriceList.texture, emojiEl);
         gl.generateMipmap(gl.TEXTURE_2D);
