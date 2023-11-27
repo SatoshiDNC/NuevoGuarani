@@ -193,7 +193,7 @@ const mainShapes = new ShapeBuffer(function() {
 const emojiShapes = new ShapeBuffer(function(obj, emojiData, emojisPerRow, emojisPerColumn) {
 
   // Specialized shape-building function for emoji textures
-	function addEmojiShape4(name, typ, x, y) {
+	function addEmojiShape4(obj, name, typ, x, y) {
 		const nx = emojisPerRow, ny = emojisPerColumn
 		const u = x+1, v = y+1
 		obj.beg4[name] = obj.all4.length/4; obj.typ4[name] = typ
