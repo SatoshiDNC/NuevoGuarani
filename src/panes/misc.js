@@ -193,7 +193,7 @@ function scrollUpDn(g, amt) {
 		mat4.identity(mat);
 		mat4.scale(mat, mat, [10, 10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.scrollUp, beg5.scrollUp, len5.scrollUp);
+		mainShapes.drawArrays5('scrollUp');
 
 		// Down button.
 		if (this.dnGad.gestureState && this.dnGad.gestureState == 'hold')
@@ -206,7 +206,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [0, this.h/s, 0]);
 		mat4.scale(mat, mat, [10, -10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.scrollDn, beg5.scrollDn, len5.scrollDn);
+		mainShapes.drawArrays5('scrollDn');
 
 		// Scroll bar knob.
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -215,7 +215,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [4, 10, 0]);
 		mat4.scale(mat, mat, [2, this.h/s-20, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		mainShapes.drawArrays5('rect');
 		sel = this.knobGad.gestureState
 			&& (this.knobGad.gestureState=='drag'
 				||this.knobGad.gestureState=='drag');
@@ -225,7 +225,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [3, 10+this.knobGad.convexHull[1], 0]);
 		mat4.scale(mat, mat, [4, this.knobGad.convexHull[5]-this.knobGad.convexHull[1], 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+		mainShapes.drawArrays5('divLineH');
 	};
 
   var walletpane = v = new vp.SliceView(null, 'r', 10);
@@ -261,11 +261,11 @@ function scrollUpDn(g, amt) {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		mat4.scale(mat, mat, [this.w, this.h, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		//gl.drawArrays(typ5.divLine, beg5.divLine, len5.divLine);
+		//mainShapes.drawArrays5('divLine');
 		if (this.parent.state == 'v') {
-			gl.drawArrays(typ5.divLineV, beg5.divLineV, len5.divLineV);
+			mainShapes.drawArrays5('divLineV');
 		} else {
-			gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+			mainShapes.drawArrays5('divLineH');
 		}
 	};
 

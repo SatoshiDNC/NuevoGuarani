@@ -26,7 +26,7 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
-		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		mainShapes.drawArrays5('rect');
 */
 		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);

@@ -93,7 +93,7 @@ v.renderFunc = function() {
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-		gl.drawArrays(typ4.tomato, beg4.tomato, len4.tomato);
+		mainShapes.drawArrays4('tomato');
 	}
 */
 
@@ -110,7 +110,7 @@ v.renderFunc = function() {
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 //		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-		gl.drawArrays(typ4.emojis, beg4.emojis, len4.emojis);
+		mainShapes.drawArrays4('emojis');
 	}
 
 };

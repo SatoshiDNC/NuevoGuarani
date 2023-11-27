@@ -129,7 +129,7 @@ v.renderFunc = function() {
 				mat4.translate(mat,mat, [g.x+margin+25,g.y,0]);
 				mat4.scale(mat,mat, [g.w-2*margin-50,1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ5.divSettings, beg5.divSettings, len5.divSettings);
+				mainShapes.drawArrays5('divSettings');
 			}
 
 			if (g.list) {
@@ -185,7 +185,7 @@ v.renderFunc = function() {
 					mat4.translate(mat,mat, [g.x+25,g.y+i*optionheight,0]);
 					mat4.scale(mat,mat, [g.w-50,1,1]);
 					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-					gl.drawArrays(typ5.divSettings, beg5.divSettings, len5.divSettings);
+					mainShapes.drawArrays5('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
 				mat4.identity(mat);

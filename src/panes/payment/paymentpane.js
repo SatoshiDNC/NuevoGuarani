@@ -398,7 +398,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, this.mat);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat);
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]));
-	gl.drawArrays(typ4.rect, beg4.rect, len4.rect);
+	mainShapes.drawArrays4('rect');
 
 	if (paymentpane.scanner
 	&& paymentpane.scanner.lastresult.data != ''
