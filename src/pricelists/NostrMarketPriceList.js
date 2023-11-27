@@ -110,13 +110,11 @@ class NostrMarketPriceList extends PriceList {
             img.addEventListener('load', function() {
               console.log('loaded', url)
               let i = index % NostrMarketPriceList.emojiBase, j = Math.floor(index / NostrMarketPriceList.emojiBase)
-              let targetWidth, targetHeight
+              let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
-                targetWidth = iconWidth - 2
                 targetHeight = targetWidth * img.height / img.width
               } else {
                 targetWidth = targetHeight * img.width / img.height
-                targetHeight = iconWidth - 2
               }
               textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
               textureContext.drawImage(img,
@@ -127,11 +125,11 @@ class NostrMarketPriceList extends PriceList {
                 i = 0
                 j += 1
               }
+              updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
+              gl.generateMipmap(gl.TEXTURE_2D)
               pending -= 1
-              if (pending == 0 || true) {
-                console.log('done loading, regenerating texture')
-                updateTexture(gl, NostrMarketPriceList.texture, emojiEl)
-                gl.generateMipmap(gl.TEXTURE_2D)
+              if (pending == 0) {
+                console.log('done loading')
               }
             });
             img.src = url
