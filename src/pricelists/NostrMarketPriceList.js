@@ -11,7 +11,6 @@ class NostrMarketPriceList extends PriceList {
   get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
 
   static loadData(url, key, stall) {
-    console.trace()
     const asyncLogic = async () => {
       let stallId, stallCurrency
       {
