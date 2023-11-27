@@ -64,6 +64,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
       delete emojipane.lastBuilt
+      console.log('here')
       emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
       emojipane.queueLayout()
     }
@@ -157,18 +158,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			v.typelist.index = index;
 			v.setRenderFlag(true);
 		} { // For the app function.
-
-			if (pricelisttypes[index] == 'NostrMarket compatible') {
-				delete v.nostrmarketurl.hide;
-				delete v.nostrmarketwalletkey.hide;
-				delete v.nostrmarketstall.hide;
-			} else {
-				v.nostrmarketurl.hide = true;
-				v.nostrmarketwalletkey.hide = true;
-				v.nostrmarketstall.hide = true;
-			}
-
-			v.queueLayout();
+      g.appFunction()
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -182,6 +172,18 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			};
 		}
 	}
+  g.appFunction = function() {
+    if (pricelisttypes[index] == 'NostrMarket compatible') {
+      delete v.nostrmarketurl.hide;
+      delete v.nostrmarketwalletkey.hide;
+      delete v.nostrmarketstall.hide;
+    } else {
+      v.nostrmarketurl.hide = true;
+      v.nostrmarketwalletkey.hide = true;
+      v.nostrmarketstall.hide = true;
+    }
+    v.queueLayout();
+  }
 v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'NostrMarketURL';
@@ -316,16 +318,7 @@ v.load = function(cb) {
 				pricelistsettings.typelist.index = index;
 				pricelistsettings.setRenderFlag(true);
 			} { // For the app function.
-
-				if (pricelisttypes[index] == 'NostrMarket compatible') {
-					delete v.nostrmarketurl.hide;
-					delete v.nostrmarketwalletkey.hide;
-				} else {
-					v.nostrmarketurl.hide = true;
-					v.nostrmarketwalletkey.hide = true;
-				}
-
-				v.queueLayout();
+        pricelistsettings.typelist.appFunction()
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue);
