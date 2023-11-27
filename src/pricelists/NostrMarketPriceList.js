@@ -51,16 +51,34 @@ class NostrMarketPriceList extends PriceList {
       console.log(NostrMarketPriceList.list)
       {
         console.log('initializing texture')
-        this.emojiTex = initTexture(gl);
-        this.emojiEl = document.createElement('canvas');
-        this.emojiEl.addEventListener('load', function() {
-          updateTexture(gl, this.emojiTex, this.emojiEl);
-          gl.generateMipmap(gl.TEXTURE_2D);
-          // emojiReady = true;
-          // loadCheck();
-          emojiTex = this.emojiTex
-        });
-        emojiEl.src = NostrMarketPriceList.list[0].imgUrl
+        this.emojiTex = initTexture(gl)
+        this.emojiEl = document.createElement('canvas')
+        const textureWidth = 128
+        this.emojiEl.width = this.emojiEl.height = textureWidth
+        const textureContext = this.emojiEl.getContext("2d")
+        const textureImage = textureContext.createImageData(textureWidth, textureWidth);
+        for (var i = 0; i < textureWidth; i += 1) {
+          for (var j = 0; j < textureWidth; j += 1) {
+            var index = (j * textureWidth + i) * 4;
+            textureImage.data[index + 0] = i;
+            textureImage.data[index + 1] = Math.floor((i + j) / 2);
+            textureImage.data[index + 2] = j;
+            textureImage.data[index + 3] = 255;
+          }
+        }
+        textureContext.putImageData(textureImage, 0, 0);
+        updateTexture(gl, this.emojiTex, this.emojiEl);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        emojiTex = this.emojiTex
+
+        // this.emojiEl.addEventListener('load', function() {
+        //   updateTexture(gl, this.emojiTex, this.emojiEl);
+        //   gl.generateMipmap(gl.TEXTURE_2D);
+        //   // emojiReady = true;
+        //   // loadCheck();
+        //   emojiTex = this.emojiTex
+        // });
+        // emojiEl.src = NostrMarketPriceList.list[0].imgUrl
       }
     }
     asyncLogic()
