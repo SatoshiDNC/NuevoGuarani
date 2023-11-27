@@ -72,7 +72,8 @@ class NostrMarketPriceList extends PriceList {
         console.log('initializing texture')
         NostrMarketPriceList.texture = initTexture(gl)
         const emojiEl = document.createElement('canvas')
-        const textureWidth = NostrMarketPriceList.emojiBase * 66
+        const iconWidth = 66
+        const textureWidth = NostrMarketPriceList.emojiBase * iconWidth
         console.log('textureWidth', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
         const textureContext = emojiEl.getContext("2d")
@@ -80,10 +81,10 @@ class NostrMarketPriceList extends PriceList {
         for (var i = 0; i < textureWidth; i += 1) {
           for (var j = 0; j < textureWidth; j += 1) {
             var index = (j * textureWidth + i) * 4;
-            textureImage.data[index + 0] = i/textureWidth*255;
-            textureImage.data[index + 1] = Math.floor((i + j) / 2)/textureWidth*255;
-            textureImage.data[index + 2] = j/textureWidth*255;
-            textureImage.data[index + 3] = 255;
+            textureImage.data[index + 0] = (i % iconWidth)/textureWidth*127+64;
+            textureImage.data[index + 1] = Math.floor((i+j)/textureWidth)*127+64;
+            textureImage.data[index + 2] = (j % iconWidth)/textureWidth*127+64;
+            textureImage.data[index + 3] = ((i - iconWidth/2)^2 + (j - iconWidth/2)^2 < (iconWidth/2)^2) ? 255 : 0;
           }
         }
         console.log(textureImage.data)
