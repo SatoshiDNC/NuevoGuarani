@@ -165,6 +165,7 @@ v.gadgets.push(v.itemscan = g = new vp.Gadget(v));
 		const g = this;
 		camerasettings.lnscan.hide = !g.state;
 		camerasettings.lnscan.enabled = !camerasettings.lnscan.hide;
+    g.viewport.queueLayout()
 	}
 	g.clickFunc = function(index) {
 		const g = this;
