@@ -59,7 +59,15 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	});
 	g.appFunction = function() {
-		pricelistsettings.queueLayout();
+		// pricelistsettings.queueLayout();
+    // if (this.value) {
+    //   NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
+    //   delete emojipane.lastBuilt
+    //   console.log('here')
+    //   emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
+    //   emojipane.queueLayout()
+    // }
+    pricelistsettings.setRenderFlag(true)
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
       delete emojipane.lastBuilt
@@ -91,6 +99,7 @@ v.load = function(cb) {
 	const debuglog = false;
 	const g = this.list;
 	g.tempValue = g.defaultValue;
+  g.state = 0;
 	function finishInit(cb, v, g) {
 		var index = -1;
 		for (var i=0; i<g.list.length; i++) {
@@ -208,7 +217,7 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 			g.viewport.queueLayout();
 		} { // For the app function.
 			g.value = val;
-      nostrmarketstall.load(() => {})
+      g.appFunction()
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -222,6 +231,9 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 			};
 		}
 	}
+  g.appFunction = function() {
+    nostrmarketstall.load(() => {})
+  }
 v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'nostrMarketWalletKey';
@@ -247,7 +259,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 			g.viewport.queueLayout();
 		} { // For the app function.
 			g.value = val;
-      nostrmarketstall.load(() => {})
+      g.appFunction()
 		} { // For persistence.
 			var req = db.transaction(["settings"], "readwrite");
 			req.objectStore("settings")
@@ -261,7 +273,10 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 			};
 		}
 	}
-  v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
+  g.appFunction = function() {
+    nostrmarketstall.load(() => {})
+  }
+v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { return nostrmarketstall.list.value + ' (' + String(this?.viewport?.pricelist?.length) + ' items)' } catch (e) {} }
@@ -350,6 +365,7 @@ v.load = function(cb) {
 				g.viewport.queueLayout();
 			} { // For the app function.
 				g.value = g.tempValue;
+        g.appFunction()
 			} { // For persistence.
 			}
 			delete g.tempValue;
@@ -364,9 +380,6 @@ v.load = function(cb) {
 				g.tempValue = event.target.result;
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
 			finishInit(this, g);
-      if (['nostrmarketurl', 'nostrmarketwalletkey'].includes(gad)) {
-        nostrmarketstall.load(() => {})
-      }
 		};
 		req.onerror = (event) => {
 			console.log(`error getting ${g.key}`, event);
