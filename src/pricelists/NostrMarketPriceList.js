@@ -69,7 +69,7 @@ class NostrMarketPriceList extends PriceList {
 
       delete emojipane.lastBuilt
       delete emojipane.emojiPoints
-      emojiShapes.build(NostrMarketPriceList.thumbnailData, NostrMarketPriceList.thumbnailsPerRow, NostrMarketPriceList.thumbnailsPerColumn, emojipane.emojiPoints)
+      emojiShapes.build(NostrMarketPriceList.emokiData, NostrMarketPriceList.emojiBase, NostrMarketPriceList.emojiBase, emojipane.emojiPoints)
       emojipane.queueLayout()
 
       {
