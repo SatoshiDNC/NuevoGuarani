@@ -67,7 +67,10 @@ class NostrMarketPriceList extends PriceList {
         NostrMarketPriceList.list = tempList
       }
 
-      emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
+      delete emojipane.lastBuilt
+      delete emojipane.emojiPoints
+      emojiShapes.build(NostrMarketPriceList.thumbnailData, NostrMarketPriceList.thumbnailsPerRow, NostrMarketPriceList.thumbnailsPerColumn, emojipane.emojiPoints)
+      emojipane.queueLayout()
 
       {
         console.log('initializing texture')

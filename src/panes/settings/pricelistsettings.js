@@ -70,10 +70,6 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
     pricelistsettings.setRenderFlag(true)
     if (this.value) {
       NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
-      delete emojipane.lastBuilt
-      console.log('here')
-      emojiShapes.build(pricelistsettings.pricelist.thumbnailData, pricelistsettings.pricelist.thumbnailsPerRow, pricelistsettings.pricelist.thumbnailsPerColumn, emojipane.emojiPoints)
-      emojipane.queueLayout()
     }
 	}
 	g.listItemClick = function(index) {
