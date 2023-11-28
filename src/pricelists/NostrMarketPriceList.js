@@ -11,7 +11,7 @@ class NostrMarketPriceList extends PriceList {
   get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
 
   static loadData(url, key, stall) {
-    loadKey = new Date()
+    const loadKey = new Date()
     NostrMarketPriceList.loadKey = loadKey
     if (!url || !key || !stall) return
     console.log(url, key, stall)
