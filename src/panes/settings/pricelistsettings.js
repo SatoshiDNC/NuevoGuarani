@@ -1,4 +1,4 @@
-var pricelisttypes = ['none', 'manual', 'NostrMarket compatible'];
+var pricelisttypes = ['none', 'NostrMarket compatible'];
 
 
 const nostrmarketstall = v = new vp.View(null);
