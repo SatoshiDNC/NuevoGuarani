@@ -11,6 +11,8 @@ class NostrMarketPriceList extends PriceList {
   get thumbnailsPerColumn() { return NostrMarketPriceList.emojiBase }
 
   static loadData(url, key, stall) {
+    loadKey = new Date()
+    NostrMarketPriceList.loadKey = loadKey
     if (!url || !key || !stall) return
     console.log(url, key, stall)
     const asyncLogic = async () => {
@@ -33,6 +35,7 @@ class NostrMarketPriceList extends PriceList {
           }
         })
       }
+      if (NostrMarketPriceList.loadKey != loadKey) return
       const imageUrls = []
       NostrMarketPriceList.emojiData = []
       {
@@ -45,6 +48,7 @@ class NostrMarketPriceList extends PriceList {
         });
         const json = await response.json()
         const tempList = []
+        if (NostrMarketPriceList.loadKey != loadKey) return
         NostrMarketPriceList.emojiBase = Math.ceil(Math.sqrt(json.length))
         let xIter = 0, yIter = 0
         json.map(e => {
@@ -95,6 +99,7 @@ class NostrMarketPriceList extends PriceList {
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
+              if (NostrMarketPriceList.loadKey != loadKey) return
               let i = index % NostrMarketPriceList.emojiBase, j = Math.floor(index / NostrMarketPriceList.emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
