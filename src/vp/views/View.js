@@ -52,6 +52,7 @@ this.viewScale = 1;
 		return pixelPM;
   }
   relayout() {
+    if (!this.w && !this.h) return
     var s = new LayoutState();
     s.totalWidth = this.W; s.totalHeight = this.H;
     s.remainingX = this.x; s.remainingY = this.y;

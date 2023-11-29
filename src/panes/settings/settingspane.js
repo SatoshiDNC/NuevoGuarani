@@ -9,7 +9,7 @@ v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 		g.x = v.w/s - g.w - (50 - g.w)/2;
 	}
 	g.renderFunc = function() {
-		const g = this, th = vendorColors;
+		const g = this, th = config.themeColors;
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat,mat, [g.x,g.y-10+Math.floor((50-16*1.5)/2),0]);
@@ -24,7 +24,7 @@ v.gadgets.push(v.backbutton = g = new vp.Gadget(v));
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2; g.z = 1;
 	g.autoHull();
 	g.renderFunc = function() {
-		const g = this, th = vendorColors;
+		const g = this, th = config.themeColors;
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat,mat, [10,Math.floor((50-16*1.5)/2),0]);
@@ -83,10 +83,10 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));
@@ -117,7 +117,7 @@ v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 	}
 	g.renderFunc = function() {
 		if (hsettingspane.ratio != 1) return;
-		const g = this, th = vendorColors;
+		const g = this, th = config.themeColors;
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat,mat, [g.x,g.y-10+Math.floor((50-16*1.5)/2),0]);
@@ -133,7 +133,7 @@ v.gadgets.push(v.backbutton = g = new vp.Gadget(v));
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2; g.z = 1;
 	g.autoHull();
 	g.renderFunc = function() {
-		const g = this, th = vendorColors;
+		const g = this, th = config.themeColors;
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat,mat, [10,Math.floor((50-16*1.5)/2),0]);
@@ -155,10 +155,10 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));

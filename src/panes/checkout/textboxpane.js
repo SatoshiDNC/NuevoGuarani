@@ -31,13 +31,23 @@ v.gadgets.push(v.itemGad = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30;
 	g.autoHull();
 	g.clickFunc = function() {
-		emojipane.callback = function(label) {
-			billpane.textbox.options.emoji = label;
-			delete billpane.textbox.options.barcode;
-			billpane.textbox.queryPrice(label);
-			billpane.textbox.resetGads();
-			billpane.changed = true;
-			billpane.subtotal.enableGads();
+		emojipane.callback = function(label, command) {
+      if (label) {
+        billpane.textbox.options.emoji = label;
+        delete billpane.textbox.options.barcode;
+        billpane.textbox.queryPrice(label);
+        billpane.textbox.resetGads();
+        billpane.changed = true;
+        billpane.subtotal.enableGads();
+      }
+      if (command == 'clear') {
+        delete billpane.textbox.options.emoji;
+        delete billpane.textbox.options.barcode;
+        billpane.textbox.queryPrice(label);
+        billpane.textbox.resetGads();
+        billpane.changed = true;
+        billpane.subtotal.enableGads();
+      }
 		}
 		vp.pushRoot(emojipane);
 	}
@@ -688,7 +698,7 @@ v.renderFunc = function() {
 
 	vp.beginInput(keypadpane.inputGad); // TODO: This gets reset by clicks/taps. Need to fix.
 
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 
 	mat4.identity(m);
@@ -698,19 +708,19 @@ v.renderFunc = function() {
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(config.themeColors.uiDataEntryArea));
-	gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+	mainShapes.drawArrays2('circle');
 	mat4.identity(m);
 	mat4.translate(m,m, [v.sw, 0, 0]);
 	mat4.scale(m,m, [50/32, 50/32, 1]);
 	mat4.translate(m,m, [-4, 2, 0]);
 	mat4.scale(m,m, [-32, 32, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+	mainShapes.drawArrays2('circle');
 	mat4.identity(m);
 	mat4.translate(m,m, [(4+16) * 50/32, 2 * 50/32, 0]);
 	mat4.scale(m,m, [v.sw-(8+32) * 50/32, 32 * 50/32, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 
 	if (!billpane.textbox.options.change) {
 		if (v.cursorState) {
@@ -722,7 +732,7 @@ v.renderFunc = function() {
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 				new Float32Array(config.themeColors.uiDataEntryCursor));
-			gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+			mainShapes.drawArrays2('rect');
 		}
 	}
 
@@ -740,16 +750,14 @@ v.renderFunc = function() {
 			mat4.identity(m);
 			mat4.translate(m,m, [g.x, g.y, 0]);
 			mat4.scale(m,m, [g.w, g.h, 1]);
-			useProg4();
+			emojiShapes.useProg4();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
 			gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'),
 				new Float32Array([1,1,1,1]));
-			gl.bindTexture(gl.TEXTURE_2D, emojiTex);
-	//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-			gl.drawArrays(typ4[emoji], beg4[emoji], len4[emoji]);
+			emojiShapes.drawArrays4(emoji);
 		}
 	}
 
@@ -763,7 +771,7 @@ v.renderFunc = function() {
 		iconFont.draw(0,16, "\x04", v.scanMode? alpha(config.themeColors.uiDataEntryText, 0.5): config.themeColors.uiDataEntryGhostText, v.mat, m);
 		if (v.scanMode) {
 			if (v.beam) {
-				useProg2();
+				mainShapes.useProg2();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 				gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 					new Float32Array(config.themeColors.uiBarcodeScannerBeam));
@@ -771,7 +779,7 @@ v.renderFunc = function() {
 				mat4.translate(m,m, [g.x-4, g.y+g.h/2-0.5, 0]);
 				mat4.scale(m,m, [g.w+8, 1, 1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-				gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+				mainShapes.drawArrays2('rect');
 			}
 			if (v.beam != v.beamPrev) {
 				v.beamPrev = v.beam;

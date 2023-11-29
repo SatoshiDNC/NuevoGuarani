@@ -84,8 +84,7 @@ class Configuration {
 	get barcodeScanningEnabled() { try { return camerasettings.itemscan.state; } catch (e) {} }
 	get lightningScanningEnabled() { try { return camerasettings.lnscan.state; } catch (e) {} }
 	get themeColors() {
-		var g = colorsettings.themelist;
-		try { return g.list[g.index].theme; } catch (e) {}
+		try { var g = colorsettings.themelist; return g.list[g.index].theme; } catch (e) { return new DefaultLightTheme() }
 	}
 	get themeGraphics() {
 		var g = colorsettings.texturelist;
@@ -119,4 +118,6 @@ class Configuration {
 	get walletStrikeKey() { try { return walletsettings.strikekey.value; } catch (e) {} }
 	get walletCoinosURL() { try { return walletsettings.coinosurl.value; } catch (e) {} }
 	get walletCoinosKey() { try { return walletsettings.coinoskey.value; } catch (e) {} }
+  
+  get priceList() { try { return pricelistsettings.pricelist; } catch {} }
 }

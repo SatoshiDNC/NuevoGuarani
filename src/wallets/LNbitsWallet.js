@@ -9,19 +9,10 @@ class LNbitsWallet extends Wallet {
 		if (from == to) { callback(1); return; }
 
 		const asyncLogic = async () => {
-			function toLNbitsCurrency(c) {
-				switch(c) {
-				case '₿': return 'BTC';
-				case '₲': return 'PYG';
-				case '$': return 'USD';
-				case '€': return 'EUR';
-				default: return '';
-				}
-			}
 			let json = '';
 			let amt_ = amt/(config.hasCents(from)?100:1);
-			let from_ = toLNbitsCurrency(from);
-			let to_ = toLNbitsCurrency(to);
+			let from_ = Convert.AppCurrencyToLNbitsCurrency(from);
+			let to_ = Convert.AppCurrencyToLNbitsCurrency(to);
 			console.log('getting quote for',amt_,from_,'to',to_,'live =',!config.debugBuild);
 			if (!config.debugBuild) {
 				let body = `{

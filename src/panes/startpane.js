@@ -16,19 +16,19 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 	g.renderFunc = function() {
 		var g = this;
 		var sel = clickTapActive.includes(g.gestureState);
-		const th = vendorColors;
+		const th = config.themeColors;
 		const mat = mat4.create();
 /*
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
-		useProg5();
+		mainShapes.useProg5();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
-		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			new Float32Array(sel?config.themeColors.uiForeground:config.themeColors.uiPillOrange));
+		mainShapes.drawArrays5('rect');
 */
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, g.viewport.mat);
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
@@ -36,17 +36,17 @@ v.gadgets.push(v.invoice = g = new vp.Gadget(v));
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(config.themeColors.uiDataEntryText));
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x+g.w, g.y, 0]);
 		mat4.scale(mat,mat, [-g.h, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x+g.h/2, g.y, 0]);
 		mat4.scale(mat,mat, [g.w-g.h, g.h, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
@@ -81,9 +81,9 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));
@@ -102,7 +102,7 @@ v.renderFunc = function() {
 const bottommargin = v = new vp.View(null);
 v.name = Object.keys({bottommargin}).pop();
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
 }
 

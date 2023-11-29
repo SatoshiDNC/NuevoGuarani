@@ -492,7 +492,7 @@ v.renderFunc = function() {
 
 		let w = (exw > emw)? exw: emw;
 
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array((item.options.negate && !item.options.cash)? config.themeColors.uiBillCredit: config.themeColors.uiBillCharge));
@@ -500,32 +500,32 @@ v.renderFunc = function() {
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2), y, 0]);
 		mat4.scale(m,m, [bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2), y-exh, 0]);
 		mat4.scale(m,m, [bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.min(v.sw-sideMargin, left?sideMargin+w+bubbleRadius*2-coziness*2:v.sw), y, 0]);
 		mat4.scale(m,m, [-bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.min(v.sw-sideMargin, left?sideMargin+w+bubbleRadius*2-coziness*2:v.sw), y-exh, 0]);
 		mat4.scale(m,m, [-bubbleRadius*2, bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin+bubbleRadius, left?0:v.sw-sideMargin-bubbleRadius+coziness*2-w) * 1, y-exh, 0]);
 		mat4.scale(m,m, [v.sw-sideMargin-bubbleRadius-Math.max(sideMargin+bubbleRadius, v.sw-sideMargin-bubbleRadius+coziness*2-w) * 1, 32 * 1 + exh, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 		mat4.identity(m);
 		mat4.translate(m,m, [Math.max(sideMargin, left?0:v.sw-sideMargin-w-bubbleRadius*2+coziness*2) * 1, y-exh+bubbleRadius, 0]);
 		mat4.scale(m,m, [v.sw-sideMargin-Math.max(sideMargin, v.sw-sideMargin-w-bubbleRadius*2+coziness*2) * 1, 32 * 1 + exh - bubbleRadius*2, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		if (icon) {
 			let emoji = item.options.emoji;
@@ -533,14 +533,12 @@ v.renderFunc = function() {
 			mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
 			mat4.scale(m,m, [24, 24, 1]);
 			if (emoji) {
-				useProg4();
+				emojiShapes.useProg4();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m);
-				gl.bindTexture(gl.TEXTURE_2D, emojiTex);
-		//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		//		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+				gl.bindTexture(gl.TEXTURE_2D, config.priceList.thumbnails);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-				gl.drawArrays(typ4[emoji], beg4[emoji], len4[emoji]);
+				emojiShapes.drawArrays4(emoji);
 				if (emoji == 'lightning invoice' && item.options.success === true) {
 					mat4.identity(m);
 					mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
@@ -726,7 +724,7 @@ v.renderFunc = function() {
 		let str2 = billpane.formatMoney(Math.round(Math.sign(subtotal)*subtotal).toString());
 		let w = defaultFont.calcWidth(str + str2);
 
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat);
 		mat4.identity(m);
 		//mat4.scale(m,m, [50/32, 50/32, 1]);
@@ -735,19 +733,19 @@ v.renderFunc = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(subtotal < 0 && !v.includesCash()? config.themeColors.uiBillCredit: config.themeColors.uiBillCharge));
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [(v.sw+w)/2 - 16, y, 0]);
 		//mat4.scale(m,m, [50/32, 50/32, 1]);
 //		mat4.translate(m,m, [-8/2, y, 0]);
 		mat4.scale(m,m, [32, 32, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		mat4.identity(m);
 		mat4.translate(m,m, [(v.sw-w)/2, y, 0]);
 		mat4.scale(m,m, [w * 1, 32 * 1, 1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		mat4.identity(m);
 		//mat4.translate(m,m, [v.sw/2, y, 0]);
@@ -757,7 +755,7 @@ v.renderFunc = function() {
 		defaultFont.draw(0,0, str2, subtotal < 0 && !v.includesCash()? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
 	}
 
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array([1,1,1,1]));

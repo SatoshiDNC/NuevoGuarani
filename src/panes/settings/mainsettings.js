@@ -56,9 +56,9 @@ v.layoutFunc = function() {
 	v.maxY = y;
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	drawThemeBackdrop(this, th);
-	useProg5();
+	mainShapes.useProg5();
 	gl.enable(gl.BLEND);
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
 		new Float32Array(th.uiForeground));
@@ -71,7 +71,7 @@ v.renderFunc = function() {
 		} else if (g.renderFunc) {
 			g.renderFunc.call(g);
 		} else if (g.listToOverlay) {
-			useProg2();
+			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -82,21 +82,21 @@ v.renderFunc = function() {
 			var color = th.uiSettingsText;
 			iconFont.draw(0,0,g.icon,color, this.mat, mat);
 		} else {
-			useProg2();
+			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-				new Float32Array(g.color?colorize(g.color, vendorColors.uiBackground, vendorColors.uiSettingsBubble):vendorColors.uiSettingsBubble));
+				new Float32Array(g.color?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiSettingsBubble));
 			mat4.identity(mat);
 			mat4.translate(mat,mat, [g.x+margin,g.y,0]);
 			mat4.scale(mat,mat, [g.w-2*margin,25,1]);
 			if (daisychain) {
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+				mainShapes.drawArrays2('rect');
 			} else {
 				mat4.scale(mat,mat, [1/16,1/1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.settingstop, beg2.settingstop, len2.settingstop);
+				mainShapes.drawArrays2('settingstop');
 			}
 
 			if (g.daisychain) {
@@ -110,17 +110,17 @@ v.renderFunc = function() {
 				mat4.scale(mat,mat, [g.w-2*margin,25,1]);
 				mat4.scale(mat,mat, [1/16,1/1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ2.settingsbot, beg2.settingsbot, len2.settingsbot);
+				mainShapes.drawArrays2('settingsbot');
 
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+margin,g.y+25,0]);
 				mat4.scale(mat,mat, [g.w-2*margin,g.h-50,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
 			}
-			gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+			mainShapes.drawArrays2('rect');
 
 			if (daisychain) {
-				useProg5();
+				mainShapes.useProg5();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
 					false, this.mat);
 				gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -129,7 +129,7 @@ v.renderFunc = function() {
 				mat4.translate(mat,mat, [g.x+margin+25,g.y,0]);
 				mat4.scale(mat,mat, [g.w-2*margin-50,1,1]);
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-				gl.drawArrays(typ5.divSettings, beg5.divSettings, len5.divSettings);
+				mainShapes.drawArrays5('divSettings');
 			}
 
 			if (g.list) {
@@ -176,7 +176,7 @@ v.renderFunc = function() {
 					defaultFont.draw(0,0,str,color, this.mat, mat);
 
 					if (i==0) continue;
-					useProg5();
+					mainShapes.useProg5();
 					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
 						false, this.mat);
 					gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -185,7 +185,7 @@ v.renderFunc = function() {
 					mat4.translate(mat,mat, [g.x+25,g.y+i*optionheight,0]);
 					mat4.scale(mat,mat, [g.w-50,1,1]);
 					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-					gl.drawArrays(typ5.divSettings, beg5.divSettings, len5.divSettings);
+					mainShapes.drawArrays5('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
 				mat4.identity(mat);
@@ -267,10 +267,10 @@ v.gadgets.push(v.walletsettings = g = new vp.Gadget(v));
 	g.pane = walletsettings;
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;
-v.gadgets.push(v.productsettings = g = new vp.Gadget(v));
-	g.title = 'products';
-	g.subtitle = ['link an online store'];
-	g.pane = productsettings;
+v.gadgets.push(v.pricelistsettings = g = new vp.Gadget(v));
+	g.title = 'price list';
+	g.subtitle = ['import price list'];
+	g.pane = pricelistsettings;
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;
 	g.daisychain = true;
@@ -306,3 +306,5 @@ v.gadgets.push(g = new vp.Gadget(v));
 	maincurrency.renderFunc = mainsettings.renderFunc;
 	cashcurrency.layoutFunc = mainsettings.layoutFunc;
 	cashcurrency.renderFunc = mainsettings.renderFunc;
+	nostrmarketstall.layoutFunc = mainsettings.layoutFunc;
+	nostrmarketstall.renderFunc = mainsettings.renderFunc;

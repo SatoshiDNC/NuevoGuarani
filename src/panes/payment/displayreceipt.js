@@ -15,7 +15,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.enabled?(sel?config.themeColors.uiButtonSel:config.themeColors.uiButton):config.themeColors.uiButtonGhost,
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
@@ -67,7 +67,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	for (const g of this.gadgets) {
@@ -92,7 +92,7 @@ v.layoutFunc = function() {
 	}
 };
 v.renderFunc = function() {
-	const th = vendorColors, th2 = customerColors, v = this;
+	const th = config.themeColors, th2 = customerColors, v = this;
 	if (this.backgroundDisabled) {
 		gl.clearColor(...th.uiBackground);
 		gl.clear(gl.COLOR_BUFFER_BIT);
@@ -181,7 +181,7 @@ v.renderFunc = function() {
 	var y = 0;
 
 	// Start the receipt "paper" with the top and bottom margin sizes.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(th2.uiReceiptBg));
@@ -190,17 +190,17 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,margintop+marginbottom,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 
 	// Draw the serrated leading edge of the receipt.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array([0,0,0,1]));
 	mat4.identity(m);
 	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
+	mainShapes.drawArrays2('tear');
 
 	y += margintop;
 	var inlist = false;
@@ -332,7 +332,7 @@ v.renderFunc = function() {
 		}
 
 		// Extend the receipt "paper" by the bottom margin size.
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array(th2.uiReceiptBg));
@@ -340,12 +340,12 @@ v.renderFunc = function() {
 		mat4.translate(m,m,[0,y,0]);
 		mat4.scale(m,m,[v.sw,marginbottom,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 	}
 	y += marginbottom;
 
 	// Draw the serrated trailing edge of the receipt.
-	useProg2();
+	mainShapes.useProg2();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(th2.uiReceiptBg));
@@ -353,7 +353,7 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,v.sw,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.tear, beg2.tear, len2.tear);
+	mainShapes.drawArrays2('tear');
 	y += (v.sw/49)*Math.sqrt(3)/2;
 
 /*
@@ -361,7 +361,7 @@ v.renderFunc = function() {
 	mat4.translate(m,m,[0,y,0]);
 	mat4.scale(m,m,[v.sw,v.sh,1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 */
 	if (y > v.sh) {
 		this.backgroundDisabled = true;

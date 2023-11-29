@@ -15,7 +15,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.enabled?(sel?config.themeColors.uiButtonSel:config.themeColors.uiButton):config.themeColors.uiButtonGhost,
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
@@ -66,7 +66,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	for (const g of this.gadgets) {
@@ -89,16 +89,16 @@ v.gadgets.push(v.pay = g = new vp.Gadget(v));
 	g.renderFunc = function() {
 		var g = this;
 		var sel = clickTapActive.includes(g.gestureState);
-		const th = vendorColors;
+		const th = config.themeColors;
 		const mat = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [g.w, g.h, 1]);
-		useProg5();
+		mainShapes.useProg5();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-			new Float32Array(sel?vendorColors.uiForeground:vendorColors.uiPillOrange));
-		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+			new Float32Array(sel?th.uiForeground:th.uiPillOrange));
+		mainShapes.drawArrays5('rect');
 		mat4.identity(mat);
 		mat4.translate(mat, mat, [g.x, g.y, 0]);
 		mat4.scale(mat, mat, [50/32, 50/32, 1]);
@@ -117,10 +117,10 @@ v.layoutFunc = function() {
 	}
 };
 v.renderFunc = function() {
-	const th = vendorColors, th2 = customerColors, v = this;
+	const th = config.themeColors, th2 = customerColors, v = this;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	useProg5();
+	mainShapes.useProg5();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);
@@ -149,9 +149,9 @@ v.renderFunc = function() {
 		mat4.identity(m);
 		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
 		mat4.translate(m, m, [(tmpw/400*this.sw-balw)*0.51, (tmpw/400*this.sh-20)*0.49, 0]);
-		defaultFont.draw(0,0, balstr, vendorColors.uiPillOrange, this.mat, m);
+		defaultFont.draw(0,0, balstr, config.themeColors.uiPillOrange, this.mat, m);
 		mat4.scale(m, m, [0.5, 0.5, 1]);
-		defaultFont.draw(0,0, ' sats', vendorColors.uiPillOrange, this.mat, m);
+		defaultFont.draw(0,0, ' sats', config.themeColors.uiPillOrange, this.mat, m);
 
 		bal = toFiat(bal);
 		if (style == PARAGUAY) {
@@ -174,7 +174,7 @@ v.renderFunc = function() {
 		mat4.scale(m, m, [400/tmpw, 400/tmpw, 1]);
 		mat4.translate(m, m, [(tmpw/400*this.sw-balw)*0.51, (tmpw/400*this.sh-20)*0.49+10, 0]);
 		mat4.scale(m, m, [0.5, 0.5, 1]);
-		defaultFont.draw(0,0, balstr, vendorColors.uiFiatGreen, this.mat, m);
+		defaultFont.draw(0,0, balstr, config.themeColors.uiFiatGreen, this.mat, m);
 	}
 }
 

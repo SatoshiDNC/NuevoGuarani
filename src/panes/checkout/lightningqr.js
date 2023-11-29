@@ -73,7 +73,7 @@ v.renderFunc = function() {
 	var w = Math.min(this.sw, this.sh) * (earlyreturn?0.9:1);
 	var x = (this.sw - w) / 2;
 	var y = (this.sh - w) / 2;
-	useProg2();
+	mainShapes.useProg2();
 	const m = mat4.create();
 	mat4.identity(m);
 	mat4.translate(m,m,[x,y,0]);
@@ -82,7 +82,7 @@ v.renderFunc = function() {
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 		new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]));
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m);
-	gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+	mainShapes.drawArrays2('rect');
 //console.log(this.busySignal, this.busyCounter);
 	if (this.busySignal) {
 		this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2;
@@ -91,18 +91,18 @@ v.renderFunc = function() {
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
 		//mat4.scale(m,m,[w,w,1]);
 		mat4.rotate(m,m, this.busyCounter, [0,0,1]);
-		iconFont.draw(-10,7,"\x0A",vendorColors.uiText,this.mat, m);
+		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,this.mat, m);
 
 	} else if (this.walletSignal) {
 		mat4.identity(m);
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
-		financeGraphicsFont.draw(-8.5,8.5,"\x08",vendorColors.uiText,this.mat, m);
+		financeGraphicsFont.draw(-8.5,8.5,"\x08",config.themeColors.uiText,this.mat, m);
 	} else if (this.errorSignal) {
 		mat4.identity(m);
 		mat4.translate(m,m,[x+w/2,y+w/2,0]);
 		//mat4.scale(m,m,[w,w,1]);
 		//mat4.rotate(m,m, this.busyCounter, [0,0,1]);
-		iconFont.draw(-10,7,"\x0F",vendorColors.uiLightningYellow,this.mat, m);
+		iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,this.mat, m);
 	} else if (this.copiedSignal) {
 		let str = icap(tr("copied"));
 		let tw = defaultFont.calcWidth(str);
@@ -178,7 +178,7 @@ v.renderFunc = function() {
 	}
 
 	if (this.qr.length > 1) {
-		useProg2();
+		mainShapes.useProg2();
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,0,0,1]));
@@ -186,14 +186,14 @@ v.renderFunc = function() {
 		mat4.translate(mat,mat,[0.425,0.425,0]);
 		mat4.scale(mat,mat,[0.15,0.15,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([1,1,1,1]));
 		mat4.copy(mat, m);
 		mat4.translate(mat,mat,[0.43,0.43,0]);
 		mat4.scale(mat,mat,[0.14,0.14,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.circle, beg2.circle, len2.circle);
+		mainShapes.drawArrays2('circle');
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,0,0,1]));
 		mat4.copy(mat, m);
@@ -202,7 +202,7 @@ v.renderFunc = function() {
 		mat4.translate(mat,mat,[-0.003,0,0]);
 		mat4.scale(mat,mat,[0.006,-0.06,1]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 
 		//setTimeout(this.timeoutFunc, 1000);
 		this.setRenderFlag(true);

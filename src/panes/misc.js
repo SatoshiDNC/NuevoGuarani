@@ -26,7 +26,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.380, 0.588, 0.259, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.enable(gl.BLEND);
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
@@ -40,7 +40,7 @@
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+      mainShapes.drawArrays2('unitLine');
       }
     }
   };
@@ -61,7 +61,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.882, 0.647, 0.353, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
     const mat = mat4.create();
@@ -74,7 +74,7 @@
       gl.uniformMatrix4fv(
         gl.getUniformLocation(prog2, 'uModelViewMatrix'),
         false, mat);
-      gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+      mainShapes.drawArrays2('unitLine');
       }
     }
   };
@@ -97,7 +97,7 @@
   v.renderFunc = function() {
     gl.clearColor(0.416, 0.533, 0.573, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    useProg2();
+    mainShapes.useProg2();
     gl.enable(gl.BLEND);
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([0,0,0, 1]));
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
@@ -112,7 +112,7 @@
         gl.uniformMatrix4fv(
           gl.getUniformLocation(prog2, 'uModelViewMatrix'),
           false, mat);
-        gl.drawArrays(typ2.unitLine, beg2.unitLine, len2.unitLine);
+        mainShapes.drawArrays2('unitLine');
       }
     }
   };
@@ -176,7 +176,7 @@ function scrollUpDn(g, amt) {
 		var sel;
 		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		useProg5();
+		mainShapes.useProg5();
 		gl.enable(gl.BLEND);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		const mat = mat4.create();
@@ -193,7 +193,7 @@ function scrollUpDn(g, amt) {
 		mat4.identity(mat);
 		mat4.scale(mat, mat, [10, 10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.scrollUp, beg5.scrollUp, len5.scrollUp);
+		mainShapes.drawArrays5('scrollUp');
 
 		// Down button.
 		if (this.dnGad.gestureState && this.dnGad.gestureState == 'hold')
@@ -206,7 +206,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [0, this.h/s, 0]);
 		mat4.scale(mat, mat, [10, -10, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.scrollDn, beg5.scrollDn, len5.scrollDn);
+		mainShapes.drawArrays5('scrollDn');
 
 		// Scroll bar knob.
 		gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
@@ -215,7 +215,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [4, 10, 0]);
 		mat4.scale(mat, mat, [2, this.h/s-20, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.rect, beg5.rect, len5.rect);
+		mainShapes.drawArrays5('rect');
 		sel = this.knobGad.gestureState
 			&& (this.knobGad.gestureState=='drag'
 				||this.knobGad.gestureState=='drag');
@@ -225,7 +225,7 @@ function scrollUpDn(g, amt) {
 		mat4.translate(mat, mat, [3, 10+this.knobGad.convexHull[1], 0]);
 		mat4.scale(mat, mat, [4, this.knobGad.convexHull[5]-this.knobGad.convexHull[1], 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+		mainShapes.drawArrays5('divLineH');
 	};
 
   var walletpane = v = new vp.SliceView(null, 'r', 10);
@@ -251,21 +251,21 @@ function scrollUpDn(g, amt) {
 	v.gadgets.push(g = v.middleDividerGad = new vp.MiddleDividerGadget(v)); g.z = 1;
 	v.layoutFunc = function() { this.middleDividerGad.layout(); }
 	v.renderFunc = function() {
-		const th = vendorColors;
+		const th = config.themeColors;
 		gl.clearColor(th.uiBackground[0],th.uiBackground[1],th.uiBackground[2], 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		useProg5();
+		mainShapes.useProg5();
 		gl.enable(gl.BLEND);
 		const mat = mat4.create();
 		mat4.identity(mat);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
 		mat4.scale(mat, mat, [this.w, this.h, 0]);
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-		//gl.drawArrays(typ5.divLine, beg5.divLine, len5.divLine);
+		//mainShapes.drawArrays5('divLine');
 		if (this.parent.state == 'v') {
-			gl.drawArrays(typ5.divLineV, beg5.divLineV, len5.divLineV);
+			mainShapes.drawArrays5('divLineV');
 		} else {
-			gl.drawArrays(typ5.divLineH, beg5.divLineH, len5.divLineH);
+			mainShapes.drawArrays5('divLineH');
 		}
 	};
 

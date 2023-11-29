@@ -16,7 +16,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 		mat4.scale(mat, mat, [g.w/18, g.h/18, 0]);
 		mat4.translate(mat, mat, [-1, 16, 0]);
 		iconFont.draw(0,0, g.icon,
-			g.enabled?(sel?vendorColors.uiButtonSel:vendorColors.uiButton):vendorColors.uiButtonGhost,
+			g.enabled?(sel?config.themeColors.uiButtonSel:config.themeColors.uiButton):config.themeColors.uiButtonGhost,
 			g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
@@ -75,7 +75,7 @@ v.layoutFunc = function() {
 	}
 }
 v.renderFunc = function() {
-	const th = vendorColors;
+	const th = config.themeColors;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	for (const g of this.gadgets) {
@@ -92,7 +92,7 @@ v.gadgets.push(v.homeGad = g = new vp.Gadget(v));
 	g.autoHull();
 	g.icon = "\x00";
 	g.renderFunc = function() {
-		const th = vendorColors, g = this;
+		const th = config.themeColors, g = this;
 		var sel = clickTapActive.includes(g.gestureState);
 		var color = g.enabled? th.uiButton: th.uiButtonGhost;
 		if (g.viewport.overlaymode)
@@ -378,7 +378,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 */
 }
 
-	const th = vendorColors, v = this;
+	const th = config.themeColors, v = this;
 	gl.clearColor(...th.uiBackground);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	this.setRenderFlag(true);
@@ -394,16 +394,16 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	mat4.identity(mat);
 	mat4.translate(mat, mat, [x, y, 0]);
 	mat4.scale(mat, mat, [w, h, 1]);
-	useProg4();
+	mainShapes.useProg4();
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, this.mat);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat);
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]));
-	gl.drawArrays(typ4.rect, beg4.rect, len4.rect);
+	mainShapes.drawArrays4('rect');
 
 	if (paymentpane.scanner
 	&& paymentpane.scanner.lastresult.data != ''
 	&& paymentpane.scanner.results.length > 1) {
-	  useProg2();
+	  mainShapes.useProg2();
 		var p = paymentpane.scanner.lastresult.cornerPoints;
 		var t = transform2d(undefined,
 			p[0].x+x, p[0].y+y, p[1].x+x, p[1].y+y, p[3].x+x, p[3].y+y, p[2].x+x, p[2].y+y);
@@ -425,14 +425,14 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 		for (var i=0; i<parts; i++) if (paymentpane.scanner.results[i] != '') {
 			var beg = Math.round(tris * i / parts);
 			var end = Math.round(tris * (i + 1) / parts);
-			gl.drawArrays(typ2.pies,
-				beg2.pies + beg * 3,
+			gl.drawArrays(mainShapes.typ2.pies,
+				mainShapes.beg2.pies + beg * 3,
 				(end - beg) * 3);
 		}
 		paymentpane.scanner.intensity *= 0.95;
 	}
 
-  useProg2();
+  mainShapes.useProg2();
 	var s = v.designFit[0] < v.designFit[1]? v.designFit[0]: v.designFit[1];
 	w = s * 0.9; h = s * 0.9;
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat);
@@ -452,7 +452,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 						mat4.scale(mat, mat, [v.sw, (v.sh-h)/2, 1]); break;
 		}
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		gl.drawArrays(typ2.rect, beg2.rect, len2.rect);
+		mainShapes.drawArrays2('rect');
 	}
 */
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]));
@@ -460,7 +460,7 @@ function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
 	mat4.translate(mat, mat, [x + (v.designFit[0] - w)/2, y + (v.designFit[1] - h)/2, 0]);
 	mat4.scale(mat, mat, [w, h, 1]);
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-	gl.drawArrays(typ2.scanbox, beg2.scanbox, len2.scanbox);
+	mainShapes.drawArrays2('scanbox');
 
 	for (const g of this.gadgets) {
 		if (g.renderFunc) g.renderFunc.call(g);

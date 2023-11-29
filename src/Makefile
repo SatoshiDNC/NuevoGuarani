@@ -52,18 +52,22 @@ all.js: \
 	main-head.js \
 	emoji.js \
 	main-db.js \
+	Convert.js \
 	ColorTheme.js \
 	Configuration.js \
 	Wallet.js \
+	PriceList.js \
 	themes/all.js \
 	languages/all.js \
 	main-translations.js \
 	main-receiptfmt.js \
 	main-config.js \
 	main-gl.js \
+	ShapeBuffer.js \
 	main-shapes.js \
 	main-helpers.js \
 	wallets/all.js \
+	pricelists/all.js \
 	panes/all.js \
 	main-tail.js \
 	load-head.js \
@@ -82,18 +86,22 @@ all.js: \
 		main-head.js \
 		emoji.js \
 		main-db.js \
+		Convert.js \
 		ColorTheme.js \
 		Configuration.js \
 		Wallet.js \
+		PriceList.js \
 		themes/all.js \
 		languages/all.js \
 		main-translations.js \
 		main-receiptfmt.js \
 		main-config.js \
+		ShapeBuffer.js \
 		main-shapes.js \
 		main-gl.js \
 		main-helpers.js \
 		wallets/all.js \
+		pricelists/all.js \
 		panes/all.js \
 		main-tail.js \
 		load-head.js \
