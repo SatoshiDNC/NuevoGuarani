@@ -174,6 +174,8 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
       delete v.nostrmarketurl.hide;
       delete v.nostrmarketwalletkey.hide;
       delete v.nostrmarketstall.hide;
+      delete v.nostrmarketurl.appFunction();
+      delete v.nostrmarketwalletkey.appFunction();
     } else {
       v.nostrmarketurl.hide = true;
       v.nostrmarketwalletkey.hide = true;
