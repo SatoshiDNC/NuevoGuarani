@@ -170,6 +170,12 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 	}
   g.appFunction = function() {
     const v = this.viewport
+    if (pricelisttypes[v.typelist.index] == 'none') {
+      delete emojipane.lastBuilt
+      delete emojipane.emojiPoints
+      emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
+      emojipane.queueLayout()
+    }
     if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
       delete v.nostrmarketurl.hide;
       delete v.nostrmarketwalletkey.hide;
