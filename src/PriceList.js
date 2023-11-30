@@ -209,6 +209,8 @@ class PriceList {
         const tempList = []
         if (this._loadKey != loadKey) return
         this._emojiBase = Math.ceil(Math.sqrt(json.length))
+        this.rows = this._emojiBase
+        this.cols = this._emojiBase
         let xIter = 0, yIter = 0
         json.map(e => {
           const { name, price } = e
