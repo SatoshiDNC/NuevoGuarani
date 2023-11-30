@@ -161,7 +161,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.appFunction = function() {
     const v = this.viewport
     if (pricelisttypes[v.typelist.index] == 'none') {
-      PriceList.instance.setEmojiDefault()
+      config.priceList.setEmojiDefault()
       delete emojipane.lastBuilt
       delete emojipane.emojiPoints
       emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
