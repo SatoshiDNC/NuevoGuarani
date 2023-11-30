@@ -236,7 +236,7 @@ class PriceList {
       {
         console.log('initializing texture')
         const emojiEl = document.createElement('canvas')
-        const iconWidth = 66
+        const iconWidth = 10
         const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
