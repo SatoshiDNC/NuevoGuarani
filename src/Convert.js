@@ -1,6 +1,6 @@
 class Convert {
   constructor() {
-    throw
+    throw new Error()
   }
   static currencies = [
     { app: '₿', LNbits: 'BTC' },
