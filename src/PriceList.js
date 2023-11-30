@@ -260,14 +260,15 @@ class PriceList {
         {
           textureContext.imageSmoothingQuality = 'high'
           let pending = imageUrls.length
+          const ref = this
           imageUrls.map((url, index) => {
             console.log(url, index)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
               console.log('updating', img.src)
-              if (this._loadKey != loadKey) return
-              let i = index % this._emojiBase, j = Math.floor(index / this._emojiBase)
+              if (ref._loadKey != loadKey) return
+              let i = index % ref._emojiBase, j = Math.floor(index / this._emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
                 targetHeight = targetWidth * img.height / img.width
@@ -279,11 +280,11 @@ class PriceList {
                 i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
                 j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
               i += 1
-              if (i >= this._emojiBase) {
+              if (i >= ref._emojiBase) {
                 i = 0
                 j += 1
               }
-              updateTexture(gl, this.texture, emojiEl)
+              updateTexture(gl, ref.texture, emojiEl)
               gl.generateMipmap(gl.TEXTURE_2D)
               pending -= 1
               if (pending == 0) {
