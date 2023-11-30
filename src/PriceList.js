@@ -260,6 +260,7 @@ class PriceList {
         {
           textureContext.imageSmoothingQuality = 'high'
           let pending = imageUrls.length
+          console.log('urls', imageUrls)
           imageUrls.map((url, index) => {
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
