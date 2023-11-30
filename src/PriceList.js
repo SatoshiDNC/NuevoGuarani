@@ -248,8 +248,8 @@ class PriceList {
             textureImage.data[index + 0] = i/textureWidth*127+64
             textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64
             textureImage.data[index + 2] = j/textureWidth*127+64
-            const r = ((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2
-            const o = r - (iconWidth/2 - 2)**2
+            const r = Math.sqrt(((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2)
+            const o = r - (iconWidth/2 - 2)
             textureImage.data[index + 3] = (0 < 0) ? 255 : (o > 1) ? 0 : 255 - (o * 255)
           }
         }
