@@ -260,13 +260,13 @@ class PriceList {
         {
           textureContext.imageSmoothingQuality = 'high'
           let pending = imageUrls.length
-          console.log('urls', imageUrls)
           imageUrls.map((url, index) => {
+            console.log(url, index)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
-              if (this._loadKey != loadKey) return
               console.log('updating', img.src)
+              if (this._loadKey != loadKey) return
               let i = index % this._emojiBase, j = Math.floor(index / this._emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
