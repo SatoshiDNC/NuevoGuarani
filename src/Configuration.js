@@ -119,5 +119,5 @@ class Configuration {
 	get walletCoinosURL() { try { return walletsettings.coinosurl.value; } catch (e) {} }
 	get walletCoinosKey() { try { return walletsettings.coinoskey.value; } catch (e) {} }
   
-  get priceList() { try { return pricelistsettings.pricelist; } catch {} }
+  get priceList() { return PriceList.instance || new PriceList() }
 }

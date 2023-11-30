@@ -61,7 +61,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 	g.appFunction = function() {
     pricelistsettings.setRenderFlag(true)
     if (this.value) {
-      NostrMarketPriceList.loadData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
+      PriceList.instance.loadNostrMarketData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
     }
 	}
 	g.listItemClick = function(index) {
@@ -133,16 +133,6 @@ v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
-Object.defineProperty(v, "pricelist", {
-	get : function () {
-		const i = pricelistsettings.typelist.index;
-		if (i >= 0 && i < pricelisttypes.length) switch (pricelisttypes[i]) {
-      case 'manual': return new ManualPriceList(); break;
-      case 'NostrMarket compatible': return new NostrMarketPriceList(); break;
-		}
-		return new PriceList();
-	}
-});
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 	g.key = 'priceListType';
 	g.list = pricelisttypes;
@@ -180,8 +170,8 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
       delete v.nostrmarketurl.hide;
       delete v.nostrmarketwalletkey.hide;
       delete v.nostrmarketstall.hide;
-      delete v.nostrmarketurl.appFunction();
-      delete v.nostrmarketwalletkey.appFunction();
+      v.nostrmarketurl.appFunction();
+      v.nostrmarketwalletkey.appFunction();
     } else {
       v.nostrmarketurl.hide = true;
       v.nostrmarketwalletkey.hide = true;
@@ -275,7 +265,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return nostrmarketstall.list.value + ' (' + String(this?.viewport?.pricelist?.length) + ' items)' } catch (e) {} }
+		get : function () { try { return nostrmarketstall.list.value + ' (' + String(config.priceList.length) + ' items)' } catch (e) {} }
 	});
 	g.pane = nostrmarketstall;
 /*
@@ -285,7 +275,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	g.title = 'manage price list';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
-			return String(this?.viewport?.pricelist?.length) + ' items';
+			return String(config.priceList.length) + ' items';
 		}
 	});
 	g.value = '';

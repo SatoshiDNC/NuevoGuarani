@@ -67,7 +67,6 @@ all.js: \
 	main-shapes.js \
 	main-helpers.js \
 	wallets/all.js \
-	pricelists/all.js \
 	panes/all.js \
 	main-tail.js \
 	load-head.js \
@@ -101,7 +100,6 @@ all.js: \
 		main-gl.js \
 		main-helpers.js \
 		wallets/all.js \
-		pricelists/all.js \
 		panes/all.js \
 		main-tail.js \
 		load-head.js \
