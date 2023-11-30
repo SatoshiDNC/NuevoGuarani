@@ -166,7 +166,7 @@ class PriceList {
     ];
   }
 
-  static loadNostrMarketData(url, key, stall) {
+  loadNostrMarketData(url, key, stall) {
     const loadKey = new Date()
     this._loadKey = loadKey
     if (!url || !key || !stall) return
