@@ -262,13 +262,12 @@ class PriceList {
           let pending = imageUrls.length
           const ref = this
           imageUrls.map((url, index) => {
-            console.log(url, index)
             const img = document.createElement('img')
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
-              console.log('updating', img.src)
               if (ref._loadKey != loadKey) return
-              let i = index % ref._emojiBase, j = Math.floor(index / this._emojiBase)
+              console.log('updating icon from', img.src)
+              let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
                 targetHeight = targetWidth * img.height / img.width
