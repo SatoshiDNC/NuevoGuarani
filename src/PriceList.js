@@ -236,7 +236,7 @@ class PriceList {
       {
         console.log('initializing texture')
         const emojiEl = document.createElement('canvas')
-        const iconWidth = 10
+        const iconWidth = 96
         const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
@@ -265,6 +265,7 @@ class PriceList {
             img.crossOrigin ='anonymous'
             img.addEventListener('load', function() {
               if (this._loadKey != loadKey) return
+              console.log('updating', img.src)
               let i = index % this._emojiBase, j = Math.floor(index / this._emojiBase)
               let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
               if (img.width > img.height) {
