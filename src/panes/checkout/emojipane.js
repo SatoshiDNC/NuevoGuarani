@@ -66,7 +66,6 @@ v.layoutFunc = function() {
 	g.autoHull();
 }
 v.renderFunc = function() {
-  console.log('render emojipane')
 	drawThemeBackdrop(this, config.themeColors);
 	const v = this;
 	const m = mat4.create();

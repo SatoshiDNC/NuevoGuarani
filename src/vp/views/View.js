@@ -60,8 +60,8 @@ this.viewScale = 1;
     this.layoutAll(s);
   }
   getScale() { return this.viewScale; }
-  setRenderFlag(value, skipOptimization) {
-    if (this.needsRender && !skipOptimization) return;
+  setRenderFlag(value) {
+    if (this.needsRender) return;
     this.needsRender = this.needsender || value;
     this.childRender = true;
     if (this.parent) this.parent.setRenderFlag(false);
