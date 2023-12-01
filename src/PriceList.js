@@ -5,9 +5,6 @@ class PriceList {
     this.priceData = []
     this.emojiData = []
     this.texture = initTexture(gl)
-    console.log(this.texture)
-    if (!this.texture) throw new Error()
-    console.log('not thrown?')
     this.rows = 57
     this.cols = 57
     PriceList.instance = this
@@ -22,9 +19,10 @@ class PriceList {
   setEmojiDefault() {
     console.log('loading PriceList texture')
     const emojiEl = document.createElement('img')
+    const ref = this
     emojiEl.addEventListener('load', function() {
-      console.log('updating PriceList texture', this.texture)
-      updateTexture(gl, this.texture, emojiEl)
+      console.log('updating PriceList texture', ref.texture)
+      updateTexture(gl, ref.texture, emojiEl)
       gl.generateMipmap(gl.TEXTURE_2D)
       // emojiReady = true
       // loadCheck()
