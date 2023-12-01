@@ -6,6 +6,7 @@ class PriceList {
     this.priceData = []
     this.emojiData = []
     this.texture = initTexture(gl)
+    if (!this.texture) throw new Error()
     this.rows = 57
     this.cols = 57
   }

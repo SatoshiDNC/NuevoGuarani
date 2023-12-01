@@ -162,11 +162,13 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.appFunction = function() {
     const v = this.viewport
     if (pricelisttypes[v.typelist.index] == 'none') {
-      config.priceList.setEmojiDefault()
-      delete emojipane.lastBuilt
-      delete emojipane.emojiPoints
-      emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
-      emojipane.queueLayout()
+      try {
+        config.priceList.setEmojiDefault()
+        delete emojipane.lastBuilt
+        delete emojipane.emojiPoints
+        emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
+        emojipane.queueLayout()
+      } catch {}
     }
     if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
       delete v.nostrmarketurl.hide;
