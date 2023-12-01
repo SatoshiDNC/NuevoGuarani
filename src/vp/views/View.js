@@ -61,7 +61,6 @@ this.viewScale = 1;
   }
   getScale() { return this.viewScale; }
   setRenderFlag(value, skipOptimization) {
-    if (this.name === 'emojipane') console.log(value, skipOptimization)
     if (this.needsRender && !skipOptimization) return;
     this.needsRender = this.needsender || value;
     this.childRender = true;

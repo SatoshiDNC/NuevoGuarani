@@ -286,8 +286,7 @@ class PriceList {
               }
               updateTexture(gl, ref.texture, emojiEl)
               gl.generateMipmap(gl.TEXTURE_2D)
-              console.log(emojipane)
-              emojipane.setRenderFlag(true, true)
+              emojipane.setRenderFlag(true)
               pending -= 1
               if (pending == 0) {
                 console.log('done loading', imageUrls.length, 'emojis')
