@@ -1,7 +1,6 @@
 class PriceList {
 	constructor() {
     if (PriceList.instance) return PriceList.instance
-    PriceList.instance = this
 
     this.priceData = []
     this.emojiData = []
@@ -9,6 +8,7 @@ class PriceList {
     if (!this.texture) throw new Error()
     this.rows = 57
     this.cols = 57
+    PriceList.instance = this
   }
 
   get length() { return 0 }

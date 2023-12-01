@@ -168,7 +168,9 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
         delete emojipane.emojiPoints
         emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
         emojipane.queueLayout()
-      } catch {}
+      } catch {
+        console.log('caught')
+      }
     }
     if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
       delete v.nostrmarketurl.hide;
