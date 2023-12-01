@@ -59,8 +59,9 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	});
 	g.appFunction = function() {
-    pricelistsettings.setRenderFlag(true)
-    if (this.value) {
+		const v = pricelistsettings
+    v.setRenderFlag(true)
+    if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible' && this.value) {
       PriceList.instance.loadNostrMarketData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
     }
 	}
@@ -219,7 +220,10 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 		}
 	}
   g.appFunction = function() {
-    nostrmarketstall.load(() => {})
+		const v = this.viewport;
+    if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
+      nostrmarketstall.load(() => {})
+    }
   }
 v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -261,7 +265,10 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 		}
 	}
   g.appFunction = function() {
-    nostrmarketstall.load(() => {})
+		const v = this.viewport;
+    if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible') {
+      nostrmarketstall.load(() => {})
+    }
   }
 v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
