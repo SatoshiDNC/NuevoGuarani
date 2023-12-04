@@ -333,6 +333,7 @@ v.queryPrice = function(item) {
     billpane.textbox.splicePrice({ unitprice: data.price, fractionalQty: false, negate: false })
     return
   }
+  console.log(item, config.priceList.priceData)
 	var req = db.transaction(["prices"], "readonly")
 		.objectStore("prices")
 		.get(`${getCurrentAccount().id}-${item}`);
