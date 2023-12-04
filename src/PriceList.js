@@ -21,7 +21,7 @@ class PriceList {
   }
 
   setPriceData(uid, name, currency, price, size, unit) {
-    this.priceData = this.priceData.filter(item => item.uid === uid)
+    this.priceData = this.priceData.filter(item => item.uid !== uid)
     this.priceData.push({ uid, name, currency, price, size, unit })
   }
 

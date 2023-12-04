@@ -329,10 +329,10 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 }
 v.queryPrice = function(item) {
   console.log(item, config, config.priceList)
-  var try1 = config.priceList.getPriceData(item)
-  console.log(try1)
-  if (try1?.price && try1?.currency === billpane.orderCurrency) {
-    billpane.textbox.splicePrice({ unitprice: try1.price, fractionalQty: false, negate: false })
+  var data = config.priceList.getPriceData(item)
+  console.log(data, billpane.orderCurrency)
+  if (data?.price && data?.currency === billpane.orderCurrency) {
+    billpane.textbox.splicePrice({ unitprice: data.price, fractionalQty: false, negate: false })
   }
 	var req = db.transaction(["prices"], "readonly")
 		.objectStore("prices")
