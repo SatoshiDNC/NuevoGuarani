@@ -328,7 +328,7 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 	req.onsuccess = (event) => { };
 }
 v.queryPrice = function(item) {
-  console.log(item)
+  console.log(item, config, config.priceList)
   var try1 = config.priceList.getPriceData(item)
   console.log(try1)
   if (try1?.price && try1?.currency === billpane.orderCurrency) {
