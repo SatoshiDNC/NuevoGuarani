@@ -22,6 +22,9 @@ class PriceList {
 
   setEmojiDefault() {
     console.log('loading PriceList texture')
+    this.clear()
+    this.rows = 57
+    this.cols = 57
     const emojiEl = document.createElement('img')
     const ref = this
     emojiEl.addEventListener('load', function() {
@@ -177,10 +180,7 @@ class PriceList {
     if (!url || !key || !stall) return
 
     const asyncLogic = async () => {
-      this.priceData = []
-      this.emojiData = []
-      this.rows = 0
-      this.cols = 0
+      this.clear()
       let stallId, stallCurrency
       {
         console.log('searching for stall', key != '', stall)
