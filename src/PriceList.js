@@ -26,10 +26,10 @@ class PriceList {
   }
 
   getPriceData(text) {
-    for (item of this.priceData) {
+    for (const item of this.priceData) {
       if (item.uid == text) return item
     }
-    for (item of this.priceData) {
+    for (const item of this.priceData) {
       if (item.name == text) return item
     }
   }
@@ -244,7 +244,7 @@ class PriceList {
             yIter += 1
           }
         })
-        for (item of tempList) {
+        for (const item of tempList) {
           this.addPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
         }
       }
