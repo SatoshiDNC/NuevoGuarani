@@ -20,6 +20,20 @@ class PriceList {
     this.cols = 0
   }
 
+  setPriceData(uid, name, currency, price, size, unit) {
+    this.priceData = this.priceData.filter(item => item.uid === uid)
+    this.priceData.push({ uid, name, currency, price, size, unit })
+  }
+
+  getPriceData(text) {
+    for (item of this.priceData) {
+      if (item.uid == text) return item
+    }
+    for (item of this.priceData) {
+      if (item.name == text) return item
+    }
+  }
+
   setEmojiDefault() {
     console.log('loading PriceList texture')
     this.clear()
@@ -218,10 +232,10 @@ class PriceList {
         this.cols = this._emojiBase
         let xIter = 0, yIter = 0
         json.map(e => {
-          const { name, price } = e
+          const { id, name, price } = e
           const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
           const amt = price
-          tempList.push({ name, cur, amt, qty: 1, unit: 'ea' })
+          tempList.push({ id, name, cur, amt, size: 1, unit: 'ea' })
           imageUrls.push(e.images[0])
           this.emojiData.push({ x: xIter, y: yIter, category: 'product', label: name, })
           xIter += 1
@@ -230,7 +244,9 @@ class PriceList {
             yIter += 1
           }
         })
-        this.priceData = tempList
+        for (item of tempList) {
+          this.addPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
+        }
       }
 
       delete emojipane.lastBuilt
