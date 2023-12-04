@@ -1,6 +1,6 @@
 
   function checkOnlineOrders() {
-    console.log('beep')
+    console.log(config.stallKeys)
     vp.beep()
     setTimeout(checkOnlineOrders, 60000)
   }
