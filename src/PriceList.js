@@ -230,7 +230,6 @@ class PriceList {
         this._emojiBase = Math.ceil(Math.sqrt(json.length))
         this.rows = this._emojiBase
         this.cols = this._emojiBase
-        console.log(this)
         let xIter = 0, yIter = 0
         json.map(e => {
           const { id, name, price } = e
@@ -245,10 +244,8 @@ class PriceList {
             yIter += 1
           }
         })
-        console.log(this)
         for (const item of tempList) {
-          console.log(this)
-          this.addPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
+          this.setPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
         }
       }
 
