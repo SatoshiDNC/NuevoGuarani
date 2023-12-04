@@ -32,7 +32,6 @@ v.gadgets.push(v.itemGad = g = new vp.Gadget(v));
 	g.autoHull();
 	g.clickFunc = function() {
 		emojipane.callback = function(label, command) {
-      console.log(label, command)
       if (label) {
         billpane.textbox.options.emoji = label;
         delete billpane.textbox.options.barcode;
@@ -329,6 +328,7 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 	req.onsuccess = (event) => { };
 }
 v.queryPrice = function(item) {
+  console.log(item)
   var try1 = config.priceList.getPriceData(item)
   console.log(try1)
   if (try1?.price && try1?.currency === billpane.orderCurrency) {
