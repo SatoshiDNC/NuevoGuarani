@@ -2,11 +2,8 @@ class PriceList {
 	constructor() {
     if (PriceList.instance) return PriceList.instance
 
-    this.priceData = []
-    this.emojiData = []
     this.texture = initTexture(gl)
-    this.rows = 57
-    this.cols = 57
+    this.clear()
     PriceList.instance = this
   }
 
@@ -15,6 +12,13 @@ class PriceList {
   get thumbnailData() { return this.emojiData }
   get thumbnailsPerRow() { return this.cols }
   get thumbnailsPerColumn() { return this.rows }
+
+  clear() {
+    this.priceData = []
+    this.emojiData = []
+    this.rows = 0
+    this.cols = 0
+  }
 
   setEmojiDefault() {
     console.log('loading PriceList texture')
