@@ -12,13 +12,23 @@
         });
         const json = await response.json()
         console.log(json)
-        // json.map(e => {
-        //   const { id, name, currency } = e
-        //   if (id == stallId) {
-        //     stall = name
-        //     stallCurrency = currency
-        //   }
-        // })
+        json.map(o => {
+          const { id } = o
+          // if (id == stallId) {
+          //   stall = name
+          //   stallCurrency = currency
+          // }
+          var req = db.transaction(["nostrmarket-orders"], "readwrite")
+            .objectStore("nostrmarket-orders")
+            .get(`${getCurrentAccount().id}-${id}`)
+          req.onsuccess = (event) => {
+            console.log('present', event.target.result)
+          }
+          req.onerror = (event) => {
+            console.log('missing', id)
+          }
+      
+        })
       }
     }
     asyncLogic()
