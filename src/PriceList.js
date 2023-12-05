@@ -191,7 +191,7 @@ class PriceList {
   loadNostrMarketData(url, key, stallId) {
     const loadKey = new Date()
     this._loadKey = loadKey
-    if (!url || !key || !stall) return
+    if (!url || !key || !stallId) return
 
     const asyncLogic = async () => {
       this.clear()
