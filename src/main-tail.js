@@ -19,7 +19,7 @@
             .get(`${getCurrentAccount().id}-${id}`)
           req.onsuccess = (event) => {
             if (event.target.result === undefined) {
-              console.log('new order:', o)
+              //console.log('new order:', o)
 
               {
                 var currentState = 'saved'
@@ -29,6 +29,7 @@
                   const qty = item.quantity
                   subtotal += unitprice * qty
                 })
+                console.log(subtotal)
                 const newOrder = {
                   nostrmarketId: id,
                   store: getCurrentAccount().id,
