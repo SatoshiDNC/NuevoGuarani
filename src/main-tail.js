@@ -22,6 +22,7 @@
               console.log('new order:', o)
 
               var currentState = 'saved'
+              let subtotal = 0
               const newOrder = {
                 nostrmarketId: id,
                 store: getCurrentAccount().id,
@@ -32,8 +33,13 @@
                   options: {},
                 },
                 currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
-                items: [],
-                subtotal: 0,
+                items: o.items.map(item => {
+                  const unitprice = o.extra.products.filter(p => p.id === item.id)[0].price
+                  const qty = item.quantity
+                  subtotal += unitprice * qty
+                  return { qty:+qty, unitprice:+unitprice, currency:o.extra.currency, options:{} }
+                }),
+                subtotal: subtotal,
                 //amountTendered: receivepayment.cash.text,
                 //amountToReturn: returnchange.change.text,
               };
