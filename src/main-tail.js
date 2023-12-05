@@ -14,16 +14,41 @@
         console.log(json)
         json.map(o => {
           const { id } = o
-          // if (id == stallId) {
-          //   stall = name
-          //   stallCurrency = currency
-          // }
           var req = db.transaction(["nostrmarket-orders"], "readonly")
             .objectStore("nostrmarket-orders")
             .get(`${getCurrentAccount().id}-${id}`)
           req.onsuccess = (event) => {
             if (event.target.result === undefined) {
               console.log('new order:', o)
+
+              var currentState = 'saved'
+              const newOrder = {
+                nostrmarketId: id,
+                store: getCurrentAccount().id,
+                status: currentState,
+                date: new Date(),
+                "dataentry": {
+                  textbox: '',
+                  options: {},
+                },
+                currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
+                items: [],
+                subtotal: 0,
+                //amountTendered: receivepayment.cash.text,
+                //amountToReturn: returnchange.change.text,
+              };
+              // if (JSON.stringify(billpane.conversions) != '{}') {
+              //   newItem.conversions = billpane.conversions
+              // }
+              console.log('Saving', newOrder)
+              const tx = db.transaction(["sales"], "readwrite")
+              tx.onerror = (event) => { console.log("Save transaction failed.") }
+              tx.oncomplete = (event) => { }
+              const req = tx.objectStore("sales").add(newOrder)
+              req.onerror = (event) => { console.log("Save request failed.") }
+              req.onsuccess = (event) => { }
+              
+              
               var req = db.transaction(["nostrmarket-orders"], "readwrite")
                 .objectStore("nostrmarket-orders")
                 .add({ id }, `${getCurrentAccount().id}-${id}`)

@@ -41,6 +41,7 @@ function openDatabase() {
     if (event.oldVersion < 2) {
       objectStore = db.createObjectStore("nostrmarket-orders")
     }
+    db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear()
 	}
 }
 
