@@ -37,7 +37,7 @@
                   date: new Date(),
                   "dataentry": {
                     textbox: '',
-                    options: { emoji: o.extra.products.filter(p => p.id === item.product_id)[0].name },
+                    options: {},
                   },
                   currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
                   items: o.items.map(item => {
@@ -45,7 +45,7 @@
                       qty: +item.quantity,
                       unitprice: +o.extra.products.filter(p => p.id === item.product_id)[0].price,
                       currency: o.extra.currency,
-                      options: {}
+                      options: { emoji: o.extra.products.filter(p => p.id === item.product_id)[0].name },
                     }
                   }),
                   subtotal: subtotal,
