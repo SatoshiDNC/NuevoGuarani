@@ -19,7 +19,7 @@
             .get(`${getCurrentAccount().id}-${id}`)
           req.onsuccess = (event) => {
             if (event.target.result === undefined) {
-              //console.log('new order:', o)
+              console.log('new order:', o)
 
               {
                 var currentState = 'saved'
@@ -37,7 +37,7 @@
                   date: new Date(),
                   "dataentry": {
                     textbox: '',
-                    options: {},
+                    options: { emoji: o.extra.products.filter(p => p.id === item.product_id)[0].name },
                   },
                   currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
                   items: o.items.map(item => {
@@ -55,7 +55,7 @@
                 // if (JSON.stringify(billpane.conversions) != '{}') {
                 //   newItem.conversions = billpane.conversions
                 // }
-                console.log('Saving', newOrder)
+                // console.log('Saving', newOrder)
                 const tx = db.transaction(["sales"], "readwrite")
                 tx.onerror = (event) => { console.log("Save transaction failed.") }
                 tx.oncomplete = (event) => { }
