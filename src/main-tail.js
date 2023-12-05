@@ -24,6 +24,11 @@
               {
                 var currentState = 'saved'
                 let subtotal = 0
+                o.items.map(item => {
+                  const unitprice = o.extra.products.filter(p => p.id === item.product_id)[0].price
+                  const qty = item.quantity
+                  subtotal += unitprice * qty
+                })
                 const newOrder = {
                   nostrmarketId: id,
                   store: getCurrentAccount().id,
@@ -35,10 +40,12 @@
                   },
                   currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
                   items: o.items.map(item => {
-                    const unitprice = o.extra.products.filter(p => p.id === item.product_id)[0].price
-                    const qty = item.quantity
-                    subtotal += unitprice * qty
-                    return { qty:+qty, unitprice:+unitprice, currency:o.extra.currency, options:{} }
+                    return {
+                      qty: +item.quantity,
+                      unitprice: +o.extra.products.filter(p => p.id === item.product_id)[0].price,
+                      currency: o.extra.currency,
+                      options: {}
+                    }
                   }),
                   subtotal: subtotal,
                   //amountTendered: receivepayment.cash.text,
