@@ -188,16 +188,16 @@ class PriceList {
     ];
   }
 
-  loadNostrMarketData(url, key, stall) {
+  loadNostrMarketData(url, key, stallId) {
     const loadKey = new Date()
     this._loadKey = loadKey
     if (!url || !key || !stall) return
 
     const asyncLogic = async () => {
       this.clear()
-      let stallId, stallCurrency
+      let stall, stallCurrency
       {
-        console.log('searching for stall', key != '', stall)
+        console.log('searching for stall', key != '', stallId)
         const response = await fetch(url+'/stall?pending=false&api-key='+key, {
           method: 'GET',
           headers: {
@@ -208,8 +208,8 @@ class PriceList {
         console.log(json)
         json.map(e => {
           const { id, name, currency } = e
-          if (name == stall) {
-            stallId = id
+          if (id == stallId) {
+            stall = name
             stallCurrency = currency
           }
         })

@@ -34,7 +34,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
           const json = await response.json()
           console.log(json)
           const tempList = []
-          json.map(e => { const { id, name } = e; tempList.push(name) })
+          json.map(e => { const { id, name } = e; tempList.push(id + "," + name) })
           this.stallList = tempList
           this.state = 2
           this.viewport.setRenderFlag(true)
@@ -62,7 +62,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		const v = pricelistsettings
     v.setRenderFlag(true)
     if (pricelisttypes[v.typelist.index] == 'NostrMarket compatible' && this.value) {
-      PriceList.instance.loadNostrMarketData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value)
+      PriceList.instance.loadNostrMarketData(pricelistsettings.nostrmarketurl.value, pricelistsettings.nostrmarketwalletkey.value, this.value.split(",")[0])
     }
 	}
 	g.listItemClick = function(index) {
@@ -278,7 +278,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return nostrmarketstall.list.value } catch (e) {} }
+		get : function () { try { return nostrmarketstall.list.value.split(",",2)[1] } catch (e) {} }
 	});
 	g.pane = nostrmarketstall;
 /*
