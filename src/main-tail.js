@@ -18,14 +18,18 @@
           //   stall = name
           //   stallCurrency = currency
           // }
-          var req = db.transaction(["nostrmarket-orders"], "readwrite")
+          var req = db.transaction(["nostrmarket-orders"], "readonly")
             .objectStore("nostrmarket-orders")
             .get(`${getCurrentAccount().id}-${id}`)
           req.onsuccess = (event) => {
-            console.log('present', event.target.result)
-          }
-          req.onerror = (event) => {
-            console.log('missing', id)
+            if (event.target.result === undefined) {
+              console.log('new order:', o)
+              var req = db.transaction(["nostrmarket-orders"], "readwrite")
+                .objectStore("nostrmarket-orders")
+                .add({ id }, `${getCurrentAccount().id}-${id}`)
+              req.onerror = (event) => { console.log("DB write error.") }
+              req.onsuccess = (event) => { }
+            }
           }
       
         })
