@@ -35,7 +35,7 @@
                   },
                   currency: Convert.LNbitsCurrencyToAppCurrency(o.extra.currency),
                   items: o.items.map(item => {
-                    const unitprice = o.extra.products.filter(p => p.id === item.id)[0].price
+                    const unitprice = o.extra.products.filter(p => p.id === item.product_id)[0].price
                     const qty = item.quantity
                     subtotal += unitprice * qty
                     return { qty:+qty, unitprice:+unitprice, currency:o.extra.currency, options:{} }
