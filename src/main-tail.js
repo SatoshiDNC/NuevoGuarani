@@ -12,6 +12,7 @@
         });
         const json = await response.json()
         console.log(json)
+        json.sort(a, b => a.event_created_at - b.event_created_at)
         json.map(o => {
           const { id } = o
           var req = db.transaction(["nostrmarket-orders"], "readonly")
