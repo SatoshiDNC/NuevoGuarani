@@ -1,10 +1,12 @@
 
   function checkOnlineOrders() {
     const asyncLogic = async () => {
-      let stall, stallCurrency
+      const url = config.stallKeys.url
+      const stallId = config.stallKeys.stall.id
+      const stallKey = config.stallKeys.key
       {
         console.log('checking for orders')
-        const response = await fetch(config.stallKeys.url+'/stall/order/'+config.stallKeys.stall.id+'?api-key='+config.stallKeys.key, {
+        const response = await fetch(url+'/stall/order/'+stallId+'?api-key='+stallKey, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -13,6 +15,7 @@
         const json = await response.json()
         console.log(json)
         json.sort((a, b) => a.event_created_at - b.event_created_at)
+        if (url != config.stallKeys.url || stallId != config.stallKeys.stall.id || stallKey != config.stallKeys.key) return  
         json.map(o => {
           const { id } = o
           var req = db.transaction(["nostrmarket-orders"], "readonly")
@@ -20,7 +23,7 @@
             .get(`${getCurrentAccount().id}-${id}`)
           req.onsuccess = (event) => {
             if (event.target.result === undefined) {
-              console.log('new order:', o)
+              //console.log('new order:', o)
 
               {
                 var currentState = 'saved'
@@ -56,7 +59,7 @@
                 // if (JSON.stringify(billpane.conversions) != '{}') {
                 //   newItem.conversions = billpane.conversions
                 // }
-                // console.log('Saving', newOrder)
+                console.log('Saving', newOrder)
                 const tx = db.transaction(["sales"], "readwrite")
                 tx.onerror = (event) => { console.log("Save transaction failed.") }
                 tx.oncomplete = (event) => { }
