@@ -48,7 +48,6 @@
                     return {
                       qty: +item.quantity,
                       unitprice: +o.extra.products.filter(p => p.id === item.product_id)[0].price,
-                      currency: o.extra.currency,
                       options: { emoji: o.extra.products.filter(p => p.id === item.product_id)[0].name },
                     }
                   }),
