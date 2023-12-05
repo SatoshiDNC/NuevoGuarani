@@ -24,6 +24,7 @@ function openDatabase() {
 		db.onerror = (event) => {
 			console.error(`Database error: ${event.target.errorCode}`)
 		}
+    db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear()
 		dbNotifier(event)
 	};
 	dbreq.onupgradeneeded = (event) => {
@@ -41,7 +42,6 @@ function openDatabase() {
     if (event.oldVersion < 2) {
       objectStore = db.createObjectStore("nostrmarket-orders")
     }
-    db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear()
 	}
 }
 
