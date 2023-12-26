@@ -1,7 +1,7 @@
 all: subdirs program-debug.html # Textbook subdirectory recursion
 rel: subdirs program-release.html # to build the release version
 
-CLOSURE = java -jar ../3rd-party/closure-compiler-v20230802.jar
+CLOSURE = java -jar ../3rd-party/closure-compiler-v20230802.jar --language_in UNSTABLE
 
 program-release.html: \
 	head.html \
