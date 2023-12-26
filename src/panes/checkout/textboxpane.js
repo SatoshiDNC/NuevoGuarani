@@ -43,11 +43,7 @@ v.gadgets.push(v.itemGad = g = new vp.Gadget(v));
       if (command == 'clear') {
         delete billpane.textbox.options.emoji;
         delete billpane.textbox.options.barcode;
-<<<<<<< HEAD
         billpane.textbox.queryPrice(label);
-=======
-        //billpane.textbox.queryPrice(label);
->>>>>>> dev
         billpane.textbox.resetGads();
         billpane.changed = true;
         billpane.subtotal.enableGads();
