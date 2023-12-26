@@ -1,29 +1,57 @@
 class PriceList {
-	constructor() { PriceList.init() }
+	constructor() {
+    if (PriceList.instance) return PriceList.instance
+
+    this.texture = initTexture(gl)
+    this.clear()
+    PriceList.instance = this
+  }
 
   get length() { return 0 }
-  get thumbnails() { return PriceList.texture }
-  get thumbnailData() { return PriceList.emojiData }
-  get thumbnailsPerRow() { return 57 }
-  get thumbnailsPerColumn() { return 57 }
+  get thumbnails() { return this.texture }
+  get thumbnailData() { return this.emojiData }
+  get thumbnailsPerRow() { return this.cols }
+  get thumbnailsPerColumn() { return this.rows }
 
-  static init() {
-    if (!PriceList.texture) {
-      console.log('initializing PriceList texture')
-      PriceList.texture = initTexture(gl)
-      const emojiEl = document.createElement('img')
-      emojiEl.addEventListener('load', function() {
-        console.log('updating PriceList texture')
-        updateTexture(gl, PriceList.texture, emojiEl)
-        gl.generateMipmap(gl.TEXTURE_2D)
-        // emojiReady = true
-        // loadCheck()
-        console.log('loaded PriceList texture')
-      })
-      console.log('loading PriceList texture')
-      emojiEl.src = emojiFile
+  clear() {
+    this.priceData = []
+    this.emojiData = []
+    this.rows = 0
+    this.cols = 0
+  }
+
+  setPriceData(uid, name, currency, price, size, unit) {
+    this.priceData = this.priceData.filter(item => item.uid !== uid)
+    this.priceData.push({ uid, name, currency, price, size, unit })
+  }
+
+  getPriceData(text) {
+    for (const item of this.priceData) {
+      if (item.uid == text) return item
     }
-    PriceList.emojiData = [
+    for (const item of this.priceData) {
+      if (item.name == text) return item
+    }
+  }
+
+  setEmojiDefault() {
+    console.log('loading PriceList texture')
+    this.clear()
+    this.rows = 57
+    this.cols = 57
+    const emojiEl = document.createElement('img')
+    const ref = this
+    emojiEl.addEventListener('load', function() {
+      console.log('updating PriceList texture', ref.texture)
+      updateTexture(gl, ref.texture, emojiEl)
+      gl.generateMipmap(gl.TEXTURE_2D)
+      // emojiReady = true
+      // loadCheck()
+      console.log('loaded PriceList texture')
+    })
+    emojiEl.src = emojiFile
+    this.priceData = []
+    this.emojiData = [
       { x:  6, y: 29, category: 'food', label: 'tomato', },
       { x: 55, y: 49, category: 'food', label: 'green bell pepper', },
       { x: 55, y: 50, category: 'food', label: 'yellow bell pepper', },
@@ -158,5 +186,137 @@ class PriceList {
       { x: 54, y:  5, category: 'tools', label: 'pick', },
       { x: 55, y: 48, category: 'tools', label: 'barcode', },
     ];
+  }
+
+  loadNostrMarketData(url, key, stallId) {
+    const loadKey = new Date()
+    this._loadKey = loadKey
+    if (!url || !key || !stallId) return
+
+    const asyncLogic = async () => {
+      this.clear()
+      let stall, stallCurrency
+      {
+        console.log('searching for stall', key != '', stallId)
+        const response = await fetch(url+'/stall?pending=false&api-key='+key, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        const json = await response.json()
+        console.log(json)
+        json.map(e => {
+          const { id, name, currency } = e
+          if (id == stallId) {
+            stall = name
+            stallCurrency = currency
+          }
+        })
+      }
+      if (this._loadKey != loadKey) return
+      const imageUrls = []
+      {
+        console.log('getting products for', stall, '(', stallId, ')')
+        const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        const json = await response.json()
+        const tempList = []
+        if (this._loadKey != loadKey) return
+        this._emojiBase = Math.ceil(Math.sqrt(json.length))
+        this.rows = this._emojiBase
+        this.cols = this._emojiBase
+        let xIter = 0, yIter = 0
+        json.map(e => {
+          const { id, name, price } = e
+          const cur = Convert.LNbitsCurrencyToAppCurrency(stallCurrency)
+          const amt = price
+          tempList.push({ id, name, cur, amt, size: 1, unit: 'ea' })
+          imageUrls.push(e.images[0])
+          this.emojiData.push({ x: xIter, y: yIter, category: 'product', label: name, })
+          xIter += 1
+          if (xIter >= this._emojiBase) {
+            xIter = 0
+            yIter += 1
+          }
+        })
+        for (const item of tempList) {
+          this.setPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
+        }
+      }
+
+      delete emojipane.lastBuilt
+      delete emojipane.emojiPoints
+      emojiShapes.build(this.emojiData, this._emojiBase, this._emojiBase, emojipane.emojiPoints)
+      emojipane.queueLayout()
+
+      {
+        console.log('initializing texture')
+        const emojiEl = document.createElement('canvas')
+        const iconWidth = 96
+        const textureWidth = this._emojiBase * iconWidth
+        console.log('texture side', textureWidth)
+        emojiEl.width = emojiEl.height = textureWidth
+        const textureContext = emojiEl.getContext("2d")
+        const textureImage = textureContext.createImageData(textureWidth, textureWidth);
+        for (let i = 0; i < textureWidth; i += 1) {
+          for (let j = 0; j < textureWidth; j += 1) {
+            let index = (j * textureWidth + i) * 4
+            textureImage.data[index + 0] = i/textureWidth*127+64
+            textureImage.data[index + 1] = Math.floor(((i % iconWidth) + (j % iconWidth)) / 2)/iconWidth*127+64
+            textureImage.data[index + 2] = j/textureWidth*127+64
+            const r = Math.sqrt(((i % iconWidth) - iconWidth/2)**2 + ((j % iconWidth) - iconWidth/2)**2)
+            const o = r - (iconWidth/2 - 2)
+            textureImage.data[index + 3] = (0 < 0) ? 255 : (o > 1) ? 0 : 255 - (o * 255)
+          }
+        }
+        textureContext.putImageData(textureImage, 0, 0)
+        updateTexture(gl, this.texture, emojiEl)
+        gl.generateMipmap(gl.TEXTURE_2D)
+
+        {
+          textureContext.imageSmoothingQuality = 'high'
+          let pending = imageUrls.length
+          const ref = this
+          imageUrls.map((url, index) => {
+            const img = document.createElement('img')
+            img.crossOrigin ='anonymous'
+            img.addEventListener('load', function() {
+              if (ref._loadKey != loadKey) return
+              console.log('updating icon from', img.src)
+              let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
+              let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
+              if (img.width > img.height) {
+                targetHeight = targetWidth * img.height / img.width
+              } else {
+                targetWidth = targetHeight * img.width / img.height
+              }
+              textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
+              textureContext.drawImage(img,
+                i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
+                j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
+              i += 1
+              if (i >= ref._emojiBase) {
+                i = 0
+                j += 1
+              }
+              updateTexture(gl, ref.texture, emojiEl)
+              gl.generateMipmap(gl.TEXTURE_2D)
+              emojipane.setRenderFlag(true)
+              pending -= 1
+              if (pending == 0) {
+                console.log('done loading', imageUrls.length, 'emojis')
+              }
+            });
+            img.src = url
+          })
+        }
+      }
+    }
+    asyncLogic()
   }
 }

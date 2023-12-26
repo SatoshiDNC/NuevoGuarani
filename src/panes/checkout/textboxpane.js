@@ -328,6 +328,11 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 	req.onsuccess = (event) => { };
 }
 v.queryPrice = function(item) {
+  var data = config.priceList.getPriceData(item)
+  if (data?.price && data?.currency === billpane.orderCurrency) {
+    billpane.textbox.splicePrice({ unitprice: data.price, fractionalQty: false, negate: false })
+    return
+  }
 	var req = db.transaction(["prices"], "readonly")
 		.objectStore("prices")
 		.get(`${getCurrentAccount().id}-${item}`);

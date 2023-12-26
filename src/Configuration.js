@@ -119,5 +119,14 @@ class Configuration {
 	get walletCoinosURL() { try { return walletsettings.coinosurl.value; } catch (e) {} }
 	get walletCoinosKey() { try { return walletsettings.coinoskey.value; } catch (e) {} }
   
-  get priceList() { try { return pricelistsettings.pricelist; } catch {} }
+  get stallKeys() {
+    if (pricelisttypes[pricelistsettings.typelist.index] !== 'NostrMarket compatible') return
+    return {
+      url: pricelistsettings.nostrmarketurl.value,
+      key: pricelistsettings.nostrmarketwalletkey.value,
+      stall: nostrmarketstall.list.value,
+    }
+  }
+
+  get priceList() { return PriceList.instance || new PriceList() }
 }
