@@ -20,12 +20,12 @@ defaultFont.js: guarani.font.png
 	echo "    \"defaultFont\"," >> $(DEFAULTFONT_OUTFILE)
 	echo "    loadCheck," >> $(DEFAULTFONT_OUTFILE)
 #	echo "    \"src/fonts/guarani.font.png\"," >> $(DEFAULTFONT_OUTFILE)
-	cat guarani.font.png | base64 | tr -d '\r\n' > b64_output.txt
-	certutil -encodehex -f guarani.font.png b64_output.txt 0x40000001
-	echo "    \"data:application/octet-stream;base64,`cat b64_output.txt`\"," \
+	cat guarani.font.png | base64 | tr -d '\r\n' > base64.output.txt
+	certutil -encodehex -f guarani.font.png base64.output.txt 0x40000001
+	echo "    \"data:application/octet-stream;base64,`cat base64.output.txt`\"," \
 		>> $(DEFAULTFONT_OUTFILE)
 	echo "  );" >> $(DEFAULTFONT_OUTFILE)
-	rm b64_output.txt
+	rm base64.*
 
 ICONFONT_OUTFILE = iconFont.js
 iconFont.js: icon.font.png
@@ -34,12 +34,12 @@ iconFont.js: icon.font.png
 	echo "    \"iconFont\"," >> $(ICONFONT_OUTFILE)
 	echo "    loadCheck," >> $(ICONFONT_OUTFILE)
 #	echo "    \"src/fonts/icon.font.png\"," >> $(ICONFONT_OUTFILE)
-	cat icon.font.png | base64 | tr -d '\r\n' > b64_output.txt
-	certutil -encodehex -f icon.font.png b64_output.txt 0x40000001
-	echo "    \"data:application/octet-stream;base64,`cat b64_output.txt`\"," \
+	cat icon.font.png | base64 | tr -d '\r\n' > base64.output.txt
+	certutil -encodehex -f icon.font.png base64.output.txt 0x40000001
+	echo "    \"data:application/octet-stream;base64,`cat base64.output.txt`\"," \
 		>> $(ICONFONT_OUTFILE)
 	echo "  );" >> $(ICONFONT_OUTFILE)
-	rm b64_output.txt
+	rm base64.*
 
 DOTMATRIXFONT_OUTFILE = dotMatrixFont.js
 dotMatrixFont.js: dot-matrix.font.png
@@ -48,12 +48,12 @@ dotMatrixFont.js: dot-matrix.font.png
 	echo "    \"dotMatrixFont\"," >> $(DOTMATRIXFONT_OUTFILE)
 	echo "    loadCheck," >> $(DOTMATRIXFONT_OUTFILE)
 #	echo "    \"src/fonts/dot-matrix.font.png\"," >> $(DOTMATRIXFONT_OUTFILE)
-	cat dot-matrix.font.png | base64 | tr -d '\r\n' > b64_output.txt
-	certutil -encodehex -f dot-matrix.font.png b64_output.txt 0x40000001
-	echo "    \"data:application/octet-stream;base64,`cat b64_output.txt`\"," \
+	cat dot-matrix.font.png | base64 | tr -d '\r\n' > base64.output.txt
+	certutil -encodehex -f dot-matrix.font.png base64.output.txt 0x40000001
+	echo "    \"data:application/octet-stream;base64,`cat base64.output.txt`\"," \
 		>> $(DOTMATRIXFONT_OUTFILE)
 	echo "  );" >> $(DOTMATRIXFONT_OUTFILE)
-	rm b64_output.txt
+	rm base64.*
 
 FINANCEGRAPHICS_OUTFILE = financeGraphicsFont.js
 financeGraphicsFont.js: finance-theme.font.png
@@ -62,12 +62,12 @@ financeGraphicsFont.js: finance-theme.font.png
 	echo "    \"financeGraphicsFont\"," >> $(FINANCEGRAPHICS_OUTFILE)
 	echo "    loadCheck," >> $(FINANCEGRAPHICS_OUTFILE)
 #	echo "    \"src/fonts/finance-theme.font.png\"," >> $(FINANCEGRAPHICS_OUTFILE)
-	cat finance-theme.font.png | base64 | tr -d '\r\n' > b64_output.txt
-	certutil -encodehex -f finance-theme.font.png b64_output.txt 0x40000001
-	echo "    \"data:application/octet-stream;base64,`cat b64_output.txt`\"," \
+	cat finance-theme.font.png | base64 | tr -d '\r\n' > base64.output.txt
+	certutil -encodehex -f finance-theme.font.png base64.output.txt 0x40000001
+	echo "    \"data:application/octet-stream;base64,`cat base64.output.txt`\"," \
 		>> $(FINANCEGRAPHICS_OUTFILE)
 	echo "  );" >> $(FINANCEGRAPHICS_OUTFILE)
-	rm b64_output.txt
+	rm base64.*
 
 EMOJIS_OUTFILE = emojis.js
 emojis.js: google-emoji-spritesheet.png
