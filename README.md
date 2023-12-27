@@ -1,28 +1,33 @@
 ## Quick tips
 
-* To add (or improve) a language, currency, theme, or wallet, go to the respective [languages](src/languages/), [currencies](src/currencies/), [themes](src/themes/), or [wallets](src/wallets/) folder.
-* To download the latest version of the app, go to the [release](release/) folder.
+* To add (or improve) a language, currency, theme, or wallet, go to the respective [languages](web/src/languages/), [currencies](web/src/currencies/), [themes](web/src/themes/), or [wallets](web/src/wallets/) folder.
+* To download the latest version of the app, go to the [release](web/release/) folder.
 * To build the app from a fresh repo:
-  - Copy `closure-compiler-v20230802.jar` (or similar) into the `3rd-party` folder.
-  - Go into `3rd-party` folder and execute this command (or similar):
+  - Copy `closure-compiler-v20230802.jar` (or similar) into the `web/3rd-party` folder.
+  - Go into `web/3rd-party` folder and execute this command (or similar):
     `java -jar closure-compiler-v20230802.jar --js gl-dumbfont.js --js_output_file gl-dumbfont.min.js`
   - Go back to repo root and run `make rel` (see Makefile comments for more info).
 * Contact info and demo videos are down below.
 
-# PoSSe - Point of Sale System Extraordinaire
+# Nuevo Guaraní (formerly PoSSe)
 
-A point-of-sale system for cash and Lightning, ideal for mom & pop
-businesses, complete with product barcode scanning and other features.
-Easily enhanced with new languages, themes, currencies, wallets, etc.
-for any locale, and platform-independent to grow with the business
-from smartphone to desktop or mini-computer to fill the gap between personal
-wallets and big commercial PoS solutions.
+The source code in this repository is for generating the following outputs:
+* APK installer for Android
+* Web-based version to serve over HTTPS to any modern web browser
+
+Nuevo Guaraní is a point-of-sale app for cash and Lightning, integrating
+LNbits and nostrmarket. It is ideal for mom & pop businesses, complete
+with product barcode scanning and other features. Easily enhanced with
+new languages, themes, currencies, wallets, etc. for any locale, and
+platform-independent to grow with the business from smartphone to
+desktop or mini-computer to fill the gap between personal wallets and
+big commercial PoS solutions.
 
 ## About the Project - From the Developer
 
 This project is motivated by real-life circumstances. In many places
 in the world, there are more small business vendors without PoS
-(Point-of-Sale) systems than there are with them. The problem is that
+(point-of-sale) systems than there are with them. The problem is that
 although we have great Bitcoin/Lightning wallet apps, it is a hard
 sell to get vendors to accept alternative payments on a personal
 wallet when they don’t see immediate practical benefit outweighing the
@@ -104,3 +109,4 @@ Watch for updates on YouTube [@myDevUpdates](https://www.youtube.com/channel/UCw
 - [How to pay Lightning invoices with fiat currency](https://www.youtube.com/watch?v=MFxb75zWNtY) (8 minutes)
 - [Possibilities for desktop builds like this demo under Windows](https://www.youtube.com/watch?v=3WPWIPnS_KU) (11 minutes)
 - [Overview of GitHub repo](https://www.youtube.com/watch?v=mm39tArBqEo) (10 minutes)
+- [Linking point-of-sale to NostrMarket stall for in-store purchases](https://www.youtube.com/watch?v=ADcpF39qzpE) (9 minutes)
