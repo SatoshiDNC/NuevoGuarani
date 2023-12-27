@@ -1,4 +1,4 @@
-package com.satoshidnc.airchat;
+package com.satoshidnc.nuevoguarani;
 
 import org.junit.Test;
 

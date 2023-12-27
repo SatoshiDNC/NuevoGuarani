@@ -1,4 +1,4 @@
-package com.satoshidnc.airchat;
+package com.satoshidnc.nuevoguarani;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.satoshidnc.airchat.databinding.FragmentFirstBinding;
+import com.satoshidnc.nuevoguarani.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
 

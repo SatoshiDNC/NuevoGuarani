@@ -1,4 +1,4 @@
-package com.satoshidnc.airchat;
+package com.satoshidnc.nuevoguarani;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,7 +25,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import com.satoshidnc.airchat.databinding.ActivityMainBinding;
+import com.satoshidnc.nuevoguarani.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         WorkManager.getInstance(this).cancelAllWork();
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(AirChatWorker.class, Duration.ofMinutes(15)).build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(NuevoGuaraniWorker.class, Duration.ofMinutes(15)).build();
         WorkManager.getInstance(this).enqueue(workRequest);
     }
 

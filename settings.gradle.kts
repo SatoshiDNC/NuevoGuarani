@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AirChat"
+rootProject.name = "NuevoGuarani"
 include(":app")

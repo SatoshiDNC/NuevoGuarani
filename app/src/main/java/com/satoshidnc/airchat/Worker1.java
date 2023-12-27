@@ -1,4 +1,4 @@
-package com.satoshidnc.airchat;
+package com.satoshidnc.nuevoguarani;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -18,15 +18,15 @@ import com.neovisionaries.ws.client.*;
 
 import java.io.IOException;
 
-public class AirChatWorker extends Worker {
-    public AirChatWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+public class Worker1 extends Worker {
+    public Worker1(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        Log.i(AirChatWorker.class.getSimpleName(),"doWork()");
+        Log.i(Worker1.class.getSimpleName(),"doWork()");
 
         AudioManager audioManager = (AudioManager)this.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK);
@@ -45,7 +45,7 @@ public class AirChatWorker extends Worker {
                     @Override
                     public void onTextMessage(WebSocket ws, String message) {
                         // Received a response. Print the received message.
-                        Log.i(AirChatWorker.class.getSimpleName(), message);
+                        Log.i(Worker1.class.getSimpleName(), message);
 
                         // Close the WebSocket connection.
                         ws.disconnect();
@@ -54,9 +54,9 @@ public class AirChatWorker extends Worker {
                 .connect()
                 .sendText("Hello.");
         } catch (WebSocketException e) {
-            Log.e(AirChatWorker.class.getSimpleName(), e.toString());
+            Log.e(Worker1.class.getSimpleName(), e.toString());
         } catch (IOException e) {
-            Log.e(AirChatWorker.class.getSimpleName(), e.toString());
+            Log.e(Worker1.class.getSimpleName(), e.toString());
         }
 
         return Result.success();

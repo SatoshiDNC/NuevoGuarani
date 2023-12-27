@@ -12,11 +12,11 @@ tasks.register<Copy>("preCopy") {
 
 android {
     project.tasks.preBuild.dependsOn("preCopy")
-    namespace = "com.satoshidnc.airchat"
+    namespace = "com.satoshidnc.nuevoguarani"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.satoshidnc.airchat"
+        applicationId = "com.satoshidnc.nuevoguarani"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
