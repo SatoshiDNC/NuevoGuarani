@@ -3,7 +3,7 @@ class PlatformUtil {
     throw new Error()
   }
   static AudioClick() {
-    if (Android) {
+    if (Android !== undefined) {
       Android.AudioClick()
     } else {
       vp.beep('click')
