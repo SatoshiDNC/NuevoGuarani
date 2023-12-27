@@ -47,6 +47,7 @@ all.min.js: all.js
 		--js_output_file all.min.js
 
 all.js: \
+  PlatformUtil.js \
 	vp/all.js \
 	barcode/all.js \
 	main-head.js \
@@ -74,6 +75,7 @@ all.js: \
 	load-tail.js \
 
 	cat \
+	  PlatformUtil.js \
 		vp/all.js \
 		barcode/all.js \
 		> all.js

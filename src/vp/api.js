@@ -394,8 +394,7 @@ var speak = 0;
             if (!g.ownedBy && !!(g.actionFlags & vp.GAF_CONTEXTMENU)) {
               g.gestureState = 'begin-menu'; g.ownedBy = index;
               g.viewport.setRenderFlag(true);
-              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+              PlatformUtil.AudioClick()
             }
           }
         }
@@ -689,14 +688,12 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
               if (!skipflag) switch (g.gestureState) {
               case 'begin-click':
               case 'recover-click':
-                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+                PlatformUtil.AudioClick()
                 if (g.clickFunc) g.clickFunc.call(g, p);
                 skipflag=1;
                 break;
               case 'begin-input':
-                if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-                if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+                PlatformUtil.AudioClick()
 								beginInput(g);
                 skipflag=1;
                 break;
@@ -742,14 +739,12 @@ if(speak) window.speechSynthesis.speak(new SpeechSynthesisUtterance('begin tap '
             if (g.hasOwnProperty('gestureTimerId')) { clearTimeout(g.gestureTimerId); delete g.gestureTimerId; }
             if (!skipflag) switch (g.gestureState) {
             case 'begin-tap':
-              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+              PlatformUtil.AudioClick()
               if (g.clickFunc) g.clickFunc.call(g, p);
               skipflag=1;
               break;
             case 'begin-input':
-              if (clickSound) clickSound.setValueAtTime(0.1, ac.currentTime);
-              if (clickSound) clickSound.setValueAtTime(0, ac.currentTime+0.001);
+              PlatformUtil.AudioClick()
 							beginInput(g);
               skipflag=1;
               break;
