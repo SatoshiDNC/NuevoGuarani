@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         WorkManager.getInstance(this).cancelAllWork();
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(NuevoGuaraniWorker.class, Duration.ofMinutes(15)).build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(Worker1.class, Duration.ofMinutes(15)).build();
         WorkManager.getInstance(this).enqueue(workRequest);
     }
 
