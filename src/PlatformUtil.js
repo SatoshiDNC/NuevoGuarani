@@ -4,7 +4,7 @@ class PlatformUtil {
   }
   static AudioClick() {
     if (typeof Android !== 'undefined') {
-      Android.AudioClick()
+      Android.audioClick()
     } else {
       vp.beep('click')
     }
