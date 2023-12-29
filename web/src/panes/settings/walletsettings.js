@@ -85,24 +85,25 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
 	g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('base URL')+':', g.defaultValue);
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -122,24 +123,25 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.hide = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('API admin or invoice/read key')+':');
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -159,24 +161,25 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
 	g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('base URL')+':', g.defaultValue);
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -196,24 +199,25 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 	g.hide = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('API bearer token')+':');
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('API bearer token')+':', '', val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -233,24 +237,25 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('base URL')+':', g.defaultValue);
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -270,24 +275,25 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
 	g.hide = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('API auth token')+':');
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+		PlatformUtil.UserPrompt(tr('API auth token')+':', '', val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.load = function(cb) {
 	const debuglog = false;

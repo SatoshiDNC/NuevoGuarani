@@ -204,25 +204,26 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
 	g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('base URL')+':', g.defaultValue);
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-      g.appFunction()
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+        g.appFunction()
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
   g.appFunction = function() {
 		const v = this.viewport;
@@ -249,25 +250,26 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
   g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(tr('API admin or invoice/read key')+':');
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val;
-      g.appFunction()
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val;
+        g.appFunction()
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
   g.appFunction = function() {
 		const v = this.viewport;

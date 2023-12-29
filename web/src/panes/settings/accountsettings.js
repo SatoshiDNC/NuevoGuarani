@@ -216,21 +216,22 @@ v.gadgets.push(v.editaccount = g = new vp.Gadget(v));
   g.icon = "\x0C";
 	g.clickFunc = function() {
 		var a = accounts.current();
-		var str = prompt(tr('Account name:'), tr(a.title));
-		if (str && str.trim() != a.title) {
-			str = str.trim();
-			console.log('edit account', str);
-			a.title = str;
-			var tx = db.transaction(["accounts"], "readwrite");
-			tx.objectStore("accounts").put(a, a.id);
-			tx.oncomplete = (event) => {
-				console.log("account updated");
-			};
-			tx.onerror = (event) => {
-				console.log("error updating account", event);
-			};
-			settingsbuttons2.setRenderFlag(true);
-		}
+    PlatformUtil.UserPrompt(tr('Account name:'), tr(a.title), str => {
+      if (str && str.trim() != a.title) {
+        str = str.trim();
+        console.log('edit account', str);
+        a.title = str;
+        var tx = db.transaction(["accounts"], "readwrite");
+        tx.objectStore("accounts").put(a, a.id);
+        tx.oncomplete = (event) => {
+          console.log("account updated");
+        };
+        tx.onerror = (event) => {
+          console.log("error updating account", event);
+        };
+        settingsbuttons2.setRenderFlag(true);
+      }
+    })
 	}
 v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
 	g.type = 'button';
@@ -249,24 +250,25 @@ v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
 	g.daisychain = true;
 	g.clickFunc = function() {
 		const g = this;
-		var val = prompt(icap(tr(g.title))+':');
-		if (!val) return;
-		{ // For the GUI.
-			g.viewport.queueLayout();
-		} { // For the app function.
-			g.value = val.trim();
-		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.value,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
-		}
+    PlatformUtil.UserPrompt(icap(tr(g.title))+':', '', val => {
+      if (!val) return;
+      { // For the GUI.
+        g.viewport.queueLayout();
+      } { // For the app function.
+        g.value = val.trim();
+      } { // For persistence.
+        var req = db.transaction(["settings"], "readwrite");
+        req.objectStore("settings")
+          .put(g.value,
+            `${getCurrentAccount().id}-${g.key}`);
+        req.onsuccess = (event) => {
+          console.log(`successfully selected ${g.key}`, event);
+        };
+        req.onerror = (event) => {
+          console.log(`error selecting ${g.key}`, event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.loccity = g = new vp.Gadget(v));
 	g.type = 'button';
