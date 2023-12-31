@@ -15,12 +15,24 @@ class PlatformUtil {
     if (typeof Android !== 'undefined') {
       Android.UserPromptCallback = function(result) {
         delete Android.UserPromptCallback
-        console.log("result: " + result)
         callback(result)
       }
-      Android.openPrompt(promptText, defaultValue, 'Android.UserPromptCallback');
+      Android.userPrompt(promptText, defaultValue, 'Android.UserPromptCallback');
     } else {
       let result = prompt(promptText, defaultValue)
+      callback(result)
+    }
+  }
+
+  static UserConfirm(promptText, callback) {
+    if (typeof Android !== 'undefined') {
+      Android.UserConfirmCallback = function(result) {
+        delete Android.UserConfirmCallback
+        callback(result)
+      }
+      Android.userConfirm(promptText, 'Android.UserConfirmCallback');
+    } else {
+      let result = confirm(promptText)
       callback(result)
     }
   }

@@ -58,12 +58,14 @@ v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 	g.enabled = false;
 	g.renderFunc = v.homeGad.renderFunc;
 	g.clickFunc = function() {
-		if (window.confirm(tr("Discard this invoice?"))) {
-			dataentry.clearDataEntry();
-			invoicepane.invoiceitems = [];
-			invoicepane.setRenderFlag(true);
-			checkoutpages.toPage(0);
-		}
+    PlatformUtil.UserConfirm(tr("Discard this invoice?"), bool => {
+      if (bool) {
+        dataentry.clearDataEntry();
+        invoicepane.invoiceitems = [];
+        invoicepane.setRenderFlag(true);
+        checkoutpages.toPage(0);
+      }
+    })
 	}
 v.layoutFunc = function() {
 	var totalW = 0; for (const g of this.gadgets) totalW += g.w;
@@ -144,12 +146,14 @@ v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 	g.enabled = false;
 	g.renderFunc = v.homeGad.renderFunc;
 	g.clickFunc = function() {
-		if (window.confirm(tr("Discard this invoice?"))) {
-			dataentry.clearDataEntry();
-			invoicepane.invoiceitems = [];
-			invoicepane.setRenderFlag(true);
-			checkoutpages.toPage(0);
-		}
+    PlatformUtil.UserConfirm(tr("Discard this invoice?"), bool => {
+      if (bool) {
+        dataentry.clearDataEntry();
+        invoicepane.invoiceitems = [];
+        invoicepane.setRenderFlag(true);
+        checkoutpages.toPage(0);
+      }
+    })
 	}
 /*
 function initTexture(gl) {

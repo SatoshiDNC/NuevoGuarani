@@ -34,16 +34,10 @@ public class WebUtils {
         audio.playSoundEffect(AudioManager.FX_KEY_CLICK);
     }
 
-    static interface PromptCallback {
-        public void result(String input);
-    }
-
     @JavascriptInterface
-    public void openPrompt(String prompt, String defaultValue, String callback) {
-        Log.d("DEBUG", "openPrompt() called");
-
+    public void userPrompt(String prompt, String defaultValue, String callback) {
+        Log.d("DEBUG", "userPrompt() called");
         Handler handler = new Handler(Looper.getMainLooper());
-
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -100,6 +94,58 @@ public class WebUtils {
 
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 wlp.gravity = Gravity.BOTTOM;
+                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                window.setAttributes(wlp);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void userConfirm(String prompt, String callback) {
+        Log.d("DEBUG", "userConfirm() called");
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(prompt);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Debug", "User response: OK");
+                        String cb = callback + "(" + true + ")";
+                        Log.d("DEBUG", "callback: " + cb);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            view.evaluateJavascript(cb, null);
+                        } else {
+                            view.loadUrl("javascript:" + cb);
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Debug", "User response: Cancel");
+                        dialog.cancel();
+                        String cb = callback + "(" + false + ")";
+                        Log.d("DEBUG", "callback: " + cb);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            view.evaluateJavascript(cb, null);
+                        } else {
+                            view.loadUrl("javascript:" + cb);
+                        }
+                    }
+                });
+
+                AlertDialog dlg = builder.create();
+                dlg = builder.show();
+                Window window = dlg.getWindow();
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.TOP;
                 wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
             }

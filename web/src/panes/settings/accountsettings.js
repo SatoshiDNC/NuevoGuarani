@@ -196,20 +196,22 @@ v.gadgets.push(v.deleteaccount = g = new vp.Gadget(v));
 	g.listToOverlay = v.accountlist;
   g.icon = "\x03";
 	g.clickFunc = function() {
-		if (confirm(tr(`delete '@'?`).replace('@',tr(getCurrentAccount().title)))) {
-			console.log(`delete '${getCurrentAccount().title}'?`);
-			var a = getCurrentAccount();
-			var tx = db.transaction(["accounts"], "readwrite");
-			tx.objectStore("accounts").delete(a.id);
-			tx.oncomplete = (event) => {
-				console.log("account deleted");
-				dbNotifier(event);
-			};
-			tx.onerror = (event) => {
-				console.log("error deleting account", event);
-				dbNotifier(event);
-			};
-		}
+    PlatformUtil.UserConfirm(tr(`delete '@'?`).replace('@',tr(getCurrentAccount().title)), bool => {
+      if (bool) {
+        console.log(`delete '${getCurrentAccount().title}'?`);
+        var a = getCurrentAccount();
+        var tx = db.transaction(["accounts"], "readwrite");
+        tx.objectStore("accounts").delete(a.id);
+        tx.oncomplete = (event) => {
+          console.log("account deleted");
+          dbNotifier(event);
+        };
+        tx.onerror = (event) => {
+          console.log("error deleting account", event);
+          dbNotifier(event);
+        };
+      }
+    })
 	}
 v.gadgets.push(v.editaccount = g = new vp.Gadget(v));
 	g.listToOverlay = v.accountlist;

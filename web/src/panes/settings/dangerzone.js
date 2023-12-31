@@ -13,21 +13,23 @@ v.gadgets.push(v.deleteall = g = new vp.Gadget(v));
 	g.button = true;
 	g.clickFunc = function() {
 		const g = this;
-		if (confirm(tr('are you sure?'))) {
-			console.log('Deleting database...');
-			db.close();
-			const req = indexedDB.deleteDatabase("DB");
-			req.onsuccess = (e) => {
-				console.log('Database deleted.');
-				openDatabase();
-				alert(tr('all data has been deleted and/or reset to installation defaults'));
-				settingspages.toPage(0);
-			};
-			req.onerror = (e) => {
-				console.log('Error deleting database.');
-				openDatabase();
-				alert(tr('an error occurred'));
-				settingspages.toPage(0);
-			};
-		}
+    PlatformUtil.UserConfirm(tr('are you sure?'), bool => {
+      if (bool) {
+        console.log('Deleting database...');
+        db.close();
+        const req = indexedDB.deleteDatabase("DB");
+        req.onsuccess = (e) => {
+          console.log('Database deleted.');
+          openDatabase();
+          alert(tr('all data has been deleted and/or reset to installation defaults'));
+          settingspages.toPage(0);
+        };
+        req.onerror = (e) => {
+          console.log('Error deleting database.');
+          openDatabase();
+          alert(tr('an error occurred'));
+          settingspages.toPage(0);
+        };
+      }
+    })
 	}
