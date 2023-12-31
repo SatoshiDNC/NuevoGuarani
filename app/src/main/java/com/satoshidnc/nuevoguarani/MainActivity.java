@@ -23,9 +23,7 @@ import java.time.Duration;
 import org.apache.commons.io.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
-
+    public static WebView view;
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             final View decorView = getWindow().getDecorView();
         }
 
-        WebView view = new WebView(this);
+        view = new WebView(this);
         setContentView(view);
         view.getSettings().setJavaScriptEnabled(true);
-        view.addJavascriptInterface(new WebUtils(this), "Android");
+        view.addJavascriptInterface(new WebUtils(this, view), "Android");
         String s = loadResource(R.raw.index);
         view.loadDataWithBaseURL("https://ng.satoshidnc.com", s, "text/html", null,null);
 

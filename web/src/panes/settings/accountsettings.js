@@ -230,6 +230,7 @@ v.gadgets.push(v.editaccount = g = new vp.Gadget(v));
           console.log("error updating account", event);
         };
         settingsbuttons2.setRenderFlag(true);
+        accountsettings.setRenderFlag(true);
       }
     })
 	}

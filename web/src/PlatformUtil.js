@@ -11,16 +11,17 @@ class PlatformUtil {
     }
   }
 
-  static UserPrompt(prompt, def, callback) {
+  static UserPrompt(promptText, defaultValue, callback) {
     if (typeof Android !== 'undefined') {
-      var handler = {result: function (input){
-        console.log(input)
-      }};
-      var callback = new Packages.com.satoshidnc.nuevoguarani.CallFunction.PromptCallback(handler);
-      Android.openPrompt(prompt, def, callback);
+      Android.UserPromptCallback = function(result) {
+        delete Android.UserPromptCallback
+        console.log("result: " + result)
+        callback(result)
+      }
+      Android.openPrompt(promptText, defaultValue, 'Android.UserPromptCallback');
     } else {
-      let res = prompt(prompt, def)
-      callback(res)
+      let result = prompt(promptText, defaultValue)
+      callback(result)
     }
   }
 }
