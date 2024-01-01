@@ -638,6 +638,7 @@ v.gadgets.push(v.saveGad = g = new vp.Gadget(v));
 		iconFont.draw(0,16, g.changed? "\x10": "\x11", config.themeColors.uiBillSubtotalLabel, g.viewport.mat, mat);
 	}
 	g.clickFunc = function() {
+    console.log('clickFunc()')
 		const g = this;
 		if (g.changed) {
 			billpane.saveData();
