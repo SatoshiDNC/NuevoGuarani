@@ -35,7 +35,7 @@ public class WebUtils {
     }
 
     @JavascriptInterface
-    public void userPrompt(String prompt, String defaultValue, String callback) {
+    public void userPrompt(String prompt, String defaultValue, int callback) {
         Log.d("DEBUG", "userPrompt() called");
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -70,8 +70,7 @@ public class WebUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("Debug", input.getText().toString());
-
-                        String cb = callback + "('" + input.getText().toString().replace("\"", "\\\"") + "')";
+                        String cb = "Android.Callback(" + callback + ",'" + input.getText().toString().replace("\"", "\\\"") + "')";
                         Log.d("DEBUG", "callback: " + cb);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                             view.evaluateJavascript(cb, null);
@@ -101,7 +100,7 @@ public class WebUtils {
     }
 
     @JavascriptInterface
-    public void userConfirm(String prompt, String callback) {
+    public void userConfirm(String prompt, int callback) {
         Log.d("DEBUG", "userConfirm() called");
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -115,7 +114,7 @@ public class WebUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("Debug", "User response: OK");
-                        String cb = callback + "(" + true + ")";
+                        String cb = "Android.Callback(" + callback + "," + true + ")";
                         Log.d("DEBUG", "callback: " + cb);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                             view.evaluateJavascript(cb, null);
@@ -129,7 +128,7 @@ public class WebUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("Debug", "User response: Cancel");
                         dialog.cancel();
-                        String cb = callback + "(" + false + ")";
+                        String cb = "Android.Callback(" + callback + "," + false + ")";
                         Log.d("DEBUG", "callback: " + cb);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                             view.evaluateJavascript(cb, null);
@@ -150,5 +149,10 @@ public class WebUtils {
                 window.setAttributes(wlp);
             }
         });
+    }
+
+    @JavascriptInterface
+    public void getDataAsReadOnly(String table, String key, int successCallback) {
+        Log.d("DEBUG", "getDataAsReadOnly() called");
     }
 }

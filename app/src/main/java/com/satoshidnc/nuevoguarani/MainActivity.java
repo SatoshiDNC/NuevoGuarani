@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import java.io.IOException;
@@ -42,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         view = new WebView(this);
         setContentView(view);
-        view.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = view.getSettings();
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setJavaScriptEnabled(true);
         view.addJavascriptInterface(new WebUtils(this, view), "Android");
         String s = loadResource(R.raw.index);
         view.loadDataWithBaseURL("https://ng.satoshidnc.com", s, "text/html", null,null);
