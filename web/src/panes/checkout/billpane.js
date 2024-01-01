@@ -26,6 +26,7 @@ v.saveData = function() {
 	}
 	console.log('Saving', newItem);
   PlatformUtil.DatabaseAdd('sales', newItem, (event) => {
+    console.log('success')
 		delete billpane.lastLoadedKey
 		delete billpane.locked
 		billpane.clearData()
