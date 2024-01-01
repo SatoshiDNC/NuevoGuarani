@@ -40,15 +40,11 @@ v.gadgets.push(v.themelist = g = new vp.Gadget(v));
       mainShapes.build()
       emojiShapes.build(config.priceList.thumbnailData, config.priceList.thumbnailsPerRow, config.priceList.thumbnailsPerColumn, emojipane.emojiPoints)
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.list[index].title, `${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
+      PlatformUtil.DatabasePut('settings', g.list[index].title, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
 		}
 	}
 v.gadgets.push(v.texturelist = g = new vp.Gadget(v));
@@ -63,15 +59,11 @@ v.gadgets.push(v.texturelist = g = new vp.Gadget(v));
 		} { // For the app function.
 			if (textures[index].font) textures[index].font.init();
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.list[index].title, `${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
+      PlatformUtil.DatabasePut('settings', g.list[index].title, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
 		}
 	}
 v.load = function(cb) {
@@ -110,19 +102,15 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.index);
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-		var req = db.transaction(["settings"], "readonly")
-			.objectStore("settings")
-			.get(`${getCurrentAccount().id}-${g.key}`);
-		req.onsuccess = (event) => {
+		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
+    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			if (event.target.result !== undefined)
-				g.tempValue = event.target.result;
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(cb, this, g);
-		};
-		req.onerror = (event) => {
-			console.log(`error getting ${g.key}`, event);
-			finishInit(cb, this, g);
-		};
+				g.tempValue = event.target.result
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			finishInit(cb, this, g)
+		}, (event) => {
+			console.log(`error getting ${g.key}`, event)
+			finishInit(cb, this, g)
+		})
 	}
 }

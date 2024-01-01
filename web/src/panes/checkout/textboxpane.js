@@ -320,12 +320,7 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 		'negate': ''+negate,
 	};
 	console.log('Saving', newItem);
-	const tx = db.transaction(["prices"], "readwrite");
-	tx.onerror = (event) => { console.log("Save transaction failed."); };
-	tx.oncomplete = (event) => { };
-	const req = tx.objectStore("prices").put(newItem, `${getCurrentAccount().id}-${newItem.item}`);
-	req.onerror = (event) => { console.log("Save request failed."); };
-	req.onsuccess = (event) => { };
+  PlatformUtil.DatabasePut('prices', newItem, `${getCurrentAccount().id}-${newItem.item}`)
 }
 v.queryPrice = function(item) {
   var data = config.priceList.getPriceData(item)
@@ -333,14 +328,11 @@ v.queryPrice = function(item) {
     billpane.textbox.splicePrice({ unitprice: data.price, fractionalQty: false, negate: false })
     return
   }
-	var req = db.transaction(["prices"], "readonly")
-		.objectStore("prices")
-		.get(`${getCurrentAccount().id}-${item}`);
-	req.onsuccess = (event) => {
+  PlatformUtil.DatabaseGet('prices', `${getCurrentAccount().id}-${item}`, (event) => {
 		console.log(event.target.result);
 		if (event.target.result)
-			billpane.textbox.splicePrice(event.target.result);
-	};
+			billpane.textbox.splicePrice(event.target.result)
+	})
 }
 v.splicePrice = function(obj) {
 	const v = this;

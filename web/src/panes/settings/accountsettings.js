@@ -41,18 +41,14 @@ function dateToID(d) {
 		}
 		function accountInit2() {
 			if (debuglog) console.log("requesting selectedAccount");
-			var req = db.transaction(["settings"], "readonly")
-				.objectStore("settings")
-				.get("selectedAccount");
-			req.onsuccess = (event) => {
-				selectedAccount = event.target.result;
+      PlatformUtil.DatabaseGet('settings', 'selectedAccount', (successEvent) => {
+				selectedAccount = successEvent.target.result;
 				if (debuglog) console.log("selectedAccount restored", selectedAccount);
 				finishAccountInit();
-			};
-			req.onerror = (event) => {
-				console.log("error getting selectedAccount", event);
+			}, (errorEvent) => {
+				console.log("error getting selectedAccount", errorEvent);
 				finishAccountInit();
-			};
+			})
 		}
 		accounts.splice(0, accounts.length);
 		const transaction = db.transaction(["accounts"], "readonly");
@@ -74,17 +70,18 @@ function dateToID(d) {
 						title:	'my business',
 					});
 					if (debuglog) console.log("saving default account");
-					var tx = db.transaction(["accounts", "settings"], "readwrite");
-					tx.objectStore("accounts").put(accounts[0], accounts[0].id);
-					tx.objectStore("settings").put(accounts[0].id, 'selectedAccount');
-					tx.oncomplete = (event) => {
-						if (debuglog) console.log("default account saved");
-						accountInit2();
-					};
-					tx.onerror = (event) => {
-						console.log("error saving default account", event);
-					};
-				} else {
+          PlatformUtil.DatabasePut('accounts', accounts[0], accounts[0].id, (event) => {
+            PlatformUtil.DatabasePut('settings', accounts[0].id, 'selectedAccount', (event) => {
+              if (debuglog) console.log("default account saved");
+              accountInit2();
+            },
+            (errorEvent) => {
+              console.log("error saving default account", errorEvent);
+            })
+          }, (errorEvent) => {
+						console.log("error saving account", errorEvent);
+          })
+        } else {
 					if (debuglog) console.log("no more accounts");
 					accountInit2();
 				}
@@ -158,38 +155,34 @@ v.gadgets.push(v.accountlist = g = new vp.Gadget(v));
 		accounts.push(a);
 		accountsettings.queueLayout();
 		console.log("saving new account");
-		var tx = db.transaction(["accounts", "settings"], "readwrite");
-		tx.objectStore("accounts").put(a, a.id);
-		tx.objectStore("settings").put(a.id, 'selectedAccount');
-		tx.objectStore("settings").put(
-			languages[enabledLangs.indexOf(lcode)].title, a.id+'-mainLanguage');
-		tx.objectStore("settings").put(
-			themes[colorsettings.themelist.index].title, a.id+'-selectedTheme');
-		tx.oncomplete = (event) => {
-			console.log("new account saved");
-			dbNotifier(event);
-		};
-		tx.onerror = (event) => {
-			console.log("error saving new account", event);
-		};
+    let todo = 4;
+    const collector = (successEvent) => {
+      todo -= 1
+      if (todo == 0) {
+        console.log("new account saved");
+        dbNotifier(successEvent);
+      }
+    }
+    PlatformUtil.DatabasePut('accounts', a, a.id, collector, (errorEvent) => {
+			console.log("error saving new account", errorEvent);
+    })
+    PlatformUtil.DatabasePut('settings', a.id, 'selectedAccount', collector)
+    PlatformUtil.DatabasePut('settings', languages[enabledLangs.indexOf(lcode)].title, a.id+'-mainLanguage', collector)
+    PlatformUtil.DatabasePut('settings', themes[colorsettings.themelist.index].title, a.id+'-selectedTheme', collector)
 	}
 	g.listItemClick = function(index) {
-		const g = this;
+		const g = this
 		{ // For the GUI.
-			accountsettings.accountlist.index = index;
-			accountsettings.queueLayout();
+			accountsettings.accountlist.index = index
+			accountsettings.queueLayout()
 		} { // For the app function.
-			loadAccount();
+			loadAccount()
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(accounts[index].id, 'selectedAccount');
-			req.onsuccess = (event) => {
-				console.log("successfully selected new account", event);
-			};
-			req.onerror = (event) => {
-				console.log("error selecting new account", event);
-			};
+      PlatformUtil.DatabasePut('settings', accounts[index].id, 'selectedAccount', (successEvent) => {
+				console.log("successfully selected new account", successEvent)
+      }, (errorEvent) => {
+				console.log("error selecting new account", errorEvent)
+      })
 		}
 	}
 v.gadgets.push(v.deleteaccount = g = new vp.Gadget(v));
@@ -200,39 +193,33 @@ v.gadgets.push(v.deleteaccount = g = new vp.Gadget(v));
       if (bool) {
         console.log(`delete '${getCurrentAccount().title}'?`);
         var a = getCurrentAccount();
-        var tx = db.transaction(["accounts"], "readwrite");
-        tx.objectStore("accounts").delete(a.id);
-        tx.oncomplete = (event) => {
-          console.log("account deleted");
-          dbNotifier(event);
-        };
-        tx.onerror = (event) => {
-          console.log("error deleting account", event);
-          dbNotifier(event);
-        };
+        PlatformUtil.DatabaseDelete('accounts', a.id, (event) => {
+          console.log("account deleted")
+          dbNotifier(event)
+        }, (event) => {
+          console.log("error deleting account", event)
+          dbNotifier(event)
+        })
       }
     })
 	}
-v.gadgets.push(v.editaccount = g = new vp.Gadget(v));
-	g.listToOverlay = v.accountlist;
-  g.icon = "\x0C";
+v.gadgets.push(v.editaccount = g = new vp.Gadget(v))
+	g.listToOverlay = v.accountlist
+  g.icon = "\x0C"
 	g.clickFunc = function() {
-		var a = accounts.current();
+		var a = accounts.current()
     PlatformUtil.UserPrompt(tr('Account name:'), tr(a.title), str => {
       if (str && str.trim() != a.title) {
-        str = str.trim();
-        console.log('edit account', str);
-        a.title = str;
-        var tx = db.transaction(["accounts"], "readwrite");
-        tx.objectStore("accounts").put(a, a.id);
-        tx.oncomplete = (event) => {
-          console.log("account updated");
-        };
-        tx.onerror = (event) => {
-          console.log("error updating account", event);
-        };
-        settingsbuttons2.setRenderFlag(true);
-        accountsettings.setRenderFlag(true);
+        str = str.trim()
+        console.log('edit account', str)
+        a.title = str
+        PlatformUtil.DatabasePut('accounts', a, a.id, (event) => {
+          console.log("account updated")
+        }, (event) => {
+          console.log("error updating account", event)
+        })
+        settingsbuttons2.setRenderFlag(true)
+        accountsettings.setRenderFlag(true)
       }
     })
 	}
@@ -252,24 +239,19 @@ v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
 	g.defaultValue = '';
 	g.daisychain = true;
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(icap(tr(g.title))+':', '', val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val.trim();
+        g.value = val.trim()
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -467,20 +449,16 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.value);
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-		var req = db.transaction(["settings"], "readonly")
-			.objectStore("settings")
-			.get(`${getCurrentAccount().id}-${g.key}`);
-		req.onsuccess = (event) => {
+		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
+    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			if (event.target.result !== undefined)
-				g.tempValue = event.target.result;
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(cb, this, g);
-		};
-		req.onerror = (event) => {
-			console.log(`error getting ${g.key}`, event);
-			finishInit(cb, this, g);
-		};
+				g.tempValue = event.target.result
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			finishInit(cb, this, g)
+		}, (event) => {
+			console.log(`error getting ${g.key}`, event)
+			finishInit(cb, this, g)
+		})
 	}
 }
 

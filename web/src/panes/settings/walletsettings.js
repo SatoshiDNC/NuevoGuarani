@@ -55,16 +55,11 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 
 			v.queueLayout();
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.list[index],
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
+      PlatformUtil.DatabasePut('settings', g.list[index], `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
 		}
 	}
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
@@ -92,16 +87,11 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -130,16 +120,11 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -168,16 +153,11 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -206,16 +186,11 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -244,16 +219,11 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -282,16 +252,11 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val;
       } { // For persistence.
-        var req = db.transaction(["settings"], "readwrite");
-        req.objectStore("settings")
-          .put(g.value,
-            `${getCurrentAccount().id}-${g.key}`);
-        req.onsuccess = (event) => {
-          console.log(`successfully selected ${g.key}`, event);
-        };
-        req.onerror = (event) => {
-          console.log(`error selecting ${g.key}`, event);
-        };
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
       }
     })
 	}
@@ -345,19 +310,15 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue);
 			v.loadComplete = true; cb();
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-		var req = db.transaction(["settings"], "readonly")
-			.objectStore("settings")
-			.get(`${getCurrentAccount().id}-${g.key}`);
-		req.onsuccess = (event) => {
+		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
+    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			g.tempValue = event.target.result
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(cb, this);
-		};
-		req.onerror = (event) => {
-			console.log(`error getting ${g.key}`, event);
-			finishInit(cb, this);
-		};
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			finishInit(cb, this)
+		}, (event) => {
+			console.log(`error getting ${g.key}`, event)
+			finishInit(cb, this)
+		})
 	}
 	for (const gad of [
 		'lnbitsurl', 'lnbitskey',
@@ -377,18 +338,14 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.value);
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-		var req = db.transaction(["settings"], "readonly")
-			.objectStore("settings")
-			.get(`${getCurrentAccount().id}-${g.key}`);
-		req.onsuccess = (event) => {
+    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			if (event.target.result !== undefined)
-				g.tempValue = event.target.result;
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(this, g);
-		};
-		req.onerror = (event) => {
-			console.log(`error getting ${g.key}`, event);
-			finishInit(this, g);
-		};
+				g.tempValue = event.target.result
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			finishInit(this, g)
+		}, (event) => {
+			console.log(`error getting ${g.key}`, event)
+			finishInit(this, g)
+		})
 	}
 }

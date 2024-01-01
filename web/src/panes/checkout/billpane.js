@@ -25,16 +25,11 @@ v.saveData = function() {
 		newItem.conversions = billpane.conversions;
 	}
 	console.log('Saving', newItem);
-	const tx = db.transaction(["sales"], "readwrite");
-	tx.onerror = (event) => { console.log("Save transaction failed."); };
-	tx.oncomplete = (event) => { };
-	const req = tx.objectStore("sales").add(newItem);
-	req.onerror = (event) => { console.log("Save request failed."); };
-	req.onsuccess = (event) => {
-		delete billpane.lastLoadedKey;
-		delete billpane.locked;
-		billpane.clearData();
-	};
+  PlatformUtil.DatabaseAdd('sales', newItem, (event) => {
+		delete billpane.lastLoadedKey
+		delete billpane.locked
+		billpane.clearData()
+	})
 }
 
 // Load the data from a previous or saved sale.

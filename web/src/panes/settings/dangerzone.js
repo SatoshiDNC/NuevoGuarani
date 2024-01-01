@@ -16,20 +16,17 @@ v.gadgets.push(v.deleteall = g = new vp.Gadget(v));
     PlatformUtil.UserConfirm(tr('are you sure?'), bool => {
       if (bool) {
         console.log('Deleting database...');
-        db.close();
-        const req = indexedDB.deleteDatabase("DB");
-        req.onsuccess = (e) => {
-          console.log('Database deleted.');
-          openDatabase();
-          alert(tr('all data has been deleted and/or reset to installation defaults'));
-          settingspages.toPage(0);
-        };
-        req.onerror = (e) => {
-          console.log('Error deleting database.');
-          openDatabase();
-          alert(tr('an error occurred'));
-          settingspages.toPage(0);
-        };
+        PlatformUtil.DatabaseDeleteAll((e) => {
+          console.log('Database deleted.')
+          openDatabase()
+          alert(tr('all data has been deleted and/or reset to installation defaults'))
+          settingspages.toPage(0)
+        }, (e) => {
+          console.log('Error deleting database.')
+          openDatabase()
+          alert(tr('an error occurred'))
+          settingspages.toPage(0)
+        })
       }
     })
 	}

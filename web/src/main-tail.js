@@ -18,10 +18,7 @@
         if (url != config.stallKeys.url || stallId != config.stallKeys.stall.id || stallKey != config.stallKeys.key) return  
         json.map(o => {
           const { id } = o
-          var req = db.transaction(["nostrmarket-orders"], "readonly")
-            .objectStore("nostrmarket-orders")
-            .get(`${getCurrentAccount().id}-${id}`)
-          req.onsuccess = (event) => {
+          PlatformUtil.GetReadOnly("nostrmarket-orders", `${getCurrentAccount().id}-${id}`, (event) => {
             if (event.target.result === undefined) {
               //console.log('new order:', o)
 
@@ -59,24 +56,14 @@
                 //   newItem.conversions = billpane.conversions
                 // }
                 console.log('Saving', newOrder)
-                const tx = db.transaction(["sales"], "readwrite")
-                tx.onerror = (event) => { console.log("Save transaction failed.") }
-                tx.oncomplete = (event) => { }
-                const req = tx.objectStore("sales").add(newOrder)
-                req.onerror = (event) => { console.log("Save request failed.") }
-                req.onsuccess = (event) => { }
+                PlatformUtil.DatabaseAdd('sales', newOrder)
               }
 
               {
-                var req = db.transaction(["nostrmarket-orders"], "readwrite")
-                  .objectStore("nostrmarket-orders")
-                  .add({ id }, `${getCurrentAccount().id}-${id}`)
-                req.onerror = (event) => { console.log("DB write error.") }
-                req.onsuccess = (event) => { }
+                PlatformUtil.DatabaseAddWithId('nostrmarket-orders', { id }, `${getCurrentAccount().id}-${id}`)
               }
             }
-          }
-      
+          })      
         })
       }
     }

@@ -7,6 +7,7 @@ class PlatformUtil {
     if (typeof Android.Callback === 'undefined') {
       Android._CallbackQueue = []
       Android.Callback = function(slot, result) {
+        if (slot < 0) return
         const cb = Android._CallbackQueue[slot]
         delete Android._CallbackQueue[slot]
         console.log("slot " + slot + "/" + Android._CallbackQueue.length + " deleted from callback queue")
@@ -16,6 +17,7 @@ class PlatformUtil {
   }
 
   static InitCallback(callback) {
+    if (callback === 'undefined') return -1
     PlatformUtil.init()
     let slot = 0
     for (let i = 0; i < Android._CallbackQueue.length; i++) {
@@ -40,7 +42,7 @@ class PlatformUtil {
 
   static UserPrompt(promptText, defaultValue, callback) {
     if (typeof Android !== 'undefined') {
-      Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(callback));
+      Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(callback))
     } else {
       callback(prompt(promptText, defaultValue))
     }
@@ -48,18 +50,70 @@ class PlatformUtil {
 
   static UserConfirm(promptText, callback) {
     if (typeof Android !== 'undefined') {
-      Android.userConfirm(promptText, PlatformUtil.InitCallback(callback));
+      Android.userConfirm(promptText, PlatformUtil.InitCallback(callback))
     } else {
       callback(confirm(promptText))
     }
   }
 
-  static GetDataAsReadOnly(tableName, keyName, successCallback) {
+  static DatabaseGet(tableName, keyName, successCallback, failureCallback) {
     if (typeof Android !== 'undefined') {
-      Android.getDataAsReadOnly(tableName, keyName, PlatformUtil.InitCallback(successCallback));
+      Android.getData(tableName, keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
       const req = db.transaction([tableName], "readonly").objectStore(tableName).get(keyName)
-      req.onsuccess = successCallback
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseGet request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabaseGet request failed.') })
+    }
+  }
+
+  static DatabaseAdd(tableName, item, successCallback, failureCallback) {
+    if (typeof Android !== 'undefined') {
+      Android.addData(tableName, JSON.stringify(item), PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
+    } else {
+      const req = db.transaction([tableName], "readwrite").objectStore(tableName).add(item)
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseAdd request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabaseAdd request failed.') })
+    }
+  }
+
+  static DatabaseAddWithId(tableName, item, keyName, successCallback, failureCallback) {
+    if (typeof Android !== 'undefined') {
+      Android.addData(tableName, JSON.stringify(item), keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
+    } else {
+      const req = db.transaction([tableName], "readwrite").objectStore(tableName).add(item, keyName)
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseAddWithId request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabaseAddWithId request failed.') })
+    }
+  }
+
+  static DatabasePut(tableName, item, keyName, successCallback, failureCallback) {
+    if (typeof Android !== 'undefined') {
+      Android.addData(tableName, JSON.stringify(item), keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
+    } else {
+      const req = db.transaction([tableName], "readwrite").objectStore(tableName).put(item, keyName)
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabasePut request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabasePut request failed.') })
+    }
+  }
+
+  static DatabaseDelete(tableName, keyName, successCallback, failureCallback) {
+    if (typeof Android !== 'undefined') {
+      Android.delData(tableName, keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
+    } else {
+      const req = db.transaction([tableName], "readwrite").objectStore(tableName).delete(keyName)
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseDelete request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabaseDelete request failed.') })
+    }
+  }
+
+  static DatabaseDeleteAll(successCallback, failureCallback) {
+    if (typeof Android !== 'undefined') {
+      Android.deleteAllData(PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
+    } else {
+      db.close()
+      const req = indexedDB.deleteDatabase("DB")
+      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseDeleteAll request succeeded.') })
+      req.onerror = failureCallback || ((event) => { console.debug('DatabaseDeleteAll request failed.') })
     }
   }
 

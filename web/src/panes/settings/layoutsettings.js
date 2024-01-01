@@ -21,16 +21,11 @@ console.log('clck');
 			g.state = !g.state; v.setRenderFlag(true);
 		} { // For the app function.
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.state,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
+      PlatformUtil.DatabasePut('settings', g.state, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
 		}
 	}
 v.load = function(cb) {
@@ -48,17 +43,13 @@ v.load = function(cb) {
 		if (debuglog) console.log(`${g.key} ready`, g.state);
 		v.loadComplete = true; cb();
 	}
-	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-	var req = db.transaction(["settings"], "readonly")
-		.objectStore("settings")
-		.get(`${getCurrentAccount().id}-${g.key}`);
-	req.onsuccess = (event) => {
+	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
+  PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 		selectedValue = event.target.result
-		if (debuglog) console.log(`${g.key} restored`, selectedValue);
-		finishInit(cb, this);
-	};
-	req.onerror = (event) => {
-		console.log(`error getting ${g.key}`, event);
-		finishInit(cb, this);
-	};
+		if (debuglog) console.log(`${g.key} restored`, selectedValue)
+		finishInit(cb, this)
+	}, (event) => {
+		console.log(`error getting ${g.key}`, event)
+		finishInit(cb, this)
+	})
 }

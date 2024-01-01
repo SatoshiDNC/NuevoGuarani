@@ -24,16 +24,11 @@ v.gadgets.push(v.langlist = g = new vp.Gadget(v));
 			lcode = enabledLangs[index];
 			settingspane.setRenderFlag(true);
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(languages[languagesettings.langlist.index].title,
-					`${getCurrentAccount().id}-mainLanguage`);
-			req.onsuccess = (event) => {
-				console.log("successfully selected language", event);
-			};
-			req.onerror = (event) => {
+      PlatformUtil.DatabasePut('settings', languages[languagesettings.langlist.index].title, `${getCurrentAccount().id}-mainLanguage`, (event) => {
+				console.log("successfully selected language", event)
+			}, (event) => {
 				console.log("error selecting language", event);
-			};
+			})
 		}
 	}
 v.load = function(cb) {
@@ -77,16 +72,12 @@ v.load = function(cb) {
 		v.loadComplete = true; cb();
 	}
 	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-mainLanguage`);
-	var req = db.transaction(["settings"], "readonly")
-		.objectStore("settings")
-		.get(`${getCurrentAccount().id}-mainLanguage`);
-	req.onsuccess = (event) => {
+  PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-mainLanguage`, (event) => {
 		selectedValue = event.target.result
-		if (debuglog) console.log("mainLanguage restored", selectedValue);
-		finishInit(cb, this);
-	};
-	req.onerror = (event) => {
-		console.log("error getting mainLanguage", event);
-		finishInit(cb, this);
-	};
+		if (debuglog) console.log("mainLanguage restored", selectedValue)
+		finishInit(cb, this)
+	}, (event) => {
+		console.log("error getting mainLanguage", event)
+		finishInit(cb, this)
+	})
 }

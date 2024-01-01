@@ -48,19 +48,15 @@ function loadCameraSettingGuarded() {
 		}
 		if (debuglog) console.log("camera setting ready", camerasettings.cameralist.index);
 	}
-	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-selectedCameraId`);
-	var req = db.transaction(["settings"], "readonly")
-		.objectStore("settings")
-		.get(`${getCurrentAccount().id}-selectedCameraId`);
-	req.onsuccess = (event) => {
+	if (debuglog) console.log("requesting", `${getCurrentAccount().id}-selectedCameraId`)
+  PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-selectedCameraId`, (event) => {
 		selectedCameraId = event.target.result
-		if (debuglog) console.log("selectedCameraId restored", selectedCameraId);
-		finishCameraInit();
-	};
-	req.onerror = (event) => {
-		console.log("error getting selectedCameraId", event);
-		finishCameraInit();
-	};
+		if (debuglog) console.log("selectedCameraId restored", selectedCameraId)
+		finishCameraInit()
+	}, (event) => {
+		console.log("error getting selectedCameraId", event)
+		finishCameraInit()
+	})
 }
 
 const camerasettings = v = new vp.View(null);
@@ -81,16 +77,11 @@ v.gadgets.push(v.cameralist = g = new vp.Gadget(v));
 		} { // For the app function.
 			BarcodeScanner.cameraId = cameras[index].deviceId;
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(cameras[index].deviceId,
-					`${getCurrentAccount().id}-selectedCameraId`);
-			req.onsuccess = (event) => {
-				console.log("successfully selected camera", event);
-			};
-			req.onerror = (event) => {
-				console.log("error selecting camera", event);
-			};
+      PlatformUtil.DatabasePut('settings', cameras[index].deviceId, `${getCurrentAccount().id}-selectedCameraId`, (event) => {
+				console.log("successfully selected camera", event)
+			}, (event) => {
+				console.log("error selecting camera", event)
+			})
 		}
 	}
 /*
@@ -174,16 +165,11 @@ v.gadgets.push(v.itemscan = g = new vp.Gadget(v));
 		} { // For the app function.
 			if (g.appFunction) g.appFunction();
 		} { // For persistence.
-			var req = db.transaction(["settings"], "readwrite");
-			req.objectStore("settings")
-				.put(g.state,
-					`${getCurrentAccount().id}-${g.key}`);
-			req.onsuccess = (event) => {
-				console.log(`successfully selected ${g.key}`, event);
-			};
-			req.onerror = (event) => {
-				console.log(`error selecting ${g.key}`, event);
-			};
+      PlatformUtil.DatabasePut('settings', g.state, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
 		}
 	}
 v.gadgets.push(v.lnscan = g = new vp.Gadget(v));
@@ -232,18 +218,14 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.state);
 			v.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-		var req = db.transaction(["settings"], "readonly")
-			.objectStore("settings")
-			.get(`${getCurrentAccount().id}-${g.key}`);
-		req.onsuccess = (event) => {
+		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
+    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			g.tempValue = event.target.result
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue);
-			finishInit(cb, this, g);
-		};
-		req.onerror = (event) => {
-			console.log(`error getting ${g.key}`, event);
-			finishInit(cb, this, g);
-		};
+			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			finishInit(cb, this, g)
+		}, (event) => {
+			console.log(`error getting ${g.key}`, event)
+			finishInit(cb, this, g)
+		})
 	}
 }
