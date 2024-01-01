@@ -34,11 +34,15 @@ v.saveData = function() {
 
 // Load the data from a previous or saved sale.
 v.loadData = function() {
+  console.log('loadData()')
 	const tx = db.transaction(["sales"], "readonly");
 	const os = tx.objectStore("sales");
+  console.log(this.lastLoadedKey)
 	const range = this.lastLoadedKey? IDBKeyRange.upperBound(this.lastLoadedKey, true): undefined;
+  console.log(range)
 	const req = os.openCursor(range, 'prev');
 	req.onsuccess = (event) => {
+    console.log('cursor successfully opened')
 		const cursor = event.target.result;
 		if (cursor) {
 			if (cursor.value.store == getCurrentAccount().id) {
