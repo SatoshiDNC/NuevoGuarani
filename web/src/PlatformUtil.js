@@ -68,7 +68,7 @@ class PlatformUtil {
   }
 
   static DatabaseAdd(tableName, item, successCallback, failureCallback) {
-    console.log('DatabaseAdd()')
+    console.log('DatabaseAdd(', tablename, item, successCallback, failureCallback, ')')
     if (typeof Android !== 'undefined') {
       Android.addData(tableName, JSON.stringify(item), PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
