@@ -46,6 +46,8 @@ v.loadData = function() {
     console.log('cursor successfully opened')
 		const cursor = event.target.result;
 		if (cursor) {
+      console.log('cursor contains data')
+      console.log(cursor.value.store)
 			if (cursor.value.store == getCurrentAccount().id) {
 				this.lastLoadedKey = cursor.key;
 //				setConversionRates();
@@ -65,6 +67,7 @@ v.loadData = function() {
 				billpane.subtotal.setRenderFlag(true)
 			} else cursor.continue();
 		} else {
+      console.log('cursor contains no data')
 			delete this.lastLoadedKey;
 			this.clearData();
 		}
