@@ -118,3 +118,5 @@ class PlatformUtil {
   }
 
 }
+
+var db

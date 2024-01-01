@@ -1,4 +1,4 @@
-var db, dbNotifier
+var dbNotifier
 
 /*
 if (false) { // wipe database for testing purposes
