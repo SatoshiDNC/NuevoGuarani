@@ -37,10 +37,8 @@ v.saveData = function() {
 // Load the data from a previous or saved sale.
 v.loadData = function() {
   console.log('loadData()')
-	const tx = db.transaction(["sales"], "readonly");
-	const os = tx.objectStore("sales");
-	const req = os.count();
-	req.onsuccess = (event) => {
+	const req2 = db.transaction(["sales"], "readonly").objectStore("sales").count();
+	req2.onsuccess = (event) => {
     console.log(event)
   }
 
