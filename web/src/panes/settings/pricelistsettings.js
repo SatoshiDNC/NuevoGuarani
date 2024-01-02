@@ -80,7 +80,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = false;
+	const debuglog = true;
 	const g = this.list;
 	g.tempValue = g.defaultValue;
   g.state = 0;
