@@ -38,6 +38,13 @@ v.saveData = function() {
 v.loadData = function() {
   console.log('loadData()')
 	const tx = db.transaction(["sales"], "readonly");
+	const os = tx.objectStore("sales");
+	const req = os.count();
+	req.onsuccess = (event) => {
+    console.log(event)
+  }
+
+	const tx = db.transaction(["sales"], "readonly");
   console.log('tx', tx)
 	const os = tx.objectStore("sales");
   console.log('os', os)
