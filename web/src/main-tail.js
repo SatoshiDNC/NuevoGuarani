@@ -18,7 +18,7 @@
         if (url != config.stallKeys.url || stallId != config.stallKeys.stall.id || stallKey != config.stallKeys.key) return  
         json.map(o => {
           const { id } = o
-          PlatformUtil.GetReadOnly("nostrmarket-orders", `${getCurrentAccount().id}-${id}`, (event) => {
+          PlatformUtil.DatabaseGet("nostrmarket-orders", `${getCurrentAccount().id}-${id}`, (event) => {
             if (event.target.result === undefined) {
               //console.log('new order:', o)
 
