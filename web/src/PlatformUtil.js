@@ -57,7 +57,7 @@ class PlatformUtil {
   }
 
   static DatabaseGet(tableName, keyName, successCallback, failureCallback) {
-    console.log('DatabaseGet(', tableName, keyName, successCallback, failureCallback, ')')
+    console.log('DatabaseGet(', tableName, keyName, ')')
     if (typeof Android !== 'undefined') {
       Android.getData(tableName, keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
@@ -68,7 +68,7 @@ class PlatformUtil {
   }
 
   static DatabaseAdd(tableName, item, successCallback, failureCallback) {
-    console.log('DatabaseAdd(', tableName, item, successCallback, failureCallback, ')')
+    console.log('DatabaseAdd(', tableName, item, ')')
     if (typeof Android !== 'undefined') {
       Android.addData(tableName, JSON.stringify(item), PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
@@ -79,7 +79,7 @@ class PlatformUtil {
   }
 
   static DatabaseAddWithId(tableName, item, keyName, successCallback, failureCallback) {
-    console.log('DatabaseAddWithId(', tableName, item, keyName, successCallback, failureCallback, ')')
+    console.log('DatabaseAddWithId(', tableName, item, keyName, ')')
     if (typeof Android !== 'undefined') {
       Android.addData(tableName, JSON.stringify(item), keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
@@ -90,7 +90,7 @@ class PlatformUtil {
   }
 
   static DatabasePut(tableName, item, keyName, successCallback, failureCallback) {
-    console.log('DatabasePut(', tableName, item, keyName, successCallback, failureCallback, ')')
+    console.log('DatabasePut(', tableName, item, keyName, ')')
     if (typeof Android !== 'undefined') {
       Android.addData(tableName, JSON.stringify(item), keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
@@ -101,7 +101,7 @@ class PlatformUtil {
   }
 
   static DatabaseDelete(tableName, keyName, successCallback, failureCallback) {
-    console.log('DatabaseDelete(', tableName, keyName, successCallback, failureCallback, ')')
+    console.log('DatabaseDelete(', tableName, keyName, ')')
     if (typeof Android !== 'undefined') {
       Android.delData(tableName, keyName, PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
@@ -112,7 +112,7 @@ class PlatformUtil {
   }
 
   static DatabaseDeleteAll(successCallback, failureCallback) {
-    console.log('DatabaseDeleteAll(', successCallback, failureCallback, ')')
+    console.log('DatabaseDeleteAll()')
     if (typeof Android !== 'undefined') {
       Android.deleteAllData(PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
     } else {
