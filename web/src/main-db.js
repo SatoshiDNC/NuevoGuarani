@@ -14,6 +14,15 @@ if (false) { // wipe database for testing purposes
 
 function openDatabase() {
   console.log("openDatabase()")
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().then((persistent) => {
+      if (persistent) {
+        console.log("Note: Storage will not be cleared except by explicit user action");
+      } else {
+        console.log("Note: Storage may be cleared by the UA under storage pressure.");
+      }
+    })
+  }
 	const dbreq = indexedDB.open("DB", 2)
 	dbreq.onerror = (event) => {
 		console.error(`Error requesting database`)
