@@ -37,15 +37,8 @@ v.saveData = function() {
 // Load the data from a previous or saved sale.
 v.loadData = function() {
   console.log('loadData()')
-	const req2 = db.transaction(["sales"], "readonly").objectStore("sales").count();
-	req2.onsuccess = (event) => {
-    console.log(event)
-  }
-
 	const tx = db.transaction(["sales"], "readonly");
-  console.log('tx', tx)
 	const os = tx.objectStore("sales");
-  console.log('os', os)
   console.log(this.lastLoadedKey)
 	const range = this.lastLoadedKey? IDBKeyRange.upperBound(this.lastLoadedKey, true): undefined;
   console.log(range)
