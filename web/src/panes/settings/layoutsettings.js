@@ -29,7 +29,7 @@ console.log('clck');
 		}
 	}
 v.load = function(cb) {
-	const debuglog = true, g = this.countermode;
+	const debuglog = false, g = this.countermode;
 	var selectedValue = false;
 	function finishInit(cb, v) {
 		const g = v.countermode;

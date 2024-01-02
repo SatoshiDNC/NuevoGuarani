@@ -80,7 +80,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	const g = this.list;
 	g.tempValue = g.defaultValue;
   g.state = 0;
@@ -289,7 +289,7 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 	}
 */
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	{
 		const g = this.typelist, v = this;
 		g.tempValue = '';

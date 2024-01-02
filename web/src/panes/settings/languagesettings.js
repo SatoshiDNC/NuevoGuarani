@@ -32,7 +32,7 @@ v.gadgets.push(v.langlist = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	var selectedValue = '';
 	function finishInit(cb, v) {
 		let index = -1;

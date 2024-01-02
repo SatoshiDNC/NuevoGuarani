@@ -261,7 +261,7 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
     })
 	}
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	{
 		const g = this.typelist, v = this;
 		g.tempValue = '';

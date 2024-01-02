@@ -45,7 +45,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	const g = this.list;
 	g.tempValue = g.defaultValue;
 	function finishInit(cb, v, g) {

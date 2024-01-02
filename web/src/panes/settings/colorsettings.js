@@ -67,7 +67,7 @@ v.gadgets.push(v.texturelist = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = true;
+	const debuglog = false;
 	const gads = [
 		'themelist', 'texturelist',
 	];
