@@ -60,25 +60,25 @@ v.loadData = function() {
         console.log('cursor contains data')
         console.log('cursor', cursor)
         //console.log(cursor.value.store)
-  //       if (cursor.value.store == getCurrentAccount().id) {
-  //         this.lastLoadedKey = cursor.key;
-  // //				setConversionRates();
-  //         this.clearData();
-  //         billpane.orderCurrency = cursor.value.currency;
-  //         billpane.conversions = {};
-  //         if (cursor.value.conversions) billpane.conversions = cursor.value.conversions;
-  //         billpane.items = cursor.value.items;
-  //         billpane.userY = 0;
-  //         billpane.relayout();
-  //         billpane.setRenderFlag(true);
-  //         billpane.textbox.text = cursor.value.dataentry.textbox;
-  //         billpane.textbox.options = cursor.value.dataentry.options;
-  //         billpane.textbox.resetGads();
-  //         billpane.textbox.setRenderFlag(true)
-  //         billpane.subtotal.enableGads();
-  //         billpane.subtotal.setRenderFlag(true)
-  //         return
-  //      }
+        if (cursor.value.store == getCurrentAccount().id) {
+          this.lastLoadedKey = cursor.key;
+  //				setConversionRates();
+          this.clearData();
+          billpane.orderCurrency = cursor.value.currency;
+          billpane.conversions = {};
+          if (cursor.value.conversions) billpane.conversions = cursor.value.conversions;
+          billpane.items = cursor.value.items;
+          billpane.userY = 0;
+          billpane.relayout();
+          billpane.setRenderFlag(true);
+          billpane.textbox.text = cursor.value.dataentry.textbox;
+          billpane.textbox.options = cursor.value.dataentry.options;
+          billpane.textbox.resetGads();
+          billpane.textbox.setRenderFlag(true)
+          billpane.subtotal.enableGads();
+          billpane.subtotal.setRenderFlag(true)
+          return
+        }
         cursor.continue();
       }
 		} else {
