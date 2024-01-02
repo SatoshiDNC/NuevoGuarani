@@ -13,7 +13,7 @@ if (false) { // wipe database for testing purposes
 */
 
 function openDatabase() {
-  console.log("openDatabase()")
+  //console.log("openDatabase()")
   if (navigator.storage && navigator.storage.persist) {
     navigator.storage.persist().then((persistent) => {
       if (persistent) {

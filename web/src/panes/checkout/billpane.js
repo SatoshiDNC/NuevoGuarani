@@ -6,6 +6,7 @@ v.conversions = {};
 
 // Save the data pertaining to this sale.
 v.saveData = function() {
+  console.log('saveData()')
 	var currentState = 'saved';
 	const newItem = {
 		store: getCurrentAccount().id,
@@ -26,7 +27,7 @@ v.saveData = function() {
 	}
 	console.log('Saving', newItem);
   PlatformUtil.DatabaseAdd('sales', newItem, (event) => {
-    console.log('success')
+    console.log('DatabaseAdd success')
 		delete billpane.lastLoadedKey
 		delete billpane.locked
 		billpane.clearData()
@@ -43,10 +44,10 @@ v.loadData = function() {
   console.log(range)
 	const req = os.openCursor(range, 'prev');
 	req.onsuccess = (event) => {
-    console.log('cursor successfully opened')
+    //console.log('cursor successfully opened')
 		const cursor = event.target.result;
 		if (cursor) {
-      console.log('cursor contains data')
+      //console.log('cursor contains data')
       console.log(cursor.value.store)
 			if (cursor.value.store == getCurrentAccount().id) {
 				this.lastLoadedKey = cursor.key;
