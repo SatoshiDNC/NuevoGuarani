@@ -7,6 +7,7 @@ v.text = '';
 v.lastUserText = '';
 v.state = 'start';
 v.options = {};
+v.maxLen = 15;
 Object.defineProperty(v, "currency", {
 	get : function () {
 		if (this.options.lightning) return '₿';
@@ -74,9 +75,18 @@ v.gadgets.push(v.scanGad = g = new vp.Gadget(v));
 			g.stopScanner();
 			delete v.scanMode;
 			vp.beep('qr-part');
-			console.log(barcode);
+			console.log(JSON.stringify(barcode));
 
-			if (barcode.rawValue.toLowerCase().startsWith('lnbc') && config.lightningScanningEnabled) {
+      if (barcode.format == 'ean_13') {
+				let price = Convert.EAN13ToPrice(barcode.rawValue)
+        if (price !== undefined) {
+          billpane.textbox.splicePrice({ unitprice: price, fractionalQty: false, negate: false })
+          billpane.textbox.resetGads()
+          billpane.changed = true
+          billpane.subtotal.enableGads()
+          v.lastUserText = billpane.textbox.text
+        }
+      } else if (barcode.rawValue.toLowerCase().startsWith('lnbc') && config.lightningScanningEnabled) {
 				billpane.textbox.pasteInvoice(barcode.rawValue);
 			} else {
 				let number = barcode.rawValue;
@@ -352,7 +362,7 @@ v.splicePrice = function(obj) {
 			}
 		} else {
 			if (fractionalQty) {
-				v.text = obj.unitprice +'×'+ str.substr(0,str.length-1)+'.0';
+				v.text = (obj.unitprice +'×'+ ((+str.substr(0,str.length-1))/obj.unitprice)).substring(0, v.maxLen);
 				vp.beep('bad');
 			} else {
 				v.text = str + obj.unitprice;
@@ -379,8 +389,8 @@ v.splicePrice = function(obj) {
 			}
 		} else {
 			if (fractionalQty) {
-				v.text = obj.unitprice +'×'+ str+'.0';
-				vp.beep('bad');
+				v.text = (obj.unitprice +'×'+ ((+str)/obj.unitprice)).substring(0, v.maxLen);
+				//vp.beep('bad');
 			} else {
 				v.text = str +'×'+ obj.unitprice;
 			}
@@ -450,7 +460,7 @@ v.pasteFunc = function(e) {
 v.keypadFunc = function(code, key) {
 	const v = this;
 	const isNum = (code >= 0 && code <= 9);
-	const maxLen = 15;
+	const maxLen = v.maxLen;
 	if (v.options.change
 	|| (checkoutpane.subtotalshim.b != billpane && code != keypadpane.keyBack && code != keypadpane.keyEnter)) {
 		if (code >= 0 || (code == -1 && key == '-')) vp.beep('bad');

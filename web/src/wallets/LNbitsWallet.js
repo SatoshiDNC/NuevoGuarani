@@ -16,7 +16,7 @@ class LNbitsWallet extends Wallet {
 			console.log('getting quote for',amt_,from_,'to',to_,'live =',!config.debugBuild);
 			if (!config.debugBuild) {
 				let body = `{
-			"from": "${from_}",
+			"from_": "${from_}",
 			"amount": ${amt_},
 			"to": "${to_}"
 		}`;
@@ -37,7 +37,7 @@ class LNbitsWallet extends Wallet {
 				json[(from_=='sat')?'sats':from_] = amt;
 				json[(to_=='sat')?'sats':to_] = amt * (Math.random()*1.5 + 0.5);
 			}
-			console.log(json);
+			console.log(JSON.stringify(json));
 
 			if (from_ == 'BTC') from_ = 'sats';
 			if (to_ == 'BTC') to_ = 'sats';
