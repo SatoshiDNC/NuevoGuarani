@@ -70,7 +70,7 @@ var BarcodeScanner = (function() {
 				init = true;
 				BarcodeDetector.getSupportedFormats().then(f => {
 					mBarcodeDetector = new BarcodeDetector({
-						formats: ["upc_a","qr_code"],
+						formats: ['upc_a', 'qr_code', 'ean_13'],
 					});
 					detectorReady = true;
 					checkReadiness();

@@ -151,28 +151,26 @@ public class WebUtils {
         });
     }
 
-    @JavascriptInterface
-    public void getData(String table, String key, int successCallback, int failureCallback) {
-        Log.d("DEBUG", "getData() called");
-    }
-
-    @JavascriptInterface
-    public void addData(String table, String item, int successCallback, int failureCallback) {
-        Log.d("DEBUG", "addData() called");
-    }
-    public void addDataWithId(String table, String item, String key, int successCallback, int failureCallback) {
-        Log.d("DEBUG", "addDataWithId() called");
-    }
-    public void putData(String table, String item, String key, int successCallback, int failureCallback) {
-        Log.d("DEBUG", "putData() called");
-    }
-
-    @JavascriptInterface
-    public void delData(String table, String key, int successCallback, int failureCallback) {
-        Log.d("DEBUG", "delData() called");
-    }
-    @JavascriptInterface
-    public void deleteAllData(int successCallback, int failureCallback) {
-        Log.d("DEBUG", "deleteAllData() called");
-    }
+//    @JavascriptInterface
+//    public void getData(String table, String key, int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "getData() called");
+//    }
+//    @JavascriptInterface
+//    public void addData(String table, String item, int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "addData() called");
+//    }
+//    public void addDataWithId(String table, String item, String key, int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "addDataWithId() called");
+//    }
+//    public void putData(String table, String item, String key, int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "putData() called");
+//    }
+//    @JavascriptInterface
+//    public void delData(String table, String key, int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "delData() called");
+//    }
+//    @JavascriptInterface
+//    public void deleteAllData(int successCallback, int failureCallback) {
+//        Log.d("DEBUG", "deleteAllData() called");
+//    }
 }
