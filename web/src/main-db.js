@@ -34,7 +34,7 @@ function openDatabase() {
 		db.onerror = (event) => {
 			console.error(`Database error: ${event.target.errorCode}`)
 		}
-    db.transaction(["sales"], "readwrite").objectStore("sales").clear()
+    //db.transaction(["sales"], "readwrite").objectStore("sales").clear(); console.log('TESTING: cleared sales')
     db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear()
 		dbNotifier(event)
 	};
