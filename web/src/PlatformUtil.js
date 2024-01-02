@@ -40,6 +40,13 @@ class PlatformUtil {
     }
   }
 
+  static RequestCamera() {
+    if (typeof Android !== 'undefined') {
+      Android.requestCamera()
+    } else {
+    }
+  }
+
   static UserPrompt(promptText, defaultValue, callback) {
     if (typeof Android !== 'undefined') {
       Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(callback))

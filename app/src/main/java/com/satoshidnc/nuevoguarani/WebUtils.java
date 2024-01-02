@@ -19,11 +19,11 @@ import android.os.Handler;
 import androidx.appcompat.app.AlertDialog;
 
 public class WebUtils {
-    private Context context;
+    private MainActivity context;
     private WebView view;
     private AudioManager audio;
 
-    WebUtils(Context c, WebView v) {
+    WebUtils(MainActivity c, WebView v) {
         context = c;
         view = v;
         audio = (AudioManager) c.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
@@ -32,6 +32,12 @@ public class WebUtils {
     @JavascriptInterface
     public void audioClick() {
         audio.playSoundEffect(AudioManager.FX_KEY_CLICK);
+    }
+
+    @JavascriptInterface
+    public void requestCamera() {
+        Log.d("DEBUG", "requestCamera() called");
+        context.checkCameraPermissions();
     }
 
     @JavascriptInterface
