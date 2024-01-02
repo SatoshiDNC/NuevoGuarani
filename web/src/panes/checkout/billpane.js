@@ -73,7 +73,7 @@ v.loadData = function() {
   //         billpane.subtotal.enableGads();
   //         billpane.subtotal.setRenderFlag(true)
   //         return
-        }
+  //      }
         cursor.continue();
       }
 		} else {
