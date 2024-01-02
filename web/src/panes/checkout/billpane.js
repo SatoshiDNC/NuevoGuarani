@@ -38,16 +38,20 @@ v.saveData = function() {
 v.loadData = function() {
   console.log('loadData()')
 	const tx = db.transaction(["sales"], "readonly");
+  console.log('tx', tx)
 	const os = tx.objectStore("sales");
+  console.log('os', os)
   console.log(this.lastLoadedKey)
 	const range = this.lastLoadedKey? IDBKeyRange.upperBound(this.lastLoadedKey, true): undefined;
   console.log(range)
 	const req = os.openCursor(range, 'prev');
 	req.onsuccess = (event) => {
-    //console.log('cursor successfully opened')
+    console.log('cursor successfully opened')
+    console.log('event', event)
 		const cursor = event.target.result;
+    console.log('cursor', cursor)
 		if (cursor) {
-      //console.log('cursor contains data')
+      console.log('cursor contains data')
       console.log(cursor.value.store)
 			if (cursor.value.store == getCurrentAccount().id) {
 				this.lastLoadedKey = cursor.key;
