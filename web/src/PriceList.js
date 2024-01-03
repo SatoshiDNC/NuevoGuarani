@@ -55,7 +55,8 @@ class PriceList {
     // })
     // emojiEl.src = emojiFile
     this.priceData = []
-    this.emojiData = [
+    this.emojiData = []
+    const defaultEmojis = [
       { x:  6, y: 29, category: 'food', label: 'tomato', },
       { x: 55, y: 49, category: 'food', label: 'green bell pepper', },
       { x: 55, y: 50, category: 'food', label: 'yellow bell pepper', },
@@ -191,10 +192,17 @@ class PriceList {
       { x: 55, y: 48, category: 'tools', label: 'barcode', },
     ];
     const imageUrls = []
-    this.emojiData.map(e => {
-      imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${e.label.replaceAll(' ','_')}.png`)
-    })
     this._emojiBase = 57
+    let xIter = 0, yIter = 0
+    defaultEmojis.map(({ category, label }) => {
+      imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${e.label.replaceAll(' ','_')}.png`)
+      this.emojiData.push({ x: xIter, y: yIter, category, label, })
+      xIter += 1
+      if (xIter >= this._emojiBase) {
+        xIter = 0
+        yIter += 1
+      }
+    })
     this.loadFinisher(imageUrls, loadKey)
   }
 
