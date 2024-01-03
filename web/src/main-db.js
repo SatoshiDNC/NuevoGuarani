@@ -29,7 +29,7 @@ function openDatabase() {
 		console.error(event)
 	}
 	dbreq.onsuccess = (event) => {
-		console.log("Database opened")
+		//console.log("Database opened")
 		db = event.target.result
 		db.onerror = (event) => {
 			console.error(`Database error: ${event.target.errorCode}`)
