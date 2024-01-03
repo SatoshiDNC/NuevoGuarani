@@ -286,11 +286,11 @@ class PriceList {
           const ref = this
           imageUrls.map((url, index) => {
             const key = this.emojiData[index].label
-            console.log(`loading emoji '$key'`)
+            console.log(`loading emoji '${key}'`)
 
             // get existing database entry for this emoji, if it exists
             PlatformUtil.DatabaseGet('emoji', key, (successEvent) => {
-              console.log(JSON.stringify(successEvent))
+              console.log('get', JSON.stringify(successEvent))
             })
 
             // const img = document.createElement('img')
