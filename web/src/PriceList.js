@@ -295,6 +295,33 @@ class PriceList {
               const emojiRec = successEvent.target.result
               if (emojiRec !== undefined) {
                 console.log('todo: use cached emoji', successEvent)
+                const blobURL = URL.createObjectURL(emojiRec.blob)
+                const img = document.createElement('img')
+                img.addEventListener('load', function() {
+                  if (ref._loadKey != loadKey) return // abort if overcome by events
+                  console.log('updating icon from local storage')
+                  let targetWidth = img.width, targetHeight = img.height
+
+                  // update the texture with the image
+                  let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
+                  textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
+                  textureContext.drawImage(img,
+                    i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
+                    j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
+                  i += 1
+                  if (i >= ref._emojiBase) {
+                    i = 0
+                    j += 1
+                  }
+                  updateTexture(gl, ref.texture, emojiEl)
+                  gl.generateMipmap(gl.TEXTURE_2D)
+                  emojipane.setRenderFlag(true)
+                  pending -= 1
+                  if (pending == 0) {
+                    console.log('done loading', imageUrls.length, 'emojis')
+                  }
+                });
+                img.src = blobURL
               }
 
               // reload from URL if it makes sense
@@ -311,6 +338,7 @@ class PriceList {
                     targetWidth = targetHeight * img.width / img.height
                   }
 
+                  // cache a scaled-down copy in our local emoji table
                   const oc = document.createElement('canvas')
                   const octx = oc.getContext('2d')
                   oc.width = targetWidth
@@ -318,13 +346,15 @@ class PriceList {
                   octx.drawImage(img, 0, 0, oc.width, oc.height)
                   console.log('converting to blob')
                   oc.toBlob(blob => {
-                    console.log('blob created:', blob)
+                    console.log('blob: ', blob)
+                    if (!blob) console.log('blob creation failed')
                     const newRec = { key, blob }
                     PlatformUtil.DatabasePut('emoji', newRec, newRec.key, successEvent => {
                       console.log('emoji stored:', JSON.stringify(newRec))
                     })
                   })
-                  
+
+                  // update the texture with a scaled-down copy of the image
                   let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
                   textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
                   textureContext.drawImage(img,
