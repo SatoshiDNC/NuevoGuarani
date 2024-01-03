@@ -194,7 +194,7 @@ class PriceList {
     this.emojiData.map(e => {
       imageUrls.push(`https://emojiapi.dev/api/v1/${e.label.replace(' ','_')}/96.png`)
     })
-    this.loadFinisher(imageUrls)
+    this.loadFinisher(imageUrls, loadKey)
   }
 
   loadNostrMarketData(url, key, stallId) {
@@ -263,12 +263,12 @@ class PriceList {
           this.setPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
         }
       }
-      this.loadFinisher(imageUrls)
+      this.loadFinisher(imageUrls, loadKey)
     }
     asyncLogic()
   }
 
-  loadFinisher(imageUrls) {
+  loadFinisher(imageUrls, loadKey) {
     const asyncLogic = async () => {
 
       delete emojipane.lastBuilt
@@ -356,7 +356,10 @@ class PriceList {
             if (emojiRec === undefined) {
               const img = document.createElement('img')
               img.crossOrigin ='anonymous'
-              img.onerror = () => { console.log('error loading image', img.src) }
+              img.onerror = () => {
+                if (ref._loadKey != loadKey) return // abort if overcome by events
+                console.log('error loading image', img.src)
+              }
               img.addEventListener('load', function() {
                 console.log('updating icon from', img.src)
                 let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
