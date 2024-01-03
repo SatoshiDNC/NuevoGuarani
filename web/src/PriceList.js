@@ -278,14 +278,13 @@ class PriceList {
 
       // initialize the texture with something generic until icons load
       const iconWidth = 96
-      let textureContext
+      const emojiEl = document.createElement('canvas')
+      const textureContext = emojiEl.getContext("2d")
       {
         console.log('initializing texture')
-        const emojiEl = document.createElement('canvas')
         const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
-        textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
         for (let i = 0; i < textureWidth; i += 1) {
           for (let j = 0; j < textureWidth; j += 1) {
