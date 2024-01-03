@@ -5,7 +5,7 @@
       const url = config.stallKeys.url
       const stallId = config.stallKeys.stall.id
       const stallKey = config.stallKeys.key
-      {
+      if (url && stallId && stallKey) {
         console.log('checking for orders')
         const response = await fetch(url+'/stall/order/'+stallId+'?api-key='+stallKey, {
           method: 'GET',
