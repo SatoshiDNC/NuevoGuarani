@@ -303,7 +303,7 @@ class PriceList {
           while (r < v) { r *= 2 }
           return r
         }
-        const textureWidth = powOf2(this._emojiBase * iconWidth)
+        const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
