@@ -1,6 +1,7 @@
 
   function checkOnlineOrders() {
     const asyncLogic = async () => {
+      if (!config.stallKeys) return
       const url = config.stallKeys.url
       const stallId = config.stallKeys.stall.id
       const stallKey = config.stallKeys.key
