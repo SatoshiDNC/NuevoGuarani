@@ -332,7 +332,6 @@ class PriceList {
                 const img = document.createElement('img')
                 img.crossOrigin ='anonymous'
                 img.addEventListener('load', function() {
-                  if (ref._loadKey != loadKey) return // abort if overcome by events
                   console.log('updating icon from', img.src)
                   let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
                   if (img.width > img.height) {
@@ -358,25 +357,8 @@ class PriceList {
                   })
 
                   // update the texture with a scaled-down copy of the image
+                  if (ref._loadKey != loadKey) return // abort if overcome by events
                   updateSlot(img, targetWidth, targetHeight)
-
-                  // let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
-                  // textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
-                  // textureContext.drawImage(img,
-                  //   i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
-                  //   j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
-                  // i += 1
-                  // if (i >= ref._emojiBase) {
-                  //   i = 0
-                  //   j += 1
-                  // }
-                  // updateTexture(gl, ref.texture, emojiEl)
-                  // gl.generateMipmap(gl.TEXTURE_2D)
-                  // emojipane.setRenderFlag(true)
-                  // pending -= 1
-                  // if (pending == 0) {
-                  //   console.log('done loading', imageUrls.length, 'emojis')
-                  // }
                 });
                 img.src = url
               }
