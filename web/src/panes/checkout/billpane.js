@@ -72,7 +72,7 @@ v.loadData = function() {
           billpane.subtotal.setRenderFlag(true)
           return
         }
-        cursor.continue();
+        try { cursor.continue() } catch { cursor = null }
       }
 		} else {
       console.log('cursor contains no data')

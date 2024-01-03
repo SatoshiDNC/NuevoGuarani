@@ -346,13 +346,13 @@ class PriceList {
                   oc.width = targetWidth
                   oc.height = targetHeight
                   octx.drawImage(img, 0, 0, oc.width, oc.height)
-                  console.log('converting to blob')
+                  // console.log('converting to blob')
                   oc.toBlob(blob => {
-                    console.log('blob: ', blob)
+                    // console.log('blob: ', blob)
                     if (!blob) console.log('blob creation failed')
                     const newRec = { key, blob }
                     PlatformUtil.DatabasePut('emoji', newRec, newRec.key, successEvent => {
-                      console.log('emoji stored:', JSON.stringify(newRec))
+                      // console.log('emoji stored:', JSON.stringify(newRec))
                     })
                   })
 
