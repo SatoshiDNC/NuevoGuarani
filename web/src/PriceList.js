@@ -198,11 +198,11 @@ class PriceList {
       console.log(category, label)
       // imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${e.label.replaceAll(' ','_')}.png`)
       // this.emojiData.push({ x: xIter, y: yIter, category, label, })
-      // xIter += 1
-      // if (xIter >= this._emojiBase) {
-      //   xIter = 0
-      //   yIter += 1
-      // }
+      xIter += 1
+      if (xIter >= this._emojiBase) {
+        xIter = 0
+        yIter += 1
+      }
     })
     this.loadFinisher(imageUrls, loadKey)
   }
