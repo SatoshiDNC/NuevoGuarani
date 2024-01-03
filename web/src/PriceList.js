@@ -319,6 +319,10 @@ class PriceList {
                   console.log('converting to blob')
                   oc.toBlob(blob => {
                     console.log('blob created:', blob)
+                    emojiRec = { key, blob }
+                    PlatforumUtil.DatabasePut('emoji', emojiRec, emojiRec.key, successEvent => {
+                      console.log('emoji stored:', JSON.stringify(emojiRec))
+                    })
                   })
                   
                   let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
