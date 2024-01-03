@@ -30,7 +30,7 @@ if (!navigator.mediaDevices?.enumerateDevices) {
 
 function loadCameraSettingGuarded() {
 	if (!cameraSettingTrigger || !camerasLoaded) return;
-	const debuglog = true;
+	const debuglog = false;
 	var selectedCameraId = { index: -1, data: {} };
 	function finishCameraInit() {
 		var index = -1;
@@ -196,7 +196,7 @@ v.load = function(cb) {
 	cameraSettingTrigger = true;
 	loadCameraSettingGuarded();
 
-	const debuglog = true;
+	const debuglog = false;
 	const gads = [
 		'itemscan', 'lnscan',
 	];
