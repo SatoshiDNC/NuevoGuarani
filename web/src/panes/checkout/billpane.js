@@ -46,7 +46,7 @@ v.loadData = function() {
 	req.onsuccess = (event) => {
     console.log('cursor successfully opened')
     console.log('event', event)
-		const cursor = event.target.result;
+		let cursor = event.target.result;
     //console.log('cursor', cursor)
 		if (cursor) {
       while (cursor) {
