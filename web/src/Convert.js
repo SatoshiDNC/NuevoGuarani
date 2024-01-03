@@ -32,4 +32,15 @@ class Convert {
     // extract in-house price
     return (+input.substring(7, 12))
   }
+
+  DebugJSON(obj) {
+    var cache = []
+    console.log(JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.includes(value)) return
+        cache.push(value)
+      }
+      return value
+    }, '· '))
+  }
 }

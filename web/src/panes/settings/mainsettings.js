@@ -208,14 +208,6 @@ v.renderFunc = function() {
 					if (typeof g.subtitle === 'object') {
 						str = g.subtitle.map(a => icap(tr(a)).trim()).join(' · ');
 					} else {
-            var cache = []
-            if (!g.subtitle) console.log(JSON.stringify(g, (key, value) => {
-              if (typeof value === 'object' && value !== null) {
-                if (cache.includes(value)) return
-                cache.push(value)
-              }
-              return value
-            }, ' '))
 						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 						else str = icap(tr(g.subtitle));
 					}
@@ -237,14 +229,6 @@ v.renderFunc = function() {
 				if (typeof g.subtitle === 'object') {
 					str = g.subtitle.map(a => icap(tr(a))).join(' · ');
 				} else {
-          var cache = []
-          if (!g.subtitle) console.log(JSON.stringify(g, (key, value) => {
-            if (typeof value === 'object' && value !== null) {
-              if (cache.includes(value)) return
-              cache.push(value)
-            }
-            return value
-          }, ' '))
 					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 					else str = icap(tr(g.subtitle));
 				}
