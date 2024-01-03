@@ -289,7 +289,7 @@ class PriceList {
             console.log(`loading emoji '${key}'`)
 
             // function to draw a single emoji into the texture image
-            updateSlot = (img, w, h) => {
+            const updateSlot = (img, w, h) => {
               let targetWidth = w, targetHeight = h
               let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
               textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
