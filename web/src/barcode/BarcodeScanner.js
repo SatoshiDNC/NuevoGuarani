@@ -65,7 +65,7 @@ var BarcodeScanner = (function() {
 
 	function beginSession(callback) {
 		if (!present()) {
-      console.log('Error: BarcodeDetector not supported.')
+      alert('BarcodeDetector not supported.')
       return 0
     }
     PlatformUtil.RequestCamera();
