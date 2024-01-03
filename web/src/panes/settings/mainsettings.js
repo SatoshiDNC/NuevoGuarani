@@ -215,7 +215,7 @@ v.renderFunc = function() {
                 cache.push(value)
               }
               return value
-            }))
+            }, ' '))
 						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 						else str = icap(tr(g.subtitle));
 					}
@@ -244,7 +244,7 @@ v.renderFunc = function() {
               cache.push(value)
             }
             return value
-          }))
+          }, ' '))
 					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 					else str = icap(tr(g.subtitle));
 				}
