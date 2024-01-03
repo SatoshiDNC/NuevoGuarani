@@ -286,7 +286,7 @@ class PriceList {
           const ref = this
           imageUrls.map((url, index) => {
             const key = this.emojiData[index].label
-            console.log(`loading emoji '${key}'`)
+            // console.log(`loading emoji '${key}'`)
 
             // function to draw a single emoji into the texture image
             const updateSlot = (img, w, h) => {
@@ -316,12 +316,12 @@ class PriceList {
               // if there's an existing entry, use it
               const emojiRec = successEvent.target.result
               if (emojiRec !== undefined) {
-                console.log('todo: use cached emoji', successEvent)
+                // console.log('using cached emoji', successEvent)
                 const blobURL = URL.createObjectURL(emojiRec.blob)
                 const img = document.createElement('img')
                 img.addEventListener('load', function() {
                   if (ref._loadKey != loadKey) return // abort if overcome by events
-                  console.log('updating icon from local storage')
+                  // console.log(`updating icon '${emojiRec.key}' from local storage`)
                   updateSlot(img, img.width, img.height)
                 });
                 img.src = blobURL
