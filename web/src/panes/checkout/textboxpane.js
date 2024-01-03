@@ -61,9 +61,7 @@ v.gadgets.push(v.scanGad = g = new vp.Gadget(v));
 		const g = this, v = g.viewport;
 		if (v.scanMode) {
 			g.stopScanner();
-			delete v.scanMode;
 		} else {
-			v.scanMode = true;
 			g.startScanner();
 		}
 		v.resetGads();
@@ -73,7 +71,6 @@ v.gadgets.push(v.scanGad = g = new vp.Gadget(v));
 		const g = billpane.textbox.scanGad, v = billpane.textbox;
 		if (v.scanMode) {
 			g.stopScanner();
-			delete v.scanMode;
 			vp.beep('qr-part');
 			console.log(JSON.stringify(barcode));
 
@@ -100,17 +97,19 @@ v.gadgets.push(v.scanGad = g = new vp.Gadget(v));
 		}
 	}
 	g.startScanner = function(clear = true) {
-		var g = this, v = g.viewport;
-		const session = BarcodeScanner.beginSession(g.scanFunc);
+		var g = this
+		const session = BarcodeScanner.beginSession(g.scanFunc)
     if (session !== 0) {
       g.scanSession = session
-  		//if (clear) { g.linkedBarcode = ''; }
-  }
+  		//if (clear) { g.linkedBarcode = '' }
+			g.viewport.scanMode = true
+    }
 	}
 	g.stopScanner = function() {
-		var g = this;
-		BarcodeScanner.endSession(g.scanSession);
-		delete g.scanSession;
+		var g = this
+		BarcodeScanner.endSession(g.scanSession)
+		delete g.scanSession
+    delete g.viewport.scanMode
 	}
 v.gadgets.push(v.cashGad = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_CLICKABLE;
@@ -543,7 +542,6 @@ v.keypadFunc = function(code, key) {
 				//vp.beep('click');
 			} else if (v.scanMode) {
 				billpane.textbox.scanGad.stopScanner();
-				delete v.scanMode;
 				v.resetGads();
 				v.queueLayout();
 			}
