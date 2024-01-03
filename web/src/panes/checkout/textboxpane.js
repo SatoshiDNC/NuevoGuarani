@@ -333,16 +333,16 @@ v.updatePrice = function(item, unitprice, fractionalQty, negate) {
   PlatformUtil.DatabasePut('prices', newItem, `${getCurrentAccount().id}-${newItem.item}`)
 }
 v.queryPrice = function(item) {
-  var data = config.priceList.getPriceData(item)
-  if (data?.price && data?.currency === billpane.orderCurrency) {
-    billpane.textbox.splicePrice({ unitprice: data.price, fractionalQty: false, negate: false })
-    return
-  }
   PlatformUtil.DatabaseGet('prices', `${getCurrentAccount().id}-${item}`, (event) => {
 		console.log(event.target.result);
+    var data = config.priceList.getPriceData(item)
+    if (data?.price && data?.currency === billpane.orderCurrency) {
+      billpane.textbox.splicePrice({ unitprice: data.price, ...event.target.result })
+      return
+    }
 		if (event.target.result)
 			billpane.textbox.splicePrice(event.target.result)
-	})
+  })
 }
 v.splicePrice = function(obj) {
 	const v = this;

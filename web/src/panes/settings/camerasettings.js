@@ -17,6 +17,7 @@ if (!navigator.mediaDevices?.enumerateDevices) {
 						label: device.label,
 						deviceId: device.deviceId
 					});
+          console.log('Camera option:', JSON.stringify(device))
 				}
       }
 			camerasLoaded = true;
@@ -29,16 +30,24 @@ if (!navigator.mediaDevices?.enumerateDevices) {
 
 function loadCameraSettingGuarded() {
 	if (!cameraSettingTrigger || !camerasLoaded) return;
-	const debuglog = false;
-	var selectedCameraId = '';
+	const debuglog = true;
+	var selectedCameraId = { index: -1, data: {} };
 	function finishCameraInit() {
 		var index = -1;
 		for (var i=0; i<cameras.length; i++) {
-			if (cameras[i].deviceId == selectedCameraId) {
+			if (cameras[i].deviceId == selectedCameraId.data.deviceId) {
 				index = i;
 				break;
 			}
 		}
+    if (index == -1) {
+      for (var i=0; i<cameras.length; i++) {
+        if (i == selectedCameraId.index) {
+          index = i;
+          break;
+        }
+      }
+    }
 		{ // For the GUI.
 			camerasettings.cameralist.index = index;
 			camerasettings.setRenderFlag(true);
@@ -77,7 +86,7 @@ v.gadgets.push(v.cameralist = g = new vp.Gadget(v));
 		} { // For the app function.
 			BarcodeScanner.cameraId = cameras[index].deviceId;
 		} { // For persistence.
-      PlatformUtil.DatabasePut('settings', cameras[index].deviceId, `${getCurrentAccount().id}-selectedCameraId`, (event) => {
+      PlatformUtil.DatabasePut('settings', { index, data: cameras[index] }, `${getCurrentAccount().id}-selectedCameraId`, (event) => {
 				console.log("successfully selected camera", event)
 			}, (event) => {
 				console.log("error selecting camera", event)
@@ -187,7 +196,7 @@ v.load = function(cb) {
 	cameraSettingTrigger = true;
 	loadCameraSettingGuarded();
 
-	const debuglog = false;
+	const debuglog = true;
 	const gads = [
 		'itemscan', 'lnscan',
 	];
