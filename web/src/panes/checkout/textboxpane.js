@@ -101,8 +101,11 @@ v.gadgets.push(v.scanGad = g = new vp.Gadget(v));
 	}
 	g.startScanner = function(clear = true) {
 		var g = this, v = g.viewport;
-		g.scanSession = BarcodeScanner.beginSession(g.scanFunc);
-		//if (clear) { g.linkedBarcode = ''; }
+		const session = BarcodeScanner.beginSession(g.scanFunc);
+    if (session !== 0) {
+      g.scanSession = session
+  		//if (clear) { g.linkedBarcode = ''; }
+  }
 	}
 	g.stopScanner = function() {
 		var g = this;
