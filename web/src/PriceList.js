@@ -56,6 +56,8 @@ class PriceList {
     // emojiEl.src = emojiFile
     this.priceData = []
     this.emojiData = []
+    
+    // Note: only the category and label are used from the following data. The coordinates are not used.
     const defaultEmojis = [
       { x:  6, y: 29, category: 'food', label: 'tomato', },
       { x: 55, y: 49, category: 'food', label: 'green bell pepper', },
