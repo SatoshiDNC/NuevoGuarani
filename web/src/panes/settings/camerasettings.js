@@ -34,12 +34,14 @@ function loadCameraSettingGuarded() {
 	var selectedCameraId = { index: -1, data: {} };
 	function finishCameraInit() {
 		var index = -1;
-		for (var i=0; i<cameras.length; i++) {
-			if (cameras[i].deviceId == selectedCameraId.data.deviceId) {
-				index = i;
-				break;
-			}
-		}
+    if (selectedCameraId.index !== -1) {
+      for (var i=0; i<cameras.length; i++) {
+        if (cameras[i].deviceId == selectedCameraId.data.deviceId) {
+          index = i;
+          break;
+        }
+      }
+    }
     if (index == -1) {
       for (var i=0; i<cameras.length; i++) {
         if (i == selectedCameraId.index) {
