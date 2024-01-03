@@ -23,7 +23,7 @@ function openDatabase() {
       }
     })
   }
-	const dbreq = indexedDB.open("DB", 2)
+	const dbreq = indexedDB.open("DB", 3)
 	dbreq.onerror = (event) => {
 		console.error(`Error requesting database`)
 		console.error(event)
@@ -39,7 +39,7 @@ function openDatabase() {
 		dbNotifier(event)
 	};
 	dbreq.onupgradeneeded = (event) => {
-		console.log(`Upgrading database`, event)
+		console.log('Upgrading database:', event.oldVersion, JSON.stringify(event))
 		const db = event.target.result
 		var objectStore
 		if (event.oldVersion < 1) {
@@ -52,6 +52,9 @@ function openDatabase() {
 		}
     if (event.oldVersion < 2) {
       objectStore = db.createObjectStore("nostrmarket-orders")
+    }
+    if (event.oldVersion < 3) {
+      objectStore = db.createObjectStore("emoji")
     }
 	}
 }
