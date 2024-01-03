@@ -288,45 +288,60 @@ class PriceList {
             const key = this.emojiData[index].label
             console.log(`loading emoji '${key}'`)
 
-            // get existing database entry for this emoji, if it exists
+            // get existing database entry for this emoji
             PlatformUtil.DatabaseGet('emoji', key, (successEvent) => {
-              if (successEvent.target.result === undefined) {
-                console.log('undefined', successEvent)
-              } else {
-                console.log('defined', successEvent)
+
+              // if there's an existing entry, use it
+              const emojiRec = successEvent.target.result
+              if (emojiRec !== undefined) {
+                console.log('todo: use cached emoji', successEvent)
+              }
+
+              // reload from URL if it makes sense
+              if (emojiRec === undefined) {
+                const img = document.createElement('img')
+                img.crossOrigin ='anonymous'
+                img.addEventListener('load', function() {
+                  if (ref._loadKey != loadKey) return // abort if overcome by events
+                  console.log('updating icon from', img.src)
+                  let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
+                  if (img.width > img.height) {
+                    targetHeight = targetWidth * img.height / img.width
+                  } else {
+                    targetWidth = targetHeight * img.width / img.height
+                  }
+
+                  const oc = document.createElement('canvas')
+                  const octx = oc.getContext('2d')
+                  oc.width = targetWidth
+                  oc.height = targetHeight
+                  octx.drawImage(img, 0, 0, oc.width, oc.height)
+                  console.log('converting to blob')
+                  oc.toBlob(blob => {
+                    console.log('blob created:', blob)
+                  })
+                  
+                  let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
+                  textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
+                  textureContext.drawImage(img,
+                    i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
+                    j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
+                  i += 1
+                  if (i >= ref._emojiBase) {
+                    i = 0
+                    j += 1
+                  }
+                  updateTexture(gl, ref.texture, emojiEl)
+                  gl.generateMipmap(gl.TEXTURE_2D)
+                  emojipane.setRenderFlag(true)
+                  pending -= 1
+                  if (pending == 0) {
+                    console.log('done loading', imageUrls.length, 'emojis')
+                  }
+                });
+                img.src = url
               }
             })
-
-            // const img = document.createElement('img')
-            // img.crossOrigin ='anonymous'
-            // img.addEventListener('load', function() {
-            //   if (ref._loadKey != loadKey) return
-            //   console.log('updating icon from', img.src)
-            //   let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
-            //   let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
-            //   if (img.width > img.height) {
-            //     targetHeight = targetWidth * img.height / img.width
-            //   } else {
-            //     targetWidth = targetHeight * img.width / img.height
-            //   }
-            //   textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
-            //   textureContext.drawImage(img,
-            //     i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
-            //     j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
-            //   i += 1
-            //   if (i >= ref._emojiBase) {
-            //     i = 0
-            //     j += 1
-            //   }
-            //   updateTexture(gl, ref.texture, emojiEl)
-            //   gl.generateMipmap(gl.TEXTURE_2D)
-            //   emojipane.setRenderFlag(true)
-            //   pending -= 1
-            //   if (pending == 0) {
-            //     console.log('done loading', imageUrls.length, 'emojis')
-            //   }
-            // });
-            // img.src = url
           })
         }
       }
