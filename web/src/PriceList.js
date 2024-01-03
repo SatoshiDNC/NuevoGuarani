@@ -41,8 +41,6 @@ class PriceList {
 
     // configure the PriceList object
     console.log('loading default emoji texture')
-    this.rows = 57
-    this.cols = 57
     // const emojiEl = document.createElement('img')
     // const ref = this
     // emojiEl.addEventListener('load', function() {
@@ -199,7 +197,9 @@ class PriceList {
       // { x: 55, y: 48, category: 'tools', label: 'barcode', },
     ];
     const imageUrls = []
-    this._emojiBase = 57
+    this._emojiBase = Math.ceil(Math.sqrt(defaultEmojis.length))
+    this.rows = this._emojiBase
+    this.cols = this._emojiBase
     let xIter = 0, yIter = 0
     defaultEmojis.map(({ category, label }) => {
       imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${label.replaceAll(' ','_')}.png`)
