@@ -194,6 +194,7 @@ class PriceList {
     this.emojiData.map(e => {
       imageUrls.push(`https://ng.satoshidnc.com/emoji/96/${e.label.replace(' ','_')}.png`)
     })
+    this._emojiBase = 57
     this.loadFinisher(imageUrls, loadKey)
   }
 
