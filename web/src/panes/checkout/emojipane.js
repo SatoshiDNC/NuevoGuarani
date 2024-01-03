@@ -34,7 +34,6 @@ v.layoutFunc = function() {
 		let i=v.controlOffset, j=0, x=w, y=0;
 		let data = [];
 		const nx = config.priceList.thumbnailsPerRow, ny = config.priceList.thumbnailsPerColumn;
-    console.log(config.priceList)
 		let category = '';
     const priceList = config.priceList
     const maxLength = priceList.length || priceList.thumbnailData.length
