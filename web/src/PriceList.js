@@ -298,7 +298,10 @@ class PriceList {
       const textureContext = emojiEl.getContext("2d")
       {
         console.log('initializing texture')
-        const textureWidth = this._emojiBase * iconWidth
+        const textureWidth = 128
+        while (textureWidth < this._emojiBase * iconWidth) {
+          textureWidth *= 2
+        }
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
