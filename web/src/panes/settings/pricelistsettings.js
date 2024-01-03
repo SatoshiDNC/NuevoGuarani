@@ -255,7 +255,7 @@ v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
 v.gadgets.push(v.nostrmarketstall = g = new vp.Gadget(v));
 	g.title = 'stall';
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return nostrmarketstall.list.value.title } catch (e) {} }
+		get : function () { try { return nostrmarketstall.list.value.title } catch (e) { return '' } }
 	});
 	g.pane = nostrmarketstall;
 /*
