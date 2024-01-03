@@ -197,8 +197,8 @@ class PriceList {
     const ref = this
     defaultEmojis.map(({ category, label }) => {
       console.log(category, label)
-      imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${e.label.replaceAll(' ','_')}.png`)
-      // ref.emojiData.push({ x: xIter, y: yIter, category, label, })
+      imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${label.replaceAll(' ','_')}.png`)
+      this.emojiData.push({ x: xIter, y: yIter, category, label, })
       xIter += 1
       if (xIter >= this._emojiBase) {
         xIter = 0
