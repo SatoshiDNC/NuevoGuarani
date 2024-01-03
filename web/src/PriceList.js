@@ -319,9 +319,9 @@ class PriceList {
                   console.log('converting to blob')
                   oc.toBlob(blob => {
                     console.log('blob created:', blob)
-                    emojiRec = { key, blob }
-                    PlatforumUtil.DatabasePut('emoji', emojiRec, emojiRec.key, successEvent => {
-                      console.log('emoji stored:', JSON.stringify(emojiRec))
+                    const newRec = { key, blob }
+                    PlatforumUtil.DatabasePut('emoji', newRec, newRec.key, successEvent => {
+                      console.log('emoji stored:', JSON.stringify(newRec))
                     })
                   })
                   
