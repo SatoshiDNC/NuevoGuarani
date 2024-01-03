@@ -277,11 +277,11 @@ class PriceList {
       emojipane.queueLayout()
 
       // initialize the texture with something generic until icons load
+      const iconWidth = 96
       let textureContext
       {
         console.log('initializing texture')
         const emojiEl = document.createElement('canvas')
-        const iconWidth = 96
         const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
