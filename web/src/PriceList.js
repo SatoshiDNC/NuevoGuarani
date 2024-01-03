@@ -290,7 +290,11 @@ class PriceList {
 
             // get existing database entry for this emoji, if it exists
             PlatformUtil.DatabaseGet('emoji', key, (successEvent) => {
-              console.log('get', successEvent)
+              if (successEvent.target.result === undefined) {
+                console.log('undefined', successEvent)
+              } else {
+                console.log('defined', successEvent)
+              }
             })
 
             // const img = document.createElement('img')
