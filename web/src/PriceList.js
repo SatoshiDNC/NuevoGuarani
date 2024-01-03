@@ -35,21 +35,25 @@ class PriceList {
   }
 
   setEmojiDefault() {
-    console.log('loading PriceList texture')
+    const loadKey = new Date()
+    this._loadKey = loadKey
     this.clear()
+
+    // configure the PriceList object
+    console.log('loading default emoji texture')
     this.rows = 57
     this.cols = 57
-    const emojiEl = document.createElement('img')
-    const ref = this
-    emojiEl.addEventListener('load', function() {
-      console.log('updating PriceList texture', ref.texture)
-      updateTexture(gl, ref.texture, emojiEl)
-      gl.generateMipmap(gl.TEXTURE_2D)
-      // emojiReady = true
-      // loadCheck()
-      console.log('loaded PriceList texture')
-    })
-    emojiEl.src = emojiFile
+    // const emojiEl = document.createElement('img')
+    // const ref = this
+    // emojiEl.addEventListener('load', function() {
+    //   console.log('updating PriceList texture', ref.texture)
+    //   updateTexture(gl, ref.texture, emojiEl)
+    //   gl.generateMipmap(gl.TEXTURE_2D)
+    //   // emojiReady = true
+    //   // loadCheck()
+    //   console.log('loaded PriceList texture')
+    // })
+    // emojiEl.src = emojiFile
     this.priceData = []
     this.emojiData = [
       { x:  6, y: 29, category: 'food', label: 'tomato', },
@@ -186,15 +190,22 @@ class PriceList {
       { x: 54, y:  5, category: 'tools', label: 'pick', },
       { x: 55, y: 48, category: 'tools', label: 'barcode', },
     ];
+    const imageUrls = []
+    this.emojiData.map(e => {
+      imageUrls.push(`https://emojiapi.dev/api/v1/${e.label.replace(' ','_')}/96.png`)
+    })
+    this.loadFinisher(imageUrls)
   }
 
   loadNostrMarketData(url, key, stallId) {
     const loadKey = new Date()
     this._loadKey = loadKey
+    this.clear()
+    
     if (!url || !key || !stallId) return
-
     const asyncLogic = async () => {
-      this.clear()
+
+      // fetch stall details
       let stall, stallCurrency
       {
         console.log('searching for stall', key != '', stallId)
@@ -214,9 +225,11 @@ class PriceList {
           }
         })
       }
-      if (this._loadKey != loadKey) return
+      if (this._loadKey != loadKey) return // abort if overcome by events
+
+      // fetch product image URLs
       const imageUrls = []
-      {
+      if (stall && stallCurrency) {
         console.log('getting products for', stall, '(', stallId, ')')
         const response = await fetch(url+'/stall/product/'+stallId+'?pending=false&api-key='+key, {
           method: 'GET',
@@ -226,7 +239,9 @@ class PriceList {
         });
         const json = await response.json()
         const tempList = []
-        if (this._loadKey != loadKey) return
+        if (this._loadKey != loadKey) return // abort if overcome by events
+
+        // configure the PriceList object
         this._emojiBase = Math.ceil(Math.sqrt(json.length))
         this.rows = this._emojiBase
         this.cols = this._emojiBase
@@ -248,12 +263,21 @@ class PriceList {
           this.setPriceData(item.id, item.name, item.cur, item.amt, item.size, item.unit)
         }
       }
+      this.loadFinisher(imageUrls)
+    }
+    asyncLogic()
+  }
+
+  loadFinisher(imageUrls) {
+    const asyncLogic = async () => {
 
       delete emojipane.lastBuilt
       delete emojipane.emojiPoints
       emojiShapes.build(this.emojiData, this._emojiBase, this._emojiBase, emojipane.emojiPoints)
       emojipane.queueLayout()
 
+      // initialize the texture with something generic until icons load
+      let textureContext
       {
         console.log('initializing texture')
         const emojiEl = document.createElement('canvas')
@@ -261,7 +285,7 @@ class PriceList {
         const textureWidth = this._emojiBase * iconWidth
         console.log('texture side', textureWidth)
         emojiEl.width = emojiEl.height = textureWidth
-        const textureContext = emojiEl.getContext("2d")
+        textureContext = emojiEl.getContext("2d")
         const textureImage = textureContext.createImageData(textureWidth, textureWidth);
         for (let i = 0; i < textureWidth; i += 1) {
           for (let j = 0; j < textureWidth; j += 1) {
@@ -277,94 +301,95 @@ class PriceList {
         textureContext.putImageData(textureImage, 0, 0)
         updateTexture(gl, this.texture, emojiEl)
         gl.generateMipmap(gl.TEXTURE_2D)
+      }
 
-        // in this block, we're going to update the texture above, emoji by emoji, by getting
-        // each emoji from the database cache and/or (re)creating it from the image URL.
-        {
-          textureContext.imageSmoothingQuality = 'high'
-          let pending = imageUrls.length
-          const ref = this
-          imageUrls.map((url, index) => {
-            const key = this.emojiData[index].label
-            // console.log(`loading emoji '${key}'`)
+      // in this block, we're going to update the texture above, emoji by emoji, by getting
+      // each emoji from the database cache and/or (re)creating it from the image URL.
+      {
+        textureContext.imageSmoothingQuality = 'high'
+        let pending = imageUrls.length
+        const ref = this
+        imageUrls.map((url, index) => {
+          const key = this.emojiData[index].label
+          // console.log(`loading emoji '${key}'`)
 
-            // function to draw a single emoji into the texture image
-            const updateSlot = (img, w, h) => {
-              let targetWidth = w, targetHeight = h
-              let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
-              textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
-              textureContext.drawImage(img,
-                i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
-                j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
-              i += 1
-              if (i >= ref._emojiBase) {
-                i = 0
-                j += 1
-              }
-              updateTexture(gl, ref.texture, emojiEl)
-              gl.generateMipmap(gl.TEXTURE_2D)
-              emojipane.setRenderFlag(true)
-              pending -= 1
-              if (pending == 0) {
-                console.log('done loading', imageUrls.length, 'emojis')
-              }
+          // function to draw a single emoji into the texture image
+          const updateSlot = (img, w, h) => {
+            let targetWidth = w, targetHeight = h
+            let i = index % ref._emojiBase, j = Math.floor(index / ref._emojiBase)
+            textureContext.clearRect(i * iconWidth, j * iconWidth, iconWidth, iconWidth)
+            textureContext.drawImage(img,
+              i * iconWidth + Math.trunc((iconWidth-targetWidth)/2),
+              j * iconWidth + Math.trunc((iconWidth-targetHeight)/2), targetWidth, targetHeight)
+            i += 1
+            if (i >= ref._emojiBase) {
+              i = 0
+              j += 1
+            }
+            updateTexture(gl, ref.texture, emojiEl)
+            gl.generateMipmap(gl.TEXTURE_2D)
+            emojipane.setRenderFlag(true)
+            pending -= 1
+            if (pending == 0) {
+              console.log('done loading', imageUrls.length, 'emojis')
+            }
+          }
+
+          // get existing database entry for this emoji
+          PlatformUtil.DatabaseGet('emoji', key, (successEvent) => {
+
+            // if there's an existing entry, use it
+            const emojiRec = successEvent.target.result
+            if (emojiRec !== undefined) {
+              // console.log('using cached emoji', successEvent)
+              const blobURL = URL.createObjectURL(emojiRec.blob)
+              const img = document.createElement('img')
+              img.addEventListener('load', function() {
+                if (ref._loadKey != loadKey) return // abort if overcome by events
+                // console.log(`updating icon '${emojiRec.key}' from local storage`)
+                updateSlot(img, img.width, img.height)
+              });
+              img.src = blobURL
             }
 
-            // get existing database entry for this emoji
-            PlatformUtil.DatabaseGet('emoji', key, (successEvent) => {
+            // reload from URL if it makes sense
+            if (emojiRec === undefined) {
+              const img = document.createElement('img')
+              img.crossOrigin ='anonymous'
+              img.onerror = () => { console.log('error loading image', img.src) }
+              img.addEventListener('load', function() {
+                console.log('updating icon from', img.src)
+                let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
+                if (img.width > img.height) {
+                  targetHeight = targetWidth * img.height / img.width
+                } else {
+                  targetWidth = targetHeight * img.width / img.height
+                }
 
-              // if there's an existing entry, use it
-              const emojiRec = successEvent.target.result
-              if (emojiRec !== undefined) {
-                // console.log('using cached emoji', successEvent)
-                const blobURL = URL.createObjectURL(emojiRec.blob)
-                const img = document.createElement('img')
-                img.addEventListener('load', function() {
-                  if (ref._loadKey != loadKey) return // abort if overcome by events
-                  // console.log(`updating icon '${emojiRec.key}' from local storage`)
-                  updateSlot(img, img.width, img.height)
-                });
-                img.src = blobURL
-              }
-
-              // reload from URL if it makes sense
-              if (emojiRec === undefined) {
-                const img = document.createElement('img')
-                img.crossOrigin ='anonymous'
-                img.addEventListener('load', function() {
-                  console.log('updating icon from', img.src)
-                  let targetWidth = iconWidth - 2, targetHeight = iconWidth - 2
-                  if (img.width > img.height) {
-                    targetHeight = targetWidth * img.height / img.width
-                  } else {
-                    targetWidth = targetHeight * img.width / img.height
-                  }
-
-                  // cache a scaled-down copy in our local emoji table
-                  const oc = document.createElement('canvas')
-                  const octx = oc.getContext('2d')
-                  oc.width = targetWidth
-                  oc.height = targetHeight
-                  octx.drawImage(img, 0, 0, oc.width, oc.height)
-                  // console.log('converting to blob')
-                  oc.toBlob(blob => {
-                    // console.log('blob: ', blob)
-                    if (!blob) console.log('blob creation failed')
-                    const newRec = { key, blob }
-                    PlatformUtil.DatabasePut('emoji', newRec, newRec.key, successEvent => {
-                      // console.log('emoji stored:', JSON.stringify(newRec))
-                    })
+                // cache a scaled-down copy in our local emoji table
+                const oc = document.createElement('canvas')
+                const octx = oc.getContext('2d')
+                oc.width = targetWidth
+                oc.height = targetHeight
+                octx.drawImage(img, 0, 0, oc.width, oc.height)
+                // console.log('converting to blob')
+                oc.toBlob(blob => {
+                  // console.log('blob: ', blob)
+                  if (!blob) console.log('blob creation failed')
+                  const newRec = { key, blob }
+                  PlatformUtil.DatabasePut('emoji', newRec, newRec.key, successEvent => {
+                    // console.log('emoji stored:', JSON.stringify(newRec))
                   })
+                })
 
-                  // update the texture with a scaled-down copy of the image
-                  if (ref._loadKey != loadKey) return // abort if overcome by events
-                  updateSlot(img, targetWidth, targetHeight)
-                });
-                img.src = url
-              }
-            })
+                // update the texture with a scaled-down copy of the image
+                if (ref._loadKey != loadKey) return // abort if overcome by events
+                updateSlot(img, targetWidth, targetHeight)
+              });
+              img.src = url
+            }
           })
-        }
+        })
       }
     }
     asyncLogic()
