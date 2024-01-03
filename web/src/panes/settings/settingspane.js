@@ -1,5 +1,6 @@
 const settingsbuttons = v = new vp.View(null);
 v.name = Object.keys({settingsbuttons}).pop();
+if (typeof Android === 'undefined') {
 v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
@@ -19,6 +20,7 @@ v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 	g.clickFunc = function() {
 		fullscreen.toggle();
 	}
+}
 v.gadgets.push(v.backbutton = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2; g.z = 1;
@@ -107,6 +109,7 @@ v.renderFunc = function() {
 
 const settingsbuttons2 = v = new vp.View(null);
 v.name = Object.keys({settingsbuttons2}).pop();
+if (typeof Android === 'undefined') {
 v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2;
@@ -128,6 +131,7 @@ v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 		if (hsettingspane.ratio != 1) return;
 		fullscreen.toggle();
 	}
+}
 v.gadgets.push(v.backbutton = g = new vp.Gadget(v));
 	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2; g.z = 1;

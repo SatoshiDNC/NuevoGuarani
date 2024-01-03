@@ -38,24 +38,10 @@ class PriceList {
     const loadKey = new Date()
     this._loadKey = loadKey
     this.clear()
-
-    // configure the PriceList object
-    console.log('loading default emoji texture')
-    // const emojiEl = document.createElement('img')
-    // const ref = this
-    // emojiEl.addEventListener('load', function() {
-    //   console.log('updating PriceList texture', ref.texture)
-    //   updateTexture(gl, ref.texture, emojiEl)
-    //   gl.generateMipmap(gl.TEXTURE_2D)
-    //   // emojiReady = true
-    //   // loadCheck()
-    //   console.log('loaded PriceList texture')
-    // })
-    // emojiEl.src = emojiFile
-    this.priceData = []
-    this.emojiData = []
+    console.log('loading default emojis')
 
     // Note: only the category and label are used from the following data. The coordinates are not used.
+    // For reference: https://emojiapi.dev/emojis
     const defaultEmojis = [
       { x:  6, y: 29, category: 'food', label: 'tomato', },
       { x: 55, y: 49, category: 'food', label: 'bell pepper', },
@@ -196,10 +182,14 @@ class PriceList {
       { x: 54, y:  5, category: 'tools', label: 'pick', },
       // { x: 55, y: 48, category: 'tools', label: 'barcode', },
     ];
-    const imageUrls = []
+
+    // configure the PriceList object
     this._emojiBase = Math.ceil(Math.sqrt(defaultEmojis.length))
     this.rows = this._emojiBase
     this.cols = this._emojiBase
+    this.priceData = []
+    this.emojiData = []
+    const imageUrls = []
     let xIter = 0, yIter = 0
     defaultEmojis.map(({ category, label }) => {
       imageUrls.push(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/emoji/96/${label.replaceAll(' ','_')}.png`)
