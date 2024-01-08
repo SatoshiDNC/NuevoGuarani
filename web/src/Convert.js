@@ -18,6 +18,40 @@ class Convert {
       if (c.app == input) return c.LNbits
     }
   }
+
+  static MoneyNumberForDisplay(number, currency) {
+    let s = ''+number
+    let negate = false; if (s.startsWith('-')) { negate = true; s = s.substr(1); }
+    const c = tr(',');
+    let t = '';
+  
+    // If this currency has cents, set it aside.
+    let currencyHasCents = config.hasCents(currency);
+    let cents = '00';
+    if (currencyHasCents) {
+      while (s.length < 3) s = '0'+s;
+      cents = s.substr(s.length-2, s.length);
+      s = s.substr(0, s.length-2);
+    }
+  
+    // Add thousands separator.
+    for (let i=0; i<s.length; i++) {
+      t = s.substring(s.length-1-i,s.length-i) + t;
+      if ((i+1)%3==0) t = c + t;
+    }
+    if (t.startsWith(c)) t = t.substr(1);
+  
+    // If this currency has cents, put it back.
+    if (currencyHasCents) {
+      t = t+this.toSuper(cents);
+    }
+  
+    return (negate? '-': '') + t;
+  }
+  static MoneySymbolAndNumberForDisplay(number, currency) {
+    return currency + ' ' + Convert.MoneyNumberForDisplay(number, currency)
+  }
+
   static EAN13ToPrice(input) {
     // verify length
     if (input.length !== 13) return
@@ -33,14 +67,24 @@ class Convert {
     return (+input.substring(7, 12))
   }
 
-  DebugJSON(obj) {
+  static JSONToString(obj) {
     var cache = []
-    console.log(JSON.stringify(obj, (key, value) => {
+    return JSON.stringify(obj, (key, value) => {
       if (typeof value === 'object' && value !== null) {
         if (cache.includes(value)) return
         cache.push(value)
       }
       return value
-    }, '· '))
+    }, '· ')
+  }
+
+  static StringToHashCode(str) {
+    let hash = 0;
+    for (let i = 0, len = str.length; i < len; i++) {
+        let chr = str.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
   }
 }

@@ -13,6 +13,9 @@ account name:	Account name:
 about @	about @
 add new	Add new
 all data has been deleted and/or reset to installation defaults	All data has been deleted and/or reset to installation defaults.
+...and @ more orders	...and @ more orders
+...and @ more orders totaling @	...and @ more orders totaling @
+API admin or invoice/read key	API admin or invoice/read key
 API auth token	API auth token
 API bearer token	API bearer token
 are you sure?	Are you sure?
@@ -58,16 +61,30 @@ invoice details	invoice details
 invoice number	invoice #
 invoice subtotal	subtotal
 item	item
+1 item	1 item
+@ items	@ items
+key	key
 language	Language
 layout	Layout
 license number	license #
-light mode	Light mode
+light mode	light mode
 lightning invoice	lightning invoice
+link a wallet	link a wallet
+link to online store	link to online store
 lnbc item description	PAYMENT OF LIGHNING INVOICE
+LNbits compatible	LNbits compatible
 main currency	main currency
+manual	manual
 my business	My Business
 new account	New account
+new order	new order
+new orders	new orders
+@ new orders	@ new orders
+@ new orders from @ stores	@ new orders from @ stores
 no	NO
+none	none
+NostrMarket compatible	NostrMarket compatible
+NostrMarket stall	NostrMarket stall
 not set	Not set
 orders	orders
 pay {AMNT} sats for {DESC}	pay {AMNT} sats for {DESC}
@@ -78,6 +95,7 @@ payment methods	Payment methods
 plain	plain
 postal code	ZIP code
 price	price
+price list	price list
 pricing	Pricing
 QR code and barcode scanning	QR and barcode scanning
 qty	qty
@@ -88,6 +106,7 @@ set API key	Set API key
 settings	Settings
 shows how many of each denomination to return	shows how many of each denomination to return
 some	some
+stall	stall
 state	state
 strike compatible	Strike compatible
 subtotal	subtotal
@@ -104,5 +123,6 @@ tradfi	TradFi
 valid from	valid from
 valid till	valid till
 wallet	Wallet
+when new orders arrive	when new orders arrive
 Would you like cash back?	Would you like cash back?
 Would you like money back?	Would you like money back?

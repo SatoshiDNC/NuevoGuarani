@@ -269,7 +269,7 @@ v.gadgets.push(v.walletsettings = g = new vp.Gadget(v));
 	g.pane.renderFunc = mainsettings.renderFunc;
 v.gadgets.push(v.pricelistsettings = g = new vp.Gadget(v));
 	g.title = 'price list';
-	g.subtitle = ['import price list'];
+	g.subtitle = ['link to online store'];
 	g.pane = pricelistsettings;
 	g.pane.layoutFunc = mainsettings.layoutFunc;
 	g.pane.renderFunc = mainsettings.renderFunc;

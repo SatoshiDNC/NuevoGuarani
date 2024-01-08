@@ -136,4 +136,8 @@
 		return style == PARAGUAY? s * 2: s / 3600;
 	}
 
+  const NEW_ORDERS_CHANNEL_ID = "NEW_ORDERS"
+  const NEW_ORDERS_CHANNEL_NAME = "New orders"
+  const NEW_ORDERS_CHANNEL_DESC = "When new orders arrive"
+
 	const config = new Configuration();

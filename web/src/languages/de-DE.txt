@@ -13,6 +13,9 @@ account name:	Name des Kontos:
 about @	etwa @
 add new	Neu hinzufügen
 all data has been deleted and/or reset to installation defaults	Alle Daten wurden gelöscht und/oder auf die Standardeinstellungen der Installation zurückgesetzt.
+...and @ more orders	...und @ weitere Aufträge
+...and @ more orders totaling @	...und @ weitere Bestellungen im Gesamtwert von @
+API admin or invoice/read key	API-Admin- oder Rechnungs-/Leseschlüssel
 API auth token	API-Authentifizierungs-Token
 API bearer token	API-Authentifizierungs-Token
 are you sure?	Sind Sie sicher?
@@ -58,16 +61,30 @@ invoice details	Rechnungsdaten
 invoice number	Rechnungsnummer
 invoice subtotal	Rechnungszwischensumme
 item	Artikel
+1 item	1 Artikel
+@ items	@ Artikel
+key	Schlüssel
 language	Sprache
 layout	Gestaltung
 license number	Lizenznummer
 light mode	Hellmodus
 lightning invoice	Lightningrechnung
+link a wallet	eine Brieftasche verbinden
+link to online store	Link zum Online-Shop
 lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
+LNbits compatible	LNbits kompatibel
 main currency	Hauptwährung
+manual	Handbuch
 my business	Mein Geschäft
 new account	Neues Konto
+new order	neue Bestellung
+new orders	neue Aufträge
+@ new orders	@ neue Aufträge
+@ new orders from @ stores	@ neue Aufträge von @ Geschäften
 no	NEIN
+none	keine
+NostrMarket compatible	NostrMarket kompatibel
+NostrMarket stall	NostrMarket-Stand
 not set	Nicht eingestellt
 orders	Bestellungen
 pay {AMNT} sats for {DESC}	{AMNT} sats für {DESC} bezahlen
@@ -78,6 +95,7 @@ payment methods	Zahlungsverfahren
 plain	einfach
 postal code	PLZ
 price	Preis
+price list	preisliste
 pricing	Preisgestaltung
 QR code and barcode scanning	QR- und Barcode-Scannen
 qty	Quant.	Quantität
@@ -88,6 +106,7 @@ set API key	API-Schlüssel einstellen
 settings	Einstellungen
 shows how many of each denomination to return	zeigt an, wie viele der einzelnen Stückelungen
 some	einige
+stall	Stand
 state	Staat
 strike compatible	Strike-kompatibel
 subtotal	Zwischensumme
@@ -104,5 +123,6 @@ tradfi	TradFi
 valid from	gültig ab
 valid till	gültig bis
 wallet	Geldbeutel
+when new orders arrive	wenn neue Aufträge eingehen
 Would you like cash back?	Möchten Sie Bargeld zurückerhalten?
 Would you like money back?	Möchten Sie Bargeld zurückerhalten?

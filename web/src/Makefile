@@ -69,6 +69,7 @@ all.js: \
 	main-helpers.js \
 	wallets/all.js \
 	panes/all.js \
+	main-orders.js \
 	main-tail.js \
 	load-head.js \
 	fonts/all.js \
@@ -103,6 +104,7 @@ all.js: \
 		main-helpers.js \
 		wallets/all.js \
 		panes/all.js \
+		main-orders.js \
 		main-tail.js \
 		load-head.js \
 		fonts/all.js \

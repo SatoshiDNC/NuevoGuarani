@@ -29,57 +29,70 @@ v.saveData = function() {
   PlatformUtil.DatabaseAdd('sales', newItem, (event) => {
     console.log('DatabaseAdd success', event)
 		delete billpane.lastLoadedKey
+		delete billpane.lastLoadedTable
 		delete billpane.locked
 		billpane.clearData()
 	})
 }
 
 // Load the data from a previous or saved sale.
-v.loadData = function() {
+v.loadData = function(table = 'sales') {
   console.log('loadData()')
-	const tx = db.transaction(["sales"], "readonly");
-	const os = tx.objectStore("sales");
+	const tx = db.transaction([table], "readonly");
+	const os = tx.objectStore(table);
   console.log(this.lastLoadedKey)
+  console.log(this.lastLoadedTable)
+  if (this.lastLoadedTable !== table) {
+    delete this.lastLoadedKey
+    delete this.lastLoadedTable
+  }
 	const range = this.lastLoadedKey? IDBKeyRange.upperBound(this.lastLoadedKey, true): undefined;
   console.log(range)
 	const req = os.openCursor(range, 'prev');
 	req.onsuccess = (event) => {
     console.log('cursor successfully opened')
-    console.log('event', event)
 		let cursor = event.target.result;
     //console.log('cursor', cursor)
-		if (cursor) {
-      while (cursor) {
-        console.log('cursor contains data')
-        console.log('cursor', cursor)
-        //console.log(cursor.value.store)
-        if (cursor.value.store == getCurrentAccount().id) {
-          this.lastLoadedKey = cursor.key;
-  //				setConversionRates();
-          this.clearData();
-          billpane.orderCurrency = cursor.value.currency;
-          billpane.conversions = {};
-          if (cursor.value.conversions) billpane.conversions = cursor.value.conversions;
-          billpane.items = cursor.value.items;
-          billpane.userY = 0;
-          billpane.relayout();
-          billpane.setRenderFlag(true);
-          billpane.textbox.text = cursor.value.dataentry.textbox;
-          billpane.textbox.options = cursor.value.dataentry.options;
-          billpane.textbox.resetGads();
-          billpane.textbox.setRenderFlag(true)
-          billpane.subtotal.enableGads();
-          billpane.subtotal.setRenderFlag(true)
-          return
-        }
-        try { cursor.continue() } catch { cursor = null }
+    while (cursor && (range === undefined || cursor.key < this.lastLoadedKey)) {
+      console.log('cursor contains subsequent data')
+      console.log('cursor', Convert.JSONToString(cursor.value))
+      //console.log(cursor.value.store)
+      if (cursor.value.store == getCurrentAccount().id) {
+        this.lastLoadedKey = cursor.key
+        this.lastLoadedTable = table
+//				setConversionRates();
+        this.clearData();
+        billpane.orderCurrency = cursor.value.currency;
+        billpane.conversions = {};
+        if (cursor.value.conversions) billpane.conversions = cursor.value.conversions;
+        billpane.items = cursor.value.items;
+        billpane.userY = 0;
+        billpane.relayout();
+        billpane.setRenderFlag(true);
+        billpane.textbox.text = cursor.value.dataentry.textbox;
+        billpane.textbox.options = cursor.value.dataentry.options;
+        billpane.textbox.resetGads();
+        billpane.textbox.setRenderFlag(true)
+        billpane.subtotal.enableGads()
+        billpane.subtotal.setRenderFlag(true)
+
+        // Clear notification
+        const notifCount1 = notificationState.filter(n => n.accountId == accounts.current().id).length
+        notificationState = notificationState.filter(n => n.nostrMarketOrderId != cursor.value.nostrMarketOrderId)
+        PlatformUtil.DatabasePut("state", notificationState, 'notifications')
+        PlatformUtil.stopNotifying(Convert.StringToHashCode(accounts.current().id))
+        return
       }
-		} else {
-      console.log('cursor contains no data')
-			delete this.lastLoadedKey
-			this.clearData()
-      return
-		}
+      try { cursor.continue() } catch (e) {
+        console.log('catch continue error', Convert.JSONToString(e))
+        cursor = null
+      }
+    }
+    console.log('cursor contains no subsequent data')
+    delete this.lastLoadedKey
+    delete this.lastLoadedTable
+    this.clearData()
+    return
 	};
 	req.onerror = (event) => {
 		console.log("Cursor error.");
@@ -276,26 +289,26 @@ v.renderFunc = function() {
 		y -= halfPad;
 	}
 
-	function outputConversionRate(label, rate, amount) {
-		y -= halfPad + bubbleSize;
-		let str2 = icap(tr(label))+': ';
-		let str = v.getOptimalDigits(rate, amount);//effectiverate.toFixed(Math.max(0, precision - Math.round(effectiverate).toString().length));
-		let w = defaultFont.calcWidth(str) + defaultFont.calcWidth(str2);
-		mat4.identity(m);
-		mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14, 0]);
-		if (str2) {
-			defaultFont.draw(0,0, str2, config.themeColors.uiBillChargeTextLight, v.mat, m);
-		}
-		defaultFont.draw(0,0, str, config.themeColors.uiBillChargeText, v.mat, m);
-		y -= halfPad;
-	}
+	// function outputConversionRate(label, rate, amount) {
+	// 	y -= halfPad + bubbleSize;
+	// 	let str2 = icap(tr(label))+': ';
+	// 	let str = v.getOptimalDigits(rate, amount);//effectiverate.toFixed(Math.max(0, precision - Math.round(effectiverate).toString().length));
+	// 	let w = defaultFont.calcWidth(str) + defaultFont.calcWidth(str2);
+	// 	mat4.identity(m);
+	// 	mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14, 0]);
+	// 	if (str2) {
+	// 		defaultFont.draw(0,0, str2, config.themeColors.uiBillChargeTextLight, v.mat, m);
+	// 	}
+	// 	defaultFont.draw(0,0, str, config.themeColors.uiBillChargeText, v.mat, m);
+	// 	y -= halfPad;
+	// }
 
 	function outputConversion(desc, value, convTo, fixedTarget) {
 		y -= halfPad + textSize;
 		const convtype = billpane.orderCurrency +'-'+ convTo;
 		const a = (new Date()).getMilliseconds()/500*Math.PI/12;
 		let temp, w, gear;
-		let original_times = icap(tr(desc))+': '+ v.formatMoney(''+value) + ' × ';
+		let original_times = v.formatMoney(''+value) + ' × ';
 		let conv = '', equals = ' = ', result = '';
 		if (fixedTarget) {
 			conv = v.formatConvRate(v.getOptimalDigits(fixedTarget / value, value));
@@ -347,6 +360,14 @@ v.renderFunc = function() {
 		} else {
 			defaultFont.draw(0,0, result, config.themeColors.uiBillChargeText, v.mat, m);
 		}
+		y -= halfPad;
+
+		y -= halfPad + textSize;
+    let str = icap(tr(desc))+":"
+    w = defaultFont.calcWidth(str);
+		mat4.identity(m);
+		mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+14, 0]);
+		defaultFont.draw(0,0, str, config.themeColors.uiBillChargeTextLight, v.mat, m);
 		y -= halfPad;
 	}
 
@@ -627,11 +648,43 @@ v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
 	g.clickFunc = function() {
 		const g = this;
 		if (g.todo) {
-			billpane.clearData();
-			delete billpane.lastLoadedKey;
+			billpane.clearData()
+			delete billpane.lastLoadedKey
+			delete billpane.lastLoadedTable
 		} else {
 			transitionTo(home, 'min');
 		}
+	}
+v.gadgets.push(v.receiveGad = g = new vp.Gadget(v));
+	g.actionFlags = vp.GAF_CLICKABLE;
+	g.enabled = true;
+	g.layoutFunc = function() {
+		var g = this, v = g.viewport, s = v.getScale();
+		g.w = v.sh*3/5; g.h = v.sh*3/5;
+		g.x = v.sw - 2 * v.sh + (v.sh - g.w)/2; g.y = (v.sh - g.h)/2; g.z = 1;
+		g.autoHull();
+    billpane.subtotal.enableGads()
+	}
+	g.renderFunc = function() {
+		const g = this;
+    if (!g.enabled) return
+		const mat = mat4.create()
+		mat4.identity(mat)
+		mat4.translate(mat,mat, [g.x,g.y,0])
+		mat4.scale(mat,mat, [g.h/18,g.h/18,1])
+		iconFont.draw(0,16, "\x01", config.themeColors.uiBillSubtotalLabel, g.viewport.mat, mat)
+    const notifs = notificationState.filter(n => n.accountId == accounts.current().id).length
+    if (notifs > 0) {
+      mat4.identity(mat)
+      mat4.translate(mat,mat, [g.x,g.y,0])
+      mat4.scale(mat,mat, [g.h/36,g.h/36,1])
+      defaultFont.draw(-defaultFont.calcWidth(''+notifs)/2,12, ''+notifs, config.themeColors.uiErrorRed, g.viewport.mat, mat)
+    }
+	}
+	g.clickFunc = function() {
+    console.log('clickFunc()')
+		const g = this;
+    billpane.loadData('orders')
 	}
 v.gadgets.push(v.saveGad = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_CLICKABLE;
@@ -706,6 +759,14 @@ v.enableGads = function() {
 			billpane.subtotal.saveGad.changed = enableState;
 			billpane.subtotal.setRenderFlag(true);
 		}
+  }
+
+  {
+    let enableState = !billpane.changed && config.stallKeys?.stall !== undefined
+    if (enableState !== billpane.subtotal.receiveGad.enabled) {
+      billpane.subtotal.receiveGad.enabled = enableState
+			billpane.subtotal.setRenderFlag(true);
+    }
 	}
 
 	{

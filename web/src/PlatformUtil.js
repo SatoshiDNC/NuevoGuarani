@@ -120,14 +120,26 @@ class PlatformUtil {
 
   static DatabaseDeleteAll(successCallback, failureCallback) {
     // console.log('DatabaseDeleteAll()')
-    // if (typeof Android !== 'undefined') {
-    //   Android.deleteAllData(PlatformUtil.InitCallback(successCallback), PlatformUtil.InitCallback(failureCallback))
-    // } else {
-      db.close()
-      const req = indexedDB.deleteDatabase("DB")
-      req.onsuccess = successCallback || ((event) => { console.debug('DatabaseDeleteAll request succeeded.') })
-      req.onerror = failureCallback || ((event) => { console.debug('DatabaseDeleteAll request failed.') })
-    // }
+
+    if (typeof Android !== 'undefined') {
+      Android.deleteAllData(PlatformUtil.InitCallback((event) => { console.debug('Deletion request succeeded from Android side.') }), PlatformUtil.InitCallback((event) => { console.debug('Deletion request failed from Android side.') }))
+    }
+
+    db.close()
+    const req = indexedDB.deleteDatabase("DB")
+    req.onsuccess = successCallback || ((event) => { console.debug('DatabaseDeleteAll request succeeded.') })
+    req.onerror = failureCallback || ((event) => { console.debug('DatabaseDeleteAll request failed.') })
+  }
+
+  static notify(groupIdStr, groupName, chanIdStr, chanName, chanDesc, intId, msgTitle, msgText) {
+    if (typeof Android !== 'undefined') {
+      Android.notify(groupIdStr, groupName, chanIdStr, chanName, chanDesc, intId, msgTitle, msgText)
+    }
+  }
+  static stopNotifying(id) {
+    if (typeof Android !== 'undefined') {
+      Android.stopNotifying(id)
+    }
   }
 
 }

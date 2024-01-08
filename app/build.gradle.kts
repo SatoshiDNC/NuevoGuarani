@@ -1,4 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -12,6 +14,26 @@ tasks.register<Copy>("preCopy") {
 
 android {
     project.tasks.preBuild.dependsOn("preCopy")
+
+    val versionPropsFile = file("version.properties")
+    if (versionPropsFile.canRead()) {
+        val versionProps: Properties = Properties()
+
+        versionProps.load(FileInputStream(versionPropsFile))
+
+        val code = versionProps["VERSION_CODE"].toString().toInt() + 1
+
+        versionProps["VERSION_CODE"]=code.toString()
+        versionProps.store(versionPropsFile.writer(), null)
+
+        defaultConfig {
+            versionCode = code
+            versionName = "0.1." + code
+        }
+    } else {
+        throw GradleException("Could not read version.properties!")
+    }
+
     namespace = "com.satoshidnc.nuevoguarani"
     compileSdk = 34
 
@@ -19,10 +41,11 @@ android {
         applicationId = "com.satoshidnc.nuevoguarani"
         minSdk = 26
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+//        versionCode = 1
+//        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "${project.rootDir.name}-v$versionName")
     }
 
     buildTypes {
@@ -54,4 +77,5 @@ dependencies {
     implementation("com.neovisionaries:nv-websocket-client:2.14")
     implementation("androidx.webkit:webkit:1.9.0")
     implementation("commons-io:commons-io:2.4")
+    //implementation("androidx.core:core-ktx:2.2.0")
 }

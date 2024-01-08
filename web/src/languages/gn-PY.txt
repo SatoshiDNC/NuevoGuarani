@@ -13,6 +13,9 @@ gn-PY	Guaraní
 about @	@ rupi
 	add new	Añadir nuevo
 	all data has been deleted and/or reset to installation defaults	Se han borrado todos los datos y/o se han restablecido los valores predeterminados de instalación.
+  ...and @ more orders	...y @ pedidos más
+  ...and @ more orders totaling @	...y @ pedidos más por un total de @
+	API admin or invoice/read key	API admin o clave para facturar/leer
 	API auth token	Token de autenticación API
 	API bearer token	Token de autenticación API
 	are you sure?	¿Está seguro?
@@ -58,16 +61,30 @@ instant	KO'AG̃AITE
 	invoice number	factura na
 	invoice subtotal	importe total
 item	mba'e
+	1 item	1 artículo
+	@ items	@ artículos
+	key	clave
 	language	ÑE'Ẽ
 	layout	Presentación
 	license number	timbrado na
 	light mode	Modo claro
 	lightning invoice	factura relámpago
+	link a wallet	vincular un monedero
+	link to online store	enlace a la tienda en línea
 lnbc item description	HEPYME'Ẽ FACTURA GUARANÍ PYAHU
+	LNbits compatible	Compatible con LNbits
 	main currency	moneda principal
+	manual	manual
 	my business	Mi negocio
 	new account	Nueva cuenta
+  new order	nuevo pedido
+	new orders	nuevos pedidos
+  @ new orders	@ nuevos pedidos
+  @ new orders from @ stores	@ nuevos pedidos de @ tiendas
 no	NO
+	none	ninguno
+	NostrMarket compatible	Compatible con NostrMarket
+	NostrMarket stall	puesto del NostrMarket
 	not set	No configurado
 	orders	pedidos
 	pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
@@ -78,6 +95,7 @@ payment method	AMBUÉICHA TEPYME'Ẽ
 	plain	simple
 	postal code	código postal
 price	hepykue
+	price list	lista de precios
 	pricing	Fijación de precios
 	QR code and barcode scanning	escaneo de códigos de barras y QR
 qty	hetakue
@@ -88,6 +106,7 @@ qty	hetakue
 	settings	Ajustes
 	shows how many of each denomination to return	muestra cuántos ejemplares de cada denominación
 	some	algunos
+	stall	puesto
 	state	departamento
 	strike compatible	Compatible con strike
 subtotal	OPAITE
@@ -104,5 +123,6 @@ tradfi	TradFi
 	valid from	valido desde
 	valid till	valido hasta
 	wallet	Monedero
+	when new orders arrive	cuando lleguen nuevos pedidos
 Would you like cash back?	¿Reipotápa jey nde pláta?
 Would you like money back?	¿Reipotápa jey nde pláta?
