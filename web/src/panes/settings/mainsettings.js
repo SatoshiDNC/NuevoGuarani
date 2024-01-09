@@ -166,18 +166,17 @@ v.renderFunc = function() {
 					var str, str2
 					if (li) {
 						if (typeof o === 'object') {
-							str = o.title
-              str2 = o.alt
+							str = o.title; str2 = o.alt
 						} else {
 							str = o
 						}
 					} else {
 						str = 'add new';
 					}
-					str = icap(tr(str))
-					defaultFont.draw(0,0,str,color, this.mat, mat)
-					str2 = icap(tr(str2))
-					defaultFont.draw(0,0,' '+str2,th.uiSettingsSubText, this.mat, mat)
+					str = icap(tr(str)); defaultFont.draw(0,0,str,color, this.mat, mat)
+          if (str2) {
+            str2 = icap(tr(str2)); defaultFont.draw(0,0,' · '+str2,th.uiSettingsSubText, this.mat, mat)
+          }
 
 					if (i==0) continue;
 					mainShapes.useProg5();
