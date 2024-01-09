@@ -223,10 +223,10 @@ v.gadgets.push(v.editaccount = g = new vp.Gadget(v))
       }
     })
 	}
-v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
+v.gadgets.push(v.busname = g = new vp.Gadget(v));
 	g.type = 'button';
-	g.key = 'locAddress';
-	g.title = 'business address';
+	g.key = 'busName';
+	g.title = 'business name';
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value != '') {
@@ -255,6 +255,22 @@ v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
       }
     })
 	}
+v.gadgets.push(v.locaddress = g = new vp.Gadget(v));
+	g.type = 'button';
+	g.key = 'locAddress';
+	g.title = 'business address';
+	Object.defineProperty(g, "subtitle", {
+		get : function () {
+			if (this.value != '') {
+				if (this.value.length < 50) return this.value;
+				else return this.value.substr(0,50)+'...';
+			}	else return icap(tr('not set'));
+		}
+	});
+	g.value = '';
+	g.defaultValue = '';
+	g.daisychain = true;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.loccity = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'locCity';
@@ -270,7 +286,7 @@ v.gadgets.push(v.loccity = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.locstate = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'locState';
@@ -286,7 +302,7 @@ v.gadgets.push(v.locstate = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.locpostalcode = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'locPostalCode';
@@ -302,7 +318,7 @@ v.gadgets.push(v.locpostalcode = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.telephone = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'busTel';
@@ -318,7 +334,7 @@ v.gadgets.push(v.telephone = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = false;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.taxid = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'businessTaxId';
@@ -334,7 +350,7 @@ v.gadgets.push(v.taxid = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.license = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'businessLicenseNumber';
@@ -350,7 +366,7 @@ v.gadgets.push(v.license = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.licensevalidfrom = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'businessLicenseValidFrom';
@@ -366,7 +382,7 @@ v.gadgets.push(v.licensevalidfrom = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.licensevalidtill = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'businessLicenseValidTill';
@@ -382,7 +398,7 @@ v.gadgets.push(v.licensevalidtill = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = false;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.cashreg = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'cashReg';
@@ -398,7 +414,7 @@ v.gadgets.push(v.cashreg = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = true;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.gadgets.push(v.cashier = g = new vp.Gadget(v));
 	g.type = 'button';
 	g.key = 'cashier';
@@ -414,7 +430,7 @@ v.gadgets.push(v.cashier = g = new vp.Gadget(v));
 	g.value = '';
 	g.defaultValue = '';
 	g.daisychain = false;
-	g.clickFunc = v.locaddress.clickFunc;
+	g.clickFunc = v.busname.clickFunc;
 v.load = function(cb) {
 	const debuglog = false;
 	const gads = [

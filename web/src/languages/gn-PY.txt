@@ -24,6 +24,7 @@ about @	@ rupi
 	base URL	URL básica
 bill	ÑEMUMBYREHAI
 	business address	dirección de la empresa
+	business name	nombre de la empresa
 	business telephone	teléfono de empressa
 	camera selection	Selección de cámara
 cash	viruete

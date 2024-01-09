@@ -24,6 +24,7 @@ barcode scanning	escaneo de códigos de barras
 base URL	URL básica
 bill	FACTURA
 business address	dirección de la empresa
+business name	nombre de la empresa
 business telephone	teléfono de empressa
 camera selection	Selección de cámara
 cash	efectivo

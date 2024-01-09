@@ -24,6 +24,7 @@ barcode scanning	Barcode-Scannen
 base URL	Basis-URL
 bill	RECHNUNG
 business address	Geschäftsadresse
+business name	Geschäftsname
 business telephone	Geschäftstelefon
 camera selection	Auswahl der Kamera
 cash	Bargeld

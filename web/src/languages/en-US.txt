@@ -24,6 +24,7 @@ barcode scanning	barcode scanning
 base URL	Base URL
 bill	INVOICE
 business address	business address
+business name	business name
 business telephone	business telephone
 camera selection	Camera selection
 cash	cash
