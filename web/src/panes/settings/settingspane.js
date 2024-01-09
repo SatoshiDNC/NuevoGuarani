@@ -183,7 +183,7 @@ v.renderFunc = function() {
 
 const settingspages = v = new vp.PagesView(null, 'h');
 v.name = Object.keys({settingspages}).pop();
-v.swipeGad.z = -1;
+v.swipeGad.z = -10;
 v.pages.push(startpane);
 v.pageChangeFunc = function() {
 	//console.log('settings pagechange', this.pages[this.index].title);
