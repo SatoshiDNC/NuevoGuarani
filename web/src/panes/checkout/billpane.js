@@ -519,9 +519,28 @@ v.renderFunc = function() {
 		let nmw = defaultFont.calcWidth(str) + defaultFont.calcWidth(str2);
 		let emw = nmw; if (icon) emw += emojiWidth + emojiSpace;
 
+    // Extra space needed for description text.
 		const descscale = 0.5;
-		let exh = desc? 4+descscale*16: 0;
-		let exw = defaultFont.calcWidth(desc) * descscale;
+		let exh = 0, exw = 0
+    let longDesc = []
+    if (desc) {
+      exh = 4 + descscale * 16
+		  exw = defaultFont.calcWidth(desc) * descscale
+      if (exw > v.sw - 2 * sideMargin - bubbleRadius * 2 + coziness * 2) {
+        exw = v.sw - 2 * sideMargin - bubbleRadius * 2 + coziness * 2
+        let toFit = desc.split(' ')
+        desc = ''
+        exh -= descscale * 16
+        do {
+          exh += descscale * 16
+          while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * descscale < exw) {
+            desc = desc + ' ' + toFit.pop()
+          }
+          longDesc.push(desc)
+          desc = ''
+        } while (toFit.length > 0)
+      }
+    }
 
 		let w = (exw > emw)? exw: emw;
 
