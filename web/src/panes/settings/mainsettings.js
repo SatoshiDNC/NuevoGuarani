@@ -67,7 +67,6 @@ v.renderFunc = function() {
 	var y = 25, daisychain = false;
 	const margin = (th.uiBackground[0] + th.uiBackground[1] + th.uiBackground[2] == 0)? 5:5;
 	for (const g of this.gadgets) {
-    g.enabled = !g.hide
 		if (g.hide) {
 		} else if (g.renderFunc) {
 			g.renderFunc.call(g);
