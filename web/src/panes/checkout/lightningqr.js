@@ -162,8 +162,8 @@ v.renderFunc = function() {
 	}
 
 	const mat = mat4.create();
-	if (this.qr[this.qrindex].startsWith('lnbc')
-	||  this.qr[this.qrindex].startsWith('lnurl')) {
+	if (this.qr[this.qrindex].toLowerCase().startsWith('lnbc')
+	||  this.qr[this.qrindex].toLowerCase().startsWith('lnurl')) {
 		const m = mat4.create();
 		mat4.identity(mat);
 		mat4.translate(mat,mat,[this.sw/2,this.sh/2,0]);

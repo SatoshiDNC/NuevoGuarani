@@ -642,64 +642,130 @@ v.keypadFunc = function(code, key) {
 					}
 
 					if (v.options.lightning) {
-						if (checkoutpane.subtotalshim.b == billpane && !lightningqr.netBusy) {
+            const inQuestion = billpane.subtotal.calc('cashTendered') - billpane.subtotal.calc('limitToBill')
+            if (checkoutpane.subtotalshim.b == billpane && !lightningqr.netBusy) {
               v.disableConversionRefresh = true
               v.resetGads()
-							lightningqr.clear()
-							checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
-							checkoutpane.relayout()
-							checkoutpane.setRenderFlag(true)
-							switch (config.walletType) {
-							case 'manual':
-								lightningqr.walletSignal = true;
-								billpane.textbox.options.hashes = [];
-								billpane.changed = true;
-								break;
-							case 'LNbits compatible':
-								if (!lightningqr.netBusy) {
-									lightningqr.netBusy = true;
-									lightningqr.clear();
-									lightningqr.busySignal = true;
-									config.wallet.generateInvoice((+qty) * (+money), (invoice, id) => {
-										if (invoice && invoice.startsWith('lnbc') && id) {
-											lightningqr.qr = [invoice];
-											if (!billpane.textbox.options.hashes)
-												billpane.textbox.options.hashes = [];
-											billpane.textbox.options.hashes.push(id);
-											billpane.changed = true;
-										} else {
-											lightningqr.errorSignal = true;
-											console.error('Wallet did not generate a recognized invoice type.');
-										}
-										lightningqr.setRenderFlag(true);
-										lightningqr.busySignal = false;
-										lightningqr.netBusy = false;
-									});
-								}
-								break;
-							default:
-							}
+              if (inQuestion < 0) {
+                // Pay remaining amount via Lightning.
+                lightningqr.clear()
+                checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
+                checkoutpane.relayout()
+                checkoutpane.setRenderFlag(true)
+                switch (config.walletType) {
+                case 'manual':
+                  lightningqr.walletSignal = true;
+                  billpane.textbox.options.hashes = [];
+                  billpane.changed = true;
+                  break;
+                case 'LNbits compatible':
+                  if (!lightningqr.netBusy) {
+                    lightningqr.netBusy = true;
+                    lightningqr.clear();
+                    lightningqr.busySignal = true;
+                    config.wallet.generateInvoice((+qty) * (+money), (invoice, id) => {
+                      if (invoice && invoice.startsWith('lnbc') && id) {
+                        lightningqr.qr = [invoice];
+                        if (!billpane.textbox.options.hashes)
+                          billpane.textbox.options.hashes = [];
+                        billpane.textbox.options.hashes.push(id);
+                        billpane.changed = true;
+                      } else {
+                        lightningqr.errorSignal = true;
+                        console.error('Wallet did not generate a recognized invoice type.');
+                      }
+                      lightningqr.setRenderFlag(true);
+                      lightningqr.busySignal = false;
+                      lightningqr.netBusy = false;
+                    });
+                  }
+                  break;
+                default:
+                }
+              } else {
+                // Return overpayment via Lightning.
+                lightningqr.clear()
+                checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
+                checkoutpane.relayout()
+                checkoutpane.setRenderFlag(true)
+                switch (config.walletType) {
+                case 'manual':
+                  lightningqr.walletSignal = true
+                  billpane.textbox.options.hashes = []
+                  billpane.changed = true
+                  break
+                case 'LNbits compatible':
+                  if (!lightningqr.netBusy) {
+                    lightningqr.netBusy = true
+                    lightningqr.clear()
+                    lightningqr.busySignal = true
+                    config.wallet.generateWithdrawalLink((+qty) * (+money), "Here's your change. Thank you for your purchase!", (withdrawalLink, id) => {
+                      if (withdrawalLink && withdrawalLink.toLowerCase().startsWith('lnurl') && id) {
+                        lightningqr.qr = [withdrawalLink]
+                        if (!billpane.textbox.options.hashes)
+                          billpane.textbox.options.hashes = []
+                        billpane.textbox.options.hashes.push(id)
+                        billpane.changed = true
+                      } else {
+                        lightningqr.errorSignal = true
+                        console.error('Wallet did not generate a recognized withdrawal link type.')
+                      }
+                      lightningqr.setRenderFlag(true)
+                      lightningqr.busySignal = false
+                      lightningqr.netBusy = false
+                    })
+                  }
+                  break
+                default:
+                }
+              }
 						} else if (billpane.textbox.options.hashes && !lightningqr.netBusy) {
-							switch (config.walletType) {
-							case 'manual':
-								completionlogic()
-								break
-							case 'LNbits compatible':
-								if (!lightningqr.netBusy) {
-									lightningqr.netBusy = true
-									config.wallet.checkInvoice(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
-										lightningqr.netBusy = false
-										if (result && result.paid) {
-                      billpane.textbox.options.lightningpaid = true
-                      completionlogic()
-                    } else {
-                      vp.beep('bad')
-                    }
-									})
-								}
-								break
-							default:
-							}
+              if (inQuestion < 0) {
+                // Paid remaining amount via Lightning.
+                switch (config.walletType) {
+                case 'manual':
+                  completionlogic()
+                  break
+                case 'LNbits compatible':
+                  if (!lightningqr.netBusy) {
+                    lightningqr.netBusy = true
+                    config.wallet.checkInvoice(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
+                      lightningqr.netBusy = false
+                      if (result && result.paid) {
+                        billpane.textbox.options.lightningpaid = true
+                        completionlogic()
+                      } else {
+                        vp.beep('bad')
+                      }
+                    })
+                  }
+                  break
+                default:
+                }
+              } else {
+                // Returned overpayment via Lightning.
+                switch (config.walletType) {
+                case 'manual':
+                  completionlogic()
+                  break
+                case 'LNbits compatible':
+                  if (!lightningqr.netBusy) {
+                    lightningqr.netBusy = true
+                    config.wallet.checkWithdrawalLink(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
+                      lightningqr.netBusy = false
+                      if (result && result.used) {
+                        billpane.textbox.options.lightningpaid = true
+                        billpane.textbox.options.lightningwithdrawn = true
+                        completionlogic()
+                      } else {
+                        vp.beep('bad')
+                      }
+                    })
+                  }
+                  break
+                default:
+                }  
+              }
 						} else {
 							vp.beep('bad')
 						}

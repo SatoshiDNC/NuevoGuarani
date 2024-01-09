@@ -234,4 +234,130 @@ class LNbitsWallet extends Wallet {
 		console.groupEnd();
 	}
 
+	generateWithdrawalLink(sats, comment, withdrawalLinkCallback) {
+		console.groupCollapsed(this.constructor.name+'.generateWithdrawalLink(', sats, comment, '...)');
+
+		var total_sat = sats;
+		if (total_sat <= 0 || total_sat != (+total_sat).toString()) {
+			console.error('Amount sanity check failed:', total_sat);
+			vp.beep('bad');
+			return;
+		}
+
+		const asyncLogic = async () => {
+			let json = '';
+			console.log('generating withdrawal link for',total_sat,'sats','live =',!config.debugBuild);
+			if (!config.debugBuild) {
+        console.log(config.walletLNbitsWithdrawURL+'/links');
+				const response = await fetch(config.walletLNbitsWithdrawURL+'/links', {//?api-key='+config.walletLNbitsKey
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'X-API-KEY': config.walletLNbitsKey,
+					},
+					body: `{
+            "title": "${comment.replaceAll("\"", "\\\"")}",
+            "min_withdrawable": ${total_sat},
+            "max_withdrawable": ${total_sat},
+            "uses": 1,
+            "wait_time": 1,
+            "is_unique": true,
+            "webhook_url": "https://satoshidnc.com/webhook",
+            "webhook_headers": "{}",
+            "webhook_body": "{}",
+            "custom_url": "https://satoshidnc.com/custom"
+          }`,
+				});
+				json = await response.json(); //extract JSON from the http response
+			} else {
+				console.log('debug build; generating fake');
+				json = {
+          id: "3mzuR4",
+          wallet: "6e40959bed4c4a6ca3fc063c113fa9d1",
+          title: "Order#234324",
+          min_withdrawable: 25,
+          max_withdrawable: 25,
+          uses: 1,
+          wait_time: 1,
+          is_unique: true,
+          unique_hash: "6F3iYbesaRR4KubJ9FuGxr",
+          k1: "kSgzcvmVcoBV9GNhnu44AZ",
+          open_time: 1704828390,
+          used: 0,
+          usescsv: "0",
+          number: 0,
+          webhook_url: "https://satoshidnc.com",
+          webhook_headers: {},
+          webhook_body: {},
+          custom_url: "https://satoshidnc.com",
+          lnurl: "LNURL1DP68GURN8GHJ7MRWVF5HGUEWWDSHGMMNDP5KGMNR9E3K7MF0WA5HG6RYWFSHWTMPWP5J7A339AKXUATJDSHNV33ND9VKYETNV9F9YDZTW43Y5W2XW4RHSU30F46X6AMEGCMNJAR4D4HHZ6ZJVVURSMJ9XFESYNPS63"
+        };
+			}
+
+			console.log('json', Convert.JSONToString(json))
+			const withdrawalLinkString = json.lnurl
+			const linkId = json.id
+			console.log('withdrawalLinkString', withdrawalLinkString)
+			console.log('uniqueHash', linkId)
+			if (withdrawalLinkString && withdrawalLinkString.toLowerCase().startsWith('lnurl') && linkId) {
+				withdrawalLinkCallback(withdrawalLinkString, linkId)
+			} else {
+				withdrawalLinkCallback()
+			}
+		}
+		asyncLogic();
+
+		console.groupEnd();
+	}
+
+	checkWithdrawalLink(linkId, withdrawalLinkCallback) {
+		console.groupCollapsed(this.constructor.name+'.checkWithdrawalLink(', linkId, '...)');
+
+		const asyncLogic = async () => {
+			let json = '';
+			console.log('checking withdrawal link',linkId,'live =',!config.debugBuild);
+			if (!config.debugBuild) {
+        console.log(config.walletLNbitsWithdrawURL+'/links/'+linkId);
+				const response = await fetch(config.walletLNbitsWithdrawURL+'/links/'+linkId, {//?api-key='+config.walletLNbitsKey
+					method: 'GET',
+					headers: {
+						'Accept': 'application/json',
+						'X-API-KEY': config.walletLNbitsKey,
+					},
+				});
+				json = await response.json(); //extract JSON from the http response
+			} else {
+				console.log('debug build; generating fake');
+				json = {
+          id: "3mzuR4",
+          wallet: "6e40959bed4c4a6ca3fc063c113fa9d1",
+          title: "Order#234324",
+          min_withdrawable: 25,
+          max_withdrawable: 25,
+          uses: 1,
+          wait_time: 1,
+          is_unique: true,
+          unique_hash: "6F3iYbesaRR4KubJ9FuGxr",
+          k1: "kSgzcvmVcoBV9GNhnu44AZ",
+          open_time: 1704828390,
+          used: 0,
+          usescsv: "0",
+          number: 0,
+          webhook_url: "https://satoshidnc.com",
+          webhook_headers: {},
+          webhook_body: {},
+          custom_url: "https://satoshidnc.com",
+          lnurl: "LNURL1DP68GURN8GHJ7MRWVF5HGUEWWDSHGMMNDP5KGMNR9E3K7MF0WA5HG6RYWFSHWTMPWP5J7A339AKXUATJDSHNV33ND9VKYETNV9F9YDZTW43Y5W2XW4RHSU30F46X6AMEGCMNJAR4D4HHZ6ZJVVURSMJ9XFESYNPS63"
+        };
+			}
+
+			console.log('json', Convert.JSONToString(json))
+      withdrawalLinkCallback(json)
+		}
+		asyncLogic();
+
+		console.groupEnd();
+	}
+
 }

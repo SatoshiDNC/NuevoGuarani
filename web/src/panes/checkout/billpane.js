@@ -474,6 +474,7 @@ v.renderFunc = function() {
           if (cashdue < 0) {
             outputConversion('actual conversion', -cashdue, convTo, lntot)
           } else {
+            outputConversion('actual conversion', cashdue, convTo, lntot)
           }
 				}
 			} else if (billpane.textbox.options.lightning) {
@@ -481,6 +482,7 @@ v.renderFunc = function() {
           if (cashdue < 0) {
             outputConversion('current conversion', -cashdue, '₿')
           } else {
+            outputConversion('current conversion', cashdue, '₿')
           }
 				}
       }
@@ -490,7 +492,7 @@ v.renderFunc = function() {
   let cashTriggered = !(billpane.textbox.options.change || billpane.textbox.options.lightning || billpane.textbox.options.lightningpaid)
 	for (let index = v.items.length-1; index >= 0; index--) {
 		const item = v.items[index]
-		const left = item.options.cash || item.options.lightning? true: false
+		const left = (item.options.cash || item.options.lightning) && !item.options.lightningwithdrawn? true: false
 		const icon = item.options.emoji || item.options.cash || item.options.lightning
 
 		let desc = ''
@@ -638,7 +640,7 @@ v.renderFunc = function() {
 			}
 			if (item.options.lightning) {
 				mat4.identity(m);
-				mat4.translate(m,m, [sideMargin+bubbleRadius-coziness, y+8-4, 0]);
+				mat4.translate(m,m, [left? sideMargin+bubbleRadius-coziness: v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
 				mat4.scale(m,m, [emojiScale/12, emojiScale/12, 1]);
 				iconFont.draw(-1-18/3/2, 16-18/3/2, "\x14", config.themeColors.uiLightningPurple, v.mat, m);
 				iconFont.draw(-20,0, "\x13", config.themeColors.uiLightningYellow, v.mat, m);
