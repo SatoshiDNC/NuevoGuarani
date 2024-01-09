@@ -1,7 +1,7 @@
 const languages = [];
 {
 	for (var lang of enabledLangs) {
-		languages.push({ title: tr(lang,lang) });
+		languages.push({ title: tr(lang), alt: tr(lang,lang) })
 	}
 }
 

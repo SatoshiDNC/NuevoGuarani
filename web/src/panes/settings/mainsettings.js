@@ -67,6 +67,7 @@ v.renderFunc = function() {
 	var y = 25, daisychain = false;
 	const margin = (th.uiBackground[0] + th.uiBackground[1] + th.uiBackground[2] == 0)? 5:5;
 	for (const g of this.gadgets) {
+    g.enabled = !g.hide
 		if (g.hide) {
 		} else if (g.renderFunc) {
 			g.renderFunc.call(g);
@@ -162,18 +163,21 @@ v.renderFunc = function() {
 						}
 					}
 					var color = th.uiSettingsText;
-					var str;
+					var str, str2
 					if (li) {
 						if (typeof o === 'object') {
-							str = o.title;
+							str = o.title
+              str2 = o.alt
 						} else {
-							str = o;
+							str = o
 						}
 					} else {
 						str = 'add new';
 					}
-					str = icap(tr(str));
-					defaultFont.draw(0,0,str,color, this.mat, mat);
+					str = icap(tr(str))
+					defaultFont.draw(0,0,str,color, this.mat, mat)
+					str2 = icap(tr(str2))
+					defaultFont.draw(0,0,' '+str2,th.uiSettingsSubText, this.mat, mat)
 
 					if (i==0) continue;
 					mainShapes.useProg5();
