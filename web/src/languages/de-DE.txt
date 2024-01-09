@@ -1,6 +1,6 @@
 .	,
 ,	.
-₿	Satoshi
+₿	Nuevo Guaraní
 €	Euro
 ₲	Guaraní
 $	Dollar
