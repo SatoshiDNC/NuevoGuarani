@@ -132,6 +132,7 @@ function checkOnlineOrders() {
                               if (o.paid === true) {
                                 itemList.push({ qty: 1, unitprice: +o.total, currency: '₿', options: { lightning: true }})
                                 options['change'] = true
+                                options['lightningpaid'] = true
                                 const conversionKey = Convert.LNbitsCurrencyToAppCurrency(o.extra.currency)+'-₿'
                                 conversions[conversionKey] = (+o.total)/(+subtotal)
                               }

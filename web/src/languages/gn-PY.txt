@@ -38,6 +38,7 @@ cash back amount	monto efectivo rehegua
 confirm	OMOAÑETE
 currency	viru
 	currencies	monedas
+	current conversion	conversión actual
 customer bill	Factura cliente
 	danger zone	Zona de peligro
 	dark/light mode	Modo oscuro/claro

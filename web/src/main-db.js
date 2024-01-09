@@ -34,9 +34,9 @@ function openDatabase() {
 		db.onerror = (event) => {
 			console.error(`Database error: ${event.target.errorCode}`)
 		}
-    //db.transaction(["orders"], "readwrite").objectStore("orders").clear(); console.log('TESTING: cleared orders')
-    //db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear(); console.log('TESTING: cleared nostrmarket-orders')
-    //db.transaction(["state"], "readwrite").objectStore("state").clear(); console.log('TESTING: cleared state')
+    // db.transaction(["orders"], "readwrite").objectStore("orders").clear(); console.log('TESTING: cleared orders')
+    // db.transaction(["nostrmarket-orders"], "readwrite").objectStore("nostrmarket-orders").clear(); console.log('TESTING: cleared nostrmarket-orders')
+    // db.transaction(["state"], "readwrite").objectStore("state").clear(); console.log('TESTING: cleared state')
 
     PlatformUtil.DatabaseGet("state", 'notifications', async (event) => {
       notificationState = event.target.result || []

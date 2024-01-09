@@ -1,6 +1,6 @@
 .	.
 ,	,
-₿	Bitcoin
+₿	Satoshi
 €	Euro
 ₲	Guaraní
 $	Dollar
@@ -38,6 +38,7 @@ colors	colors
 confirm	CONFIRM
 currency	currency
 currencies	currencies
+current conversion	current conversion
 customer bill	Customer Bill
 danger zone	Danger zone
 dark/light mode	Dark/light mode

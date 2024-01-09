@@ -1,6 +1,6 @@
 .	,
 ,	.
-₿	BTC/LN
+₿	Satoshi
 €	Euro
 ₲	Guaraní
 $	Dollar
@@ -38,6 +38,7 @@ colors	Farben
 confirm	BESTÄTIGEN
 currency	Währung
 currencies	Währungen
+current conversion	aktueller Umrechnungskurs
 customer bill	Kundenrechnung
 danger zone	Gefahrenzone
 dark/light mode	Dunkel-/Hellmodus

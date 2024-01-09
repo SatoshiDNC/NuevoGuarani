@@ -38,6 +38,7 @@ colors	colores
 confirm	CONFIRME
 currency	moneda
 currencies	monedas
+current conversion	conversión actual
 customer bill	Factura cliente
 danger zone	Zona de peligro
 dark/light mode	Modo oscuro/claro

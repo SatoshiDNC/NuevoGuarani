@@ -132,7 +132,7 @@ v.beginConversionRateQuery = function(amt, from, to) {
 			console.log("conversion ignored", amt, from, to);
 		}
 		delete billpane.conversionInProgress;
-	};
+	}
 	if (billpane.conversions[convtype]) {
 		let amtConv = amt * billpane.conversions[convtype];
 		completionLogic((amtConv * (config.hasCents(to)?100:1)) / (amt * (config.hasCents(from)?100:1)));
@@ -261,19 +261,22 @@ v.formatConvRate = function(s) {
 	return s.replace('.', tr('.'));
 }
 v.renderFunc = function() {
-	drawThemeBackdrop(this, config.themeColors);
-	const v = this;
-	const m = mat4.create();
+	drawThemeBackdrop(this, config.themeColors)
+	const v = this
+	const m = mat4.create()
 
-	const sideMargin = 8;
-	const bubbleRadius = 16, bubbleSize = bubbleRadius * 2;
-	const emojiWidth = 18;
-	const emojiSpace = 12;
-	const coziness = 4;
-	const halfPad = 2;
-	const textSize = 14; // instead of bubbleSize when there is no bubble background
+  const DESC_SCALE = 1.0
+  const PRICE_SCALE = 2.0
+	const sideMargin = 8
+	const bubbleRadius = 16, bubbleSize = bubbleRadius * 2
+	const emojiWidth = 2 + 16 * PRICE_SCALE
+	const emojiSpace = 12
+	const coziness = 4
+	const halfPad = 2
+	const textSize = 14 // instead of bubbleSize when there is no bubble background
+  const PERCENT_OF_WIDTH_TO_FILL_WITH_MESSAGES = 0.80
 
-	let y = v.sh - 8;
+	let y = v.sh - 8
 
   function outputSubtotal(desc, value) {
 		y -= halfPad + textSize;
@@ -319,7 +322,7 @@ v.renderFunc = function() {
 			if (!Object.keys(billpane.conversions).includes(convtype)) {
 				if (!billpane.conversionInProgress) {
 					billpane.conversionInProgress = true;
-					billpane.beginConversionRateQuery(billpane.subtotal.calc('limitToBill'), billpane.orderCurrency, convTo);
+					billpane.beginConversionRateQuery(value, billpane.orderCurrency, convTo);
 				}
 			}
 
@@ -330,7 +333,7 @@ v.renderFunc = function() {
 				//conv = v.formatConvRate(convrate.toFixed(Math.max(0, precision - Math.round(convrate).toString().length)));
 				conv = v.formatConvRate(v.getOptimalDigits(convrate, value));
 				result = v.formatMoney(''+convtot, convTo);
-				if (convrate < 0) { conv = '____'; result = '____'; }
+				if (convrate <= 0) { conv = '_'; result = '_'; }
 				w = defaultFont.calcWidth(original_times) + defaultFont.calcWidth(conv) + defaultFont.calcWidth(equals) + defaultFont.calcWidth(result);
 			} else {
 				gear = "\x1D";
@@ -371,30 +374,36 @@ v.renderFunc = function() {
 		y -= halfPad;
 	}
 
-	let subtotalTrigger = false;
-	let convTo = billpane.orderCurrency;
+	let subtotalTrigger = false
+	let convTo = billpane.orderCurrency
 
 	if (billpane.textbox.options.cash || billpane.textbox.options.lightning) {
-		subtotalTrigger = true;
-		convTo = billpane.textbox.currency;
+		subtotalTrigger = true
+		convTo = billpane.textbox.currency
 	}
 	for (let index = v.items.length-1; index >= 0; index--) {
-		const item = v.items[index];
-		if ((item.options.cash || item.options.lightning) && item.currency) {
-			subtotalTrigger = true;
-			convTo = item.currency;
-			break;
+		const item = v.items[index]
+		if (item.options.cash || item.options.lightning) {
+			subtotalTrigger = true
+			convTo = item.currency || billpane.orderCurrency;
+			break
 		}
 	}
 
-	if (billpane.textbox.options.change) {
+  const lntot = billpane.subtotal.calc('lightningPaid')
+  const cashtot = billpane.subtotal.calc('cashTendered')
+  let cashdue = cashtot - billpane.subtotal.calc('limitToBill')
+  let todo = 0;
+  let failed_subtotal = 0;
+	if (billpane.textbox.options.change || (billpane.textbox.options.cash && billpane.textbox.options.lightning)) {
 
-		let todo = 0;
-		let failed_subtotal = 0;
 		for (const item of billpane.items) if (item.options.emoji == 'lightning invoice') {
 			if (item.options.success === undefined) todo++;
 			if (item.options.success === false) failed_subtotal += Math.round(item.qty * item.unitprice);
 		}
+
+    cashdue = cashtot - (billpane.subtotal.calc('limitToBill') - failed_subtotal)
+
 		if (todo > 0) {
 
 			y -= halfPad + bubbleSize;
@@ -413,102 +422,122 @@ v.renderFunc = function() {
 		} else {
 
 			const due = -(billpane.subtotal.calc() - failed_subtotal);
-			const breakdown = [];
-			const denoms = config.getDenoms(billpane.orderCurrency);
-			if (config.showChangeBreakdown && denoms.length > 0) {
-				const lastdenom = denoms[denoms.length-1];
-				const leeway = lastdenom.value / 2;
-				let amt = due;
-				if (amt > 0) {
-					let index = 0;
-					for (let denom of denoms) {
-						let n = 0;
-						while (amt > denom.value - leeway) {
-							n++;
-							amt -= denom.value;
-						}
-						if (n > 0) breakdown.splice(0,0, index + ':'+ n +' × '+ v.formatMoney(''+denom.value));
-						index++;
-					}
-		//			if (amt >= leeway) {
-		//				amt -= lastdenom.value;
-		//				breakdown.splice(0,0, 1 +' × '+ v.formatMoney(''+lastdenom.value));
-		//			}
-				}
-			}
-			for (let str of breakdown) {
-				y -= halfPad + 22;
-				let t = str.substr(0, str.indexOf('×')-1);
-				let i = +t.substr(0, t.indexOf(':'));
-				let n = +t.substr(t.indexOf(':')+1);
-				//let icons = ('\x16'+denoms[i].icon).repeat(n);
-				if (denoms[i].label) str = denoms[i].label;
-				else str = str.substr(str.indexOf('×')+1).trim().replace('.','').replace(',','');
-				let w = iconFont.calcWidth('\x16'+denoms[i].icon);
-				while (n > 0) {
-					mat4.identity(m);
-					mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w*n, y+8+14, 0]);
-					iconFont.draw(0,0, '\x16'+denoms[i].icon, denoms[i].color, v.mat, m);
-					let mw = iconFont.calcWidth(denoms[i].icon);
-					mat4.translate(m,m, [-mw, 0, 0]);
-					mat4.scale(m,m, [0.5, 0.5, 1]);
-					defaultFont.draw((mw*2-defaultFont.calcWidth(str))/2,-7, str, config.themeColors.uiBackground, v.mat, m);
-					n--;
-				}
-				y -= halfPad;
-			}
+      if (!billpane.textbox.options.lightning) {
+        const breakdown = [];
+        const denoms = config.getDenoms(billpane.orderCurrency);
+        if (config.showChangeBreakdown && denoms.length > 0) {
+          const lastdenom = denoms[denoms.length-1];
+          const leeway = lastdenom.value / 2;
+          let amt = due;
+          if (amt > 0) {
+            let index = 0;
+            for (let denom of denoms) {
+              let n = 0;
+              while (amt > denom.value - leeway) {
+                n++;
+                amt -= denom.value;
+              }
+              if (n > 0) breakdown.splice(0,0, index + ':'+ n +' × '+ v.formatMoney(''+denom.value));
+              index++;
+            }
+      //			if (amt >= leeway) {
+      //				amt -= lastdenom.value;
+      //				breakdown.splice(0,0, 1 +' × '+ v.formatMoney(''+lastdenom.value));
+      //			}
+          }
+        }
+        for (let str of breakdown) {
+          y -= halfPad + 22;
+          let t = str.substr(0, str.indexOf('×')-1);
+          let i = +t.substr(0, t.indexOf(':'));
+          let n = +t.substr(t.indexOf(':')+1);
+          //let icons = ('\x16'+denoms[i].icon).repeat(n);
+          if (denoms[i].label) str = denoms[i].label;
+          else str = str.substr(str.indexOf('×')+1).trim().replace('.','').replace(',','');
+          let w = iconFont.calcWidth('\x16'+denoms[i].icon);
+          while (n > 0) {
+            mat4.identity(m);
+            mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w*n, y+8+14, 0]);
+            iconFont.draw(0,0, '\x16'+denoms[i].icon, denoms[i].color, v.mat, m);
+            let mw = iconFont.calcWidth(denoms[i].icon);
+            mat4.translate(m,m, [-mw, 0, 0]);
+            mat4.scale(m,m, [0.5, 0.5, 1]);
+            defaultFont.draw((mw*2-defaultFont.calcWidth(str))/2,-7, str, config.themeColors.uiBackground, v.mat, m);
+            n--;
+          }
+          y -= halfPad;
+        }
+      }
 
-			const lntot = billpane.subtotal.calc('lightningPaid');
-			const cashtot = billpane.subtotal.calc('cashTendered');
 			if (lntot > 0) {
 				if (billpane.orderCurrency != '₿') {
-					outputConversion('actual conversion', billpane.subtotal.calc('limitToBill') - failed_subtotal, convTo, lntot);
+          if (cashdue < 0) {
+            outputConversion('actual conversion', -cashdue, convTo, lntot)
+          } else {
+          }
 				}
-			} else if (cashtot) {
+			} else if (billpane.textbox.options.lightning) {
+				if (billpane.orderCurrency != '₿') {
+          if (cashdue < 0) {
+            outputConversion('current conversion', -cashdue, '₿')
+          } else {
+          }
+				}
+      }
+		}
+	}
+
+  let cashTriggered = !(billpane.textbox.options.change || billpane.textbox.options.lightning || billpane.textbox.options.lightningpaid)
+	for (let index = v.items.length-1; index >= 0; index--) {
+		const item = v.items[index]
+		const left = item.options.cash || item.options.lightning? true: false
+		const icon = item.options.emoji || item.options.cash || item.options.lightning
+
+		let desc = ''
+		if (item.options.emoji) desc = icap((desc+' '+tr(item.options.emoji)).trim())
+		if ((item.options.cash || item.options.lightning) && item.currency) desc = icap(tr(item.currency))
+		if (item.options.desc) desc = icap(item.options.desc.trim())
+
+    if (item.options.cash && item.options.lightning) cashTriggered = false
+    if (!(todo > 0) && item.options.cash && !item.options.lightning && !cashTriggered) {
+      cashTriggered = true
+      if (cashtot) {
 				if (billpane.orderCurrency == '₿') {
-					outputConversion('actual conversion', billpane.subtotal.calc('limitToBill') - failed_subtotal, convTo, cashtot);
+					outputConversion('actual conversion', billpane.subtotal.calc('limitToBill') - failed_subtotal, convTo, cashtot)
 				} else {
-					outputSubtotal('change due', due);
-					outputSubtotal('cash tendered', billpane.subtotal.calc('cashTendered'));
+          if (cashdue < 0) {
+            outputSubtotal('remaining', -cashdue)
+          } else {
+            outputSubtotal('change due', cashdue)
+          }
+					outputSubtotal('cash tendered', cashtot)
 				}
 			}
 
 			if (failed_subtotal > 0) {
 				if (billpane.textbox.options.lightning && billpane.orderCurrency != '₿'
 				||  billpane.textbox.options.cash && billpane.orderCurrency == '₿') {
-					outputConversion('conversion', billpane.subtotal.calc('limitToBill') - failed_subtotal, convTo);
+					outputConversion('conversion', billpane.subtotal.calc('limitToBill') - failed_subtotal, convTo)
 				}
-				outputSubtotal('revised subtotal', billpane.subtotal.calc('limitToBill') - failed_subtotal);
-				outputSubtotal('unpaid invoice subtotal', failed_subtotal);
+				outputSubtotal('revised subtotal', billpane.subtotal.calc('limitToBill') - failed_subtotal)
+				outputSubtotal('unpaid invoice subtotal', failed_subtotal)
 			}
-
-		}
-	}
-
-	for (let index = v.items.length-1; index >= 0; index--) {
-		const item = v.items[index];
-		const left = item.options.cash || item.options.lightning? true: false;
-		const icon = item.options.emoji || item.options.cash || item.options.lightning;
-
-		let desc = '';
-		if (item.options.emoji) desc = icap((desc+' '+tr(item.options.emoji)).trim());
-		if ((item.options.cash || item.options.lightning) && item.currency) desc = icap(tr(item.currency));
-		if (item.options.desc) desc = icap(item.options.desc.trim());
+    }
 
 		if (item.options.cash || item.options.lightning) {
 			subtotalTrigger = true;
-			if (item.currency) convTo = item.currency;
+			convTo = item.currency || billpane.orderCurrency;
 		} else if (subtotalTrigger) {
 			subtotalTrigger = false;
 
 			if (convTo != billpane.orderCurrency) {
-				outputConversion('suggested conversion', billpane.subtotal.calc('limitToBill'), convTo);
+				outputConversion('current conversion', billpane.subtotal.calc('limitToBill'), convTo);
 			}
 
 			outputSubtotal('subtotal', billpane.subtotal.calc('limitToBill'));
 		}
 
-		y -= halfPad + bubbleSize;
+		y -= halfPad + bubbleSize
 
 		let str = v.formatMoney(Math.round(item.unitprice * item.qty).toString(), item.currency);
 		let str2 = item.qty == 1? '': v.formatQty(item.qty.toString()) + ' × ' + v.formatMoney(item.unitprice.toString(), item.currency) + ' = ';
@@ -516,31 +545,32 @@ v.renderFunc = function() {
 			str = '-' + str;
 			if (str2) str2 = '-' + str2;
 		}
-		let nmw = defaultFont.calcWidth(str) + defaultFont.calcWidth(str2);
+		let nmw = defaultFont.calcWidth(str) * PRICE_SCALE + defaultFont.calcWidth(str2);
 		let emw = nmw; if (icon) emw += emojiWidth + emojiSpace;
 
     // Extra space needed for description text.
-		const descscale = 0.5;
 		let exh = 0, exw = 0
     let longDesc = []
     if (desc) {
-      exh = 4 + descscale * 16
-		  exw = defaultFont.calcWidth(desc) * descscale
-      if (exw > v.sw - 2 * sideMargin - bubbleRadius * 2 + coziness * 2) {
-        exw = v.sw - 2 * sideMargin - bubbleRadius * 2 + coziness * 2
+      exh = 4 + DESC_SCALE * 16
+		  exw = defaultFont.calcWidth(desc) * DESC_SCALE
+      if (exw > Math.max(emw, v.sw * PERCENT_OF_WIDTH_TO_FILL_WITH_MESSAGES - 2 * sideMargin - bubbleRadius * 2 + coziness * 2)) {
+        exw = Math.max(emw, v.sw * PERCENT_OF_WIDTH_TO_FILL_WITH_MESSAGES - 2 * sideMargin - bubbleRadius * 2 + coziness * 2)
         let toFit = desc.split(' ')
         desc = ''
-        exh -= descscale * 16
+        exh -= DESC_SCALE * 16
         do {
-          exh += descscale * 16
-          while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * descscale < exw) {
-            desc = desc + ' ' + toFit.pop()
+          exh += DESC_SCALE * 16
+          while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * DESC_SCALE < exw) {
+            desc = (desc + ' ' + toFit.shift()).trim()
           }
           longDesc.push(desc)
           desc = ''
         } while (toFit.length > 0)
       }
     }
+
+    exh += 16 * (PRICE_SCALE - 1)
 
 		let w = (exw > emw)? exw: emw;
 
@@ -580,10 +610,12 @@ v.renderFunc = function() {
 		mainShapes.drawArrays2('rect');
 
 		if (icon) {
+      y -= 16 * (PRICE_SCALE - 1)
 			let emoji = item.options.emoji;
+      let emojiScale = 6 + emojiWidth
 			mat4.identity(m);
 			mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
-			mat4.scale(m,m, [24, 24, 1]);
+			mat4.scale(m,m, [emojiScale, emojiScale, 1]);
 			if (emoji) {
 				emojiShapes.useProg4();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat);
@@ -594,48 +626,60 @@ v.renderFunc = function() {
 				if (emoji == 'lightning invoice' && item.options.success === true) {
 					mat4.identity(m);
 					mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
-					mat4.scale(m,m, [24/18, 24/18, 1]);
+					mat4.scale(m,m, [emojiScale/18, emojiScale/18, 1]);
 					iconFont.draw(-20,16, "\x10", config.themeColors.uiSuccessGreen, v.mat, m);
 				}
 				if (emoji == 'lightning invoice' && item.options.success === false) {
 					mat4.identity(m);
 					mat4.translate(m,m, [v.sw-sideMargin-bubbleRadius+coziness-w, y+8-4, 0]);
-					mat4.scale(m,m, [24/18, 24/18, 1]);
+					mat4.scale(m,m, [emojiScale/18, emojiScale/18, 1]);
 					iconFont.draw(-20,16, "\x1C", config.themeColors.uiErrorRed, v.mat, m);
 				}
-			}
-			if (item.options.cash) {
-				mat4.identity(m);
-				mat4.translate(m,m, [sideMargin+bubbleRadius-coziness, y+8-4, 0]);
-				mat4.scale(m,m, [24/40, 24/40, 1]);
-				iconFont.draw(-1,30, "\x1E", config.themeColors.uiFiatGreen, v.mat, m);
 			}
 			if (item.options.lightning) {
 				mat4.identity(m);
 				mat4.translate(m,m, [sideMargin+bubbleRadius-coziness, y+8-4, 0]);
-				mat4.scale(m,m, [24/12, 24/12, 1]);
-				iconFont.draw(-18/3/2, 16-18/3/2, "\x14", config.themeColors.uiLightningPurple, v.mat, m);
+				mat4.scale(m,m, [emojiScale/12, emojiScale/12, 1]);
+				iconFont.draw(-1-18/3/2, 16-18/3/2, "\x14", config.themeColors.uiLightningPurple, v.mat, m);
 				iconFont.draw(-20,0, "\x13", config.themeColors.uiLightningYellow, v.mat, m);
+			} else if (item.options.cash) {
+				mat4.identity(m);
+				mat4.translate(m,m, [sideMargin+bubbleRadius-coziness, y+8-4, 0]);
+				mat4.scale(m,m, [emojiScale/40, emojiScale/40, 1]);
+				iconFont.draw(-1,30, "\x1E", config.themeColors.uiFiatGreen, v.mat, m);
 			}
 			w -= emojiWidth+emojiSpace;
+      y += 16 * (PRICE_SCALE - 1)
 		}
 
 		w = nmw;
 
-		mat4.identity(m);
-		mat4.translate(m,m, [left?sideMargin+bubbleRadius-coziness+emojiWidth+emojiSpace:v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14, 0]);
+		mat4.identity(m)
+		mat4.translate(m,m, [left?sideMargin+bubbleRadius-coziness+emojiWidth+emojiSpace:v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14, 0])
 		if (str2) {
 			defaultFont.draw(0,0, str2, (item.options.negate && !item.options.cash)? config.themeColors.uiBillCreditTextLight: config.themeColors.uiBillChargeTextLight, v.mat, m);
 		}
+    mat4.scale(m,m, [PRICE_SCALE,PRICE_SCALE, 1])
 		defaultFont.draw(0,0, str, (item.options.negate && !item.options.cash)? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
 
 		y -= exh;
 		w = (exw > emw)? exw: emw;
 
-		mat4.identity(m);
-		mat4.translate(m,m, [left?sideMargin+bubbleRadius-coziness:v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14*descscale, 0]);
-		mat4.scale(m,m, [descscale,descscale, 1]);
-		defaultFont.draw(0,0, desc, (item.options.negate && !item.options.cash)? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
+    if (desc) {
+      mat4.identity(m);
+      mat4.translate(m,m, [left?sideMargin+bubbleRadius-coziness:v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14*DESC_SCALE, 0]);
+      mat4.scale(m,m, [DESC_SCALE,DESC_SCALE, 1]);
+      defaultFont.draw(0,0, desc, (item.options.negate && !item.options.cash)? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
+    } else if (longDesc.length > 0) {
+      let line = 0
+      for (const d of longDesc) {
+        mat4.identity(m);
+        mat4.translate(m,m, [left?sideMargin+bubbleRadius-coziness:v.sw-sideMargin-bubbleRadius+coziness-w, y+8+14*DESC_SCALE+16*DESC_SCALE*line, 0]);
+        mat4.scale(m,m, [DESC_SCALE,DESC_SCALE, 1]);
+        defaultFont.draw(0,0, d, (item.options.negate && !item.options.cash)? config.themeColors.uiBillCreditText: config.themeColors.uiBillChargeText, v.mat, m);
+        line++
+      }
+    }
 
 		y -= halfPad;
 	}
@@ -737,7 +781,7 @@ v.calc = function(mode) {
 	let subtotal = 0;
 	switch (mode) {
 	case 'cashTendered':
-		for (const item of billpane.items) if (item.options.cash || item.options.lightning) {
+		for (const item of billpane.items) if (item.options.cash && !item.options.lightning) {
 			subtotal -= Math.round((item.options.negate? -1:1) * Math.round((item.options.cash? -1:1) * item.unitprice * item.qty));
 		}
 		break;

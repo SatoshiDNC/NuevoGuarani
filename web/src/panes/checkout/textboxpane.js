@@ -207,12 +207,12 @@ v.gadgets.push(v.lnGad = g = new vp.Gadget(v));
 	g.autoHull();
 	g.clickFunc = function() {
 		const v = this.viewport;
-		if (v.options.cash || billpane.subtotal.includesCash()) return; // sanity check
+		//if (v.options.cash || billpane.subtotal.includesCash()) return; // sanity check
 		if (!v.options.lightning) {
 			billpane.changed = true;
 			billpane.subtotal.enableGads();
 			billpane.textbox.options.lightning = true;
-			if (billpane.textbox.text == '' && billpane.textbox.currency == billpane.orderCurrency) {
+			if (billpane.textbox.text === '' && billpane.textbox.currency === billpane.orderCurrency) {
 				billpane.textbox.text = billpane.subtotal.calc().toString();
 			}
 			billpane.textbox.resetGads();
@@ -231,6 +231,19 @@ v.gadgets.push(v.lnGad = g = new vp.Gadget(v));
 			billpane.setRenderFlag(true);
 		} else {
 		}
+	}
+v.gadgets.push(v.gearGad = g = new vp.Gadget(v));
+	g.actionFlags = vp.GAF_CLICKABLE;
+	g.x = 8+10+50; g.normalX = g.x; g.y = -1000;
+	g.w = 30; g.h = 30;
+	g.autoHull();
+	g.clickFunc = function() {
+		const v = this.viewport;
+		if (!v.options.lightning) return // sanity check
+    delete billpane.conversions[billpane.orderCurrency + '-' + billpane.textbox.currency]
+    billpane.conversionInProgress = false
+    billpane.textbox.text = ''
+    billpane.setRenderFlag(true)
 	}
 v.gadgets.push(v.signGad = g = new vp.Gadget(v));
 	g.actionFlags = vp.GAF_CLICKABLE;
@@ -254,75 +267,88 @@ v.gadgets.push(v.signGad = g = new vp.Gadget(v));
 v.resetGads = function() {
 	const v = this;
 	if (v.options.change) {
-		v.itemGad.y = -1000;
-		v.scanGad.y = -1000;
-		v.cashGad.y = -1000;
-		v.lnGad.y = -1000;
-	} else if (v.options.cash) {
-		v.itemGad.y = -1000;
-		v.scanGad.y = -1000;
-		v.cashGad.x = v.itemGad.x;
-		v.cashGad.y = v.itemGad.enabledY;
-		v.lnGad.y = -1000;
+		v.itemGad.y = -1000
+		v.scanGad.y = -1000
+		v.cashGad.y = -1000
+		v.lnGad.y = -1000
+    v.gearGad.y = -1000
 	} else if (v.options.lightning) {
-		v.itemGad.y = -1000;
-		v.scanGad.y = -1000;
-		v.cashGad.y = -1000;
-		v.lnGad.x = v.itemGad.x;
-		v.lnGad.y = v.itemGad.enabledY;
-	} else if (v.scanMode) {
-		v.itemGad.y = -1000;
-		v.scanGad.x = v.itemGad.x;
-		v.scanGad.y = v.itemGad.enabledY;
-		v.cashGad.y = -1000;
-		v.lnGad.y = -1000;
-	} else if (billpane.items.length == 0 || v.options.emoji) {
-		v.itemGad.y = v.itemGad.enabledY;
-		if (v.text != '' || JSON.stringify(v.options) != '{}' || !config.barcodeScanningEnabled) {
-			v.scanGad.y = -1000;
+		v.itemGad.y = -1000
+		v.scanGad.y = -1000
+		v.cashGad.y = -1000
+		v.lnGad.x = v.itemGad.x
+		v.lnGad.y = v.itemGad.enabledY
+    v.gearGad.y = v.disableConversionRefresh? -1000: v.itemGad.enabledY
+	} else if (v.options.cash) {
+		v.itemGad.y = -1000
+		v.scanGad.y = -1000
+		v.cashGad.x = v.itemGad.x
+		v.cashGad.y = v.itemGad.enabledY
+		if (config.lightningEnabled) {
+			v.lnGad.x = v.cashGad.x + 50
+			v.lnGad.y = v.itemGad.enabledY
 		} else {
-			v.scanGad.x = v.scanGad.normalX;
-			v.scanGad.y = v.itemGad.enabledY;
+			v.lnGad.y = -1000
 		}
-		v.cashGad.y = -1000;
-		v.lnGad.y = -1000;
-	} else {
-		v.itemGad.y = v.itemGad.enabledY;
+    v.gearGad.y = -1000
+	} else if (v.scanMode) {
+		v.itemGad.y = -1000
+		v.scanGad.x = v.itemGad.x
+		v.scanGad.y = v.itemGad.enabledY
+		v.cashGad.y = -1000
+		v.lnGad.y = -1000
+    v.gearGad.y = -1000
+	} else if (billpane.items.length == 0 || v.options.emoji) {
+		v.itemGad.y = v.itemGad.enabledY
 		if (v.text != '' || JSON.stringify(v.options) != '{}' || !config.barcodeScanningEnabled) {
-			v.scanGad.y = -1000;
-			v.cashGad.x = v.scanGad.normalX;
+			v.scanGad.y = -1000
 		} else {
-			v.scanGad.x = v.scanGad.normalX;
-			v.scanGad.y = v.itemGad.enabledY;
-			v.cashGad.x = v.cashGad.normalX;
+			v.scanGad.x = v.scanGad.normalX
+			v.scanGad.y = v.itemGad.enabledY
+		}
+		v.cashGad.y = -1000
+		v.lnGad.y = -1000
+    v.gearGad.y = -1000
+	} else {
+		v.itemGad.y = v.itemGad.enabledY
+		if (v.text != '' || JSON.stringify(v.options) != '{}' || !config.barcodeScanningEnabled) {
+			v.scanGad.y = -1000
+			v.cashGad.x = v.scanGad.normalX
+		} else {
+			v.scanGad.x = v.scanGad.normalX
+			v.scanGad.y = v.itemGad.enabledY
+			v.cashGad.x = v.cashGad.normalX
 		}
 		if (config.cashCurrency != 'none') {
-			v.cashGad.y = v.itemGad.enabledY;
+			v.cashGad.y = v.itemGad.enabledY
 		} else {
-			v.cashGad.x -= 50;
-			v.cashGad.y = -1000;
+			v.cashGad.x -= 50
+			v.cashGad.y = -1000
 		}
 		if (config.lightningEnabled) {
-			v.lnGad.x = v.cashGad.x + 50;
-			v.lnGad.y = v.itemGad.enabledY;
+			v.lnGad.x = v.cashGad.x + 50
+			v.lnGad.y = v.itemGad.enabledY
 		} else {
-			v.lnGad.y = -1000;
+			v.lnGad.y = -1000
 		}
+    v.gearGad.y = -1000
 	}
-	v.itemGad.autoHull();
-	v.scanGad.autoHull();
-	v.cashGad.autoHull();
-	v.lnGad.autoHull();
-	v.queueLayout();
+	v.itemGad.autoHull()
+	v.scanGad.autoHull()
+	v.cashGad.autoHull()
+	v.lnGad.autoHull()
+  v.gearGad.autoHull()
+	v.queueLayout()
 	if (!v.options.lightning && checkoutpane.subtotalshim.b != billpane) {
-		v.resetBillPane();
+		v.resetBillPane()
 	}
 }
 v.resetBillPane = function() {
-	checkoutpane.subtotalshim.b = billpane;
-	billpane.parent = checkoutpane.subtotalshim;
-	checkoutpane.relayout();
-	checkoutpane.setRenderFlag(true);
+  delete billpane.textbox.disableConversionRefresh
+	checkoutpane.subtotalshim.b = billpane
+	billpane.parent = checkoutpane.subtotalshim
+	checkoutpane.relayout()
+	checkoutpane.setRenderFlag(true)
 }
 v.updatePrice = function(item, unitprice, fractionalQty, negate) {
 	const newItem = {
@@ -460,15 +486,18 @@ v.pasteFunc = function(e) {
 	}
 }
 v.keypadFunc = function(code, key) {
-	const v = this;
-	const isNum = (code >= 0 && code <= 9);
-	const maxLen = v.maxLen;
-	if (v.options.change
-	|| (checkoutpane.subtotalshim.b != billpane && code != keypadpane.keyBack && code != keypadpane.keyEnter)) {
+	const v = this
+	const isNum = (code >= 0 && code <= 9)
+	const maxLen = v.maxLen
+	if ((v.options.change && code != keypadpane.keyBack) || v.options.lightningpaid) {
+    if (code >= 0 || (code == -1 && key == '-')) vp.beep('bad');
+    return;
+  }
+	if (checkoutpane.subtotalshim.b != billpane && code != keypadpane.keyBack && code != keypadpane.keyEnter) {
 		if (code >= 0 || (code == -1 && key == '-')) vp.beep('bad');
 		return;
 	}
-	switch (v.state) {
+  switch (v.state) {
 	case 'start':
 		if (isNum) {
 			let str = v.text + code.toString();
@@ -489,7 +518,6 @@ v.keypadFunc = function(code, key) {
 				} else {
 					v.text = str;
 					billpane.changed = true;
-					//vp.beep('click');
 				}
 			}
 		}
@@ -502,7 +530,6 @@ v.keypadFunc = function(code, key) {
 			} else {
 				v.text = str + '.';
 				billpane.changed = true;
-				//vp.beep('click');
 			}
 		}
 		if (code == keypadpane.keyTimes) {
@@ -512,20 +539,23 @@ v.keypadFunc = function(code, key) {
 			} else {
 				v.text = str + '×';
 				billpane.changed = true;
-				//vp.beep('click');
 			}
 		}
 		if (code == keypadpane.keyBack) {
-			if (checkoutpane.subtotalshim.b != billpane) {
+      if (v.options.change) {
+        delete v.options.change
+				billpane.changed = true;
+        billpane.setRenderFlag(true)
+				v.resetGads();
+				v.queueLayout();
+      } else if (checkoutpane.subtotalshim.b != billpane) {
 				v.resetBillPane();
 			} else if (v.text != '') {
 				v.text = v.text.substr(0, v.text.length-1);
 				billpane.changed = true;
-				//vp.beep('click');
 			} else if (v.options.negate) {
 				delete v.options.negate;
 				billpane.changed = true;
-				//vp.beep('click');
 			} else if (v.options.emoji) {
 				delete v.options.emoji;
 				delete v.options.barcode;
@@ -533,13 +563,10 @@ v.keypadFunc = function(code, key) {
 				delete v.options.lightning;
 				delete v.options.desc;
 				billpane.changed = true;
-				//vp.beep('click');
 			} else if (v.options.cash && !billpane.subtotal.includesCash()) {
 				v.cashGad.clickFunc();
-				//vp.beep('click');
 			} else if (v.options.lightning && !billpane.textbox.options.lightningpaid) {
 				v.lnGad.clickFunc();
-				//vp.beep('click');
 			} else if (v.scanMode) {
 				billpane.textbox.scanGad.stopScanner();
 				v.resetGads();
@@ -587,39 +614,41 @@ v.keypadFunc = function(code, key) {
 							v.updatePrice(item, +money, false, v.options.negate == true);
 						}
 					}
-					const cashphase = v.options.cash;
-					const lnphase = v.options.lightning;
+					const cashphase = v.options.cash
+					const lnphase = v.options.lightning
 					const completionlogic = () => {
 						if (v.currency != billpane.orderCurrency)
-							billpane.items.push({qty:+qty, unitprice:+money, currency:v.currency, options:v.options});
+							billpane.items.push({qty:+qty, unitprice:+money, currency:v.currency, options:v.options})
 						else
-							billpane.items.push({qty:+qty, unitprice:+money, options:v.options});
-						billpane.changed = true;
-						billpane.userY = 0;
-						//billpane.swipeGad.doSwipe(true);
-						billpane.queueLayout();
+							billpane.items.push({qty:+qty, unitprice:+money, options:v.options})
+						billpane.changed = true
+						billpane.userY = 0
+						//billpane.swipeGad.doSwipe(true)
+						billpane.queueLayout()
 						billpane.subtotal.setRenderFlag(true)
-						v.text = '';
-						v.options = {};
+						v.text = ''
+            let lightningpaid = v.options.lightningpaid
+						v.options = {}
 						if (cashphase) {
-							v.options.cash = true;
-							delete v.options.negate;
+							v.options.cash = true
 						}
 						if (lnphase) {
-							v.options.change = true;
-							delete v.options.negate;
+							v.options.change = true
+              if (lightningpaid) v.options.lightningpaid = true
 						}
-						v.resetGads();
-						v.queueLayout();
-						vp.beep('qr-scan');
+						v.resetGads()
+						v.queueLayout()
+						vp.beep('qr-scan')
 					}
 
 					if (v.options.lightning) {
 						if (checkoutpane.subtotalshim.b == billpane && !lightningqr.netBusy) {
-							lightningqr.clear();
-							checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim;
-							checkoutpane.relayout();
-							checkoutpane.setRenderFlag(true);
+              v.disableConversionRefresh = true
+              v.resetGads()
+							lightningqr.clear()
+							checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
+							checkoutpane.relayout()
+							checkoutpane.setRenderFlag(true)
 							switch (config.walletType) {
 							case 'manual':
 								lightningqr.walletSignal = true;
@@ -653,25 +682,29 @@ v.keypadFunc = function(code, key) {
 						} else if (billpane.textbox.options.hashes && !lightningqr.netBusy) {
 							switch (config.walletType) {
 							case 'manual':
-								completionlogic();
-								break;
+								completionlogic()
+								break
 							case 'LNbits compatible':
 								if (!lightningqr.netBusy) {
-									lightningqr.netBusy = true;
+									lightningqr.netBusy = true
 									config.wallet.checkInvoice(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
-										lightningqr.netBusy = false;
-										if (result && result.paid) completionlogic();
-										else vp.beep('bad');
-									});
+										lightningqr.netBusy = false
+										if (result && result.paid) {
+                      billpane.textbox.options.lightningpaid = true
+                      completionlogic()
+                    } else {
+                      vp.beep('bad')
+                    }
+									})
 								}
-								break;
+								break
 							default:
 							}
 						} else {
-							vp.beep('bad');
+							vp.beep('bad')
 						}
 					} else {
-						completionlogic();
+						completionlogic()
 					}
 				}
 			}
@@ -815,6 +848,16 @@ v.renderFunc = function() {
 		mat4.scale(m,m, [g.w/12, g.h/12, 1]);
 		iconFont.draw(-18/3/2, 16-18/3/2, "\x14", billpane.textbox.options.lightning? config.themeColors.uiLightningPurple: config.themeColors.uiDataEntryGhostText, v.mat, m);
 		iconFont.draw(-20,0, "\x13", billpane.textbox.options.lightning? config.themeColors.uiLightningYellow: config.themeColors.uiDataEntryGhostText, v.mat, m);
+	}
+
+	// conversion rate refresh gadget
+	{
+		let g = v.gearGad;
+
+		mat4.identity(m);
+		mat4.translate(m,m, [g.x, g.y, 0]);
+		mat4.scale(m,m, [g.w/20, g.h/20, 1]);
+		iconFont.draw(0, 16, "\x1D", config.themeColors.uiDataEntryGhostText, v.mat, m);
 	}
 
 	// change gadget
