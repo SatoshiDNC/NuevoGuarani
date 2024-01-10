@@ -727,6 +727,7 @@ v.keypadFunc = function(code, key) {
                 const wallet = config.salesIncome
                 switch (wallet.type) {
                 case 'manual':
+                  billpane.textbox.options.lightningpaid = true
                   completionlogic()
                   break
                 case 'LNbits compatible':
@@ -750,6 +751,8 @@ v.keypadFunc = function(code, key) {
                 const wallet = config.exchangeOutflow
                 switch (wallet.type) {
                 case 'manual':
+                  billpane.textbox.options.lightningpaid = true
+                  billpane.textbox.options.lightningwithdrawn = true
                   completionlogic()
                   break
                 case 'LNbits compatible':
