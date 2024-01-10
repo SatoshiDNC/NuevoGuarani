@@ -227,7 +227,7 @@ v.load = function(cb) {
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.state);
-			v.loadComplete = true; icb(cb, v);
+			g.loadComplete = true; icb(cb, v);
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {

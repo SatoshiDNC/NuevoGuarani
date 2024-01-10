@@ -27,6 +27,9 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v));
 v.load = function(cb) {
   const debuglog = true
   const gads = []
+  v.loadComplete = true; cb(cb, v)
+  return
+
   function icb(cb, v) {
     let allComplete = true;
     for (let gad of gads) {
@@ -53,7 +56,7 @@ v.load = function(cb) {
       }
       delete g.tempValue;
       if (debuglog) console.log(`${g.key} ready`, g.state);
-      v.loadComplete = true; icb(cb, v);
+      g.loadComplete = true; icb(cb, v);
     }
     if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
