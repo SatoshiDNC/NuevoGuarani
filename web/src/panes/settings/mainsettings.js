@@ -303,10 +303,10 @@ v.gadgets.push(g = new vp.Gadget(v))
 	g.pane = dangerzone
 	g.pane.layoutFunc = mainsettings.layoutFunc
 	g.pane.renderFunc = mainsettings.renderFunc
-
-	maincurrency.layoutFunc = mainsettings.layoutFunc
-	maincurrency.renderFunc = mainsettings.renderFunc
-	cashcurrency.layoutFunc = mainsettings.layoutFunc
-	cashcurrency.renderFunc = mainsettings.renderFunc
-	nostrmarketstall.layoutFunc = mainsettings.layoutFunc
-	nostrmarketstall.renderFunc = mainsettings.renderFunc
+for (const pane of [
+  maincurrency, cashcurrency, nostrmarketstall,
+  salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings,
+]) {
+	pane.layoutFunc = mainsettings.layoutFunc
+	pane.renderFunc = mainsettings.renderFunc
+}
