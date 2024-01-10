@@ -29,6 +29,8 @@ v.load = (cb) => {
   const v = this
   const debuglog = true
   const gads = []
+  console.log('COMPLETE')
+  console.log(v)
   console.log(v.name,' COMPLETE')
   v.loadComplete = true; cb()
   return
