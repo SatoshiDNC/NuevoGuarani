@@ -18,9 +18,10 @@ Object.defineProperty(v, "wallet", {
 	}
 });
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
-	g.key = 'walletType';
-	g.list = wallettypes;
-  g.index = -1;
+  g.name = 'typelist'
+	g.key = 'walletTypeForSalesIncome'
+	g.list = wallettypes
+  g.index = -1
 	g.listItemClick = function(index) {
 		const g = this, v = g.viewport;
 
@@ -69,8 +70,9 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 		}
 	}
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
+  g.name = 'lnbitsurl'
 	g.type = 'button'
-	g.key = 'LNbitsURL'
+	g.key = 'LNbitsURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -87,7 +89,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 	g.daisychain = true
 	g.clickFunc = function() {
 		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
+    PlatformUtil.UserPrompt(tr(g.title)+':', g.defaultValue, val => {
       if (!val) return
       { // For the GUI.
         g.viewport.queueLayout()
@@ -103,9 +105,10 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
     })
 	}
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
-	g.type = 'button'
-	g.key = 'lnbitsKey'
-	g.title = 'key'
+  g.name = 'lnbitskey'
+  g.type = 'button'
+	g.key = 'lnbitsKeyForSalesIncome'
+	g.title = 'API admin or invoice/read key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
@@ -121,7 +124,7 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this
-    PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
+		PlatformUtil.UserPrompt(tr(g.title)+':', '', val => {
       if (!val) return
       { // For the GUI.
         g.viewport.queueLayout()
@@ -137,8 +140,9 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
     })
 	}
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
-	g.type = 'button'
-	g.key = 'strikeURL'
+  g.name = 'strikeurl'
+  g.type = 'button'
+	g.key = 'strikeURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -153,26 +157,11 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = v.lnbitsurl.clickFunc
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
-	g.type = 'button'
-	g.key = 'strikeKey'
+  g.name = 'strikekey'
+  g.type = 'button'
+	g.key = 'strikeKeyForSalesIncome'
 	g.title = 'API bearer token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -187,26 +176,11 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 	g.value = ''
 	g.hide = true
   g.enabled = !g.hide
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('API bearer token')+':', '', val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = v.lnbitskey.clickFunc
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
+  g.name = 'coinosurl'
 	g.type = 'button'
-	g.key = 'coinosURL'
+	g.key = 'coinosURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -221,26 +195,11 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = v.lnbitsurl.clickFunc
 v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
-	g.type = 'button'
-	g.key = 'coinosKey'
+  g.name = 'coinoskey'
+  g.type = 'button'
+	g.key = 'coinosKeyForSalesIncome'
 	g.title = 'API auth token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -255,23 +214,7 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
 	g.value = ''
 	g.hide = true
   g.enabled = !g.hide
-	g.clickFunc = function() {
-		const g = this
-		PlatformUtil.UserPrompt(tr('API auth token')+':', '', val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = v.lnbitskey.clickFunc
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
@@ -293,8 +236,9 @@ v.load = function(cb) {
       v.loadComplete = true; cb();
     }
   }
-	{
-		const g = this.typelist, v = this;
+	for (const gad of this.gadgets) {
+    if (!['typelist'].includes(gad.name)) continue
+		const g = gad, v = this;
 		g.tempValue = '';
 		function finishInit(cb, v) {
 			const g = v.typelist;
@@ -357,12 +301,13 @@ v.load = function(cb) {
 			finishInit(cb, this)
 		})
 	}
-	for (const gad of [
-		'lnbitsurl', 'lnbitskey',
-		'strikeurl', 'strikekey',
-		'coinosurl', 'coinoskey',
-	]) {
-		const g = this[gad];
+	for (const gad of this.gadgets) {
+    if (![
+      'lnbitsurl', 'lnbitskey',
+      'strikeurl', 'strikekey',
+      'coinosurl', 'coinoskey',
+    ].includes(gad.name)) continue
+		const g = gad
 		g.tempValue = g.defaultValue;
 		function finishInit(cb, v, g) {
 			{ // For the GUI.

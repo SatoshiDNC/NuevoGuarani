@@ -18,59 +18,13 @@ Object.defineProperty(v, "wallet", {
 	}
 });
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
-	g.key = 'walletType';
+	g.key = 'walletTypeForExchangeOutflow';
 	g.list = wallettypes;
   g.index = -1;
-	g.listItemClick = function(index) {
-		const g = this, v = g.viewport;
-
-		{ // For the GUI.
-			v.typelist.index = index;
-			v.setRenderFlag(true);
-		} { // For the app function.
-
-			if (wallettypes[index] == 'LNbits compatible') {
-				delete v.lnbitsurl.hide
-				delete v.lnbitskey.hide
-			} else {
-				v.lnbitsurl.hide = true
-				v.lnbitskey.hide = true
-			}
-      v.lnbitsurl.enabled = !v.lnbitsurl.hide
-      v.lnbitskey.enabled = !v.lnbitskey.hide
-
-			if (wallettypes[index] == 'strike compatible') {
-				delete v.strikeurl.hide
-				delete v.strikekey.hide
-			} else {
-				v.strikeurl.hide = true
-				v.strikekey.hide = true
-			}
-      v.strikeurl.enabled = !v.strikeurl.hide
-      v.strikekey.enabled = !v.strikekey.hide
-
-			if (wallettypes[index] == 'coinos compatible') {
-				delete v.coinosurl.hide
-				delete v.coinoskey.hide
-			} else {
-				v.coinosurl.hide = true
-				v.coinoskey.hide = true
-			}
-      v.coinosurl.enabled = !v.coinosurl.hide
-      v.coinoskey.enabled = !v.coinoskey.hide
-
-			v.queueLayout();
-		} { // For persistence.
-      PlatformUtil.DatabasePut('settings', g.list[index], `${getCurrentAccount().id}-${g.key}`, (event) => {
-				console.log(`successfully selected ${g.key}`, event)
-			}, (event) => {
-				console.log(`error selecting ${g.key}`, event)
-			})
-		}
-	}
+	g.listItemClick = salesincomewalletsettings.typelist.listItemClick
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 	g.type = 'button'
-	g.key = 'LNbitsURL'
+	g.key = 'LNbitsURLForExchangeOutflow'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -85,26 +39,10 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.type = 'button'
-	g.key = 'lnbitsKey'
+	g.key = 'lnbitsKeyForExchangeOutflow'
 	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -119,26 +57,10 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.value = ''
 	g.hide = true
   g.enabled = !g.hide
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
 	g.type = 'button'
-	g.key = 'strikeURL'
+	g.key = 'strikeURLForExchangeOutflow'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -153,26 +75,10 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 	g.type = 'button'
-	g.key = 'strikeKey'
+	g.key = 'strikeKeyForExchangeOutflow'
 	g.title = 'API bearer token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -187,26 +93,10 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 	g.value = ''
 	g.hide = true
   g.enabled = !g.hide
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('API bearer token')+':', '', val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.type = 'button'
-	g.key = 'coinosURL'
+	g.key = 'coinosURLForExchangeOutflow'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -221,26 +111,10 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
-	g.clickFunc = function() {
-		const g = this
-    PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
 	g.type = 'button'
-	g.key = 'coinosKey'
+	g.key = 'coinosKeyForExchangeOutflow'
 	g.title = 'API auth token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -255,21 +129,5 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
 	g.value = ''
 	g.hide = true
   g.enabled = !g.hide
-	g.clickFunc = function() {
-		const g = this
-		PlatformUtil.UserPrompt(tr('API auth token')+':', '', val => {
-      if (!val) return
-      { // For the GUI.
-        g.viewport.queueLayout()
-      } { // For the app function.
-        g.value = val
-      } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
-          console.log(`successfully selected ${g.key}`, event)
-        }, (event) => {
-          console.log(`error selecting ${g.key}`, event)
-        })
-      }
-    })
-	}
+	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.load = salesincomewalletsettings.load
