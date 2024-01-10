@@ -126,6 +126,7 @@ function loadAccount() {
 			config.log()
 			startpane2.invoice.clickFunc()
 		} else {
+      console.log(n)
 		}
 	}
 
