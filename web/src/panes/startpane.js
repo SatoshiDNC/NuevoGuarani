@@ -109,7 +109,7 @@ v.renderFunc = function() {
 const startpane = v = new vp.SliceView(null, 'b', 50);
 v.name = Object.keys({startpane}).pop();
 Object.defineProperty(v, "title", {
-  get : function () { return config.businessName; }
+  get : function () { return config.accountName; }
 });
 v.a = bottommargin; bottommargin.parent = v;
 v.b = startpane2; startpane2.parent = v;
