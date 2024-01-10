@@ -240,73 +240,73 @@ v.renderFunc = function() {
 		daisychain = g.daisychain;
 	}
 }
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'account';
-	g.subtitle = 'switch account';
-	g.pane = accountsettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'language';
-	g.subtitle = [];
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'account'
+	g.subtitle = 'switch account'
+	g.pane = accountsettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'language'
+	g.subtitle = []
 	for (var lang of enabledLangs) {
-		g.subtitle.push(icap(tr(lang,lang)));
+		g.subtitle.push(icap(tr(lang,lang)))
 	}
-	g.pane = languagesettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-	g.daisychain = true;
-v.gadgets.push(v.currencysettings = g = new vp.Gadget(v));
-	g.title = 'currencies';
-	g.subtitle = supportedCurrencies;
-	g.pane = currencysettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-	g.daisychain = true;
-v.gadgets.push(v.walletsettings = g = new vp.Gadget(v));
-	g.title = 'wallets';
-	g.subtitle = ['sales income', '(ex)change outflow', 'invoice payments'];
-	g.pane = walletsettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-v.gadgets.push(v.pricelistsettings = g = new vp.Gadget(v));
-	g.title = 'price list';
-	g.subtitle = ['link to online store'];
-	g.pane = pricelistsettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-	g.daisychain = true;
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'QR code and barcode scanning';
-	g.subtitle = ['camera selection', 'product barcodes'];
-	g.pane = camerasettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
+	g.pane = languagesettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+	g.daisychain = true
+v.gadgets.push(v.currencysettings = g = new vp.Gadget(v))
+	g.title = 'currencies'
+	g.subtitle = supportedCurrencies
+	g.pane = currencysettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+v.gadgets.push(v.walletsettings = g = new vp.Gadget(v))
+	g.title = 'wallets'
+	g.subtitle = ['sales income', '(ex)change outflow'/*, 'invoice payments'*/]
+	g.pane = walletsettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+	g.daisychain = true
+v.gadgets.push(v.pricelistsettings = g = new vp.Gadget(v))
+	g.title = 'price list'
+	g.subtitle = ['link to online store']
+	g.pane = pricelistsettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+	g.daisychain = true
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'QR code and barcode scanning'
+	g.subtitle = ['camera selection', 'product barcodes']
+	g.pane = camerasettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
 /*
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'layout';
-	g.subtitle = 'layout';
-	g.pane = layoutsettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-	g.daisychain = true;
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'layout'
+	g.subtitle = 'layout'
+	g.pane = layoutsettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+	g.daisychain = true
 */
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'themes';
-	g.subtitle = ['dark/light mode', 'colors', 'textures'];
-	g.pane = colorsettings;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
-v.gadgets.push(g = new vp.Gadget(v));
-	g.title = 'danger zone';
-	g.subtitle = 'delete data';
-	g.pane = dangerzone;
-	g.pane.layoutFunc = mainsettings.layoutFunc;
-	g.pane.renderFunc = mainsettings.renderFunc;
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'themes'
+	g.subtitle = ['dark/light mode', 'colors', 'textures']
+	g.pane = colorsettings
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'danger zone'
+	g.subtitle = 'delete data'
+	g.pane = dangerzone
+	g.pane.layoutFunc = mainsettings.layoutFunc
+	g.pane.renderFunc = mainsettings.renderFunc
 
-	maincurrency.layoutFunc = mainsettings.layoutFunc;
-	maincurrency.renderFunc = mainsettings.renderFunc;
-	cashcurrency.layoutFunc = mainsettings.layoutFunc;
-	cashcurrency.renderFunc = mainsettings.renderFunc;
-	nostrmarketstall.layoutFunc = mainsettings.layoutFunc;
-	nostrmarketstall.renderFunc = mainsettings.renderFunc;
+	maincurrency.layoutFunc = mainsettings.layoutFunc
+	maincurrency.renderFunc = mainsettings.renderFunc
+	cashcurrency.layoutFunc = mainsettings.layoutFunc
+	cashcurrency.renderFunc = mainsettings.renderFunc
+	nostrmarketstall.layoutFunc = mainsettings.layoutFunc
+	nostrmarketstall.renderFunc = mainsettings.renderFunc
