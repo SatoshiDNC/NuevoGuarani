@@ -221,6 +221,9 @@ v.renderFunc = function() {
 				var color = th.uiSettingsText;
 				var str = icap(tr(g.title));
 				defaultFont.draw(0,14,str,color, this.mat, mat);
+        if (g.alt) {
+          defaultFont.draw(0,0,g.alt,th.uiSettingsSubText, this.mat, mat);
+        }
 
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+20,g.y+15,0]);
@@ -242,6 +245,7 @@ v.renderFunc = function() {
 }
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'account'
+  g.alt = 'test'
 	g.subtitle = 'switch account'
 	g.pane = accountsettings
 	g.pane.layoutFunc = mainsettings.layoutFunc
