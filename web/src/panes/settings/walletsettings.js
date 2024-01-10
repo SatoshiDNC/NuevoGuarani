@@ -26,6 +26,7 @@ v.gadgets.push(v.salesincome = g = new vp.Gadget(v))
 // 	g.pane = invoicepaymentswalletsettings
 console.log(v.name,' DEFINE')
 v.load = (cb) => {
+  const v = this
   const debuglog = true
   const gads = []
   console.log(v.name,' COMPLETE')

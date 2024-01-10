@@ -273,6 +273,7 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
     })
 	}
 v.load = function(cb) {
+  const v = this
   console.log(v.name, "SALESINCOME")
 	const debuglog = true
 	const gads = [
