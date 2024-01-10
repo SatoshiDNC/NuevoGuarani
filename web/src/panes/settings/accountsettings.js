@@ -122,16 +122,12 @@ function loadAccount() {
 			config.log();
 			startpane2.invoice.clickFunc();
 		} else {
-//			console.log(n);
 		}
 	}
 
 	for (const pane of panes) {
 		pane.load(cb);
-	//walletsettings.load(); // TODO
-	//camerasettings.load(); // TODO
 	}
-//	buttonbar.popGad.enabled = true;
 }
 
 const accountsettings = v = new vp.View(null);

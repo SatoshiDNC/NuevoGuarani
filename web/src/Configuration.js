@@ -104,21 +104,21 @@ class Configuration {
 	}
 /*
 	get wallet() { try {
-		switch (wallettypes[walletsettings.typelist.index]) {
+		switch (wallettypes[salesincomewalletsettings.typelist.index]) {
 		case 'LNbits compatible': return new LNbitsWallet(); break;
 		default: return new Wallet();
 		}
 	} catch (e) {console.error(e)} }
 */
-	get wallet() { try { return walletsettings.wallet } catch (e) {console.error(e)} }
-	get walletType() { try { return wallettypes[walletsettings.typelist.index] } catch (e) {} }
-	get walletLNbitsURL() { try { return walletsettings.lnbitsurl.value } catch (e) {} }
+	get wallet() { try { return salesincomewalletsettings.wallet } catch (e) {console.error(e)} }
+	get walletType() { try { return wallettypes[salesincomewalletsettings.typelist.index] } catch (e) {} }
+	get walletLNbitsURL() { try { return salesincomewalletsettings.lnbitsurl.value } catch (e) {} }
   get walletLNbitsWithdrawURL() { try { return 'https://lnbits.satoshidnc.com/withdraw/api/v1' } catch (e) {} }
-	get walletLNbitsKey() { try { return walletsettings.lnbitskey.value } catch (e) {} }
-	get walletStrikeURL() { try { return walletsettings.strikeurl.value } catch (e) {} }
-	get walletStrikeKey() { try { return walletsettings.strikekey.value } catch (e) {} }
-	get walletCoinosURL() { try { return walletsettings.coinosurl.value } catch (e) {} }
-	get walletCoinosKey() { try { return walletsettings.coinoskey.value } catch (e) {} }
+	get walletLNbitsKey() { try { return salesincomewalletsettings.lnbitskey.value } catch (e) {} }
+	get walletStrikeURL() { try { return salesincomewalletsettings.strikeurl.value } catch (e) {} }
+	get walletStrikeKey() { try { return salesincomewalletsettings.strikekey.value } catch (e) {} }
+	get walletCoinosURL() { try { return salesincomewalletsettings.coinosurl.value } catch (e) {} }
+	get walletCoinosKey() { try { return salesincomewalletsettings.coinoskey.value } catch (e) {} }
   
   get stallKeys() {
     if (pricelisttypes[pricelistsettings.typelist.index] !== 'NostrMarket compatible') return
