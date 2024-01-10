@@ -55,12 +55,14 @@ enabled currencies	Aktivierte Währungen
 enabled payment methods	Aktivierte Zahlungsarten
 enter	Eingabe
 enumerate change due	Wechselgeld aufzählen
+(ex)change outflow	Abflüsse von Wechselgeld/Geldwechsel
 external	Extern
 financial	finanzielle
 How would you like to pay?	Wie möchten Sie bezahlen?
 instant	DIREKT
 invoice details	Rechnungsdaten
 invoice number	Rechnungsnummer
+invoice payments	Rechnungszahlungen
 invoice subtotal	Rechnungszwischensumme
 item	Artikel
 1 item	1 Artikel
@@ -103,6 +105,7 @@ QR code and barcode scanning	QR- und Barcode-Scannen
 qty	Quant.	Quantität
 receipt	Rechnung
 rename	Umbenennen
+sales income	Verkaufserlöse
 scan product barcodes into description field	Produkt-Barcodes in das Beschreibungsfeld scannen
 set API key	API-Schlüssel einstellen
 settings	Einstellungen
@@ -125,6 +128,7 @@ tradfi	TradFi
 valid from	gültig ab
 valid till	gültig bis
 wallet	Geldbeutel
+wallets	Geldbörsen
 when new orders arrive	wenn neue Aufträge eingehen
 Would you like cash back?	Möchten Sie Bargeld zurückerhalten?
 Would you like money back?	Möchten Sie Bargeld zurückerhalten?

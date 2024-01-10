@@ -55,12 +55,14 @@ Discard this invoice?	¿Emboyke ko factura?
 	enabled payment methods	Métodos de pago habilitados
 	enter	intro
 	enumerate change due	enumere su vuelto
+	(ex)change outflow	salida de cambio/vuelto
 	external	Exterior
 	financial	financiero
 How would you like to pay?	¿Mba'éichapa repagase?
 instant	KO'AG̃AITE
 	invoice details	factura contado
 	invoice number	factura na
+	invoice payments	pagos de facturas
 	invoice subtotal	importe total
 item	mba'e
 	1 item	1 artículo
@@ -103,6 +105,7 @@ price	hepykue
 qty	hetakue
 	receipt	ticket
 	rename	Cambiar nombre
+	sales income	ingresos por ventas
 	scan product barcodes into description field	escanear los códigos de los productos en el descripción
 	set API key	Establecer clave API
 	settings	Ajustes
@@ -124,7 +127,8 @@ tax id	RUC
 tradfi	TradFi
 	valid from	valido desde
 	valid till	valido hasta
-	wallet	Monedero
+	wallet	monedero
+	wallets	monederos
 	when new orders arrive	cuando lleguen nuevos pedidos
 Would you like cash back?	¿Reipotápa jey nde pláta?
 Would you like money back?	¿Reipotápa jey nde pláta?

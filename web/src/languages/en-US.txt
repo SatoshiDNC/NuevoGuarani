@@ -55,12 +55,14 @@ enabled currencies	Enabled currencies
 enabled payment methods	Enabled payment methods
 enter	enter
 enumerate change due	enumerate change due
+(ex)change outflow	(Ex)change outflow
 external	External
 financial	financial
 How would you like to pay?	How would you like to pay?
 instant	INSTANT
 invoice details	invoice details
 invoice number	invoice #
+invoice payments	invoice payments
 invoice subtotal	subtotal
 item	item
 1 item	1 item
@@ -103,6 +105,7 @@ QR code and barcode scanning	QR and barcode scanning
 qty	qty
 receipt	receipt
 rename	Rename
+sales income	sales income
 scan product barcodes into description field	scan product barcodes into description field
 set API key	Set API key
 settings	Settings
@@ -124,7 +127,8 @@ themes	Themes
 tradfi	TradFi
 valid from	valid from
 valid till	valid till
-wallet	Wallet
+wallet	wallet
+wallets	wallets
 when new orders arrive	when new orders arrive
 Would you like cash back?	Would you like cash back?
 Would you like money back?	Would you like money back?

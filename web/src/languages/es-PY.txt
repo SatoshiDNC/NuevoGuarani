@@ -55,12 +55,14 @@ enabled currencies	Monedas habilitadas
 enabled payment methods	Formas de pago habilitados
 enter	intro
 enumerate change due	enumere su vuelto
+(ex)change outflow	salida de cambio/vuelto
 external	Exterior
 financial	financiero
 How would you like to pay?	¿Cómo le gustaría pagar?
 instant	INSTANTE
 invoice details	factura contado
 invoice number	factura na
+invoice payments	pagos de facturas
 invoice subtotal	importe total
 item	artículo
 1 item	1 artículo
@@ -103,6 +105,7 @@ QR code and barcode scanning	escaneo de códigos de barras y QR
 qty	cant.	cantidad
 receipt	ticket
 rename	Cambiar nombre
+sales income	ingresos por ventas
 scan product barcodes into description field	escanear los códigos de los productos en el descripción
 set API key	Establecer clave API
 settings	Ajustes
@@ -124,7 +127,8 @@ themes	Temas
 tradfi	TradFi
 valid from	valido desde
 valid till	valido hasta
-wallet	Monedero
+wallet	monedero
+wallets	monederos
 when new orders arrive	cuando lleguen nuevos pedidos
 Would you like cash back?	¿Quiere que le devolvamos dinero?
 Would you like money back?	¿Quiere que le devolvamos dinero?
