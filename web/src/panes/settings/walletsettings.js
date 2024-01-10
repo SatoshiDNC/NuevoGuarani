@@ -9,19 +9,19 @@ v.swipeGad.hide = true
 v.gadgets.push(v.salesincome = g = new vp.Gadget(v))
 	g.title = 'sales income'
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return salesincomewalletsettings.typelist.value; } catch (e) {} }
+		get : function () { try { const l = salesincomewalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
 	g.pane = salesincomewalletsettings
 v.gadgets.push(v.exchangeoutflow = g = new vp.Gadget(v))
 	g.title = '(Ex)change outflow'
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return exchangeoutflowwalletsettings.typelist.value; } catch (e) {} }
+		get : function () { try { const l = exchangeoutflowwalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
 	g.pane = exchangeoutflowwalletsettings
 v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
 	g.title = 'invoice payments'
 	Object.defineProperty(g, "subtitle", {
-		get : function () { try { return invoicepaymentswalletsettings.typelist.value; } catch (e) {} }
+		get : function () { try { const l = invoicepaymentswalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
 	g.pane = invoicepaymentswalletsettings
 v.load = function(cb) {
