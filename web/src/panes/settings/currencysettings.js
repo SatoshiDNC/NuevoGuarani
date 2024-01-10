@@ -99,7 +99,7 @@ v.gadgets.push(v.showchange = g = new vp.Gadget(v));
 		}
 	}
 v.load = function(cb) {
-	const debuglog = false
+	const debuglog = true
 	const gads = [
 		'enablelightning', 'disablecash', 'showchange',
 	];

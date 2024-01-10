@@ -25,7 +25,7 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v));
 	});
 	g.pane = invoicepaymentswalletsettings;
 v.load = function(cb) {
-  const debuglog = false
+  const debuglog = true
   const gads = []
   function icb(cb, v) {
     let allComplete = true;

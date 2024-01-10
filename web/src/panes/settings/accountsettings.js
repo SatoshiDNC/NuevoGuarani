@@ -17,7 +17,7 @@ function dateToID(d) {
 }
 
 {
-	const debuglog = false;
+	const debuglog = true
 	dbNotifier = (event) => {
 		if (debuglog) console.log("Database opened for account settings");
 		var selectedAccount = '';
@@ -429,7 +429,7 @@ v.gadgets.push(v.cashier = g = new vp.Gadget(v));
 	g.daisychain = false;
 	g.clickFunc = v.busname.clickFunc;
 v.load = function(cb) {
-	const debuglog = false;
+	const debuglog = true
 	const gads = [
 		'busname', 'locaddress', 'loccity', 'locstate', 'locpostalcode', 'telephone',
 		'taxid', 'license', 'licensevalidfrom', 'licensevalidtill',
