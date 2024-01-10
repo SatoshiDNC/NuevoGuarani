@@ -209,8 +209,8 @@ v.renderFunc = function() {
 					var str;
 					if (typeof g.subtitle === 'object') {
 						str = g.subtitle.map(a => icap(tr(a)).trim()).join(' · ');
-					} else {
-						if (g.subtitle?.startsWith(' ')) str = g.subtitle.trim();
+					} else if (g.subtitle) {
+						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 						else str = icap(tr(g.subtitle));
 					}
 					defaultFont.draw(0,14,str,color, this.mat, mat);
@@ -230,8 +230,8 @@ v.renderFunc = function() {
 				var str;
 				if (typeof g.subtitle === 'object') {
 					str = g.subtitle.map(a => icap(tr(a))).join(' · ');
-				} else {
-					if (g.subtitle?.startsWith(' ')) str = g.subtitle.trim();
+				} else if (g.subtitle) {
+					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 					else str = icap(tr(g.subtitle));
 				}
 				defaultFont.draw(0,14,str,color, this.mat, mat);
