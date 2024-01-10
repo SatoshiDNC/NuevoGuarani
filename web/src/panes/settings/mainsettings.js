@@ -222,7 +222,7 @@ v.renderFunc = function() {
 				var str = icap(tr(g.title));
 				defaultFont.draw(0,14,str,color, this.mat, mat);
         if (g.alt) {
-          defaultFont.draw(0,0,g.alt,th.uiSettingsSubText, this.mat, mat);
+          defaultFont.draw(0,0,' · '+g.alt,th.uiSettingsSubText, this.mat, mat);
         }
 
 				mat4.identity(mat);
@@ -245,7 +245,9 @@ v.renderFunc = function() {
 }
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'account'
-  g.alt = 'test'
+	Object.defineProperty(g, "alt", {
+		get : function () { try { return getCurrentAccount().name } catch (e) {} }
+	})
 	g.subtitle = 'switch account'
 	g.pane = accountsettings
 	g.pane.layoutFunc = mainsettings.layoutFunc
