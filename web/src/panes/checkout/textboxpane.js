@@ -142,7 +142,7 @@ v.gadgets.push(v.cashGad = g = new vp.Gadget(v));
 v.pasteInvoice = function(invoice) {
 	billpane.textbox.options.emoji = 'lightning invoice';
 	billpane.textbox.options.barcode = invoice;
-	config.wallet.readInvoice(invoice, (sats, desc) => {
+	config.invoicePayments.readInvoice(invoice, (sats, desc) => {
 		billpane.textbox.options.desc = desc;
 		if (billpane.textbox.text == '' && isNumber(sats)) {
 			billpane.textbox.text = sats.toString()+'×';
@@ -168,7 +168,7 @@ v.payInvoices = function(cb) {
 				cb(true);
 			}, 1000);
 		} else {
-			config.wallet.payInvoice(item.options.barcode, (success) => {
+			config.invoicePayments.payInvoice(item.options.barcode, (success) => {
 				item.options.success = (success? true: false);
 				cb(true);
 			});
@@ -652,7 +652,8 @@ v.keypadFunc = function(code, key) {
                 checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
                 checkoutpane.relayout()
                 checkoutpane.setRenderFlag(true)
-                switch (config.walletType) {
+                const wallet = config.salesIncome
+                switch (wallet.type) {
                 case 'manual':
                   lightningqr.walletSignal = true;
                   billpane.textbox.options.hashes = [];
@@ -663,7 +664,7 @@ v.keypadFunc = function(code, key) {
                     lightningqr.netBusy = true;
                     lightningqr.clear();
                     lightningqr.busySignal = true;
-                    config.wallet.generateInvoice((+qty) * (+money), (invoice, id) => {
+                    wallet.generateInvoice((+qty) * (+money), (invoice, id) => {
                       if (invoice && invoice.startsWith('lnbc') && id) {
                         lightningqr.qr = [invoice];
                         if (!billpane.textbox.options.hashes)
@@ -688,7 +689,8 @@ v.keypadFunc = function(code, key) {
                 checkoutpane.subtotalshim.b = lightningqr; lightningqr.parent = checkoutpane.subtotalshim
                 checkoutpane.relayout()
                 checkoutpane.setRenderFlag(true)
-                switch (config.walletType) {
+                const wallet = config.exchangeOutflow
+                switch (wallet.type) {
                 case 'manual':
                   lightningqr.walletSignal = true
                   billpane.textbox.options.hashes = []
@@ -699,7 +701,7 @@ v.keypadFunc = function(code, key) {
                     lightningqr.netBusy = true
                     lightningqr.clear()
                     lightningqr.busySignal = true
-                    config.wallet.generateWithdrawalLink((+qty) * (+money), "Here's your change. Thank you for your purchase!", (withdrawalLink, id) => {
+                    wallet.generateWithdrawalLink((+qty) * (+money), "Here's your change. Thank you for your purchase!", (withdrawalLink, id) => {
                       if (withdrawalLink && withdrawalLink.toLowerCase().startsWith('lnurl') && id) {
                         lightningqr.qr = [withdrawalLink]
                         if (!billpane.textbox.options.hashes)
@@ -722,14 +724,15 @@ v.keypadFunc = function(code, key) {
 						} else if (billpane.textbox.options.hashes && !lightningqr.netBusy) {
               if (inQuestion < 0) {
                 // Paid remaining amount via Lightning.
-                switch (config.walletType) {
+                const wallet = config.salesIncome
+                switch (wallet.type) {
                 case 'manual':
                   completionlogic()
                   break
                 case 'LNbits compatible':
                   if (!lightningqr.netBusy) {
                     lightningqr.netBusy = true
-                    config.wallet.checkInvoice(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
+                    wallet.checkInvoice(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
                       lightningqr.netBusy = false
                       if (result && result.paid) {
                         billpane.textbox.options.lightningpaid = true
@@ -744,14 +747,15 @@ v.keypadFunc = function(code, key) {
                 }
               } else {
                 // Returned overpayment via Lightning.
-                switch (config.walletType) {
+                const wallet = config.exchangeOutflow
+                switch (wallet.type) {
                 case 'manual':
                   completionlogic()
                   break
                 case 'LNbits compatible':
                   if (!lightningqr.netBusy) {
                     lightningqr.netBusy = true
-                    config.wallet.checkWithdrawalLink(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
+                    wallet.checkWithdrawalLink(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
                       lightningqr.netBusy = false
                       if (result && result.used) {
                         billpane.textbox.options.lightningpaid = true

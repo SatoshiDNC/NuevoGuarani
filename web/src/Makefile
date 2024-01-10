@@ -56,7 +56,6 @@ all.js: \
 	Convert.js \
 	ColorTheme.js \
 	Configuration.js \
-	Wallet.js \
 	PriceList.js \
 	themes/all.js \
 	languages/all.js \
@@ -91,7 +90,6 @@ all.js: \
 		Convert.js \
 		ColorTheme.js \
 		Configuration.js \
-		Wallet.js \
 		PriceList.js \
 		themes/all.js \
 		languages/all.js \

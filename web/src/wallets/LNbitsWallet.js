@@ -1,13 +1,21 @@
-class LNbitsWallet extends Wallet {
-	constructor() {
-		super();
+class LNbitsWallet extends BaseWallet {
+	constructor(settings) {
+		super(settings)
 	}
+
+  get url() {
+    return this.settings.lnbitsurl.value
+  }
+  get key() {
+    return this.settings.lnbitskey.value
+  }
 
 	getConversionRate(amt, from, to, callback) {
 		console.groupCollapsed(this.constructor.name+'.getConversionRate(',amt,from,to,'...)');
 
 		if (from == to) { callback(1); return; }
 
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			let amt_ = amt/(config.hasCents(from)?100:1);
@@ -16,17 +24,18 @@ class LNbitsWallet extends Wallet {
 			console.log('getting quote for',amt_,from_,'to',to_,'live =',!config.debugBuild);
 			if (!config.debugBuild) {
 				let body = `{
-			"from_": "${from_}",
-			"amount": ${amt_},
-			"to": "${to_}"
-		}`;
+          "from_": "${from_}",
+          "amount": ${amt_},
+          "to": "${to_}"
+        }`;
 				console.log('request body', body);
-				const response = await fetch(/*config.walletLNbitsURL*/'https://lnbits.satoshibox.io/api/v1'+'/conversion', {
-					method: 'POST',
+				//const response = await fetch('https://lnbits.satoshibox.io/api/v1'+'/conversion', {
+        const response = await fetch(wallet.url+'/conversion', {
+          method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 					body: body,
 				});
@@ -64,40 +73,24 @@ class LNbitsWallet extends Wallet {
 			return;
 		}
 
-/*
-		const getAcct = async () => {
-			console.group('getAcct()');
-			const response = await fetch(config.walletLNbitsURL+'/wallet', {
-				method: 'GET',
-				headers: {
-					'Accept': 'application/json',
-					'X-API-KEY': config.walletLNbitsKey,
-				},
-			});
-			const json = await response.json(); //extract JSON from the http response
-			// do something with json
-			console.log('json', json);
-			console.groupEnd();
-		}
-*/
-
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			console.log('generating invoice for',total_sat,'sats','live =',!config.debugBuild);
 			if (!config.debugBuild) {
-				const response = await fetch(config.walletLNbitsURL+'/payments', {
+				const response = await fetch(wallet.url+'/payments', {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 					body: `{
-			"out": false,
-			"amount": `+ total_sat +`,
-			"memo": "`+ config.businessName +`",
-			"unit": "sat"
-		}`,
+            "out": false,
+            "amount": `+ total_sat +`,
+            "memo": "`+ config.businessName +`",
+            "unit": "sat"
+          }`,
 				});
 				json = await response.json(); //extract JSON from the http response
 			} else {
@@ -124,14 +117,15 @@ class LNbitsWallet extends Wallet {
 	checkInvoice(checkingId, callback) {
 		console.groupCollapsed(this.constructor.name+'.checkInvoice(',checkingId,'...)');
 
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			if (!config.debugBuild) {
-				const response = await fetch(config.walletLNbitsURL+'/payments/'+checkingId, {
+				const response = await fetch(wallet.url+'/payments/'+checkingId, {
 					method: 'GET',
 					headers: {
 						'Accept': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 				});
 				json = await response.json();
@@ -152,28 +146,29 @@ class LNbitsWallet extends Wallet {
 
 	readInvoice(invoice, callback) {
 		console.groupCollapsed(this.constructor.name+'.readInvoice(',invoice.substr(0,20),'..., ...)');
+    const wallet = this
 		const asyncLogic = async () => {
-			let myJson;
+			let json;
 			if (!config.debugBuild) {
-				const response = await fetch(config.walletLNbitsURL+'/payments/decode', {
+				const response = await fetch(wallet.url+'/payments/decode', {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 					body: `{"data": "`+ invoice +`"}`,
 				});
-				myJson = await response.json(); //extract JSON from the http response
+				json = await response.json(); //extract JSON from the http response
 			} else {
 				console.log('debug build; faking response');
-				myJson = { description: "some description", date: "some date", amount_msat: 321000 };
+				json = { description: "some description", date: "some date", amount_msat: 321000 };
 			}
 
-			console.log('myJson', myJson);
-			const desc = myJson.description;
-			const date = myJson.date;
-			const msats = myJson.amount_msat;
+			console.log('json', json);
+			const desc = json.description;
+			const date = json.date;
+			const msats = json.amount_msat;
 			const sats = Math.round(msats/1000);
 
 			var temp = tr('pay {AMNT} sats for {DESC}');
@@ -190,39 +185,38 @@ class LNbitsWallet extends Wallet {
 	payInvoice(invoice, callback) {
 		console.groupCollapsed(this.constructor.name+'.payInvoice(',invoice.substr(0,20),'..., ...)');
 
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			console.log('paying invoice','live =',!config.debugBuild);
 			if (!config.debugBuild) {
-				const response = await fetch(config.walletLNbitsURL+'/payments', {
+				const response = await fetch(wallet.url+'/payments', {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 					body: `{
-			"out": true,
-			"bolt11": "`+ invoice +`"
-		}`,
+            "out": true,
+            "bolt11": "${invoice}"
+          }`,
 				});
 				json = await response.json(); //extract JSON from the http response
 			} else {
 				console.log('debug build; faking payment');
 				json = {
-  "detail": "Internal invoice already paid."
-};
+          "detail": "Internal invoice already paid."
+        };
 				json = {
-  "payment_hash": "b5985cf1c88bef61d4c8d3178beec7a388191a4c9c6175fe17569d6a9865c17a",
-  "checking_id": "b5985cf1c88bef61d4c8d3178beec7a388191a4c9c6175fe17569d6a9865c17a"
-};
+          "payment_hash": "b5985cf1c88bef61d4c8d3178beec7a388191a4c9c6175fe17569d6a9865c17a",
+          "checking_id": "b5985cf1c88bef61d4c8d3178beec7a388191a4c9c6175fe17569d6a9865c17a"
+        };
 			}
 
 			console.log('json', json);
 			const paymentHash = json["payment_hash"];
 			const checkingId = json["checking_id"];
-//			console.log('invoiceString', invoiceString);
-//			console.log('checkingId', checkingId);
 			if (paymentHash && checkingId) {
 				callback(true);
 			} else {
@@ -244,17 +238,18 @@ class LNbitsWallet extends Wallet {
 			return;
 		}
 
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			console.log('generating withdrawal link for',total_sat,'sats','live =',!config.debugBuild);
 			if (!config.debugBuild) {
-        console.log(config.walletLNbitsWithdrawURL+'/links');
-				const response = await fetch(config.walletLNbitsWithdrawURL+'/links', {//?api-key='+config.walletLNbitsKey
+        console.log(wallet.url+'/links');
+				const response = await fetch(wallet.url+'/links', {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 					body: `{
             "title": "${comment.replaceAll("\"", "\\\"")}",
@@ -313,17 +308,17 @@ class LNbitsWallet extends Wallet {
 
 	checkWithdrawalLink(linkId, withdrawalLinkCallback) {
 		console.groupCollapsed(this.constructor.name+'.checkWithdrawalLink(', linkId, '...)');
-
+    const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
 			console.log('checking withdrawal link',linkId,'live =',!config.debugBuild);
 			if (!config.debugBuild) {
-        console.log(config.walletLNbitsWithdrawURL+'/links/'+linkId);
-				const response = await fetch(config.walletLNbitsWithdrawURL+'/links/'+linkId, {//?api-key='+config.walletLNbitsKey
+        console.log(wallet.url+'/links/'+linkId);
+				const response = await fetch(wallet.url+'/links/'+linkId, {
 					method: 'GET',
 					headers: {
 						'Accept': 'application/json',
-						'X-API-KEY': config.walletLNbitsKey,
+						'X-API-KEY': wallet.key,
 					},
 				});
 				json = await response.json(); //extract JSON from the http response

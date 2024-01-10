@@ -12,7 +12,7 @@ Object.defineProperty(v, "wallet", {
 	get : function () {
 		const i = exchangeoutflowwalletsettings.typelist.index;
 		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
-		case 'LNbits compatible': return new LNbitsWallet(); break;
+		case 'LNbits compatible': return new LNbitsWallet(exchangeoutflowwalletsettings); break;
 		}
 		return new Wallet();
 	}
@@ -37,7 +37,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 		}
 	})
 	g.value = ''
-	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1'
+	g.defaultValue = 'https://lnbits.satoshidnc.com/withdraw/api/v1'
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true

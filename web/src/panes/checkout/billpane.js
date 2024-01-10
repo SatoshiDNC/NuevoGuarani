@@ -137,7 +137,7 @@ v.beginConversionRateQuery = function(amt, from, to) {
 		let amtConv = amt * billpane.conversions[convtype];
 		completionLogic((amtConv * (config.hasCents(to)?100:1)) / (amt * (config.hasCents(from)?100:1)));
 	} else {
-		config.wallet.getConversionRate(amt, from, to, completionLogic);
+		config.salesIncome.getConversionRate(amt, from, to, completionLogic);
 	}
 }
 v.getConversionRate = function(amt, from, to, callback) {
@@ -156,7 +156,7 @@ v.getConversionRate = function(amt, from, to, callback) {
 		completionLogic((amtConv * (config.hasCents(to)?100:1)) / (amt * (config.hasCents(from)?100:1)));
 	} else {
 		console.log("begin conversion query", amt, from, to);
-		config.wallet.getConversionRate(amt, from, to, completionLogic);
+		config.salesIncome.getConversionRate(amt, from, to, completionLogic);
 	}
 }
 v.getOptimalDigits = function(rate, amt) {

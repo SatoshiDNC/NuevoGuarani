@@ -12,7 +12,7 @@ Object.defineProperty(v, "wallet", {
 	get : function () {
 		const i = invoicepaymentswalletsettings.typelist.index;
 		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
-		case 'LNbits compatible': return new LNbitsWallet(); break;
+		case 'LNbits compatible': return new LNbitsWallet(invoicepaymentswalletsettings); break;
 		}
 		return new Wallet();
 	}
