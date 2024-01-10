@@ -94,8 +94,8 @@ v.load = function(cb) {
 		}
 		if (index < 0) index = 0;
 		{ // For the GUI.
-			nostrmarketstall.list.index = index;
-			nostrmarketstall.setRenderFlag(true);
+			v.list.index = index;
+			v.setRenderFlag(true);
 		} { // For the app function.
 			g.appFunction();
 		} { // For persistence.

@@ -27,7 +27,8 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v));
 v.load = function(cb) {
   const debuglog = true
   const gads = []
-  v.loadComplete = true; cb(cb, v)
+  console.log(v.name,' COMPLETE')
+  v.loadComplete = true; cb()
   return
 
   function icb(cb, v) {
