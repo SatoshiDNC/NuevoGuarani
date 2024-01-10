@@ -51,15 +51,16 @@ class Configuration {
 			{icon: "\x18", color: [120/255, 112/255, 112/255, 1] , value:   2000},
 			{icon: "\x1B", color: config.themeColors.uiCoinSilver, value:   1000},
 			{icon: "\x1A", color: config.themeColors.uiCoinSilver, value:    500},
-			{icon: "\x19", color: config.themeColors.uiCoinSilver, value:    100},
+	  //{icon: "\x19", color: config.themeColors.uiCoinSilver, value:    100},
 			];
 		}
 		return [];
 	}
 	getLeeway(c) {
-		const ds = this.getDenoms(c);
-		const d = ds[ds.length-1];
-		return d.value/2;
+    console.log('getLeeway currency:', c)
+		const ds = this.getDenoms(c)
+		const d = ds[ds.length-1]
+		return d && d.value/2
 	}
 	get debugBuild() { return releasebuild != true; }
 	get showChangeBreakdown() { try { return currencysettings.showchange.state && this.cashCurrency != 'none'; } catch (e) {} }
