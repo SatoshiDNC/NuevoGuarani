@@ -111,11 +111,11 @@ v.load = function(cb) {
 				allComplete = false;
 				break;
 			}
-			if (allComplete) {
-				v.loadComplete = true; cb();
-			}
 		}
-	}
+    if (allComplete) {
+      v.loadComplete = true; cb();
+    }
+  }
 	for (const gad of gads) {
 		const g = this[gad];
 		g.tempValue = g.defaultValue;
