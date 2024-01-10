@@ -14,19 +14,19 @@ class BaseWallet {
   /* query for current exchange rate */
 	getConversionRate(amt, from, to, callback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support getConversionRate(${amt}, ${from}, ${to}, ...)`)
-    callback(0)
+    setTimeout(() => callback(0), 500)
 	}
 
   /* bolt11 invoice generation */
 	generateInvoice(sats, invoiceCallback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support generateInvoice(${sats}, ...)`)
-    invoiceCallback()
+    setTimeout(() => invoiceCallback(), 500)
 	}
 
   /* bolt11 invoice follow-up */
 	checkInvoice(checkingId, callback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support checkInvoice(${checkingId}, ...)`)
-    callback({ detail: "Wallet not configured correctly." })
+    setTimeout(() => callback({ detail: "Wallet not configured correctly." }), 500)
 	}
 
   /* decoding of a bolt11 invoice */
@@ -60,9 +60,9 @@ class BaseWallet {
 			temp = icap(temp);
 
 			if (isNumber(msats)) {
-				callback(sats, temp);
+				setTimeout(() => callback(sats, temp), 500)
 			} else {
-				callback(msats, temp);
+				setTimeout(() => callback(msats, temp), 500)
 			}
 		}
 		asyncLogic();
@@ -72,19 +72,19 @@ class BaseWallet {
   /* payment of a bolt11 invoice */
 	payInvoice(invoice, callback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support payInvoice(${invoice}, ...)`)
-		callback(false)
+		setTimeout(() => callback(false), 500)
 	}
 
   /* LNURLw generation for one-time withdrawal of a defined amount */
   generateWithdrawalLink(sats, comment, withdrawalLinkCallback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support generateWithdrawalLink(${sats}, ${comment}, ...)`)
-		withdrawalLinkCallback()
+		setTimeout(() => withdrawalLinkCallback(), 500)
   }
 
   /* LNURLw follow-up */
   checkWithdrawalLink(linkId, withdrawalLinkCallback) {
     console.log(`WARNING: '${this.constructor.name}' of type '${this.type}' does not support checkWithdrawalLink(${linkId}, ...)`)
-    withdrawalLinkCallback({ detail: "Wallet not configured correctly." })
+    setTimeout(() => withdrawalLinkCallback({ detail: "Wallet not configured correctly." }), 500)
   }
 
 }
