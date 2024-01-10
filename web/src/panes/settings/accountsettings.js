@@ -434,7 +434,7 @@ v.gadgets.push(v.cashier = g = new vp.Gadget(v));
 v.load = function(cb) {
 	const debuglog = false;
 	const gads = [
-		'locaddress', 'loccity', 'locstate', 'locpostalcode', 'telephone',
+		'busname', 'locaddress', 'loccity', 'locstate', 'locpostalcode', 'telephone',
 		'taxid', 'license', 'licensevalidfrom', 'licensevalidtill',
 		'cashreg', 'cashier',
 	];
