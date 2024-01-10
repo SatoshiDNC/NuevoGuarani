@@ -274,6 +274,25 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
 	}
 v.load = function(cb) {
 	const debuglog = true
+	const gads = [
+		'typelist',
+		'lnbitsurl', 'lnbitskey',
+		'strikeurl', 'strikekey',
+		'coinosurl', 'coinoskey',
+	];
+	function icb(cb, v) {
+		let allComplete = true;
+		for (let gad of gads) {
+			if (v[gad].loadComplete) {
+			} else {
+				allComplete = false;
+				break;
+			}
+		}
+    if (allComplete) {
+      v.loadComplete = true; cb();
+    }
+  }
 	{
 		const g = this.typelist, v = this;
 		g.tempValue = '';
@@ -288,8 +307,8 @@ v.load = function(cb) {
 			}
 			if (index < 0) index = 0
 			{ // For the GUI.
-				salesincomewalletsettings.typelist.index = index
-				salesincomewalletsettings.setRenderFlag(true)
+				v.typelist.index = index
+				v.setRenderFlag(true)
 			} { // For the app function.
 
 				if (wallettypes[index] == 'LNbits compatible') {
@@ -326,7 +345,7 @@ v.load = function(cb) {
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
-			v.loadComplete = true; cb()
+			g.loadComplete = true; icb(cb, v);
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
@@ -345,7 +364,7 @@ v.load = function(cb) {
 	]) {
 		const g = this[gad];
 		g.tempValue = g.defaultValue;
-		function finishInit(v, g) {
+		function finishInit(cb, v, g) {
 			{ // For the GUI.
 				g.viewport.queueLayout();
 			} { // For the app function.
@@ -354,16 +373,18 @@ v.load = function(cb) {
 			}
 			delete g.tempValue;
 			if (debuglog) console.log(`${g.key} ready`, g.value);
+			g.loadComplete = true; icb(cb, v);
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
-			finishInit(this, g)
+			finishInit(cb, this, g)
 		}, (event) => {
 			console.log(`error getting ${g.key}`, event)
-			finishInit(this, g)
+			finishInit(cb, this, g)
 		})
 	}
 }
+
