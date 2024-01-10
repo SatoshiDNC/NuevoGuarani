@@ -2,8 +2,9 @@ all: subdirs all.js # Textbook subdirectory recursion
 
 FILES = \
 	salesincome.js \
-	exchangeoutflow.js \
-	invoicepayments.js \
+
+#	exchangeoutflow.js \
+#	invoicepayments.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
