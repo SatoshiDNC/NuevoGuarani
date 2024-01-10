@@ -14,7 +14,7 @@ Object.defineProperty(v, "wallet", {
 		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
 		case 'LNbits compatible': return new LNbitsWallet(salesincomewalletsettings); break;
 		}
-		return new BaseWallet();
+		return new BaseWallet(salesincomewalletsettings);
 	}
 });
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
