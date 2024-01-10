@@ -25,7 +25,7 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
 	})
 	g.pane = invoicepaymentswalletsettings
 console.log(v.name,' DEFINE')
-v.load = function(cb) {
+v.load = (cb) => {
   const debuglog = true
   const gads = []
   console.log(v.name,' COMPLETE')
