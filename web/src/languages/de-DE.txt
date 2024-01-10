@@ -1,6 +1,6 @@
 .	,
 ,	.
-₿	Nuevo Guaraní
+₿	Neu-Guaraní
 €	Euro
 ₲	Guaraní
 $	Dollar
