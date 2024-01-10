@@ -99,8 +99,8 @@ function loadAccount() {
 		cashcurrency,
 		currencysettings,
 		salesincomewalletsettings,
-		// exchangeoutflowwalletsettings,
-		// invoicepaymentswalletsettings,
+		exchangeoutflowwalletsettings,
+		invoicepaymentswalletsettings,
 		walletsettings,
 		nostrmarketstall,
 		pricelistsettings,
@@ -131,12 +131,10 @@ function loadAccount() {
 		}
 	}
 
-  console.group('load panes')
 	for (const pane of panes) {
-    console.log(pane && pane.name)
-		pane.load.call(pane, cb)
+    console.log('load', pane && pane.name)
+		pane.load(cb)
 	}
-  console.groupEnd()
 }
 
 const accountsettings = v = new vp.View(null);

@@ -12,26 +12,22 @@ v.gadgets.push(v.salesincome = g = new vp.Gadget(v))
 		get : function () { try { return salesincomewalletsettings.list.value; } catch (e) {} }
 	})
 	g.pane = salesincomewalletsettings
-// v.gadgets.push(v.exchangeoutflow = g = new vp.Gadget(v))
-// 	g.title = '(Ex)change outflow'
-// 	Object.defineProperty(g, "subtitle", {
-// 		get : function () { try { return exchangeoutflowwalletsettings.list.value; } catch (e) {} }
-// 	})
-// 	g.pane = exchangeoutflowwalletsettings
-// v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
-// 	g.title = 'invoice payments'
-// 	Object.defineProperty(g, "subtitle", {
-// 		get : function () { try { return invoicepaymentswalletsettings.list.value; } catch (e) {} }
-// 	})
-// 	g.pane = invoicepaymentswalletsettings
-console.log(v.name,' DEFINE')
+v.gadgets.push(v.exchangeoutflow = g = new vp.Gadget(v))
+	g.title = '(Ex)change outflow'
+	Object.defineProperty(g, "subtitle", {
+		get : function () { try { return exchangeoutflowwalletsettings.list.value; } catch (e) {} }
+	})
+	g.pane = exchangeoutflowwalletsettings
+v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
+	g.title = 'invoice payments'
+	Object.defineProperty(g, "subtitle", {
+		get : function () { try { return invoicepaymentswalletsettings.list.value; } catch (e) {} }
+	})
+	g.pane = invoicepaymentswalletsettings
 v.load = function(cb) {
   const v = this
   const debuglog = true
   const gads = []
-  console.log('COMPLETE')
-  console.log(v)
-  console.log(v.name,' COMPLETE')
   v.loadComplete = true; cb()
   return
 
