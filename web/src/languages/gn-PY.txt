@@ -8,6 +8,7 @@ de-DE	Alemán
 en-US	Inglés
 es-PY	Español
 gn-PY	Guaraní
+	accept Lightning as a payment method	aceptar Lightning como método de pago
 	account	Cuenta
 	account name:	Nombre de la cuenta:
 about @	@ rupi
@@ -50,6 +51,7 @@ customer bill	Factura cliente
 	delete '@'?	¿Borrar '@'?
 	delete all data	borrar todos los datos de las cuentas
 	delete data	borrar datos
+	disable cash payments	desactivar los pagos en efectivo
 Discard this invoice?	¿Emboyke ko factura?
 	enabled currencies	Monedas habilitadas
 	enabled payment methods	Métodos de pago habilitados
@@ -73,6 +75,7 @@ item	mba'e
 	license number	timbrado na
 	light mode	Modo claro
 	lightning invoice	factura relámpago
+	Lightning payments	pagos relámpago
 	link a wallet	vincular un monedero
 	link to online store	enlace a la tienda en línea
 lnbc item description	HEPYME'Ẽ FACTURA GUARANÍ PYAHU
@@ -90,6 +93,7 @@ no	NO
 	NostrMarket compatible	Compatible con NostrMarket
 	NostrMarket stall	puesto del NostrMarket
 	not set	No configurado
+	only allow Lightning payments	sólo permiten pagos relámpago
 	orders	pedidos
 	pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
 	pay {DESC} {AMNT} sats on {DATE}	pagar a {DESC} {AMNT} sats el {DATE}

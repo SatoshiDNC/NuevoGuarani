@@ -21,8 +21,8 @@ v.gadgets.push(v.cashcurrency = g = new vp.Gadget(v));
 v.gadgets.push(v.enablelightning = g = new vp.Gadget(v));
 	g.key = 'enableLightning';
 	g.type = 'enable';
-	g.title = 'lightning payments';
-	g.subtitle = 'accept lightning as a payment method';
+	g.title = 'Lightning payments';
+	g.subtitle = 'accept Lightning as a payment method';
   g.state = false;
 	g.defaultValue = false;
 	Object.defineProperty(g, "icon", {
@@ -52,7 +52,7 @@ v.gadgets.push(v.disablecash = g = new vp.Gadget(v));
 	g.key = 'disableCash';
 	g.type = 'enable';
 	g.title = 'disable cash payments';
-	g.subtitle = 'only allow lightning payments';
+	g.subtitle = 'only allow Lightning payments';
   g.state = false;
 	g.defaultValue = false;
 	Object.defineProperty(g, "icon", {

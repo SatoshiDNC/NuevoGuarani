@@ -8,6 +8,7 @@ de-DE	Deutsch
 en-US	Englisch
 es-PY	Spanisch
 gn-PY	Guaraní
+accept Lightning as a payment method	Lightning als Zahlungsmethode akzeptieren
 account	Konto
 account name:	Name des Kontos:
 about @	etwa @
@@ -50,6 +51,7 @@ default vendor currency (title)	für die Preisgestaltung
 delete '@'?	'@' löschen?
 delete all data	Alle Daten für alle Konten löschen
 delete data	Daten löschen
+disable cash payments	Barzahlungen deaktivieren
 Discard this invoice?	Diese Rechnung verwerfen?
 enabled currencies	Aktivierte Währungen
 enabled payment methods	Aktivierte Zahlungsarten
@@ -73,6 +75,7 @@ layout	Gestaltung
 license number	Lizenznummer
 light mode	Hellmodus
 lightning invoice	Lightningrechnung
+Lightning payments	Blitzzahlungen
 link a wallet	eine Brieftasche verbinden
 link to online store	Link zum Online-Shop
 lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
@@ -90,6 +93,7 @@ none	keine
 NostrMarket compatible	NostrMarket kompatibel
 NostrMarket stall	NostrMarket-Stand
 not set	Nicht eingestellt
+only allow Lightning payments	nur Blitzzahlungen zulassen
 orders	Bestellungen
 pay {AMNT} sats for {DESC}	{AMNT} sats für {DESC} bezahlen
 pay {DESC} {AMNT} sats on {DATE}	{DESC} am {DATE} {AMNT} sats zahlen

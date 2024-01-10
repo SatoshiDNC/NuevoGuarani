@@ -8,6 +8,7 @@ de-DE	German
 en-US	English
 es-PY	Spanish
 gn-PY	Guaraní
+accept Lightning as a payment method	accept Lightning as a payment method
 account	Account
 account name:	Account name:
 about @	about @
@@ -50,6 +51,7 @@ default vendor currency (title)	currency for pricing
 delete '@'?	Delete '@'?
 delete all data	delete all data for all accounts
 delete data	delete data
+disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
 enabled payment methods	Enabled payment methods
@@ -73,6 +75,7 @@ layout	Layout
 license number	license #
 light mode	light mode
 lightning invoice	lightning invoice
+Lightning payments	Lightning payments
 link a wallet	link a wallet
 link to online store	link to online store
 lnbc item description	PAYMENT OF LIGHNING INVOICE
@@ -90,6 +93,7 @@ none	none
 NostrMarket compatible	NostrMarket compatible
 NostrMarket stall	NostrMarket stall
 not set	Not set
+only allow Lightning payments	only allow Lightning payments
 orders	orders
 pay {AMNT} sats for {DESC}	pay {AMNT} sats for {DESC}
 pay {DESC} {AMNT} sats on {DATE}	pay {DESC} {AMNT} sats on {DATE}
