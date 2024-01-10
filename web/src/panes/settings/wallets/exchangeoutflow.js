@@ -2,7 +2,7 @@
 
 const exchangeoutflowwalletsettings = v = new vp.View(null);
 v.name = Object.keys({exchangeoutflowwalletsettings}).pop();
-v.title = 'wallets';
+v.title = '(Ex)change outflow';
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));

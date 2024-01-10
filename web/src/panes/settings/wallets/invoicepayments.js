@@ -2,7 +2,7 @@
 
 const invoicepaymentswalletsettings = v = new vp.View(null);
 v.name = Object.keys({invoicepaymentswalletsettings}).pop();
-v.title = 'wallets';
+v.title = 'invoice payments';
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
