@@ -131,9 +131,12 @@ function loadAccount() {
 		}
 	}
 
+  console.group('load panes')
 	for (const pane of panes) {
+    console.log(pane && pane.name)
 		pane.load.call(pane, cb)
 	}
+  console.groupEnd()
 }
 
 const accountsettings = v = new vp.View(null);
