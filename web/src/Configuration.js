@@ -17,9 +17,9 @@ class Configuration {
 			if (str == 'themeColors') console.log(str, colorsettings.themelist.list[colorsettings.themelist.index].title);
 			else if (str == 'themeGraphics') console.log(str, this.themeGraphics.title);
 			else if (str.startsWith('themeGraphics')) {}
-			else if (str == 'salesIncome') console.log (str, this.salesIncome.type)
-			else if (str == 'exchangeOutflow') console.log (str, this.exchangeOutflow.type)
-			else if (str == 'invoicePayments') console.log (str, this.invoicePayments.type)
+			else if (str == 'salesIncome') console.log (str, this.salesIncome)
+			else if (str == 'exchangeOutflow') console.log (str, this.exchangeOutflow)
+			else if (str == 'invoicePayments') console.log (str, this.invoicePayments)
 			else if (this[str] === '') {}
 			else console.log(str, this[str]);
 		}
