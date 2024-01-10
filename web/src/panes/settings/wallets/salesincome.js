@@ -216,13 +216,14 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
   g.enabled = !g.hide
 	g.clickFunc = v.lnbitskey.clickFunc
 v.load = function(cb) {
+  console.log('HERE', this.name)
 	const debuglog = true
 	const gads = [
 		'typelist',
 		'lnbitsurl', 'lnbitskey',
 		'strikeurl', 'strikekey',
 		'coinosurl', 'coinoskey',
-	];
+	]
 	function icb(cb, v) {
 		let allComplete = true;
 		for (let gad of gads) {
