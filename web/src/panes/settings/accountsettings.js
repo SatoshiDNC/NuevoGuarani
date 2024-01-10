@@ -118,9 +118,10 @@ function loadAccount() {
 			}
 		}
 		if (allComplete && showConfigOnlyOnce) {
-			showConfigOnlyOnce = false;
-			config.log();
-			startpane2.invoice.clickFunc();
+			showConfigOnlyOnce = false
+      console.log("CONFIGURATION")
+			config.log()
+			startpane2.invoice.clickFunc()
 		} else {
 		}
 	}
