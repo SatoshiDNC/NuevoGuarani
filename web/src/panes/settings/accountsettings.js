@@ -110,14 +110,15 @@ function loadAccount() {
 	];
 
 	function cb() {
-		let allComplete = true;
-		let n = 0;
+		let allComplete = true
+		let n = 0
 		for (const pane of panes) {
 			if (pane.loadComplete) {
-				n++;
+				n++
 			} else {
-				allComplete = false;
-				break;
+        console.log('Not loaded:', pane.name)
+				allComplete = false
+				break
 			}
 		}
 		if (allComplete && showConfigOnlyOnce) {
@@ -131,7 +132,7 @@ function loadAccount() {
 	}
 
 	for (const pane of panes) {
-		pane.load(cb);
+		pane.load(cb)
 	}
 }
 
