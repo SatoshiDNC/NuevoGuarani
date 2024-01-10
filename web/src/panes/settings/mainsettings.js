@@ -246,7 +246,7 @@ v.renderFunc = function() {
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'account'
 	Object.defineProperty(g, "alt", {
-		get : function () { try { return getCurrentAccount().name } catch (e) {} }
+		get : function () { try { return getCurrentAccount().title } catch (e) {} }
 	})
 	g.subtitle = 'switch account'
 	g.pane = accountsettings
