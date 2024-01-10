@@ -577,7 +577,7 @@ v.keypadFunc = function(code, key) {
 			let str = v.text;
 			if (str == '' || str.endsWith('×') || str.endsWith('.') || (str.includes('.') && !str.includes('×'))) {
 				if (str == '') {
-					if (v.options.cash && !v.options.change)
+					if (v.options.cash && !v.options.lightning && !v.options.change)
 						v.finishCash();
 				} else vp.beep('bad');
 			} else {
