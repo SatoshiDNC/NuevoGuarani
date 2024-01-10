@@ -22,13 +22,13 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	});
 	g.appFunction = function() {
-		currencysettings.enablelightning.hide = (this.value == '₿');
-		currencysettings.enablelightning.enabled = !currencysettings.enablelightning.hide;
-		currencysettings.enablelightning.appFunction();
-		currencysettings.cashcurrency.hide = (this.value != '₿');
-		currencysettings.cashcurrency.enabled = !currencysettings.cashcurrency.hide;
-		cashcurrency.list.appFunction();
-		currencysettings.queueLayout();
+		currencysettings.enablelightning.hide = (this.value == '₿')
+		currencysettings.enablelightning.enabled = !currencysettings.enablelightning.hide
+		currencysettings.enablelightning.appFunction()
+		currencysettings.cashcurrency.hide = (this.value != '₿')
+		currencysettings.cashcurrency.enabled = !currencysettings.cashcurrency.hide
+		cashcurrency.list.appFunction()
+		currencysettings.queueLayout()
 	}
 	g.listItemClick = function(index) {
 		const g = this;

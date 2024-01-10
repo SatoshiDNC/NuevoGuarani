@@ -31,9 +31,9 @@ v.gadgets.push(v.list = g = new vp.Gadget(v));
 		}
 	});
 	g.appFunction = function() {
-		currencysettings.showchange.hide = (this.value == 'none');
-		currencysettings.showchange.enabled = !currencysettings.showchange.hide;
-		currencysettings.queueLayout();
+		currencysettings.showchange.hide = (this.value == 'none')
+		currencysettings.showchange.enabled = !currencysettings.showchange.hide
+		currencysettings.queueLayout()
 	}
 	g.listItemClick = function(index) {
 		const g = this;

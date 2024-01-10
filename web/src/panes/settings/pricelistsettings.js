@@ -169,32 +169,36 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
       v.nostrmarketwalletkey.hide = true;
       v.nostrmarketstall.hide = true;
     }
+    v.nostrmarketurl.enabled = !v.nostrmarketurl.hide
+    v.nostrmarketwalletkey.enabled = !v.nostrmarketwalletkey.hide
+    v.nostrmarketstall.enabled = !v.nostrmarketstall.hide
     v.queueLayout();
   }
-v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'NostrMarketURL';
-	g.title = 'base URL';
+v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v))
+	g.type = 'button'
+	g.key = 'NostrMarketURL'
+	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				if (this.value.length < 50) return ' '+this.value;
-				else return ' '+this.value.substr(0,50)+'...';
-			}	else return 'not set';
+				if (this.value.length < 50) return ' '+this.value
+				else return ' '+this.value.substr(0,50)+'...'
+			}	else return 'not set'
 		}
-	});
-	g.value = '';
-	g.defaultValue = 'https://lnbits.satoshidnc.com/nostrmarket/api/v1';
-	g.hide = true;
-	g.daisychain = true;
+	})
+	g.value = ''
+	g.defaultValue = 'https://lnbits.satoshidnc.com/nostrmarket/api/v1'
+	g.hide = true
+  g.enabled = !g.hide
+	g.daisychain = true
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
         g.appFunction()
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
@@ -211,31 +215,32 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v));
       nostrmarketstall.load(() => {})
     }
   }
-v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'nostrMarketWalletKey';
-	g.title = 'key';
+v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v))
+	g.type = 'button'
+	g.key = 'nostrMarketWalletKey'
+	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				var temp;
-				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value;
-				if (temp.length < 50) return ' '+temp;
-				else return ' '+temp.substr(0,50)+'...';
-			}	else return 'not set';
+				var temp
+				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value
+				if (temp.length < 50) return ' '+temp
+				else return ' '+temp.substr(0,50)+'...'
+			}	else return 'not set'
 		}
 	});
-	g.value = '';
-	g.hide = true;
-  g.daisychain = true;
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
+  g.daisychain = true
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
         g.appFunction()
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {

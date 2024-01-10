@@ -30,28 +30,34 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 		} { // For the app function.
 
 			if (wallettypes[index] == 'LNbits compatible') {
-				delete v.lnbitsurl.hide;
-				delete v.lnbitskey.hide;
+				delete v.lnbitsurl.hide
+				delete v.lnbitskey.hide
 			} else {
-				v.lnbitsurl.hide = true;
-				v.lnbitskey.hide = true;
+				v.lnbitsurl.hide = true
+				v.lnbitskey.hide = true
 			}
+      v.lnbitsurl.enabled = !v.lnbitsurl.hide
+      v.lnbitskey.enabled = !v.lnbitskey.hide
 
 			if (wallettypes[index] == 'strike compatible') {
-				delete v.strikeurl.hide;
-				delete v.strikekey.hide;
+				delete v.strikeurl.hide
+				delete v.strikekey.hide
 			} else {
-				v.strikeurl.hide = true;
-				v.strikekey.hide = true;
+				v.strikeurl.hide = true
+				v.strikekey.hide = true
 			}
+      v.strikeurl.enabled = !v.strikeurl.hide
+      v.strikekey.enabled = !v.strikekey.hide
 
 			if (wallettypes[index] == 'coinos compatible') {
-				delete v.coinosurl.hide;
-				delete v.coinoskey.hide;
+				delete v.coinosurl.hide
+				delete v.coinoskey.hide
 			} else {
-				v.coinosurl.hide = true;
-				v.coinoskey.hide = true;
+				v.coinosurl.hide = true
+				v.coinoskey.hide = true
 			}
+      v.coinosurl.enabled = !v.coinosurl.hide
+      v.coinoskey.enabled = !v.coinoskey.hide
 
 			v.queueLayout();
 		} { // For persistence.
@@ -62,30 +68,31 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 			})
 		}
 	}
-v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'LNbitsURL';
-	g.title = 'base URL';
+v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
+	g.type = 'button'
+	g.key = 'LNbitsURL'
+	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				if (this.value.length < 50) return ' '+this.value;
-				else return ' '+this.value.substr(0,50)+'...';
-			}	else return 'not set';
+				if (this.value.length < 50) return ' '+this.value
+				else return ' '+this.value.substr(0,50)+'...'
+			}	else return 'not set'
 		}
-	});
-	g.value = '';
-	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1';
-	g.hide = true;
-	g.daisychain = true;
+	})
+	g.value = ''
+	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1'
+	g.hide = true
+  g.enabled = !g.hide
+	g.daisychain = true
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -96,29 +103,30 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v));
     })
 	}
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'lnbitsKey';
-	g.title = 'key';
+	g.type = 'button'
+	g.key = 'lnbitsKey'
+	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
 				var temp;
-				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value;
-				if (temp.length < 50) return ' '+temp;
-				else return ' '+temp.substr(0,50)+'...';
-			}	else return 'not set';
+				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value
+				if (temp.length < 50) return ' '+temp
+				else return ' '+temp.substr(0,50)+'...'
+			}	else return 'not set'
 		}
 	});
-	g.value = '';
-	g.hide = true;
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('API admin or invoice/read key')+':', '', val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -128,30 +136,31 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
       }
     })
 	}
-v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'strikeURL';
-	g.title = 'base URL';
+v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
+	g.type = 'button'
+	g.key = 'strikeURL'
+	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				if (this.value.length < 50) return ' '+this.value;
-				else return ' '+this.value.substr(0,50)+'...';
-			}	else return 'not set';
+				if (this.value.length < 50) return ' '+this.value
+				else return ' '+this.value.substr(0,50)+'...'
+			}	else return 'not set'
 		}
 	});
-	g.value = '';
-	g.defaultValue = 'https://api.strike.me/v1';
-	g.hide = true;
-	g.daisychain = true;
+	g.value = ''
+	g.defaultValue = 'https://api.strike.me/v1'
+	g.hide = true
+  g.enabled = !g.hide
+	g.daisychain = true
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -162,29 +171,30 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v));
     })
 	}
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'strikeKey';
-	g.title = 'API bearer token';
+	g.type = 'button'
+	g.key = 'strikeKey'
+	g.title = 'API bearer token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				var temp;
-				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value;
-				if (temp.length < 50) return ' '+temp;
-				else return ' '+temp.substr(0,50)+'...';
-			}	else return 'not set';
+				var temp
+				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value
+				if (temp.length < 50) return ' '+temp
+				else return ' '+temp.substr(0,50)+'...'
+			}	else return 'not set'
 		}
 	});
-	g.value = '';
-	g.hide = true;
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('API bearer token')+':', '', val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -195,29 +205,30 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
     })
 	}
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'coinosURL';
-	g.title = 'base URL';
+	g.type = 'button'
+	g.key = 'coinosURL'
+	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				if (this.value.length < 50) return ' '+this.value;
-				else return ' '+this.value.substr(0,50)+'...';
-			}	else return 'not set';
+				if (this.value.length < 50) return ' '+this.value
+				else return ' '+this.value.substr(0,50)+'...'
+			}	else return 'not set'
 		}
 	});
-	g.value = '';
-	g.defaultValue = 'https://coinos.io/api';
-	g.hide = true;
-	g.daisychain = true;
+	g.value = ''
+	g.defaultValue = 'https://coinos.io/api'
+	g.hide = true
+  g.enabled = !g.hide
+	g.daisychain = true
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
     PlatformUtil.UserPrompt(tr('base URL')+':', g.defaultValue, val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -227,30 +238,31 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
       }
     })
 	}
-v.gadgets.push(v.coinoskey = g = new vp.Gadget(v));
-	g.type = 'button';
-	g.key = 'coinosKey';
-	g.title = 'API auth token';
+v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
+	g.type = 'button'
+	g.key = 'coinosKey'
+	g.title = 'API auth token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				var temp;
-				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value;
-				if (temp.length < 50) return ' '+temp;
-				else return ' '+temp.substr(0,50)+'...';
-			}	else return 'not set';
+				var temp
+				if (this.value.length > 4) temp = this.value.substr(0,4)+'*'.repeat(this.value.length-4); else temp = this.value
+				if (temp.length < 50) return ' '+temp
+				else return ' '+temp.substr(0,50)+'...'
+			}	else return 'not set'
 		}
-	});
-	g.value = '';
-	g.hide = true;
+	})
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
 	g.clickFunc = function() {
-		const g = this;
+		const g = this
 		PlatformUtil.UserPrompt(tr('API auth token')+':', '', val => {
-      if (!val) return;
+      if (!val) return
       { // For the GUI.
-        g.viewport.queueLayout();
+        g.viewport.queueLayout()
       } { // For the app function.
-        g.value = val;
+        g.value = val
       } { // For persistence.
         PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
@@ -274,41 +286,47 @@ v.load = function(cb) {
 					break;
 				}
 			}
-			if (index < 0) index = 0;
+			if (index < 0) index = 0
 			{ // For the GUI.
-				walletsettings.typelist.index = index;
-				walletsettings.setRenderFlag(true);
+				walletsettings.typelist.index = index
+				walletsettings.setRenderFlag(true)
 			} { // For the app function.
 
 				if (wallettypes[index] == 'LNbits compatible') {
-					delete v.lnbitsurl.hide;
-					delete v.lnbitskey.hide;
+					delete v.lnbitsurl.hide
+					delete v.lnbitskey.hide
 				} else {
-					v.lnbitsurl.hide = true;
-					v.lnbitskey.hide = true;
+					v.lnbitsurl.hide = true
+					v.lnbitskey.hide = true
 				}
+        v.lnbitsurl.enabled = !v.lnbitsurl.hide
+        v.lnbitskey.enabled = !v.lnbitskey.hide
 
 				if (wallettypes[index] == 'strike compatible') {
-					delete v.strikeurl.hide;
-					delete v.strikekey.hide;
+					delete v.strikeurl.hide
+					delete v.strikekey.hide
 				} else {
-					v.strikeurl.hide = true;
-					v.strikekey.hide = true;
+					v.strikeurl.hide = true
+					v.strikekey.hide = true
 				}
+        v.strikeurl.enabled = !v.strikeurl.hide
+        v.strikekey.enabled = !v.strikekey.hide
 
 				if (wallettypes[index] == 'coinos compatible') {
-					delete v.coinosurl.hide;
-					delete v.coinoskey.hide;
+					delete v.coinosurl.hide
+					delete v.coinoskey.hide
 				} else {
-					v.coinosurl.hide = true;
-					v.coinoskey.hide = true;
+					v.coinosurl.hide = true
+					v.coinoskey.hide = true
 				}
+        v.coinosurl.enabled = !v.coinosurl.hide
+        v.coinoskey.enabled = !v.coinoskey.hide
 
-				v.queueLayout();
+				v.queueLayout()
 			} { // For persistence.
 			}
-			if (debuglog) console.log(`${g.key} ready`, g.tempValue);
-			v.loadComplete = true; cb();
+			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
+			v.loadComplete = true; cb()
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
