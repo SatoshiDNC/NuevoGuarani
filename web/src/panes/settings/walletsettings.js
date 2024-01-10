@@ -44,6 +44,7 @@ v.load = function(cb) {
       v.loadComplete = true; cb();
     }
   }
+  /*
   for (const gad of gads) {
     const g = this[gad];
     g.tempValue = g.defaultValue;
@@ -73,5 +74,6 @@ v.load = function(cb) {
       finishInit(cb, this, g)
     })
   }
+  */
 }
   
