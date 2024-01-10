@@ -132,7 +132,7 @@ function loadAccount() {
 	}
 
 	for (const pane of panes) {
-		pane.load(cb)
+		pane.load.call(pane, cb)
 	}
 }
 
