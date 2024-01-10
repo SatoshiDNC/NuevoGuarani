@@ -18,12 +18,14 @@ Object.defineProperty(v, "wallet", {
 	}
 });
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
-	g.key = 'walletTypeForInvoicePayments';
+  g.name = 'typelist'
+  g.key = 'walletTypeForInvoicePayments';
 	g.list = wallettypes;
   g.index = -1;
 	g.listItemClick = salesincomewalletsettings.typelist.listItemClick
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
-	g.type = 'button'
+  g.name = 'lnbitsurl'
+  g.type = 'button'
 	g.key = 'LNbitsURLForInvoicePayments'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
@@ -41,7 +43,8 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 	g.daisychain = true
 	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
-	g.type = 'button'
+  g.name = 'lnbitskey'
+  g.type = 'button'
 	g.key = 'lnbitsKeyForInvoicePayments'
 	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
@@ -59,7 +62,8 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
-	g.type = 'button'
+  g.name = 'strikeurl'
+  g.type = 'button'
 	g.key = 'strikeURLForInvoicePayments'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
@@ -77,7 +81,8 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
 	g.daisychain = true
 	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
-	g.type = 'button'
+  g.name = 'strikekey'
+  g.type = 'button'
 	g.key = 'strikeKeyForInvoicePayments'
 	g.title = 'API bearer token'
 	Object.defineProperty(g, "subtitle", {
@@ -95,7 +100,8 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
-	g.type = 'button'
+  g.name = 'coinosurl'
+  g.type = 'button'
 	g.key = 'coinosURLForInvoicePayments'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
@@ -113,7 +119,8 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 	g.daisychain = true
 	g.clickFunc = salesincomewalletsettings.lnbitsurl.clickFunc
 v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
-	g.type = 'button'
+  g.name = 'coinoskey'
+  g.type = 'button'
 	g.key = 'coinosKeyForInvoicePayments'
 	g.title = 'API auth token'
 	Object.defineProperty(g, "subtitle", {

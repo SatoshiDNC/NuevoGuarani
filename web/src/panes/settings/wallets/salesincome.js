@@ -216,7 +216,6 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
   g.enabled = !g.hide
 	g.clickFunc = v.lnbitskey.clickFunc
 v.load = function(cb) {
-  console.log('HERE', this.name)
 	const debuglog = true
 	const gads = [
 		'typelist',
