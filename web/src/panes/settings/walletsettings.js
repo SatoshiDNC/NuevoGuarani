@@ -1,29 +1,30 @@
-const walletsettings = v = new vp.View(null);
-v.name = Object.keys({walletsettings}).pop();
-v.title = 'wallets';
-v.minX = 0; v.maxX = 0;
-v.minY = 0; v.maxY = 0;
-v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
-v.swipeGad.hide = true;
-v.gadgets.push(v.salesincome = g = new vp.Gadget(v));
-	g.title = 'sales income';
+const walletsettings = v = new vp.View(null)
+v.name = Object.keys({walletsettings}).pop()
+v.title = 'wallets'
+v.minX = 0; v.maxX = 0
+v.minY = 0; v.maxY = 0
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
+v.swipeGad.hide = true
+v.gadgets.push(v.salesincome = g = new vp.Gadget(v))
+	g.title = 'sales income'
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { return salesincomewalletsettings.list.value; } catch (e) {} }
-	});
-	g.pane = salesincomewalletsettings;
-v.gadgets.push(v.exchangeoutflow = g = new vp.Gadget(v));
-	g.title = '(Ex)change outflow';
+	})
+	g.pane = salesincomewalletsettings
+v.gadgets.push(v.exchangeoutflow = g = new vp.Gadget(v))
+	g.title = '(Ex)change outflow'
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { return exchangeoutflowwalletsettings.list.value; } catch (e) {} }
-	});
-	g.pane = exchangeoutflowwalletsettings;
-v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v));
-	g.title = 'invoice payments';
+	})
+	g.pane = exchangeoutflowwalletsettings
+v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
+	g.title = 'invoice payments'
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { return invoicepaymentswalletsettings.list.value; } catch (e) {} }
-	});
-	g.pane = invoicepaymentswalletsettings;
+	})
+	g.pane = invoicepaymentswalletsettings
+console.log(v.name,' DEFINE')
 v.load = function(cb) {
   const debuglog = true
   const gads = []
