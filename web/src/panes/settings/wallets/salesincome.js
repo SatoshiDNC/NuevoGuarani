@@ -29,7 +29,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
   g.appFunction = function() {
     const g = this, v = g.viewport
 
-    if (v.wallettypes[g.index] == 'LNbits compatible') {
+    if (['LNbits compatible', 'LNbits LNURLw compatible'].includes(v.wallettypes[g.index])) {
       delete v.lnbitsurl.hide
       delete v.lnbitskey.hide
     } else {
