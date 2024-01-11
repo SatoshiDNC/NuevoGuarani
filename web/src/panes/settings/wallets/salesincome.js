@@ -30,12 +30,10 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
     if (wallettypes[g.index] == 'LNbits compatible') {
       delete v.lnbitsurl.hide
       delete v.lnbitskey.hide
-      delete v.lnbitsnote.hide
     } else {
       v.lnbitsurl.hide = true
       v.lnbitskey.hide = true
-      v.lnbitsnote.hide = true
-}
+    }
     v.lnbitsurl.enabled = !v.lnbitsurl.hide
     v.lnbitskey.enabled = !v.lnbitskey.hide
 
