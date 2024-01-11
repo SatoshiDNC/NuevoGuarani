@@ -24,19 +24,50 @@ v.layoutFunc = function() {
 			g.w = v.sw
 			g.x = 0; g.y = y
 
-      let lines = []
+      let lines = [], blankLines = 0, extraLines = 0
       let maxw = v.sw - 2 * 20
       let toFit = tr(g.description).split(' ')
-      let desc = ''
-      do {
-        while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw) {
-          desc = (desc + ' ' + toFit.shift()).trim()
-        }
-        lines.push(desc)
-        desc = ''
-      } while (toFit.length > 0)
+      if (g.description.includes('#')) {
+        let i = 0
+        let all = ''
+        let para
+        do {
+          i++
+          let key = g.description.replace('#', i)
+          para = tr(key)
+          if (para != key) {
+            if (lines.length > 0) { lines.push(''); blankLines++ }
+            let desc = '', prefix = ''
+            for (let i=0; para[i]==' '; i++) prefix += ' '
+            if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
+            if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
+            if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
+            toFit = para.split(' ')
+            do {
+              do {
+                desc = (desc + ' ' + toFit.shift()).trim()
+              } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
+              lines.push(prefix + desc)
+              desc = ''; prefix = ''
+            } while (toFit.length > 0)    
+          } else {
+            para = undefined
+          }
+        } while (para)
+        toFit = all.split(' ')
+      } else {
+        let desc = ''
+        do {
+          do {
+            desc = (desc + ' ' + toFit.shift()).trim()
+          } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
+          if (desc.startsWith('x2>')) { extraLines = 1 }
+          lines.push(desc)
+          desc = ''
+        } while (toFit.length > 0)
+      }
 
-      g.h = (16 * lines.length + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE
+      g.h = (16 * (lines.length + extraLines) + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE + blankLines * (-(16 + 2) * SETTINGS_DESC_TEXT_SCALE + 15)
       g.computedLines = lines
 			y += g.h; x = v.sw
 			g.autoHull()
@@ -94,13 +125,32 @@ v.renderFunc = function() {
 			g.renderFunc.call(g)
     } else if (g.description) {
       var color = th.uiSettingsSubText
-      let i = 0
-      for (const line of g.computedLines) {
-        mat4.identity(mat)
-        mat4.translate(mat,mat, [g.x+20,g.y,0])
-        mat4.scale(mat,mat, [SETTINGS_DESC_TEXT_SCALE, SETTINGS_DESC_TEXT_SCALE, 1])
-        defaultFont.draw(0,14+(16+2)*i,line,color, this.mat, mat)
-        i++
+      let i = 0, blankLines = 0
+      for (let line of g.computedLines) {
+        if (line == '') {
+          blankLines++
+        } else {
+          mat4.identity(mat)
+          mat4.translate(mat,mat, [g.x + 20, g.y + blankLines * 15, 0])
+          let scale = SETTINGS_DESC_TEXT_SCALE, ii = 1
+          if (line.startsWith('x2>')) {
+            scale *= 2; ii = 2
+            line = line.substring(3)
+          }
+          let col = color
+          if (line.startsWith('b>')) {
+            col = th.uiSettingsText
+            line = line.substring(2)
+          }
+          mat4.scale(mat,mat, [scale, scale, 1])
+          if (line.startsWith('c>')) {
+            let x = ((g.w - 20 * 2) / scale - defaultFont.calcWidth(line.substring(2))) / 2
+            defaultFont.draw(x, 14 + (16 + 2) * i, line.substring(2), col, this.mat, mat)
+          } else {
+            defaultFont.draw(0, 14 + (16 + 2) * i, line, col, this.mat, mat)
+          }
+          i += ii
+        }
       }
 		} else if (g.listToOverlay) {
 			mainShapes.useProg2();

@@ -11,7 +11,7 @@ FILES = \
 	layoutsettings.js \
 	colorsettings.js \
 	camerasettings.js \
-	softwarelicensesettings.js \
+	softwarelicense.js \
 	dangerzone.js \
 	mainsettings.js \
 	settingspane.js \
