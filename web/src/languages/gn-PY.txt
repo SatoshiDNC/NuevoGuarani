@@ -125,6 +125,7 @@ qty	hetakue
 	set API key	Establecer clave API
 	settings	Ajustes
 	shows how many of each denomination to return	muestra cuántos ejemplares de cada denominación
+	software license payments	pagos de licencias de software
 	some	algunos
 	stall	puesto
 	state	departamento

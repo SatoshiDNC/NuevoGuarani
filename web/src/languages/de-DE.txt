@@ -125,6 +125,7 @@ scan product barcodes into description field	Produkt-Barcodes in das Beschreibun
 set API key	API-Schlüssel einstellen
 settings	Einstellungen
 shows how many of each denomination to return	zeigt an, wie viele der einzelnen Stückelungen
+software license payments	Zahlungen für Softwarelizenzen
 some	einige
 stall	Stand
 state	Staat

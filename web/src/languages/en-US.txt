@@ -125,6 +125,7 @@ scan product barcodes into description field	scan product barcodes into descript
 set API key	Set API key
 settings	Settings
 shows how many of each denomination to return	shows how many of each denomination to return
+software license payments	software license payments
 some	some
 stall	stall
 state	state

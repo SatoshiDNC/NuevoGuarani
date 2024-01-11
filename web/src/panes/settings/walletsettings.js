@@ -25,7 +25,7 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
 	})
 	g.pane = invoicepaymentswalletsettings
 v.gadgets.push(v.softwarelicensepayments = g = new vp.Gadget(v))
-	g.title = 'invoice payments'
+	g.title = 'software license payments'
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { const l = softwarelicensepaymentswalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
