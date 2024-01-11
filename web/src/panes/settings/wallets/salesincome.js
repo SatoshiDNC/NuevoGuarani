@@ -17,7 +17,9 @@ Object.defineProperty(v, "wallet", {
 		return new BaseWallet(salesincomewalletsettings);
 	}
 });
-v.gadgets.push(v.typelist = g = new vp.Gadget(v));
+v.gadgets.push(v.desc = g = new vp.Gadget(v))
+  g.description = 'desc:'+v.title
+v.gadgets.push(v.typelist = g = new vp.Gadget(v))
   g.name = 'typelist'
 	g.key = 'walletTypeForSalesIncome'
 	g.list = wallettypes

@@ -18,6 +18,11 @@ v.layoutFunc = function() {
 			skipspace = true;
 		} else if (g.layoutFunc) {
 			g.layoutFunc();
+    } else if (g.description) {
+			g.w = v.sw; g.h = 50
+			g.x = 0; g.y = y
+			y += g.h; x = v.sw
+			g.autoHull()
 		} else if (g.list) {
 			g.clickFunc = function(p) {
 				settingsbuttons.listClickFunc.call(g, p);
@@ -69,7 +74,15 @@ v.renderFunc = function() {
 	for (const g of this.gadgets) {
 		if (g.hide) {
 		} else if (g.renderFunc) {
-			g.renderFunc.call(g);
+			g.renderFunc.call(g)
+    } else if (g.description) {
+      mat4.identity(mat)
+      mat4.translate(mat,mat, [g.x+20,g.y,0])
+      //mat4.translate(mat,mat, [0,16+6,0])
+      mat4.scale(mat,mat, [0.75,0.75,1])
+      var color = th.uiSettingsSubText
+      var str = tr(g.description)
+      defaultFont.draw(0,14,str,color, this.mat, mat)
 		} else if (g.listToOverlay) {
 			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),

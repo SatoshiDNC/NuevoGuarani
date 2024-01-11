@@ -51,6 +51,7 @@ default vendor currency (title)	currency for pricing
 delete '@'?	Delete '@'?
 delete all data	delete all data for all accounts
 delete data	delete data
+desc:sales income	This is where the proceeds of the sales will go.
 disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
