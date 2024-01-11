@@ -146,7 +146,7 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
       }
     })
 	}
-v.gadgets.push(v.desc = g = new vp.Gadget(v))
+v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
   g.name = 'lnbitsnote'
   Object.defineProperty(g, 'description', {
 		get : function () { return 'desc:'+v.title+':'+wallettypes[salesincomewalletsettings.typelist.index] }

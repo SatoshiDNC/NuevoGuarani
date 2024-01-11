@@ -63,7 +63,7 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
-v.gadgets.push(v.desc = g = new vp.Gadget(v))
+v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
   g.name = 'lnbitsnote'
   Object.defineProperty(g, 'description', {
 		get : function () { return 'desc:'+v.title+':'+wallettypes[exchangeoutflowwalletsettings.typelist.index] }
