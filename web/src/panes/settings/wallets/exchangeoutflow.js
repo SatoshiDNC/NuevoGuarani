@@ -66,9 +66,10 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
 v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
   g.name = 'lnbitsnote'
-  Object.defineProperty(g, 'description', {
-		get : function () { return 'desc:'+v.title+':'+wallettypes[exchangeoutflowwalletsettings.typelist.index] }
-	});
+  Object.defineProperty(g, 'description', { get : function () {
+    const v = this.viewport
+    return 'desc:'+v.title+':'+wallettypes[v.typelist.index]
+  }})
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
   g.type = 'button'
