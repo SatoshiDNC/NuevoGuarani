@@ -24,45 +24,50 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
 	g.key = 'walletTypeForSalesIncome'
 	g.list = wallettypes
   g.index = -1
+  g.appFunction = function() {
+    const g = this, v = g.viewport
+
+    if (wallettypes[g.index] == 'LNbits compatible') {
+      delete v.lnbitsurl.hide
+      delete v.lnbitskey.hide
+      delete v.lnbitsnote.hide
+    } else {
+      v.lnbitsurl.hide = true
+      v.lnbitskey.hide = true
+      v.lnbitsnote.hide = true
+}
+    v.lnbitsurl.enabled = !v.lnbitsurl.hide
+    v.lnbitskey.enabled = !v.lnbitskey.hide
+
+    if (wallettypes[g.index] == 'strike compatible') {
+      delete v.strikeurl.hide
+      delete v.strikekey.hide
+    } else {
+      v.strikeurl.hide = true
+      v.strikekey.hide = true
+    }
+    v.strikeurl.enabled = !v.strikeurl.hide
+    v.strikekey.enabled = !v.strikekey.hide
+
+    if (wallettypes[g.index] == 'coinos compatible') {
+      delete v.coinosurl.hide
+      delete v.coinoskey.hide
+    } else {
+      v.coinosurl.hide = true
+      v.coinoskey.hide = true
+    }
+    v.coinosurl.enabled = !v.coinosurl.hide
+    v.coinoskey.enabled = !v.coinoskey.hide
+
+    v.queueLayout()
+}
 	g.listItemClick = function(index) {
 		const g = this, v = g.viewport;
-
 		{ // For the GUI.
 			v.typelist.index = index;
 			v.setRenderFlag(true);
 		} { // For the app function.
-
-			if (wallettypes[index] == 'LNbits compatible') {
-				delete v.lnbitsurl.hide
-				delete v.lnbitskey.hide
-			} else {
-				v.lnbitsurl.hide = true
-				v.lnbitskey.hide = true
-			}
-      v.lnbitsurl.enabled = !v.lnbitsurl.hide
-      v.lnbitskey.enabled = !v.lnbitskey.hide
-
-			if (wallettypes[index] == 'strike compatible') {
-				delete v.strikeurl.hide
-				delete v.strikekey.hide
-			} else {
-				v.strikeurl.hide = true
-				v.strikekey.hide = true
-			}
-      v.strikeurl.enabled = !v.strikeurl.hide
-      v.strikekey.enabled = !v.strikekey.hide
-
-			if (wallettypes[index] == 'coinos compatible') {
-				delete v.coinosurl.hide
-				delete v.coinoskey.hide
-			} else {
-				v.coinosurl.hide = true
-				v.coinoskey.hide = true
-			}
-      v.coinosurl.enabled = !v.coinosurl.hide
-      v.coinoskey.enabled = !v.coinoskey.hide
-
-			v.queueLayout();
+      v.typelist.appFunction()
 		} { // For persistence.
       PlatformUtil.DatabasePut('settings', g.list[index], `${getCurrentAccount().id}-${g.key}`, (event) => {
 				console.log(`successfully selected ${g.key}`, event)
@@ -141,6 +146,11 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
       }
     })
 	}
+v.gadgets.push(v.desc = g = new vp.Gadget(v))
+  g.name = 'lnbitsnote'
+  Object.defineProperty(g, 'description', {
+		get : function () { return 'desc:'+v.title+':'+wallettypes[salesincomewalletsettings.typelist.index] }
+	});
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
   g.type = 'button'
@@ -256,38 +266,7 @@ v.load = function(cb) {
 				v.typelist.index = index
 				v.setRenderFlag(true)
 			} { // For the app function.
-
-				if (wallettypes[index] == 'LNbits compatible') {
-					delete v.lnbitsurl.hide
-					delete v.lnbitskey.hide
-				} else {
-					v.lnbitsurl.hide = true
-					v.lnbitskey.hide = true
-				}
-        v.lnbitsurl.enabled = !v.lnbitsurl.hide
-        v.lnbitskey.enabled = !v.lnbitskey.hide
-
-				if (wallettypes[index] == 'strike compatible') {
-					delete v.strikeurl.hide
-					delete v.strikekey.hide
-				} else {
-					v.strikeurl.hide = true
-					v.strikekey.hide = true
-				}
-        v.strikeurl.enabled = !v.strikeurl.hide
-        v.strikekey.enabled = !v.strikekey.hide
-
-				if (wallettypes[index] == 'coinos compatible') {
-					delete v.coinosurl.hide
-					delete v.coinoskey.hide
-				} else {
-					v.coinosurl.hide = true
-					v.coinoskey.hide = true
-				}
-        v.coinosurl.enabled = !v.coinosurl.hide
-        v.coinoskey.enabled = !v.coinoskey.hide
-
-				v.queueLayout()
+        v.typelist.appFunction()
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue)

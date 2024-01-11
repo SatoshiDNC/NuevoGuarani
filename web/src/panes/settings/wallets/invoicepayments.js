@@ -17,6 +17,8 @@ Object.defineProperty(v, "wallet", {
 		return new BaseWallet(invoicepaymentswalletsettings);
 	}
 });
+v.gadgets.push(v.desc = g = new vp.Gadget(v))
+  g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.name = 'typelist'
   g.key = 'walletTypeForInvoicePayments';
@@ -61,6 +63,11 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.clickFunc = salesincomewalletsettings.lnbitskey.clickFunc
+v.gadgets.push(v.desc = g = new vp.Gadget(v))
+  g.name = 'lnbitsnote'
+  Object.defineProperty(g, 'description', {
+		get : function () { return 'desc:'+v.title+':'+wallettypes[invoicepaymentswalletsettings.typelist.index] }
+	});
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
   g.type = 'button'

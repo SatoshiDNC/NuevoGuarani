@@ -1,4 +1,4 @@
-const DESC_TEXT_SCALE = 0.85
+const SETTINGS_DESC_TEXT_SCALE = 0.85
 
 var mainsettings = v = new vp.View(null);
 v.name = Object.keys({mainsettings}).pop();
@@ -21,9 +21,23 @@ v.layoutFunc = function() {
 		} else if (g.layoutFunc) {
 			g.layoutFunc();
     } else if (g.description) {
-			g.w = v.sw; g.h = 16 * DESC_TEXT_SCALE
+			g.w = v.sw
 			g.x = 0; g.y = y
-      g.computedLines = [tr(g.description)]
+
+      let lines = []
+      let maxw = v.sw - 2 * 20
+      let toFit = tr(g.description).split(' ')
+      let desc = ''
+      do {
+        while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw) {
+          desc = (desc + ' ' + toFit.shift()).trim()
+        }
+        lines.push(desc)
+        desc = ''
+      } while (toFit.length > 0)
+
+      g.h = (16 * lines.length + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE
+      g.computedLines = lines
 			y += g.h; x = v.sw
 			g.autoHull()
 		} else if (g.list) {
@@ -79,12 +93,15 @@ v.renderFunc = function() {
 		} else if (g.renderFunc) {
 			g.renderFunc.call(g)
     } else if (g.description) {
-      mat4.identity(mat)
-      mat4.translate(mat,mat, [g.x+20,g.y,0])
-      mat4.scale(mat,mat, [DESC_TEXT_SCALE,DESC_TEXT_SCALE,1])
       var color = th.uiSettingsSubText
-      var str = g.computedLines[0]
-      defaultFont.draw(0,14,str,color, this.mat, mat)
+      let i = 0
+      for (const line of g.computedLines) {
+        mat4.identity(mat)
+        mat4.translate(mat,mat, [g.x+20,g.y,0])
+        mat4.scale(mat,mat, [SETTINGS_DESC_TEXT_SCALE, SETTINGS_DESC_TEXT_SCALE, 1])
+        defaultFont.draw(0,14+(16+2)*i,line,color, this.mat, mat)
+        i++
+      }
 		} else if (g.listToOverlay) {
 			mainShapes.useProg2();
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
