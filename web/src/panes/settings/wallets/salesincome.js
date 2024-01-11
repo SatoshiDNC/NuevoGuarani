@@ -39,6 +39,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
     v.lnbitsurl.enabled = !v.lnbitsurl.hide
     v.lnbitskey.enabled = !v.lnbitskey.hide
 
+    /*
     if (v.wallettypes[g.index] == 'strike compatible') {
       delete v.strikeurl.hide
       delete v.strikekey.hide
@@ -58,7 +59,8 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
     }
     v.coinosurl.enabled = !v.coinosurl.hide
     v.coinoskey.enabled = !v.coinoskey.hide
-
+    */
+   
     v.queueLayout()
 }
 	g.listItemClick = function(index) {
@@ -152,6 +154,7 @@ v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
     const v = this.viewport
     return 'desc:'+v.title+':'+v.wallettypes[v.typelist.index]
   }})
+/*
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
   g.type = 'button'
@@ -228,13 +231,14 @@ v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
 	g.hide = true
   g.enabled = !g.hide
 	g.clickFunc = v.lnbitskey.clickFunc
+*/
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
 		'typelist',
 		'lnbitsurl', 'lnbitskey',
-		'strikeurl', 'strikekey',
-		'coinosurl', 'coinoskey',
+		// 'strikeurl', 'strikekey',
+		// 'coinosurl', 'coinoskey',
 	]
 	function icb(cb, v) {
 		let allComplete = true;
@@ -286,8 +290,8 @@ v.load = function(cb) {
 	for (const gad of this.gadgets) {
     if (![
       'lnbitsurl', 'lnbitskey',
-      'strikeurl', 'strikekey',
-      'coinosurl', 'coinoskey',
+      // 'strikeurl', 'strikekey',
+      // 'coinosurl', 'coinoskey',
     ].includes(gad.name)) continue
 		const g = gad
 		g.tempValue = g.defaultValue;

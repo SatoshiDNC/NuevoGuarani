@@ -4,6 +4,7 @@ FILES = \
 	salesincome.js \
 	exchangeoutflow.js \
 	invoicepayments.js \
+	softwarelicensepayments.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
