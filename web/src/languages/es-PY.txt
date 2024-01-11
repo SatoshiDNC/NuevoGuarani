@@ -19,6 +19,8 @@ all data has been deleted and/or reset to installation defaults	Se han borrado t
 API admin or invoice/read key	API admin o clave para facturar/leer
 API auth token	Token de autenticación API
 API bearer token	Token de autenticación API
+app development	app development
+app development payments	app development payments
 are you sure?	¿Está seguro?
 back	retro
 barcode scanning	escaneo de códigos de barras

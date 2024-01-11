@@ -101,6 +101,7 @@ function loadAccount() {
 		salesincomewalletsettings,
 		exchangeoutflowwalletsettings,
 		invoicepaymentswalletsettings,
+		appdevelopmentwalletsettings,
 		walletsettings,
 		nostrmarketstall,
 		pricelistsettings,

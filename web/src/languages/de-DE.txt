@@ -19,6 +19,8 @@ all data has been deleted and/or reset to installation defaults	Alle Daten wurde
 API admin or invoice/read key	API-Admin- oder Rechnungs-/Leseschlüssel
 API auth token	API-Authentifizierungs-Token
 API bearer token	API-Authentifizierungs-Token
+app development	app development
+app development payments	app development payments
 are you sure?	Sind Sie sicher?
 back	Rück
 barcode scanning	Barcode-Scannen

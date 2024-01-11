@@ -19,6 +19,8 @@ all data has been deleted and/or reset to installation defaults	All data has bee
 API admin or invoice/read key	API admin or invoice/read key
 API auth token	API auth token
 API bearer token	API bearer token
+app development	app development
+app development payments	app development payments
 are you sure?	Are you sure?
 back	back
 barcode scanning	barcode scanning
@@ -51,15 +53,18 @@ default vendor currency (title)	currency for pricing
 delete '@'?	Delete '@'?
 delete all data	delete all data for all accounts
 delete data	delete data
-desc:sales income	This is where the proceeds of the sales will go when the customer pays via Lightning.
-desc:sales income:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
-desc:sales income:LNbits compatible	Note: for this function the key only needs to grant read privileges.
 desc:(Ex)change outflow	When customers pay cash and receive their change via Lightning, this is where their change will come from.
 desc:(Ex)change outflow:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
 desc:(Ex)change outflow:LNbits LNURLw compatible	Note: for this function an admin key must be supplied.
 desc:invoice payments	This is where money will come from to pay customer Lightning invoices.
 desc:invoice payments:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
 desc:invoice payments:LNbits compatible	Note: for this function an admin key must be supplied.
+desc:sales income	This is where the proceeds of the sales will go when the customer pays via Lightning.
+desc:sales income:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
+desc:sales income:LNbits compatible	Note: for this function the key only needs to grant read privileges.
+desc:app development	This wallet will be used to pay the software developer(s) in accordance with the Satoshi Fairware License. See also the Software License settings.
+desc:app development:manual	When set to manual, no automation is enabled. The user is responsible for ensuring compliance with the software license.
+desc:app development:LNbits compatible	Note: for this function an admin key must be supplied.
 disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies

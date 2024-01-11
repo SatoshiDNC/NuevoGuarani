@@ -1,9 +1,9 @@
 // This depends on salesincome.js as the master template.
 
-const softwarelicensepaymentswalletsettings = v = new vp.View(null);
-v.name = Object.keys({softwarelicensepaymentswalletsettings}).pop();
-v.title = 'software license';
-v.wallettypes = ['manual', 'LNbits LNURLw compatible']
+const appdevelopmentwalletsettings = v = new vp.View(null);
+v.name = Object.keys({appdevelopmentwalletsettings}).pop();
+v.title = 'app development';
+v.wallettypes = salesincomewalletsettings.wallettypes
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -11,10 +11,10 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 Object.defineProperty(v, "wallet", {
 	get : function () {
-    const v = softwarelicensepaymentswalletsettings
+    const v = appdevelopmentwalletsettings
 		const i = v.typelist.index
 		if (i >= 0 && i < v.wallettypes.length) switch (v.wallettypes[i]) {
-		case 'LNbits LNURLw compatible': return new LNbitsWallet(v); break
+		case 'LNbits compatible': return new LNbitsWallet(v); break
 		}
 		return new BaseWallet(v)
 	}
@@ -23,7 +23,7 @@ v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.name = 'typelist'
-  g.key = 'walletTypeForSoftwareLicensePayments';
+  g.key = 'walletTypeForAppDevelopment';
 	g.list = v.wallettypes;
   g.index = -1;
   g.appFunction = salesincomewalletsettings.typelist.appFunction
@@ -31,7 +31,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
   g.name = 'lnbitsurl'
   g.type = 'button'
-	g.key = 'LNbitsURLForSoftwareLicensePayments'
+	g.key = 'LNbitsURLForAppDevelopment'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -42,7 +42,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 		}
 	})
 	g.value = ''
-	g.defaultValue = 'https://lnbits.satoshidnc.com/withdraw/api/v1'
+	g.defaultValue = 'https://lnbits.satoshidnc.com/api/v1'
 	g.hide = true
   g.enabled = !g.hide
 	g.daisychain = true
@@ -50,7 +50,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.name = 'lnbitskey'
   g.type = 'button'
-	g.key = 'lnbitsKeyForSoftwareLicensePayments'
+	g.key = 'lnbitsKeyForAppDevelopment'
 	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
