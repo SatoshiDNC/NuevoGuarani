@@ -89,6 +89,8 @@ item	mba'e
 	link to online store	enlace a la tienda en línea
 lnbc item description	HEPYME'Ẽ FACTURA GUARANÍ PYAHU
 	LNbits compatible	Compatible con LNbits
+	LNbits LNURLw compatible	Compatible con LNURLw de LNbits
+	LNURLw:note	¡Gracias por su confianza!
 	main currency	moneda principal
 	manual	manual
 	my business	Mi negocio

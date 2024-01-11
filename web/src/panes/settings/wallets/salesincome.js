@@ -1,8 +1,9 @@
-var wallettypes = ['manual', 'LNbits compatible']; //, 'strike compatible', 'coinos compatible'];
+// Edit with care: this serves as a template for other wallet settings pages, which copy from here.
 
 const salesincomewalletsettings = v = new vp.View(null);
 v.name = Object.keys({salesincomewalletsettings}).pop();
 v.title = 'sales income';
+v.wallettypes = ['manual', 'LNbits compatible']; //, 'strike compatible', 'coinos compatible'];
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -10,24 +11,25 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 Object.defineProperty(v, "wallet", {
 	get : function () {
-		const i = salesincomewalletsettings.typelist.index;
-		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
-		case 'LNbits compatible': return new LNbitsWallet(salesincomewalletsettings); break;
+    const v = salesincomewalletsettings
+		const i = v.typelist.index
+		if (i >= 0 && i < v.wallettypes.length) switch (v.wallettypes[i]) {
+		case 'LNbits LNURLw compatible': return new LNbitsWallet(v); break
 		}
-		return new BaseWallet(salesincomewalletsettings);
+		return new BaseWallet(v)
 	}
-});
+})
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v))
   g.name = 'typelist'
 	g.key = 'walletTypeForSalesIncome'
-	g.list = wallettypes
+	g.list = v.wallettypes
   g.index = -1
   g.appFunction = function() {
     const g = this, v = g.viewport
 
-    if (wallettypes[g.index] == 'LNbits compatible') {
+    if (v.wallettypes[g.index] == 'LNbits compatible') {
       delete v.lnbitsurl.hide
       delete v.lnbitskey.hide
     } else {
@@ -37,7 +39,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
     v.lnbitsurl.enabled = !v.lnbitsurl.hide
     v.lnbitskey.enabled = !v.lnbitskey.hide
 
-    if (wallettypes[g.index] == 'strike compatible') {
+    if (v.wallettypes[g.index] == 'strike compatible') {
       delete v.strikeurl.hide
       delete v.strikekey.hide
     } else {
@@ -47,7 +49,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
     v.strikeurl.enabled = !v.strikeurl.hide
     v.strikekey.enabled = !v.strikekey.hide
 
-    if (wallettypes[g.index] == 'coinos compatible') {
+    if (v.wallettypes[g.index] == 'coinos compatible') {
       delete v.coinosurl.hide
       delete v.coinoskey.hide
     } else {
@@ -148,7 +150,7 @@ v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
   g.name = 'lnbitsnote'
   Object.defineProperty(g, 'description', { get : function () {
     const v = this.viewport
-    return 'desc:'+v.title+':'+wallettypes[v.typelist.index]
+    return 'desc:'+v.title+':'+v.wallettypes[v.typelist.index]
   }})
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
@@ -254,8 +256,8 @@ v.load = function(cb) {
 		function finishInit(cb, v) {
 			const g = v.typelist;
 			var index = -1;
-			for (var i=0; i<wallettypes.length; i++) {
-				if (wallettypes[i] == g.tempValue) {
+			for (var i=0; i<v.wallettypes.length; i++) {
+				if (v.wallettypes[i] == g.tempValue) {
 					index = i;
 					break;
 				}

@@ -89,6 +89,8 @@ link a wallet	vincular un monedero
 link to online store	enlace a la tienda en línea
 lnbc item description	PAGO DE FACTURA NUEVO GUARANÍ
 LNbits compatible	Compatible con LNbits
+LNbits LNURLw compatible	Compatible con LNURLw de LNbits
+LNURLw:note	¡Gracias por su confianza!
 main currency	moneda principal
 manual	manual
 my business	Mi negocio

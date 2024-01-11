@@ -53,10 +53,10 @@ delete all data	delete all data for all accounts
 delete data	delete data
 desc:sales income	This is where the proceeds of the sales will go when the customer pays via Lightning.
 desc:sales income:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
-desc:sales income:LNbits compatible	Note: the key only needs to grant read privileges for this function.
+desc:sales income:LNbits compatible	Note: for this function the key only needs to grant read privileges.
 desc:(Ex)change outflow	When customers pay cash and receive their change via Lightning, this is where their change will come from.
 desc:(Ex)change outflow:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
-desc:(Ex)change outflow:LNbits compatible	Note: for this function an admin key must be supplied.
+desc:(Ex)change outflow:LNbits LNURLw compatible	Note: for this function an admin key must be supplied.
 desc:invoice payments	This is where money will come from to pay customer Lightning invoices.
 desc:invoice payments:manual	When set to manual, the app prompts the user with a wallet icon. The user must then perform the Lightning transaction manually using any external wallet app.
 desc:invoice payments:LNbits compatible	Note: for this function an admin key must be supplied.
@@ -89,6 +89,8 @@ link a wallet	link a wallet
 link to online store	link to online store
 lnbc item description	PAYMENT OF LIGHNING INVOICE
 LNbits compatible	LNbits compatible
+LNbits LNURLw compatible	LNbits LNURLw compatible
+LNURLw:note	Thank you for your business!
 main currency	main currency
 manual	manual
 my business	My Business

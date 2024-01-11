@@ -89,6 +89,8 @@ link a wallet	eine Brieftasche verbinden
 link to online store	Link zum Online-Shop
 lnbc item description	ZAHLUNG DER LIGHTNING-RECHNUNG
 LNbits compatible	LNbits kompatibel
+LNbits LNURLw compatible	LNbits LNURLw kompatibel
+LNURLw:note	Vielen Dank für Ihr Interesse!
 main currency	Hauptwährung
 manual	Handbuch
 my business	Mein Geschäft

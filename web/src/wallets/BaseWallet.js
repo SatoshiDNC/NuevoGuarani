@@ -8,7 +8,7 @@ class BaseWallet {
   }
 
   get type() {
-    return wallettypes[this.settings.typelist.index]
+    return this.settings.wallettypes[this.settings.typelist.index]
   }
 
   /* query for current exchange rate */

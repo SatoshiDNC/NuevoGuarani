@@ -3,6 +3,7 @@
 const exchangeoutflowwalletsettings = v = new vp.View(null);
 v.name = Object.keys({exchangeoutflowwalletsettings}).pop();
 v.title = '(Ex)change outflow';
+v.wallettypes = ['manual', 'LNbits LNURLw compatible']
 v.minX = 0; v.maxX = 0;
 v.minY = 0; v.maxY = 0;
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
@@ -10,19 +11,20 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.swipeGad.hide = true;
 Object.defineProperty(v, "wallet", {
 	get : function () {
-		const i = exchangeoutflowwalletsettings.typelist.index;
-		if (i >= 0 && i < wallettypes.length) switch (wallettypes[i]) {
-		case 'LNbits compatible': return new LNbitsWallet(exchangeoutflowwalletsettings); break;
+    const v = exchangeoutflowwalletsettings
+		const i = v.typelist.index
+		if (i >= 0 && i < v.wallettypes.length) switch (v.wallettypes[i]) {
+		case 'LNbits LNURLw compatible': return new LNbitsWallet(v); break
 		}
-		return new BaseWallet(exchangeoutflowwalletsettings);
+		return new BaseWallet(v)
 	}
-});
+})
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.name = 'typelist'
   g.key = 'walletTypeForExchangeOutflow';
-	g.list = wallettypes;
+	g.list = v.wallettypes;
   g.index = -1;
   g.appFunction = salesincomewalletsettings.typelist.appFunction
 	g.listItemClick = salesincomewalletsettings.typelist.listItemClick
@@ -68,7 +70,7 @@ v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
   g.name = 'lnbitsnote'
   Object.defineProperty(g, 'description', { get : function () {
     const v = this.viewport
-    return 'desc:'+v.title+':'+wallettypes[v.typelist.index]
+    return 'desc:'+v.title+':'+v.wallettypes[v.typelist.index]
   }})
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'

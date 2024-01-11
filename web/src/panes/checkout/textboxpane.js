@@ -696,12 +696,12 @@ v.keypadFunc = function(code, key) {
                   billpane.textbox.options.hashes = []
                   billpane.changed = true
                   break
-                case 'LNbits compatible':
+                case 'LNbits LNURLw compatible':
                   if (!lightningqr.netBusy) {
                     lightningqr.netBusy = true
                     lightningqr.clear()
                     lightningqr.busySignal = true
-                    wallet.generateWithdrawalLink((+qty) * (+money), "Here's your change. Thank you for your purchase!", (withdrawalLink, id) => {
+                    wallet.generateWithdrawalLink((+qty) * (+money), tr('LNURLw:note'), (withdrawalLink, id) => {
                       if (withdrawalLink && withdrawalLink.toLowerCase().startsWith('lnurl') && id) {
                         lightningqr.qr = [withdrawalLink]
                         if (!billpane.textbox.options.hashes)
@@ -755,7 +755,7 @@ v.keypadFunc = function(code, key) {
                   billpane.textbox.options.lightningwithdrawn = true
                   completionlogic()
                   break
-                case 'LNbits compatible':
+                case 'LNbits LNURLw compatible':
                   if (!lightningqr.netBusy) {
                     lightningqr.netBusy = true
                     wallet.checkWithdrawalLink(billpane.textbox.options.hashes[billpane.textbox.options.hashes.length-1], (result) => {
