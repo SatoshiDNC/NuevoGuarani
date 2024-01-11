@@ -343,7 +343,7 @@ v.gadgets.push(g = new vp.Gadget(v))
 	g.pane.renderFunc = mainsettings.renderFunc
 for (const pane of [
   maincurrency, cashcurrency, nostrmarketstall,
-  salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings,
+  salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings, softwarelicensepaymentswalletsettings
 ]) {
 	pane.layoutFunc = mainsettings.layoutFunc
 	pane.renderFunc = mainsettings.renderFunc

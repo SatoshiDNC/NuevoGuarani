@@ -24,6 +24,12 @@ v.gadgets.push(v.invoicepayments = g = new vp.Gadget(v))
 		get : function () { try { const l = invoicepaymentswalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
 	g.pane = invoicepaymentswalletsettings
+v.gadgets.push(v.softwarelicensepayments = g = new vp.Gadget(v))
+	g.title = 'invoice payments'
+	Object.defineProperty(g, "subtitle", {
+		get : function () { try { const l = softwarelicensepaymentswalletsettings.typelist; return l.list[l.index] } catch (e) {} }
+	})
+	g.pane = softwarelicensepaymentswalletsettings
 v.load = function(cb) {
   const v = this
   const debuglog = true
