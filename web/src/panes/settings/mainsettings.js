@@ -1,3 +1,5 @@
+const DESC_TEXT_SCALE = 0.85
+
 var mainsettings = v = new vp.View(null);
 v.name = Object.keys({mainsettings}).pop();
 v.title = 'settings';
@@ -19,8 +21,9 @@ v.layoutFunc = function() {
 		} else if (g.layoutFunc) {
 			g.layoutFunc();
     } else if (g.description) {
-			g.w = v.sw; g.h = 50
+			g.w = v.sw; g.h = 16 * DESC_TEXT_SCALE
 			g.x = 0; g.y = y
+      g.computedLines = [tr(g.description)]
 			y += g.h; x = v.sw
 			g.autoHull()
 		} else if (g.list) {
@@ -78,10 +81,9 @@ v.renderFunc = function() {
     } else if (g.description) {
       mat4.identity(mat)
       mat4.translate(mat,mat, [g.x+20,g.y,0])
-      //mat4.translate(mat,mat, [0,16+6,0])
-      mat4.scale(mat,mat, [0.75,0.75,1])
+      mat4.scale(mat,mat, [DESC_TEXT_SCALE,DESC_TEXT_SCALE,1])
       var color = th.uiSettingsSubText
-      var str = tr(g.description)
+      var str = g.computedLines[0]
       defaultFont.draw(0,14,str,color, this.mat, mat)
 		} else if (g.listToOverlay) {
 			mainShapes.useProg2();
