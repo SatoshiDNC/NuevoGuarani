@@ -24,6 +24,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.key = 'walletTypeForInvoicePayments';
 	g.list = wallettypes;
   g.index = -1;
+  g.appFunction = salesincomewalletsettings.typelist.appFunction
 	g.listItemClick = salesincomewalletsettings.typelist.listItemClick
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
   g.name = 'lnbitsurl'
