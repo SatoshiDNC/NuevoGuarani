@@ -282,8 +282,6 @@ v.gadgets.push(g = new vp.Gadget(v))
 	})
 	g.subtitle = 'switch account'
 	g.pane = accountsettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'language'
 	g.subtitle = []
@@ -291,35 +289,25 @@ v.gadgets.push(g = new vp.Gadget(v))
 		g.subtitle.push(icap(tr(lang,lang)))
 	}
 	g.pane = languagesettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 	g.daisychain = true
 v.gadgets.push(v.currencysettings = g = new vp.Gadget(v))
 	g.title = 'currencies'
 	g.subtitle = supportedCurrencies
 	g.pane = currencysettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 v.gadgets.push(v.walletsettings = g = new vp.Gadget(v))
 	g.title = 'wallets'
 	g.subtitle = ['sales income', '(ex)change outflow'/*, 'invoice payments'*/]
 	g.pane = walletsettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 	g.daisychain = true
 v.gadgets.push(v.pricelistsettings = g = new vp.Gadget(v))
 	g.title = 'price list'
 	g.subtitle = ['link to online store']
 	g.pane = pricelistsettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 	g.daisychain = true
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'QR code and barcode scanning'
 	g.subtitle = ['camera selection', 'product barcodes']
 	g.pane = camerasettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 /*
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'layout'
@@ -333,17 +321,18 @@ v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'themes'
 	g.subtitle = ['dark/light mode', 'colors', 'textures']
 	g.pane = colorsettings
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
+v.gadgets.push(g = new vp.Gadget(v))
+	g.title = 'software license'
+	g.subtitle = ['options']
+	g.pane = softwarelicensesettings
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'danger zone'
 	g.subtitle = 'delete data'
 	g.pane = dangerzone
-	g.pane.layoutFunc = mainsettings.layoutFunc
-	g.pane.renderFunc = mainsettings.renderFunc
 for (const pane of [
   maincurrency, cashcurrency, nostrmarketstall,
-  salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings, appdevelopmentwalletsettings
+  salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings, appdevelopmentwalletsettings,
+  accountsettings, languagesettings, currencysettings, walletsettings, pricelistsettings, camerasettings, colorsettings, softwarelicensesettings, dangerzone,
 ]) {
 	pane.layoutFunc = mainsettings.layoutFunc
 	pane.renderFunc = mainsettings.renderFunc
