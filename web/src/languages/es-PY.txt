@@ -51,6 +51,15 @@ default vendor currency (title)	fijación de precios
 delete '@'?	¿Borrar '@'?
 delete all data	borrar todos los datos de las cuentas
 delete data	borrar datos
+desc:sales income	Aquí es donde irán los ingresos de las ventas cuando el cliente pague a través de Lightning.
+desc:sales income:manual	Cuando se establece en manual, la aplicación muestra al usuario un icono de monedero. El usuario debe entonces realizar la transacción Lightning manualmente utilizando cualquier aplicación de monedero externa.
+desc:sales income:LNbits compatible	Nota: la clave sólo necesita conceder privilegios de lectura para esta función.
+desc:(Ex)change outflow	Cuando los clientes pagan en efectivo y reciben el cambio a través de Lightning, es de aquí de donde saldrá su cambio.
+desc:(Ex)change outflow:manual	Cuando se configura como manual, la aplicación avisa al usuario con un icono de monedero. El usuario debe entonces realizar la transacción Lightning manualmente utilizando cualquier aplicación de monedero externa.
+desc:(Ex)change outflow:LNbits compatible	Nota: para esta función se debe proporcionar una clave de administrador.
+desc:invoice payments	De aquí saldrá el dinero para pagar las facturas Lightning de los clientes.
+desc:invoice payments:manual	Cuando se establece en manual, la aplicación muestra al usuario un icono de monedero. El usuario debe entonces realizar la transacción Lightning manualmente utilizando cualquier aplicación de monedero externa.
+desc:invoice payments:LNbits compatible	Nota: para esta función se debe proporcionar una clave de administrador.
 disable cash payments	desactivar los pagos en efectivo
 Discard this invoice?	¿Descartar esta factura?
 enabled currencies	Monedas habilitadas

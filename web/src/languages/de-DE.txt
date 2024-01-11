@@ -51,6 +51,15 @@ default vendor currency (title)	für die Preisgestaltung
 delete '@'?	'@' löschen?
 delete all data	Alle Daten für alle Konten löschen
 delete data	Daten löschen
+desc:sales income	Dorthin fließt der Erlös aus den Verkäufen, wenn der Kunde per Lightning bezahlt.
+desc:sales income:manual	Wenn die App auf manuell eingestellt ist, wird der Benutzer mit einem Brieftaschensymbol aufgefordert. Der Nutzer muss dann die Lightning-Transaktion manuell mit einer externen Wallet-App durchführen.
+desc:sales income:LNbits compatible	Hinweis: Der Schlüssel muss für diese Funktion nur Leserechte gewähren.
+desc:(Ex)change outflow	Wenn Kunden bar bezahlen und ihr Wechselgeld über Lightning erhalten, wird das Wechselgeld von hier stammen.
+desc:(Ex)change outflow:manual	Wenn die App auf manuell eingestellt ist, wird der Benutzer mit einem Wallet-Symbol darauf hingewiesen. Der Benutzer muss dann die Lightning-Transaktion manuell mit einer externen Wallet-App durchführen.
+desc:(Ex)change outflow:LNbits compatible	Hinweis: Für diese Funktion muss ein Admin-Schlüssel angegeben werden.
+desc:invoice payments	Von diesem Schlüssel wird das Geld für die Bezahlung der Lightning-Rechnungen des Kunden kommen.
+desc:invoice payments:manual	Wenn die App auf manuell eingestellt ist, zeigt sie dem Nutzer ein Wallet-Symbol an. Der Nutzer muss dann die Lightning-Transaktion manuell mit einer externen Wallet-App durchführen.
+desc:invoice payments:LNbits compatible	Hinweis: Für diese Funktion muss ein Admin-Schlüssel bereitgestellt werden.
 disable cash payments	Barzahlungen deaktivieren
 Discard this invoice?	Diese Rechnung verwerfen?
 enabled currencies	Aktivierte Währungen
