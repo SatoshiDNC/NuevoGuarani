@@ -65,7 +65,7 @@ v.pageFocusFunc = function() {
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'Satoshi Fairware License'
 	g.subtitle = ['read the full license text']
-	g.pane = readfulllicensetext
+//	g.pane = readfulllicensetext
 v.gadgets.push(v.ask = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title+':ask'
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
@@ -224,7 +224,7 @@ v.load = function(cb) {
 	}
 }
 
-readfulllicensetext = v = new vp.View(null)
+// readfulllicensetext = v = new vp.View(null)
 // v.name = Object.keys({readfulllicensetext}).pop()
 // v.title = 'software license'
 // v.minX = 0; v.maxX = 0
