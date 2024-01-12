@@ -19,9 +19,10 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.pageFocusFunc = function() {
   const v = this
+  v.ask.hide = true
   v.amount.hide = true
-  // v.explain.hide = true
-  // v.donate.hide = true
+  v.key.hide = true
+  v.how.hide = true
   v.list.hide = true
   delete v.spinner.hide
 
@@ -57,10 +58,9 @@ v.pageFocusFunc = function() {
 
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
+        v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
+        delete v.key.hide
         delete v.how.hide
-
-        // v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
-        // delete v.key.hide
 
         // delete v.explain.hide
         delete v.list.hide
@@ -83,16 +83,13 @@ v.gadgets.push(v.ask = g = new vp.Gadget(v))
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'x2>b>c>123,456 \n c>satoshis'
+v.gadgets.push(v.key = g = new vp.Gadget(v))
+  g.hide = true
+  g.template = 'desc:'+v.title+':key'
+  g.description = 'desc:'+v.title+':key'
 v.gadgets.push(v.how = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'desc:'+v.title+':how'
-// v.gadgets.push(v.key = g = new vp.Gadget(v))
-//   g.hide = true
-//   g.template = 'desc:'+v.title+':key'
-//   g.description = 'desc:'+v.title+':key'
-// v.gadgets.push(v.explain = g = new vp.Gadget(v))
-//   g.hide = true
-//   g.description = 'desc:'+v.title+':explain:#'
 v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.hide = true
   g.key = 'howToPayTheDevelopers'
@@ -122,15 +119,6 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 			})
 		}
 	}
-v.gadgets.push(v.donate = g = new vp.Gadget(v))
-  g.hide = true
-  //g.icon = "\x03"
-	g.color = [0.5,0.4,0.4,1]
-	g.title = 'Pay the developers directly'
-	g.button = true
-	g.clickFunc = function() {
-		const g = this
-	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
@@ -150,8 +138,6 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
 		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)    
     v.setRenderFlag(true)
   }
-// v.gadgets.push(v.license = g = new vp.Gadget(v))
-//   g.description = 'lic:#'
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
