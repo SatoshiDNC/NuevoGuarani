@@ -50,6 +50,7 @@ v.pageFocusFunc = function() {
         delete v.key.hide
 
         delete v.explain.hide
+        delete v.donate.hide
         v.spinner.hide = true
         v.queueLayout()  
       })
