@@ -46,11 +46,11 @@ v.pageFocusFunc = function() {
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
 
-        v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
-        delete v.key.hide
+        // v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
+        // delete v.key.hide
 
-        delete v.explain.hide
-        delete v.donate.hide
+        // delete v.explain.hide
+        delete v.list.hide
         v.spinner.hide = true
         v.queueLayout()  
       })
@@ -66,14 +66,15 @@ v.gadgets.push(v.ask = g = new vp.Gadget(v))
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'x2>b>c>123,456 \n c>satoshis'
-v.gadgets.push(v.key = g = new vp.Gadget(v))
-  g.hide = true
-  g.template = 'desc:'+v.title+':key'
-  g.description = 'desc:'+v.title+':key'
-v.gadgets.push(v.explain = g = new vp.Gadget(v))
-  g.hide = true
-  g.description = 'desc:'+v.title+':explain:#'
+// v.gadgets.push(v.key = g = new vp.Gadget(v))
+//   g.hide = true
+//   g.template = 'desc:'+v.title+':key'
+//   g.description = 'desc:'+v.title+':key'
+// v.gadgets.push(v.explain = g = new vp.Gadget(v))
+//   g.hide = true
+//   g.description = 'desc:'+v.title+':explain:#'
 v.gadgets.push(v.list = g = new vp.Gadget(v))
+  g.hide = true
   g.key = 'howToPayTheDevelopers'
   g.state = 0
   g.list = ['invest in the development', 'make a grant to the project']
