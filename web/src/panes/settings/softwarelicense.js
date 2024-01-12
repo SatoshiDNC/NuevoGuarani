@@ -43,7 +43,7 @@ v.pageFocusFunc = function() {
         let amountDue = (totalCost - json.paid) / Math.max(1, json.uniques) - totalWagesPaid
         console.log('amountDue', amountDue)
 
-        v.amount.description = `x2>b>c>${amountDue} \n c>satoshis`
+        v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
         v.spinner.hide = true
         v.queueLayout()  
