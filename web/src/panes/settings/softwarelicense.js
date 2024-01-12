@@ -12,6 +12,25 @@ v.pageFocusFunc = function() {
   v.explain.hide = true
   v.donate.hide = true
   delete v.spinner.hide
+
+  // query the license api to get the current parameters
+  const asyncLogic = async () => {
+    let json = '';
+    console.log('checking the latest user count and funding');
+    const response = await fetch('https://dev-ng.satoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        //'X-API-KEY': wallet.key,
+      },
+    });
+    json = await response.json(); //extract JSON from the http response
+
+    console.log('json', Convert.JSONToString(json))
+    v.spinner.hide = true
+  }
+  asyncLogic();
+
 }
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
