@@ -31,7 +31,8 @@ v.pageFocusFunc = function() {
     setTimeout(() => {
       console.log('json', Convert.JSONToString(json))
       v2.spinner.hide = true
-      v2.setRenderFlag(true)
+      v2.queueLayout()
+      //v2.setRenderFlag(true)
   
     },1000)
   }
