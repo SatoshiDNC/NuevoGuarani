@@ -131,8 +131,8 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
 		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)    
     v.setRenderFlag(true)
   }
-v.gadgets.push(v.license = g = new vp.Gadget(v))
-  g.description = 'lic:#'
+// v.gadgets.push(v.license = g = new vp.Gadget(v))
+//   g.description = 'lic:#'
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
@@ -218,5 +218,40 @@ v.load = function(cb) {
 			finishInit(cb, this, g)
 		})
 	}
+}
+
+softwarelicensesettings.readfulltext = v = new vp.View(null)
+v.name = Object.keys({readfulltext}).pop()
+v.title = 'software license'
+v.minX = 0; v.maxX = 0
+v.minY = 0; v.maxY = 0
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
+v.swipeGad.hide = true
+v.gadgets.push(v.license = g = new vp.Gadget(v))
+  g.description = 'lic:#'
+v.load = function(cb) {
+	const debuglog = true
+	const gads = [
+		'list',
+		// 'lnbitsurl', 'lnbitskey',
+		// 'strikeurl', 'strikekey',
+		// 'coinosurl', 'coinoskey',
+	]
+	function icb(cb, v) {
+		let allComplete = true;
+		for (let gad of gads) {
+			if (v[gad].loadComplete) {
+			} else {
+				allComplete = false;
+				break;
+			}
+		}
+    if (allComplete) {
+      v.loadComplete = true; cb();
+    }
+  }
+  icb(cb, this)
+  return
 }
 
