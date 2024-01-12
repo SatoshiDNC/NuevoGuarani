@@ -8,30 +8,6 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.license = g = new vp.Gadget(v))
   g.description = 'lic:#'
-v.load = function(cb) {
-	const debuglog = true
-	const gads = [
-		'list',
-		// 'lnbitsurl', 'lnbitskey',
-		// 'strikeurl', 'strikekey',
-		// 'coinosurl', 'coinoskey',
-	]
-	function icb(cb, v) {
-		let allComplete = true;
-		for (let gad of gads) {
-			if (v[gad].loadComplete) {
-			} else {
-				allComplete = false;
-				break;
-			}
-		}
-    if (allComplete) {
-      v.loadComplete = true; cb();
-    }
-  }
-  icb(cb, this)
-  return
-}
 
 const softwarelicensesettings = v = new vp.View(null)
 v.name = Object.keys({softwarelicensesettings}).pop()
@@ -81,6 +57,7 @@ v.pageFocusFunc = function() {
 
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
+        delete v.how.hide
 
         // v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
         // delete v.key.hide
@@ -106,6 +83,9 @@ v.gadgets.push(v.ask = g = new vp.Gadget(v))
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'x2>b>c>123,456 \n c>satoshis'
+v.gadgets.push(v.how = g = new vp.Gadget(v))
+  g.hide = true
+  g.description = 'desc:'+v.title+':how'
 // v.gadgets.push(v.key = g = new vp.Gadget(v))
 //   g.hide = true
 //   g.template = 'desc:'+v.title+':key'

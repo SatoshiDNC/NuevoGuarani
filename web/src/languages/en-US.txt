@@ -69,6 +69,7 @@ desc:software license	This software is provided under the terms of the Satoshi F
 desc:software license:ask	The suggested fair amount to pay the developers, in accordance with the license, is:
 desc:software license:key	c>@ developers across @ users
 desc:software license:key1	c>@ developer across @ users
+desc:software license:how	How to pay:
 desc:software license:explain:1	As more users pay, your investment can be proportionally refunded.
 desc:software license:explain:2	When you update to a newer version, you may be asked to pay again to cover the development cost of the new features.
 disable cash payments	disable cash payments
