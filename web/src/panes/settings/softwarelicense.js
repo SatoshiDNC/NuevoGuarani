@@ -28,6 +28,7 @@ v.pageFocusFunc = function() {
 
     console.log('json', Convert.JSONToString(json))
     v.spinner.hide = true
+    v.setRenderFlag(true)
   }
   asyncLogic();
 
