@@ -1,3 +1,38 @@
+const readfulllicensetext = v = new vp.View(null)
+v.name = Object.keys({readfulllicensetext}).pop()
+v.title = 'software license'
+v.minX = 0; v.maxX = 0
+v.minY = 0; v.maxY = 0
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
+v.swipeGad.hide = true
+v.gadgets.push(v.license = g = new vp.Gadget(v))
+  g.description = 'lic:#'
+v.load = function(cb) {
+	const debuglog = true
+	const gads = [
+		'list',
+		// 'lnbitsurl', 'lnbitskey',
+		// 'strikeurl', 'strikekey',
+		// 'coinosurl', 'coinoskey',
+	]
+	function icb(cb, v) {
+		let allComplete = true;
+		for (let gad of gads) {
+			if (v[gad].loadComplete) {
+			} else {
+				allComplete = false;
+				break;
+			}
+		}
+    if (allComplete) {
+      v.loadComplete = true; cb();
+    }
+  }
+  icb(cb, this)
+  return
+}
+
 const softwarelicensesettings = v = new vp.View(null)
 v.name = Object.keys({softwarelicensesettings}).pop()
 v.title = 'software license'
@@ -65,7 +100,7 @@ v.pageFocusFunc = function() {
 v.gadgets.push(g = new vp.Gadget(v))
 	g.title = 'Satoshi Fairware License'
 	g.subtitle = ['read the full license text']
-//	g.pane = readfulllicensetext
+	g.pane = readfulllicensetext
 v.gadgets.push(v.ask = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title+':ask'
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
@@ -222,40 +257,5 @@ v.load = function(cb) {
 			finishInit(cb, this, g)
 		})
 	}
-}
-
-const readfulllicensetext = v = new vp.View(null)
-v.name = Object.keys({readfulllicensetext}).pop()
-v.title = 'software license'
-v.minX = 0; v.maxX = 0
-v.minY = 0; v.maxY = 0
-v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
-v.swipeGad.hide = true
-v.gadgets.push(v.license = g = new vp.Gadget(v))
-  g.description = 'lic:#'
-v.load = function(cb) {
-	const debuglog = true
-	const gads = [
-		'list',
-		// 'lnbitsurl', 'lnbitskey',
-		// 'strikeurl', 'strikekey',
-		// 'coinosurl', 'coinoskey',
-	]
-	function icb(cb, v) {
-		let allComplete = true;
-		for (let gad of gads) {
-			if (v[gad].loadComplete) {
-			} else {
-				allComplete = false;
-				break;
-			}
-		}
-    if (allComplete) {
-      v.loadComplete = true; cb();
-    }
-  }
-  icb(cb, this)
-  return
 }
 
