@@ -76,7 +76,7 @@ v.gadgets.push(v.explain = g = new vp.Gadget(v))
 v.gadgets.push(v.donate = g = new vp.Gadget(v))
   g.hide = true
   //g.icon = "\x03"
-	g.color = [1,0.8,0.8,1]
+	g.color = [0.5,0.4,0.4,1]
 	g.title = 'make a one-time payment'
 	g.button = true
 	g.clickFunc = function() {
