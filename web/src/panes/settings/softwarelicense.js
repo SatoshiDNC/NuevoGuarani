@@ -35,7 +35,9 @@ v.gadgets.push(v.donate = g = new vp.Gadget(v))
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.renderFunc = function() {
+    const g = this, v = g.viewport
     console.log('render')
+    v.setRenderFlag(true)
   }
 v.gadgets.push(v.license = g = new vp.Gadget(v))
   g.description = 'lic:#'
