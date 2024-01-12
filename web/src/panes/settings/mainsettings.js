@@ -19,6 +19,8 @@ v.layoutFunc = function() {
 		if (g.hide) {
 			skipspace = true;
 		} else if (g.layoutFunc) {
+			g.w = v.sw; g.h = 0;
+			g.x = 0; g.y = y;
 			g.layoutFunc();
     } else if (g.description) {
 			g.w = v.sw

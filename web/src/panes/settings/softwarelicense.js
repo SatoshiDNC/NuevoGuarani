@@ -58,6 +58,9 @@ v.gadgets.push(v.donate = g = new vp.Gadget(v))
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
+  g.layoutFunc = function() {
+    g.h = 50
+  }
   g.renderFunc = function() {
     const g = this, v = g.viewport
 
@@ -65,7 +68,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     const m = mat4.create();
 		mat4.identity(m)
 		mat4.translate(m,m,[g.x+g.w/2,g.y+g.h/2,0])
-		mat4.scale(m,m,[g.h/65,g.h/65,1]);
+		mat4.scale(m,m,[g.h/50,g.h/50,1]);
 		mat4.rotate(m,m, this.busyCounter, [0,0,1])
 		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
     
