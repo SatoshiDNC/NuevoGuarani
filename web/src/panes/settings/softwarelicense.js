@@ -9,19 +9,25 @@ v.swipeGad.hide = true;
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.ask = g = new vp.Gadget(v))
+  g.hide = true
   g.description = 'desc:'+v.title+':ask'
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
+  g.hide = true
   g.description = 'x2>b>c>123,456 \n c>satoshis'
 v.gadgets.push(v.explain = g = new vp.Gadget(v))
+  g.hide = true
   g.description = 'desc:'+v.title+':explain'
 v.gadgets.push(v.onetimedonation = g = new vp.Gadget(v))
-	//g.icon = "\x03"
+  g.hide = true
+  //g.icon = "\x03"
 	g.color = [1,0.8,0.8,1]
 	g.title = 'make a one-time payment'
 	g.button = true
 	g.clickFunc = function() {
 		const g = this
 	}
+v.gadgets.push(v.spinner = g = new vp.Gadget(v))
+  g.description = 'spinner'
 v.gadgets.push(v.license = g = new vp.Gadget(v))
   g.description = 'lic:#'
 v.load = function(cb) {
