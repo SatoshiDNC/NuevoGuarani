@@ -26,10 +26,11 @@ v.pageFocusFunc = function() {
     });
     json = await response.json(); //extract JSON from the http response
 
+    const v2 = v
     setTimeout(() => {
       console.log('json', Convert.JSONToString(json))
-      v.spinner.hide = true
-      v.setRenderFlag(true)
+      v2.spinner.hide = true
+      v2.setRenderFlag(true)
   
     },1000)
   }
