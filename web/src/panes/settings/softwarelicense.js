@@ -7,6 +7,7 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.pageFocusFunc = function() {
+  const v = this
   v.amount.hide = true
   v.explain.hide = true
   v.donate.hide = true
