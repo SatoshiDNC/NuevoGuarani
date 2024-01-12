@@ -1,15 +1,20 @@
-const softwarelicensesettings = v = new vp.View(null);
-v.name = Object.keys({softwarelicensesettings}).pop();
-v.title = 'software license';
-v.minX = 0; v.maxX = 0;
-v.minY = 0; v.maxY = 0;
-v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
-v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
-v.swipeGad.hide = true;
+const softwarelicensesettings = v = new vp.View(null)
+v.name = Object.keys({softwarelicensesettings}).pop()
+v.title = 'software license'
+v.minX = 0; v.maxX = 0
+v.minY = 0; v.maxY = 0
+v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
+v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
+v.swipeGad.hide = true
+v.pageFocusFunc = function() {
+  v.amount.hide = true
+  v.explain.hide = true
+  v.donate.hide = true
+  delete v.spinner.hide
+}
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.ask = g = new vp.Gadget(v))
-  g.hide = true
   g.description = 'desc:'+v.title+':ask'
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.hide = true
@@ -17,7 +22,7 @@ v.gadgets.push(v.amount = g = new vp.Gadget(v))
 v.gadgets.push(v.explain = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'desc:'+v.title+':explain'
-v.gadgets.push(v.onetimedonation = g = new vp.Gadget(v))
+v.gadgets.push(v.donate = g = new vp.Gadget(v))
   g.hide = true
   //g.icon = "\x03"
 	g.color = [1,0.8,0.8,1]
