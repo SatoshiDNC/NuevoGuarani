@@ -61,6 +61,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     const g = this, v = g.viewport
     console.log('render')
 
+    const m = mat4.create();
 		this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2
 		mat4.identity(m)
 		mat4.translate(m,m,[g.x+g.w/2,g.y+g.h/2,0])
