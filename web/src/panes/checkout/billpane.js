@@ -227,6 +227,7 @@ v.toSuper = function(str) {
 	return t;
 }
 v.formatMoney = function(s, currency = billpane.orderCurrency) {
+  s = ''+s
 	let negate = false; if (s.startsWith('-')) { negate = true; s = s.substr(1); }
 	const c = tr(',');
 	let t = '';
