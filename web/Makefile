@@ -12,22 +12,19 @@
 
 CLOSURE = java -jar 3rd-party/closure-compiler-v20230802.jar
 
-all: subdirs debugtime # Textbook subdirectory recursion
+all: subdirs debug # Textbook subdirectory recursion
 
 # "rel" target should build the release version in addition to everything else.
 .PHONY: rel relbuild
-rel: relbuild releasetime
+rel: relbuild release
 relbuild: subdirs
 	@$(MAKE) -sC src rel
 
 # Build the intended version.
-.PHONY: debugtime releasetime
-debugtime: debug
 debug: src/program-debug.html src/pwa/worker.js src/pwa/manifest.json
 	cp src/program-debug.html index.html
 	cp src/pwa/worker.js worker.js
 	cp src/pwa/manifest.json manifest.json
-releasetime: release time
 release: src/program-release.html src/pwa/worker.js src/pwa/manifest.json
 	cp src/program-release.html index.html
 	$(CLOSURE) \
@@ -35,16 +32,11 @@ release: src/program-release.html src/pwa/worker.js src/pwa/manifest.json
 		--js_output_file worker.js
 	cp src/pwa/manifest.json manifest.json
 
-.PHONY: time
-time:
-	git log --first-parent main --pretty=%at%x20%an%x20%aE%x20%s >timelog
-	calc.sh
-
 # Recursive cleanup.
 .PHONY: clean
 clean:
 	@$(MAKE) -sC src clean
-	@-rm -f index.html worker.js manifest.json timelog devweights
+	@-rm -f index.html worker.js manifest.json
 
 # Textbook subdirectory recursion
 SUBDIRS = src

@@ -51,6 +51,7 @@ all.js: \
 	vp/all.js \
 	barcode/all.js \
 	main-head.js \
+	timecalc.json \
 	emoji.js \
 	main-db.js \
 	Convert.js \
@@ -85,6 +86,11 @@ all.js: \
 #		>> all.js
 	cat \
 		main-head.js \
+		>> all.js
+	echo "const timecalc = " \
+		>> all.js
+	cat \
+		timecalc.json \
 		emoji.js \
 		main-db.js \
 		Convert.js \
@@ -109,6 +115,9 @@ all.js: \
 		load-tail.js \
 		>> all.js
 
+timecalc.json:
+	../timecalc.sh timecalc.json
+
 # Clean files from subdirs and this dir
 .PHONY: clean
 clean:
@@ -124,6 +133,7 @@ clean:
 		program-debug.html \
 		all.js \
 		all.min.js \
+		timecalc.json \
 
 # Textbook subdirectory recursion
 SUBDIRS = $(wildcard */)
