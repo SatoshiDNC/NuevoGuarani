@@ -67,7 +67,7 @@ desc:app development:manual	When set to manual, no automation is enabled. The us
 desc:app development:LNbits compatible	Note: for this function an admin key must be supplied.
 desc:software license	This software is provided under the terms of the Satoshi Fairware License (below). Your use of the software constitutes your acceptance of the license. Under this license, you agree to pay a fair price to the developers of this open-source software in exchange for GPL-like rights.
 desc:software license:ask	The current fair amount due, calculated in accordance with the License agreement, is:
-desc:software license:explain	This pays @ developer(s) your share among @ users. As the number of users increases, your investment will be proportionally refunded.
+desc:software license:explain	This pays @ developer(s) your share among @ users. As more users pay, your investment can be proportionally refunded. \n\n Test.
 disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
