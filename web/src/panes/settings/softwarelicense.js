@@ -31,7 +31,7 @@ v.pageFocusFunc = function() {
       console.log('timecalc', timecalc)
 
       PlatformUtil.DatabaseGet('state', 'totalWagesPaid', e => {
-        const totalWagesPaid = e.target.result
+        const totalWagesPaid = e.target.result || 0
         console.log('totalWagesPaid', totalWagesPaid)
 
         // calculate amount due
