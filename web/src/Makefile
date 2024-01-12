@@ -47,11 +47,11 @@ all.min.js: all.js
 		--js_output_file all.min.js
 
 all.js: \
-  PlatformUtil.js \
+	PlatformUtil.js \
 	vp/all.js \
 	barcode/all.js \
-	main-head.js \
 	timecalc.json \
+	main-head.js \
 	emoji.js \
 	main-db.js \
 	Convert.js \
@@ -76,7 +76,7 @@ all.js: \
 	load-tail.js \
 
 	cat \
-	  PlatformUtil.js \
+		PlatformUtil.js \
 		vp/all.js \
 		barcode/all.js \
 		> all.js
@@ -84,13 +84,11 @@ all.js: \
 #		>> all.js
 #	echo "import QrScanner from '../3rd-party/qr-scanner.min.js'" \
 #		>> all.js
-	cat \
-		main-head.js \
-		>> all.js
 	echo "const timecalc = " \
 		>> all.js
 	cat \
 		timecalc.json \
+		main-head.js \
 		emoji.js \
 		main-db.js \
 		Convert.js \
