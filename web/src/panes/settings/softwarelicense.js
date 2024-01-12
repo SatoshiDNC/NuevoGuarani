@@ -26,6 +26,7 @@ v.pageFocusFunc = function() {
     });
     json = await response.json(); //extract JSON from the http response
 
+    console.log(v)
     const v2 = v
     setTimeout(() => {
       console.log('json', Convert.JSONToString(json))
@@ -34,7 +35,7 @@ v.pageFocusFunc = function() {
   
     },1000)
   }
-  asyncLogic();
+  asyncLogic()
 
 }
 v.gadgets.push(v.desc = g = new vp.Gadget(v))
