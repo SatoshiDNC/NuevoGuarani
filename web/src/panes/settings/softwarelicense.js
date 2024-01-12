@@ -59,8 +59,8 @@ v.pageFocusFunc = function() {
   asyncLogic()
 
 }
-v.gadgets.push(v.desc = g = new vp.Gadget(v))
-  g.description = 'desc:'+v.title
+// v.gadgets.push(v.desc = g = new vp.Gadget(v))
+//   g.description = 'desc:'+v.title
 v.gadgets.push(v.ask = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title+':ask'
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
