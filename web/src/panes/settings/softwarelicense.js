@@ -220,8 +220,8 @@ v.load = function(cb) {
 	}
 }
 
-softwarelicensesettings.readfulltext = v = new vp.View(null)
-v.name = Object.keys({readfulltext}).pop()
+readfulllicensetext = v = new vp.View(null)
+v.name = Object.keys({readfulllicensetext}).pop()
 v.title = 'software license'
 v.minX = 0; v.maxX = 0
 v.minY = 0; v.maxY = 0
