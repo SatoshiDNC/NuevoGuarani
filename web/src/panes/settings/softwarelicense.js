@@ -59,6 +59,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
   g.layoutFunc = function() {
+    const g = this
     g.h = 50
   }
   g.renderFunc = function() {
