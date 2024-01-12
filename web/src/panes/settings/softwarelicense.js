@@ -73,11 +73,39 @@ v.gadgets.push(v.key = g = new vp.Gadget(v))
 v.gadgets.push(v.explain = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'desc:'+v.title+':explain:#'
+v.gadgets.push(v.list = g = new vp.Gadget(v))
+  g.key = 'howToPayTheDevelopers'
+  g.state = 0
+  g.list = ['invest in the development', 'make a grant to the project']
+  g.index = -1;
+	Object.defineProperty(g, "value", {
+		get : function () {
+			if (this.index >= 0 && this.index < this.list.length)
+				return this.list[this.index]
+			return ''
+		}
+	})
+	g.appFunction = function() {
+	}
+	g.listItemClick = function(index) {
+		const g = this
+		{ // For the GUI.
+			g.index = index; v.setRenderFlag(true)
+		} { // For the app function.
+			g.appFunction()
+		} { // For persistence.
+      PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
+		}
+	}
 v.gadgets.push(v.donate = g = new vp.Gadget(v))
   g.hide = true
   //g.icon = "\x03"
 	g.color = [0.5,0.4,0.4,1]
-	g.title = 'make a one-time payment'
+	g.title = 'Pay the developers directly'
 	g.button = true
 	g.clickFunc = function() {
 		const g = this
@@ -106,7 +134,7 @@ v.gadgets.push(v.license = g = new vp.Gadget(v))
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
-		// 'typelist',
+		'list',
 		// 'lnbitsurl', 'lnbitskey',
 		// 'strikeurl', 'strikekey',
 		// 'coinosurl', 'coinoskey',
@@ -124,14 +152,12 @@ v.load = function(cb) {
       v.loadComplete = true; cb();
     }
   }
-  icb(cb, this)
-  return
 	for (const gad of this.gadgets) {
-    if (!['typelist'].includes(gad.name)) continue
+    if (!['list'].includes(gad.name)) continue
 		const g = gad, v = this;
 		g.tempValue = '';
 		function finishInit(cb, v) {
-			const g = v.typelist;
+			const g = v.list;
 			var index = -1;
 			for (var i=0; i<v.wallettypes.length; i++) {
 				if (v.wallettypes[i] == g.tempValue) {
@@ -141,10 +167,10 @@ v.load = function(cb) {
 			}
 			if (index < 0) index = 0
 			{ // For the GUI.
-				v.typelist.index = index
+				v.list.index = index
 				v.setRenderFlag(true)
 			} { // For the app function.
-        v.typelist.appFunction()
+        v.list.appFunction()
 			} { // For persistence.
 			}
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
