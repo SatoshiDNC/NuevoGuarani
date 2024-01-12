@@ -29,9 +29,21 @@ v.pageFocusFunc = function() {
     setTimeout(() => {
       console.log('json', Convert.JSONToString(json))
       console.log('timecalc', timecalc)
-      v.spinner.hide = true
-      v.queueLayout()
-  
+
+      PlatformUtil.DatabaseGet('state', 'totalWagesPaid', e => {
+        totalWagesPaid = e.target.result
+        console.log('totalWagesPaid', totalWagesPaid)
+
+        // calculate amount due
+        let totalCost = timecalc.reduce((acc, val) => { acc + val.pay_asked }, { pay_asked: 0 })
+        let amountDue = (totalCost - json.paid) / Math.max(1, json.uniques) - totalWagesPaid
+        console.log('amountDue', amountDue)
+
+        v.amount.description = `x2>b>c>${amountDue} \n c>satoshis`
+        delete v.amount.hide
+        v.spinner.hide = true
+        v.queueLayout()  
+      })
     },1000)
   }
   asyncLogic()
