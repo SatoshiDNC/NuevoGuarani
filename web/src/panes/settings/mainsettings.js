@@ -21,7 +21,9 @@ v.layoutFunc = function() {
 		} else if (g.layoutFunc) {
 			g.w = v.sw; g.h = 0;
 			g.x = 0; g.y = y;
+			g.autoHull();
 			g.layoutFunc();
+      y += g.h;
     } else if (g.description) {
 			g.w = v.sw
 			g.x = 0; g.y = y

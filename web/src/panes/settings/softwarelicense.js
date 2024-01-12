@@ -61,6 +61,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.layoutFunc = function() {
     const g = this
     g.h = 50
+    g.autoHull()
   }
   g.renderFunc = function() {
     const g = this, v = g.viewport
