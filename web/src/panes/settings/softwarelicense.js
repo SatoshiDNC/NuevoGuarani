@@ -9,8 +9,9 @@ v.swipeGad.hide = true
 v.pageFocusFunc = function() {
   const v = this
   v.amount.hide = true
-  v.explain.hide = true
-  v.donate.hide = true
+  // v.explain.hide = true
+  // v.donate.hide = true
+  v.list.hide = true
   delete v.spinner.hide
 
   // query the license api to get the current parameters
