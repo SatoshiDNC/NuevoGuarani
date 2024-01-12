@@ -37,7 +37,7 @@ v.pageFocusFunc = function() {
         // calculate amount due
         let totalCost = timecalc.reduce((acc, val) => {
           console.log("reducing", acc, val)
-          acc + val.pay_asked
+          return acc + val.pay_asked
         }, 0)
         console.log('totalCost', totalCost)
         let amountDue = (totalCost - json.paid) / Math.max(1, json.uniques) - totalWagesPaid
