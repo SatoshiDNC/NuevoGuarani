@@ -224,7 +224,7 @@ v.load = function(cb) {
 	}
 }
 
-// readfulllicensetext = v = new vp.View(null)
+const readfulllicensetext = v = new vp.View(null)
 // v.name = Object.keys({readfulllicensetext}).pop()
 // v.title = 'software license'
 // v.minX = 0; v.maxX = 0
