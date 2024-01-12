@@ -67,7 +67,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
 		mat4.translate(m,m,[g.x+g.w/2,g.y+g.h/2,0])
 		//mat4.scale(m,m,[w,w,1]);
 		mat4.rotate(m,m, this.busyCounter, [0,0,1])
-		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,this.mat, m)
+		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
     
     v.setRenderFlag(true)
   }
