@@ -66,7 +66,7 @@ desc:app development	This wallet will be used to pay the software developer(s) i
 desc:app development:manual	When set to manual, no automation is enabled. The user is responsible for ensuring compliance with the software license.
 desc:app development:LNbits compatible	Note: for this function an admin key must be supplied.
 desc:software license	This software is provided under the terms of the Satoshi Fairware License (below). Your use of the software constitutes your acceptance of the license. Under this license, you agree to pay a fair price to the developers of this open-source software in exchange for GPL-like rights.
-desc:software license:ask	The suggested fair amount to pay the developers, in accordance with the Satoshi Fairware License (below), is:
+desc:software license:ask	The suggested fair amount to pay the developers, in accordance with the license, is:
 desc:software license:key	c>@ developers across @ users
 desc:software license:key1	c>@ developer across @ users
 desc:software license:explain:1	As more users pay, your investment can be proportionally refunded.
