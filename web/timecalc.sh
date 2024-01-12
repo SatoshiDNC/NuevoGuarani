@@ -27,7 +27,7 @@ if [ "$JSON_OUT" == "" ]; then
   JSON_OUT=timecalc.json
 fi
 
-git log --first-parent dev --pretty=%at%x20%an%x20%aE%x20%s >$TIMELOG
+git log --first-parent --pretty=%at%x20%an%x20%aE%x20%s >$TIMELOG
 
 echo
 num_devs=`cut -d' ' -f2,3 <"$TIMELOG"|sort|uniq|wc -l`
