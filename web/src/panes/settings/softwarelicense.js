@@ -46,7 +46,7 @@ v.pageFocusFunc = function() {
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
 
-        v.key.description = tr(v.key.template).replace('@', timecalc.length).replace('@', json.uniques)
+        v.key.description = tr(v.key.template + timecalc.length==1?'1':'').replace('@', timecalc.length).replace('@', json.uniques)
         delete v.key.hide
 
         delete v.explain.hide
