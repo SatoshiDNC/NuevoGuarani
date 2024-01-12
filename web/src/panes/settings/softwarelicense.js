@@ -46,7 +46,8 @@ v.pageFocusFunc = function() {
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
 
-        v.explain.description = tr(v.explain.template).replace('@', timecalc.length).replace('@', json.uniques)
+        v.key.description = tr(v.key.template).replace('@', timecalc.length).replace('@', json.uniques)
+        delete v.key.hide
 
         delete v.explain.hide
         v.spinner.hide = true
@@ -64,10 +65,13 @@ v.gadgets.push(v.ask = g = new vp.Gadget(v))
 v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'x2>b>c>123,456 \n c>satoshis'
+v.gadgets.push(v.key = g = new vp.Gadget(v))
+  g.hide = true
+  g.template = 'desc:'+v.title+':key'
+  g.description = 'desc:'+v.title+':key'
 v.gadgets.push(v.explain = g = new vp.Gadget(v))
   g.hide = true
-  g.template = 'desc:'+v.title+':explain'
-  g.description = 'desc:'+v.title+':explain'
+  g.description = 'desc:'+v.title+':explain:#'
 v.gadgets.push(v.donate = g = new vp.Gadget(v))
   g.hide = true
   //g.icon = "\x03"
