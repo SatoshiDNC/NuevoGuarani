@@ -45,6 +45,10 @@ v.pageFocusFunc = function() {
 
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         delete v.amount.hide
+
+        v.explain.description = tr(v.explain.template).replace('@', 1).replace('@', 2)
+
+        delete v.explain.hide
         v.spinner.hide = true
         v.queueLayout()  
       })
@@ -62,6 +66,7 @@ v.gadgets.push(v.amount = g = new vp.Gadget(v))
   g.description = 'x2>b>c>123,456 \n c>satoshis'
 v.gadgets.push(v.explain = g = new vp.Gadget(v))
   g.hide = true
+  g.template = 'desc:'+v.title+':explain'
   g.description = 'desc:'+v.title+':explain'
 v.gadgets.push(v.donate = g = new vp.Gadget(v))
   g.hide = true
