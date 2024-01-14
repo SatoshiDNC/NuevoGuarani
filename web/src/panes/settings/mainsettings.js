@@ -315,20 +315,19 @@ v.renderFunc = function() {
 			} else if (['button','enable'].includes(g.type) || g.button) {
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5)+14,0]);
+        mat4.scale(mat,mat, [0.75,0.75,1]);
+        var color = g.color? g.color: g.nonpersistent? th.uiSettingsSubText: th.uiSettingsText;
 				if (g.icon) {
-					var color = g.color? g.color: th.uiSettingsText;
 					if (g.icon == "\x0E") color = th.uiSettingSelect;
 					iconFont.draw(0,0,g.icon,color, this.mat, mat);
 					defaultFont.draw(0,0,' ',color, this.mat, mat);
 				}
-				var color = g.color? g.color: th.uiSettingsText;
 				defaultFont.draw(0,0,icap(tr(g.title)),color, this.mat, mat);
 				if (g.subtitle) {
 					mat4.identity(mat);
-					mat4.translate(mat,mat, [g.x+20,g.y+15,0]);
+					mat4.translate(mat,mat, [g.x+20, g.y+g.nonpersistent? 15*0.75: 15,0]);
 					mat4.translate(mat,mat, [0,16+6,0]);
-					mat4.scale(mat,mat, [0.75,0.75,1]);
-					var color = th.uiSettingsSubText;
+					var color = g.nonpersistent? th.uiSettingsText: th.uiSettingsSubText;
 					var str;
 					if (typeof g.subtitle === 'object') {
 						str = g.subtitle.map(a => icap(tr(a)).trim()).join(' · ');
