@@ -246,7 +246,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               console.log(Convert.JSONToString(result))
               if (result && result.paid) {
                 //billpane.textbox.options.lightningpaid = true
-                if (vp.peekRoot() == lightningqr) vp.popRoot()
+                //if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else if (result && result.detail) {
                 lightningqr.errorSignal = true
@@ -259,7 +259,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           break
         default:
           vp.beep('bad')
-          if (vp.peekRoot() == lightningqr) vp.popRoot()
+          //if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           break
         }
@@ -283,14 +283,14 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         console.log('set auxFunc')
         lightningqr.copyGad.auxFunc = () => {
           console.log('auxFunc()')
-          if (vp.peekRoot() == lightningqr) vp.popRoot()
+          //if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
         PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
           if (result) {
             console.log('confirmed')
-            vp.pushRoot(lightningqr)
+            //vp.pushRoot(lightningqr)
             setTimeout(completionlogic, 2000)
           } else {
             console.log('canceled')
@@ -302,7 +302,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          vp.pushRoot(lightningqr)
+          //vp.pushRoot(lightningqr)
           wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
@@ -311,13 +311,13 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             } else {
               lightningqr.errorSignal = true
               lightningqr.copyGad.auxFunc = () => {
-                if (vp.peekRoot() == lightningqr) vp.popRoot()
+                //if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
                 delete lightningqr.copyGad.auxFunc
               }
               if (errorDetail) {
                 PlatformUtil.UserAck(errorDetail, () => {})
-                if (vp.peekRoot() == lightningqr) vp.popRoot()
+                //if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else {
                 console.error('Wallet did not generate a recognized invoice type.')
@@ -332,7 +332,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       default:
         lightningqr.errorSignal = true
         lightningqr.copyGad.auxFunc = () => {
-          if (vp.peekRoot() == lightningqr) vp.popRoot()
+          //if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
