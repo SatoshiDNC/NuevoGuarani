@@ -47,6 +47,7 @@ v.pageFocusFunc = function() {
 
       if (!json) {
         v.spinner.errorSignal = true
+        v.busyQueryingFAD = false
         return
       }
 
