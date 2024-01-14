@@ -306,15 +306,13 @@ class LNbitsWallet extends BaseWallet {
 
 
 			console.log('json', Convert.JSONToString(json2))
-			// const withdrawalLinkString = json.lnurl
-			// const linkId = json.id
-			// console.log('withdrawalLinkString', withdrawalLinkString)
-			// console.log('uniqueHash', linkId)
-			// if (withdrawalLinkString && withdrawalLinkString.toLowerCase().startsWith('lnurl') && linkId) {
-			// 	payLightningAddressCallback(withdrawalLinkString, linkId)
-			// } else {
+			const checkingId = json.checking_id
+			console.log('checkingId', checkingId)
+			if (checkingId) {
+				payLightningAddressCallback(checkingId)
+			} else {
 				payLightningAddressCallback()
-			// }
+			}
 		}
 		asyncLogic();
 

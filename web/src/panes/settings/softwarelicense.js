@@ -241,6 +241,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             lightningqr.netBusy = true
             wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
               lightningqr.netBusy = false
+              console.log(Convert.JSONToString(result))
               if (result && result.paid) {
                 //billpane.textbox.options.lightningpaid = true
                 vp.popRoot()
@@ -292,14 +293,19 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (invoice, id) => {
-            if (invoice && invoice.startsWith('lnbc') && id) {
-              lightningqr.qr = [invoice]
+          wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (checkingId) => {
+            if (checkingId) {
               if (!v.hashes) v.hashes = []
-              v.hashes.push(id)
+              v.hashes.push(checkingId)
             } else {
               lightningqr.errorSignal = true
               console.error('Wallet did not generate a recognized invoice type.')
+              lightningqr.copyGad.auxFunc = () => {
+                console.log('auxFunc()')
+                vp.popRoot()
+                v.queueLayout()
+                delete lightningqr.copyGad.auxFunc
+              }      
             }
             lightningqr.setRenderFlag(true)
             lightningqr.busySignal = false
