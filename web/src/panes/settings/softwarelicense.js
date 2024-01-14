@@ -179,8 +179,8 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
       }
     })
 	}
-v.gadgets.push(v.amount = g = new vp.Gadget(v));
-  g.name = 'amount'
+v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
+  g.name = 'confirmamount'
   g.type = 'button'
 	g.title = 'amount'
 	Object.defineProperty(g, "subtitle", {
