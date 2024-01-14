@@ -61,6 +61,8 @@ v.pageFocusFunc = function() {
         let amountDue = (totalCost - json.paid) / Math.max(1, json.uniques) - totalWagesPaid
         console.log('amountDue', amountDue)
 
+        // update GUI
+        v.busyQueryingFAD = false
         v.amount.value = +amountDue
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         v.confirmamount.value = ''+amountDue
@@ -68,14 +70,11 @@ v.pageFocusFunc = function() {
         v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
         delete v.key.hide
         delete v.how.hide
-
-        // delete v.explain.hide
         delete v.list.hide
         delete v.listnote.hide
         v.spinner.hide = true
         v.list.appFunction()
         v.queueLayout()
-        v.busyQueryingFAD = false
       })
     },10000)
   }
@@ -119,6 +118,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 	g.appFunction = function() {
     const g = this, v = g.viewport
     if (v.busyQueryingFAD) return
+    if (!v.amount.value) return
     if (v.list.list[v.list.index] == 'invest') {
       delete v.lnaddr.hide
       v.confirmamount.value = Math.max(+v.confirmamount.value, +v.amount.value)
