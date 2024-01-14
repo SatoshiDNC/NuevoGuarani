@@ -117,7 +117,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     } else {
       v.lnaddr.hide = true
     }
-    delete v.amount.hide
+    delete v.confirmamount.hide
     delete v.paynow.hide
     v.lnaddr.enabled = !v.lnaddr.hide
     v.confirmamount.enabled = !v.confirmamount.hide
