@@ -235,13 +235,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         const wallet = config.appDevPayments
         switch (wallet.type) {
         case 'manual':
-          //billpane.textbox.options.lightningpaid = true
-          lightningqr.copyGad.auxFunc = () => {
-            vp.popRoot()
-            v.queueLayout()
-            delete lightningqr.copyGad.auxFunc
-          }
-          setTimeout(completionlogic, 2000)
           break
         case 'LNbits compatible':
           if (!lightningqr.netBusy) {
@@ -278,6 +271,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       case 'manual':
         lightningqr.walletSignal = true
         v.hashes = []
+        lightningqr.copyGad.auxFunc = () => {
+          vp.popRoot()
+          v.queueLayout()
+          delete lightningqr.copyGad.auxFunc
+        }
         break
       case 'LNbits compatible':
         if (!lightningqr.netBusy) {
