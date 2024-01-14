@@ -78,6 +78,10 @@ class Convert {
     }, '· ')
   }
 
+  static EscapeJSON(string) {
+    return string.replace(/[\n"\&\r\t\b\f]/g, '\\$&')
+  }
+
   static StringToHashCode(str) {
     let hash = 0;
     for (let i = 0, len = str.length; i < len; i++) {
