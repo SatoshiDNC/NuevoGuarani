@@ -275,12 +275,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
       // Pay remaining amount via Lightning.
       lightningqr.clear()
-      vp.pushRoot(lightningqr)
+      delete v.hashes
       const wallet = config.appDevPayments
       switch (wallet.type) {
       case 'manual':
         lightningqr.walletSignal = true
-        v.hashes = []
         console.log('set auxFunc')
         lightningqr.copyGad.auxFunc = () => {
           console.log('auxFunc()')
@@ -291,6 +290,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
           if (result) {
             console.log('confirmed')
+            vp.pushRoot(lightningqr)
+            setTimeout(completionlogic, 2000)
           } else {
             console.log('canceled')
           }
@@ -305,6 +306,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
+              setTimeout(completionlogic, 2000)
             } else {
               lightningqr.errorSignal = true
               lightningqr.copyGad.auxFunc = () => {
@@ -328,12 +330,15 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         break
       default:
         lightningqr.errorSignal = true
+        lightningqr.copyGad.auxFunc = () => {
+          vp.popRoot()
+          v.queueLayout()
+          delete lightningqr.copyGad.auxFunc
+        }
         console.error(`Unexpected wallet type: '${wallet.type}'.`)
-        v.hashes = []
         break
       }
     }
-    setTimeout(completionlogic, 2000)
 
 	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
