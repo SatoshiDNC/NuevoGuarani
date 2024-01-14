@@ -236,7 +236,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         switch (wallet.type) {
         case 'manual':
           //billpane.textbox.options.lightningpaid = true
-          setTimeout(completionLogic, 2000)
+          setTimeout(completionlogic, 2000)
           break
         case 'LNbits compatible':
           if (!lightningqr.netBusy) {
