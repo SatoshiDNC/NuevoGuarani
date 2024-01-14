@@ -148,6 +148,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.type = 'button'
 	g.key = 'lnAddrForFairShareRebates'
 	g.title = 'Lightning address for rebates'
+  g.nonpersistent = true // actually it is persistent, but we want the style
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
