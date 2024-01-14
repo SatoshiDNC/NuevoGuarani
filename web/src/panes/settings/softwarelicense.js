@@ -21,22 +21,34 @@ v.busyQueryingFAD = false
 v.pageFocusFunc = function() {
   const v = this
 
+  if (v.spinner.errorSignal) {
+    delete v.spinner.errorSignal
+  }
+
   // query the license api to get the current parameters
   const asyncLogic = async () => {
-    let json = '';
-    console.log('checking the latest user count and funding');
-    const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        //'X-API-KEY': wallet.key,
-      },
-    });
-    json = await response.json(); //extract JSON from the http response
+    let json = ''
+    console.log('checking the latest user count and funding')
+    try {
+      const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          //'X-API-KEY': wallet.key,
+        },
+      });
+      json = await response.json()
+    } catch {
+    }
 
     setTimeout(() => {
       console.log('json', Convert.JSONToString(json))
       console.log('timecalc', timecalc)
+
+      if (!json) {
+        v.spinner.errorSignal = true
+        return
+      }
 
       PlatformUtil.DatabaseGet('state', 'totalWagesPaid', e => {
         const totalWagesPaid = e.target.result || 0
@@ -328,14 +340,20 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   }
   g.renderFunc = function() {
     const g = this, v = g.viewport
+    const gear = "\x1D"
+    const warning = "\x0F"
 		this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2
     const m = mat4.create();
 		mat4.identity(m)
 		mat4.translate(m,m,[g.x+g.w/2,g.y+g.h/2,0])
 		mat4.scale(m,m,[g.h/25,g.h/25,1]);
-		mat4.rotate(m,m, this.busyCounter, [0,0,1])
-		iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)    
-    v.setRenderFlag(true)
+    if (g.errorSignal) {
+      iconFont.draw(-10,7,warning,config.themeColors.uiLightningYellow,v.mat, m)    
+    } else {
+      mat4.rotate(m,m, this.busyCounter, [0,0,1])
+      iconFont.draw(-10,7,gear,config.themeColors.uiText,v.mat, m)    
+      v.setRenderFlag(true)
+    }
   }
 v.load = function(cb) {
 	const debuglog = true
