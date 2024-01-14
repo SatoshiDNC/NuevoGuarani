@@ -91,6 +91,7 @@ v.gadgets.push(v.how = g = new vp.Gadget(v))
   g.hide = true
   g.description = 'desc:'+v.title+':how'
 v.gadgets.push(v.list = g = new vp.Gadget(v))
+  g.name = 'list'
   g.hide = true
   g.key = 'howToPayTheDevelopers'
   g.state = 0
