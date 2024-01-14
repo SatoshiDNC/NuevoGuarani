@@ -277,7 +277,7 @@ class LNbitsWallet extends BaseWallet {
 						'Accept': 'application/json',
 						'X-API-KEY': wallet.key,
 					},
-          data: `{
+          body: `{
             "description_hash": "${window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(json1.metadata))}",
             "callback": "${json1.callback}",
             "amount": ${total_sat * 1000},
