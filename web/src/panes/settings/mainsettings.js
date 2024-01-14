@@ -325,7 +325,7 @@ v.renderFunc = function() {
 				defaultFont.draw(0,0,icap(tr(g.title)),color, this.mat, mat);
 				if (g.subtitle) {
 					mat4.identity(mat);
-					mat4.translate(mat,mat, [g.x+20, g.y+g.nonpersistent? 15*0.75: 15,0]);
+					mat4.translate(mat,mat, [g.x+20,g.y+(g.nonpersistent? 15*0.75: 15), 0]);
 					mat4.translate(mat,mat, [0,16+6,0]);
 					var color = g.nonpersistent? th.uiSettingsText: th.uiSettingsSubText;
 					var str;
