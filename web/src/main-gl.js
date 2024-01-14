@@ -126,8 +126,13 @@
   gl.linkProgram(prog5);
   if (!gl.getProgramParameter(prog5, gl.LINK_STATUS)) return;
 
+  gl.useProgram(prog5);
+//  buf5 = gl.createBuffer(); // buffer for 5-value vertices
+//  gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
+//  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
+
   const prog6VertexShader = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(prog5VertexShader, `
+  gl.shaderSource(prog6VertexShader, `
       attribute vec4 aVertexPosition;
       attribute vec4 vertexColor;
       attribute vec2 aTex;
@@ -147,7 +152,7 @@
   if (!gl.getShaderParameter(prog6VertexShader, gl.COMPILE_STATUS)) return;
 
   const prog6FragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(prog5FragmentShader, `
+  gl.shaderSource(prog6FragmentShader, `
       varying lowp vec4 vColor;
       uniform sampler2D sampler0;
       varying highp vec2 vTex;
@@ -161,15 +166,12 @@
   if (!gl.getShaderParameter(prog6FragmentShader, gl.COMPILE_STATUS)) return;
 
   const prog6 = gl.createProgram();
-  gl.attachShader(prog6, prog5VertexShader);
-  gl.attachShader(prog6, prog5FragmentShader);
+  gl.attachShader(prog6, prog6VertexShader);
+  gl.attachShader(prog6, prog6FragmentShader);
   gl.linkProgram(prog6);
   if (!gl.getProgramParameter(prog6, gl.LINK_STATUS)) return;
 
-  gl.useProgram(prog5);
-//  buf5 = gl.createBuffer(); // buffer for 5-value vertices
-//  gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
-//  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
+  gl.useProgram(prog6);
 
 function initTexture(gl) {
   const texture = gl.createTexture();
