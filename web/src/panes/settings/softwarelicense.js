@@ -207,7 +207,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 		const g = this, v = g.viewport
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
-      if (v.list.list[v.list.index] == 'invest' && val < v.amount.value) {
+      if (v.list.list[v.list.index] == 'invest' && +val < +v.amount.value) {
         PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'), () => {})
       } else {
         g.value = val
@@ -225,10 +225,12 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
     let err
-    if (!v.lnaddr.value) {
+    if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
-    } else if (!v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
+    } else if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
       err = 'Invalid Lightning address'
+    } else if (v.list.list[v.list.index] == 'invest' && +v.confirmamount.value < +v.amount.value) {
+        PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'), () => {})
     }
     if (err) {
       PlatformUtil.UserAck(err, () => {})
