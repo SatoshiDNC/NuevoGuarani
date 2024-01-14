@@ -224,6 +224,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
+    let err
     if (!v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
     } else if (!v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
