@@ -13,12 +13,14 @@ class ShapeBuffer {
     this.buf2 = gl.createBuffer(); // graphics buffer for 2-value vertices
     this.buf4 = gl.createBuffer(); // graphics buffer for 4-value vertices
     this.buf5 = gl.createBuffer(); // graphics buffer for 5-value vertices
+    this.buf5 = gl.createBuffer(); // graphics buffer for 6-value vertices
   }
 
   clear() {
     this.beg2 = {}; this.len2 = {}; this.typ2 = {}; this.all2 = [];
     this.beg4 = {}; this.len4 = {}; this.typ4 = {}; this.all4 = [];
     this.beg5 = {}; this.len5 = {}; this.typ5 = {}; this.all5 = [];
+    this.beg6 = {}; this.len6 = {}; this.typ6 = {}; this.all6 = [];
   }
 
   populateBuffers() {
@@ -30,6 +32,9 @@ class ShapeBuffer {
   
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buf5);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.all5), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buf6);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.all6), gl.STATIC_DRAW);
   }
 
   build(...args) {
@@ -56,11 +61,17 @@ class ShapeBuffer {
     this.all5.splice (this.all5.length, 0, ...points);
     this.len5[name] = this.all5.length/5 - this.beg5[name];
   }
+  addShape6(name, typ, ...points) {
+    this.beg6[name] = this.all6.length/5; this.typ6[name] = typ;
+    this.all6.splice (this.all6.length, 0, ...points);
+    this.len6[name] = this.all6.length/5 - this.beg6[name];
+  }
 
   // shape-drawing functions
   drawArrays2(name) { gl.drawArrays(this.typ2[name], this.beg2[name], this.len2[name]) }
   drawArrays4(name) { gl.drawArrays(this.typ4[name], this.beg4[name], this.len4[name]) }
   drawArrays5(name) { gl.drawArrays(this.typ5[name], this.beg5[name], this.len5[name]) }
+  drawArrays6(name) { gl.drawArrays(this.typ6[name], this.beg6[name], this.len6[name]) }
 
   useProg2() {
 		gl.useProgram(prog2);
@@ -127,4 +138,30 @@ class ShapeBuffer {
 		gl.enableVertexAttribArray(a);
 	}
 
-}
+	useProg6() {
+		gl.useProgram(prog6);
+		gl.uniform4fv(gl.getUniformLocation(prog6, 'overallColor'),
+			new Float32Array([1,1,1, 1]));
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf5);
+		//gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
+		var a = gl.getAttribLocation(prog6, 'aVertexPosition')
+		gl.vertexAttribPointer(
+			a,
+			2, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 6, // stride
+			4 * 0); // offset
+		gl.enableVertexAttribArray(a);
+		a = gl.getAttribLocation(prog6, 'vertexColor')
+		gl.vertexAttribPointer(
+			a,
+			4, // numComponents
+			gl.FLOAT, // type
+			false, // normalize
+			4 * 6, // stride
+			4 * 2); // offset
+		gl.enableVertexAttribArray(a);
+	}
+
+}}

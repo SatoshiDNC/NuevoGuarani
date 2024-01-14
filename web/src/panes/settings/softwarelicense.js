@@ -182,7 +182,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
 v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
   g.name = 'confirmamount'
   g.type = 'button'
-	g.title = 'amount'
+	g.title = 'amount to pay'
   g.daisychain = true
   g.nonpersistent = true
 	Object.defineProperty(g, "subtitle", {
