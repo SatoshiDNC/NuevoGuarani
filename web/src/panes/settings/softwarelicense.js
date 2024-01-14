@@ -75,7 +75,7 @@ v.pageFocusFunc = function() {
         v.list.appFunction()
         v.queueLayout()
       })
-    },1000)
+    },10000)
   }
   asyncLogic()
 
