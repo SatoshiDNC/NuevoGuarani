@@ -107,7 +107,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		}
 	})
 	g.appFunction = function() {
-    g.viewport.queueLayout()
+    this.viewport.queueLayout()
 	}
 	g.listItemClick = function(index) {
 		const g = this
