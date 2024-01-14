@@ -197,7 +197,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.clickFunc = function() {
-		const g = this
+		const g = this, v = g.viewport
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
       if (v.list.list[v.list.index] == 'invest' && val < v.amount.value) {
