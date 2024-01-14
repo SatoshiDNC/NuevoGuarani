@@ -364,7 +364,7 @@ v.renderFunc = function() {
 				defaultFont.draw(0,14,str,color, this.mat, mat);
 			}
 		}
-		daisychain = g.daisychain;
+		daisychain = g.daisychain && !g.hide;
 	}
 }
 v.gadgets.push(g = new vp.Gadget(v))
