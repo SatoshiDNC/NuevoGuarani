@@ -306,7 +306,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               v.hashes.push(checkingId)
             } else {
               lightningqr.errorSignal = true
-              console.error('Wallet did not generate a recognized invoice type.')
               lightningqr.copyGad.auxFunc = () => {
                 vp.popRoot()
                 v.queueLayout()
@@ -316,6 +315,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                 PlatformUtil.UserAck(errorDetail, () => {})
                 vp.popRoot()
                 v.queueLayout()
+              } else {
+                console.error('Wallet did not generate a recognized invoice type.')
               }
             }
             lightningqr.setRenderFlag(true)
