@@ -115,6 +115,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     } else {
       v.lnaddr.hide = true
     }
+    v.lnaddr.enabled = !v.lnaddr.hide
     v.queueLayout()
 	}
 	g.listItemClick = function(index) {
