@@ -63,6 +63,14 @@ class PlatformUtil {
     }
   }
 
+  static UserAck(promptText, callback) {
+    if (typeof Android !== 'undefined') {
+      Android.userAck(promptText, PlatformUtil.InitCallback(callback))
+    } else {
+      callback(alert(promptText))
+    }
+  }
+
   static DatabaseGet(tableName, keyName, successCallback, failureCallback) {
     // console.log('DatabaseGet(', tableName, keyName, ')')
     // if (typeof Android !== 'undefined') {

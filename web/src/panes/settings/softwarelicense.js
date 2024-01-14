@@ -200,8 +200,12 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 		const g = this
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
-      g.value = val
-      g.viewport.queueLayout()
+      if (v.list.list[v.list.index] == 'invest' && val < v.amount.value) {
+        PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'))
+      } else {
+        g.value = val
+        g.viewport.queueLayout()
+      }
     })
 	}
 v.gadgets.push(v.paynow = g = new vp.Gadget(v));
