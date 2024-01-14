@@ -201,10 +201,10 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
       if (!val) return
 //      if (v.list.list[v.list.index] == 'invest' && +val < +v.amount.value) {
 //        PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'), () => {})
-      } else {
+//      } else {
         g.value = val
         g.viewport.queueLayout()
-      }
+//      }
     })
 	}
 v.gadgets.push(v.paynow = g = new vp.Gadget(v));
