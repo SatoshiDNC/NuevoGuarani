@@ -116,6 +116,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     const g = this, v = g.viewport
     if (v.list.list[v.list.index] == 'invest') {
       delete v.lnaddr.hide
+      v.confirmamount.value = Math.max(+v.confirmamount.value, +v.amount.value)
     } else {
       v.lnaddr.hide = true
     }
@@ -151,7 +152,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.name = 'lnaddr'
   g.type = 'button'
 	g.key = 'lnAddrForFairShareRebates'
-	g.title = 'lightning address'
+	g.title = 'Lightning address for rebates'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
