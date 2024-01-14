@@ -249,9 +249,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                 vp.popRoot()
                 v.queueLayout()
               } else if (result && result.detail) {
-                PlatformUtil.UserAck(result.detail, () => {})
-                vp.popRoot()
-                v.queueLayout()
+                lightningqr.errorSignal = true
+                lightningqr.setRenderFlag(true)
               } else {
                 setTimeout(completionlogic, 2000)
               }
