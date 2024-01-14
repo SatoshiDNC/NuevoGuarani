@@ -231,26 +231,25 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const completionlogic = () => {
       console.log('completionlogic()')
-      if (v.hashes && !lightningqr.netBusy) {
+      if (v.hashes && !v.netBusy) {
         // Paid remaining amount via Lightning.
         const wallet = config.appDevPayments
         switch (wallet.type) {
         case 'manual':
           break
         case 'LNbits compatible':
-          if (!lightningqr.netBusy) {
-            lightningqr.netBusy = true
-            lightningqr.setRenderFlag(true)
+          if (!v.netBusy) {
+            v.netBusy = true
+            v.setRenderFlag(true)
             wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
-              lightningqr.netBusy = false
+              v.netBusy = false
+              v.setRenderFlag(true)
               console.log(Convert.JSONToString(result))
               if (result && result.paid) {
-                //billpane.textbox.options.lightningpaid = true
-                //if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else if (result && result.detail) {
-                lightningqr.errorSignal = true
-                lightningqr.setRenderFlag(true)
+                v.errorSignal = true
+                v.setRenderFlag(true)
               } else {
                 setTimeout(completionlogic, 2000)
               }
@@ -259,11 +258,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           break
         default:
           vp.beep('bad')
-          //if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           break
         }
-      } else if (vp.peekRoot() == lightningqr) {
+      } else {
         setTimeout(completionlogic, 2000)
       }
     }
@@ -272,25 +270,16 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     const gifttype = v.list.value.includes('grant')? 'grant': v.list.value
     const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
     const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
-    if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
+    if (!v.netBusy) {
       // Pay remaining amount via Lightning.
-      lightningqr.clear()
       delete v.hashes
+      delete v.errorSignal
       const wallet = config.appDevPayments
       switch (wallet.type) {
       case 'manual':
-        lightningqr.walletSignal = true
-        console.log('set auxFunc')
-        lightningqr.copyGad.auxFunc = () => {
-          console.log('auxFunc()')
-          //if (vp.peekRoot() == lightningqr) vp.popRoot()
-          v.queueLayout()
-          delete lightningqr.copyGad.auxFunc
-        }
         PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
           if (result) {
             console.log('confirmed')
-            //vp.pushRoot(lightningqr)
             setTimeout(completionlogic, 2000)
           } else {
             console.log('canceled')
@@ -298,44 +287,31 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         })
         break
       case 'LNbits compatible':
-        if (!lightningqr.netBusy) {
-          lightningqr.netBusy = true
-          lightningqr.clear()
-          lightningqr.busySignal = true
-          //vp.pushRoot(lightningqr)
+        if (!v.netBusy) {
+          v.netBusy = true
+          v.busySignal = true
           wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
               setTimeout(completionlogic, 2000)
             } else {
-              lightningqr.errorSignal = true
-              lightningqr.copyGad.auxFunc = () => {
-                //if (vp.peekRoot() == lightningqr) vp.popRoot()
-                v.queueLayout()
-                delete lightningqr.copyGad.auxFunc
-              }
+              v.errorSignal = true
               if (errorDetail) {
                 PlatformUtil.UserAck(errorDetail, () => {})
-                //if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else {
                 console.error('Wallet did not generate a recognized invoice type.')
               }
             }
-            lightningqr.setRenderFlag(true)
-            lightningqr.busySignal = false
-            lightningqr.netBusy = false
+            v.busySignal = false
+            v.netBusy = false
+            v.setRenderFlag(true)
           })
         }
         break
       default:
-        lightningqr.errorSignal = true
-        lightningqr.copyGad.auxFunc = () => {
-          //if (vp.peekRoot() == lightningqr) vp.popRoot()
-          v.queueLayout()
-          delete lightningqr.copyGad.auxFunc
-        }
+        v.errorSignal = true
         console.error(`Unexpected wallet type: '${wallet.type}'.`)
         break
       }
