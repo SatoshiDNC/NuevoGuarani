@@ -271,8 +271,9 @@ class LNbitsWallet extends BaseWallet {
       if (true || !config.debugBuild) {
         const url = `${wallet.url}/payments/lnurl`
         console.log(url)
+        const hash = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata))
         console.log(`{
-          "description_hash": "${await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata))}",
+          "description_hash": "${hash}",
           "callback": "${json1.callback}",
           "amount": ${total_sat * 1000},
           "comment": "${comment}",
@@ -286,7 +287,7 @@ class LNbitsWallet extends BaseWallet {
 						'X-API-KEY': wallet.key,
 					},
           body: `{
-            "description_hash": "${window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata))}",
+            "description_hash": "${hash}",
             "callback": "${json1.callback}",
             "amount": ${total_sat * 1000},
             "comment": "${comment}",
