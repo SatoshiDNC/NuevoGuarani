@@ -246,7 +246,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               console.log(Convert.JSONToString(result))
               if (result && result.paid) {
                 //billpane.textbox.options.lightningpaid = true
-                vp.popRoot()
+                if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else if (result && result.detail) {
                 lightningqr.errorSignal = true
@@ -259,7 +259,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           break
         default:
           vp.beep('bad')
-          vp.popRoot()
+          if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           break
         }
@@ -283,7 +283,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         console.log('set auxFunc')
         lightningqr.copyGad.auxFunc = () => {
           console.log('auxFunc()')
-          vp.popRoot()
+          if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
@@ -310,13 +310,13 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             } else {
               lightningqr.errorSignal = true
               lightningqr.copyGad.auxFunc = () => {
-                vp.popRoot()
+                if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
                 delete lightningqr.copyGad.auxFunc
               }
               if (errorDetail) {
                 PlatformUtil.UserAck(errorDetail, () => {})
-                vp.popRoot()
+                if (vp.peekRoot() == lightningqr) vp.popRoot()
                 v.queueLayout()
               } else {
                 console.error('Wallet did not generate a recognized invoice type.')
@@ -331,7 +331,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       default:
         lightningqr.errorSignal = true
         lightningqr.copyGad.auxFunc = () => {
-          vp.popRoot()
+          if (vp.peekRoot() == lightningqr) vp.popRoot()
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
