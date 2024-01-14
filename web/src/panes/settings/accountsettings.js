@@ -108,6 +108,7 @@ function loadAccount() {
 		camerasettings,
 		layoutsettings,
 		colorsettings,
+    softwarelicensesettings,
 	];
 
 	function cb() {
