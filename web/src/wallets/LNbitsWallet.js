@@ -275,15 +275,16 @@ class LNbitsWallet extends BaseWallet {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
+						'Content-Type': 'application/json',
 						'X-API-KEY': wallet.key,
 					},
           body: `{
-            "description_hash": "${window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(json1.metadata))}",
+            "description_hash": "${window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata))}",
             "callback": "${json1.callback}",
             "amount": ${total_sat * 1000},
             "comment": "${comment}",
             "description": "fair share of app development cost"
-          }`
+          }`,
 				})
 				json2 = await response.json(); //extract JSON from the http response
 			} else {
