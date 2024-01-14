@@ -282,6 +282,7 @@ class LNbitsWallet extends BaseWallet {
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
+						'Origin': 'https://lnbits.satoshidnc.com',
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
 						'X-API-KEY': wallet.key,
