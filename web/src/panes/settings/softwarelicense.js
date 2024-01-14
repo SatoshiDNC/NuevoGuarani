@@ -269,7 +269,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
     const amountToPay = +v.confirmamount.value
-    const targetAddr = `${v.list.value.includes('grant')? 'grant': v.list.value}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
+    const gifttype = v.list.value.includes('grant')? 'grant': v.list.value
+    const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
     if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
       // Pay remaining amount via Lightning.
       lightningqr.clear()
@@ -299,7 +300,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(`{"investment":"tbd","rebates":"${v.lnaddr.value}"}`), (checkingId, errorDetail) => {
+          wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(`{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"tbd"}`), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
