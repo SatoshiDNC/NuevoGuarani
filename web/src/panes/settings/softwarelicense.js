@@ -43,7 +43,7 @@ v.pageFocusFunc = function() {
         console.log('totalWagesPaid', totalWagesPaid)
 
         // calculate amount due
-        let totalCost = timecalc.reduce((acc, val) => {
+        let totalCost = timecalc.data.reduce((acc, val) => {
           console.log("reducing", acc, val)
           return acc + val.pay_asked
         }, 0)
@@ -57,7 +57,7 @@ v.pageFocusFunc = function() {
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         v.confirmamount.value = ''+amountDue
         delete v.amount.hide
-        v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
+        v.key.description = tr(v.key.template + (timecalc.data.length==1?'1':'')).replace('@', timecalc.data.length).replace('@', json.uniques)
         delete v.key.hide
         delete v.how.hide
         delete v.list.hide
@@ -271,7 +271,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     const amountToPay = +v.confirmamount.value
     const gifttype = v.list.value.includes('grant')? 'grant': v.list.value
     const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
-    const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"tbd"}`
+    const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
       // Pay remaining amount via Lightning.
       lightningqr.clear()
