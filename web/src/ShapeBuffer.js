@@ -142,7 +142,7 @@ class ShapeBuffer {
 		gl.useProgram(prog6);
 		gl.uniform4fv(gl.getUniformLocation(prog6, 'overallColor'),
 			new Float32Array([1,1,1, 1]));
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf5);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buf6);
 		//gl.disableVertexAttribArray(gl.getAttribLocation(prog2, 'aVertexPosition'));
 		var a = gl.getAttribLocation(prog6, 'aVertexPosition')
 		gl.vertexAttribPointer(
