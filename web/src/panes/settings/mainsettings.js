@@ -250,8 +250,8 @@ v.renderFunc = function() {
 				gl.uniform4fv(gl.getUniformLocation(prog6, 'overallColor'),
 					new Float32Array([1,1,1,1]))
 				mat4.identity(mat)
-				mat4.translate(mat,mat, [g.x,g.y,0])
-				mat4.scale(mat,mat, [g.w,1,1])
+				mat4.translate(mat,mat, [g.x+margin,g.y,0])
+				mat4.scale(mat,mat, [g.w-2*margin,1,1])
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog6, 'uModelViewMatrix'), false, mat)
 				mainShapes.drawArrays6('divSettings')
 			}
@@ -302,16 +302,16 @@ v.renderFunc = function() {
           }
 
 					if (i==0) continue;
-					mainShapes.useProg5();
-					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
+					mainShapes.useProg6();
+					gl.uniformMatrix4fv(gl.getUniformLocation(prog6, 'uProjectionMatrix'),
 						false, this.mat);
-					gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
+					gl.uniform4fv(gl.getUniformLocation(prog6, 'overallColor'),
 						new Float32Array([1,1,1,1]));
 					mat4.identity(mat);
-					mat4.translate(mat,mat, [g.x+25,g.y+i*optionheight,0]);
-					mat4.scale(mat,mat, [g.w-50,1,1]);
-					gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-					mainShapes.drawArrays5('divSettings');
+					mat4.translate(mat,mat, [g.x+margin,g.y+i*optionheight,0]);
+					mat4.scale(mat,mat, [g.w-2*margin,1,1]);
+					gl.uniformMatrix4fv(gl.getUniformLocation(prog6, 'uModelViewMatrix'), false, mat);
+					mainShapes.drawArrays6('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
 				mat4.identity(mat);
