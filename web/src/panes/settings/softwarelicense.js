@@ -291,7 +291,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress('fairshare.ng@satoshidnc.com', inQuestion, 'my.comment', (invoice, id) => {
+          wallet.payLightningAddress(`fairshare.ng@${config.debugBuild?'dev-':''}ng.satoshidnc.com`, inQuestion, 'my.comment', (invoice, id) => {
             if (invoice && invoice.startsWith('lnbc') && id) {
               lightningqr.qr = [invoice]
               if (!v.hashes) v.hashes = []
