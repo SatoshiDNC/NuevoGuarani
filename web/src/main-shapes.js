@@ -26,10 +26,10 @@ const mainShapes = new ShapeBuffer(function() {
 		0.6,1,...rgb(config.themeColors.uiSettingsDivider), 0.6,0,...rgb(config.themeColors.uiSettingsDivider),
 		1.0,1,...rgb(config.themeColors.uiSettingsBubble),  1.0,0,...rgb(config.themeColors.uiSettingsBubble), );
   this.addShape6('divSettings', gl.TRIANGLE_STRIP,
-		0.0,1,0,...rgb(config.themeColors.uiSettingsBubble),  0.0,0,0,...rgb(config.themeColors.uiSettingsBubble),
-		0.4,1,1,...rgb(config.themeColors.uiSettingsDivider), 0.4,0,1,...rgb(config.themeColors.uiSettingsDivider),
-		0.6,1,1,...rgb(config.themeColors.uiSettingsDivider), 0.6,0,1,...rgb(config.themeColors.uiSettingsDivider),
-		1.0,1,0,...rgb(config.themeColors.uiSettingsBubble),  1.0,0,0,...rgb(config.themeColors.uiSettingsBubble), );
+		0.0,1,...rgb(config.themeColors.uiSettingsBubble) ,0, 0.0,0,...rgb(config.themeColors.uiSettingsBubble) ,0,
+		0.4,1,...rgb(config.themeColors.uiSettingsDivider),1, 0.4,0,...rgb(config.themeColors.uiSettingsDivider),1,
+		0.6,1,...rgb(config.themeColors.uiSettingsDivider),1, 0.6,0,...rgb(config.themeColors.uiSettingsDivider),1,
+		1.0,1,...rgb(config.themeColors.uiSettingsBubble) ,0, 1.0,0,...rgb(config.themeColors.uiSettingsBubble) ,0, );
 	this.addShape2('rect', gl.TRIANGLE_STRIP,
 		0.0,1, 0.0,0, 1.0,1, 1.0,0, );
 	this.addShape4('rect', gl.TRIANGLE_STRIP,
