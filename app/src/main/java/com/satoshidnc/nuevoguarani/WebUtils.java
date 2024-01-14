@@ -175,6 +175,44 @@ public class WebUtils {
         });
     }
 
+    @JavascriptInterface
+    public void userAck(String prompt, int callback) {
+        Log.d("DEBUG", "userConfirm() called");
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(prompt);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Debug", "User response: OK");
+                        String cb = "Android.Callback(" + callback + "," + true + ")";
+                        Log.d("DEBUG", "callback: " + cb);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            view.evaluateJavascript(cb, null);
+                        } else {
+                            view.loadUrl("javascript:" + cb);
+                        }
+                    }
+                });
+
+                AlertDialog dlg = builder.create();
+                dlg = builder.show();
+                Window window = dlg.getWindow();
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.TOP;
+                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                window.setAttributes(wlp);
+            }
+        });
+    }
+
 //    @JavascriptInterface
 //    public void getData(String table, String key, int successCallback, int failureCallback) {
 //        Log.d("DEBUG", "getData() called");

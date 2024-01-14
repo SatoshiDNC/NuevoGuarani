@@ -12,6 +12,7 @@ class DefaultDarkTheme extends ColorTheme {
 		this.set('uiLedger2'				, [0.05,0.05,0.05, 1]);
 		this.set('uiSpeechCloud'		, [0.05,0.05,0.05, 1]);
 		this.set('uiSilverLining'		, [0.10,0.10,0.10, 1]);
+    this.set('uiSettingsSubText', [0.7,0.7,0.7, 1])
 //		Object.defineProperty(this, "uiDataEntryArea", { get : function () { return [1.10,0.10,0.10, 1]; } } );
 	}
 }
