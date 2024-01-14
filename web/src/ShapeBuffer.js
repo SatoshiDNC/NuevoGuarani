@@ -62,9 +62,9 @@ class ShapeBuffer {
     this.len5[name] = this.all5.length/5 - this.beg5[name];
   }
   addShape6(name, typ, ...points) {
-    this.beg6[name] = this.all6.length/5; this.typ6[name] = typ;
+    this.beg6[name] = this.all6.length/6; this.typ6[name] = typ;
     this.all6.splice (this.all6.length, 0, ...points);
-    this.len6[name] = this.all6.length/5 - this.beg6[name];
+    this.len6[name] = this.all6.length/6 - this.beg6[name];
   }
 
   // shape-drawing functions
