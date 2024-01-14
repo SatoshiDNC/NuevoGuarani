@@ -278,6 +278,13 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
+        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${inQuestion} satoshis to target@address using any Lightning compatible wallet, then check back here to confirm receipt.\n\n`, (result) => {
+          if (result) {
+            console.log('confirmed')
+          } else {
+            console.log('canceled')
+          }
+        })
         break
       case 'LNbits compatible':
         if (!lightningqr.netBusy) {
