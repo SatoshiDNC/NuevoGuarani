@@ -24,6 +24,7 @@ v.pageFocusFunc = function() {
   v.key.hide = true
   v.how.hide = true
   v.list.hide = true
+  v.listnote.hide = true
   delete v.spinner.hide
 
   // query the license api to get the current parameters
@@ -64,6 +65,7 @@ v.pageFocusFunc = function() {
 
         // delete v.explain.hide
         delete v.list.hide
+        delete v.listnote.hide
         v.spinner.hide = true
         v.queueLayout()  
       })
@@ -95,7 +97,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.hide = true
   g.key = 'howToPayTheDevelopers'
   g.state = 0
-  g.list = ['invest in the development', 'make a grant to the project']
+  g.list = ['invest in the development', 'make a grant to the project', 'donate to the developers']
   g.index = -1;
 	Object.defineProperty(g, "value", {
 		get : function () {
@@ -120,6 +122,13 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 			})
 		}
 	}
+v.gadgets.push(v.listnote = g = new vp.Gadget(v))
+  g.name = 'listnote'
+  g.hide = true
+  Object.defineProperty(g, 'description', { get : function () {
+    const g = this, v = g.viewport
+    return 'desc:'+v.title+':'+g.list[g.list.index]
+  }})
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0

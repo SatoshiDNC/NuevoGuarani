@@ -72,6 +72,11 @@ desc:software license:key1	c>@ developer across @ users
 desc:software license:how	How to pay:
 desc:software license:explain:1	As more users pay, your investment can be proportionally refunded.
 desc:software license:explain:2	When you update to a newer version, you may be asked to pay again to cover the development cost of the new features.
+desc:software license:invest in the development:1	Investment is Fairware's signature option. With this option, you fund developer wages and get rebated every time your fair share decreases.
+desc:software license:invest in the development:2	This option requires you to register your Lightning address for rebates when you make your payment.
+desc:software license:make a grant to the project:1	Your grant is as anonymous as your payment and goes 100% toward developer wages. With this option, you contribute your fair share as of today with no future rebates. Your contribution will nevertheless reduce the fair share of future licensees by paying down developer costs.
+desc:software license:make a grant to the project:2	This is a great way to altruistically contribute toward making this software free of charge for others.
+desc:software license:donate to the developers:1	This is a direct donation, routed by the app to the individual developers. This the most private, no-strings-attached way to show your love to the developers of this software. Since it is not sent through the project, there is no way to track it and it will not affect the fair share of future users.
 disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?
 enabled currencies	Enabled currencies
