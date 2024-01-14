@@ -241,7 +241,8 @@ class LNbitsWallet extends BaseWallet {
     const wallet = this
     const addr = lnAddr.split('@')
 		const asyncLogic = async () => {
-			let json = '';
+			let json1 = ''
+      let json2 = ''
 			console.log('retrieving metadata for',addr[0]+'@'+addr[1],'live =',!config.debugBuild);
 			if (true || !config.debugBuild) {
         const url = `https://${addr[1]}/.well-known/lnurlp/${addr[0]}`
@@ -250,18 +251,57 @@ class LNbitsWallet extends BaseWallet {
 					method: 'GET',
 					headers: {
 						'Accept': 'application/json',
-						'X-API-KEY': wallet.key,
+						//'X-API-KEY': wallet.key,
 					},
 				})
-				json = await response.json(); //extract JSON from the http response
+				json1 = await response.json(); //extract JSON from the http response
 			} else {
 				console.log('debug build; generating fake')
-				json = {
-          error: "z",
+				json1 = {
+          "tag": "payRequest",
+          "callback": "https://lnbits.satoshidnc.com/lnurlp/api/v1/lnurl/cb/lnaddr/XDFjE8",
+          "minSendable": 1000,
+          "maxSendable": 100000000,
+          "metadata": "[[\"text/plain\", \"Payment to geyser.ng\"], [\"text/identifier\", \"geyser.ng@lnbits.satoshidnc.com\"]]",
+          "commentAllowed": 200,
+          "allowsNostr": true,
+          "nostrPubkey": "7ce94f54f55b884becec9b7b2bab63d4680b4acdd1c84f927f059a519d32ec7a",
+        }
+			}
+      if (true || !config.debugBuild) {
+        const url = `${wallet.url}/api/v1/payments/lnurl`
+        console.log(url)
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'X-API-KEY': wallet.key,
+					},
+          data: `{
+            "description_hash": "${sha256(json1.metadata)}",
+            "callback": "${json1.callback}",
+            "amount": ${total_sat * 1000},
+            "comment": "${comment}",
+            "description": "fair share of app development cost"
+          }`
+				})
+				json2 = await response.json(); //extract JSON from the http response
+			} else {
+				console.log('debug build; generating fake')
+				json2 = {
+          "tag": "payRequest",
+          "callback": "https://lnbits.satoshidnc.com/lnurlp/api/v1/lnurl/cb/lnaddr/XDFjE8",
+          "minSendable": 1000,
+          "maxSendable": 100000000,
+          "metadata": "[[\"text/plain\", \"Payment to geyser.ng\"], [\"text/identifier\", \"geyser.ng@lnbits.satoshidnc.com\"]]",
+          "commentAllowed": 200,
+          "allowsNostr": true,
+          "nostrPubkey": "7ce94f54f55b884becec9b7b2bab63d4680b4acdd1c84f927f059a519d32ec7a",
         }
 			}
 
-			console.log('json', Convert.JSONToString(json))
+
+			console.log('json', Convert.JSONToString(json2))
 			// const withdrawalLinkString = json.lnurl
 			// const linkId = json.id
 			// console.log('withdrawalLinkString', withdrawalLinkString)
