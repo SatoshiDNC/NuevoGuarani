@@ -264,7 +264,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           break
         }
-      } else {
+      } else if (vp.peekRoot() == lightningqr) {
         setTimeout(completionlogic, 2000)
       }
     }
