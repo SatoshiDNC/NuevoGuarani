@@ -187,7 +187,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 		get : function () {
 			if (this.value) {
 				var temp = this.value
-				if (+temp <= 0) return 'not set'
+				if (temp == '') return 'not set'
 				else return ''+temp
       }
 		}
