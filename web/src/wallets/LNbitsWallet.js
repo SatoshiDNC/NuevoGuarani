@@ -271,7 +271,7 @@ class LNbitsWallet extends BaseWallet {
       if (true || !config.debugBuild) {
         const url = `${wallet.url}/payments/lnurl`
         console.log('url', url)
-        const hash = new TextDecoder().decode(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata)))
+        const hash = Convert.ArrayBufferToHex(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata)))
         console.log('hash', hash)
         const bodyStr = `{
           "description_hash": "${hash}",
