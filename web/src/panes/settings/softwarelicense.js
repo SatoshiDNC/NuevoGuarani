@@ -207,7 +207,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 v.gadgets.push(v.paynow = g = new vp.Gadget(v));
   g.hide = true
   g.enabled = !g.hide
-  g.color = config.themeColors.uiSuccessGreen
+  g.color = config.themeColors.uiSettingSelect
 	g.title = 'pay now'
 	g.button = true
 	g.clickFunc = function() {
