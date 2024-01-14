@@ -271,7 +271,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       case 'manual':
         lightningqr.walletSignal = true
         v.hashes = []
+        console.log('set auxFunc')
         lightningqr.copyGad.auxFunc = () => {
+          console.log('auxFunc()')
           vp.popRoot()
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc

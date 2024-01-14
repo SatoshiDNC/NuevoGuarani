@@ -10,6 +10,7 @@ v.gadgets.push(v.copyGad = g = new vp.Gadget(v));
 	g.x = 0; g.y = 0; g.w = 1; g.h = 1;
 	g.actionFlags = vp.GAF_CLICKABLE;
 	g.clickFunc = function() {
+    const g = this
     if (g.auxFunc) {
       console.log('calling aux func')
       g.auxFunc()
