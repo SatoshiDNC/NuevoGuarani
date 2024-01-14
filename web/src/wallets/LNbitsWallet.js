@@ -267,9 +267,9 @@ class LNbitsWallet extends BaseWallet {
 			// console.log('withdrawalLinkString', withdrawalLinkString)
 			// console.log('uniqueHash', linkId)
 			// if (withdrawalLinkString && withdrawalLinkString.toLowerCase().startsWith('lnurl') && linkId) {
-			// 	withdrawalLinkCallback(withdrawalLinkString, linkId)
+			// 	payLightningAddressCallback(withdrawalLinkString, linkId)
 			// } else {
-				withdrawalLinkCallback()
+				payLightningAddressCallback()
 			// }
 		}
 		asyncLogic();
