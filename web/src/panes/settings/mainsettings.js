@@ -205,7 +205,7 @@ v.renderFunc = function() {
 			}
 			mainShapes.drawArrays2('rect');
 
-      if (g.notpersistent) {
+      if (g.nonpersistent) {
         const border = 2
         gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
   				new Float32Array(th.uiBackground));
