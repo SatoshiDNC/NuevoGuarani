@@ -126,10 +126,7 @@
   gl.linkProgram(prog5);
   if (!gl.getProgramParameter(prog5, gl.LINK_STATUS)) return;
 
-  gl.useProgram(prog5);
-//  buf5 = gl.createBuffer(); // buffer for 5-value vertices
-//  gl.bindBuffer(gl.ARRAY_BUFFER, buf5);
-//  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(all5), gl.STATIC_DRAW);
+//  gl.useProgram(prog5);
 
   const prog6VertexShader = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(prog6VertexShader, `
@@ -171,7 +168,7 @@
   gl.linkProgram(prog6);
   if (!gl.getProgramParameter(prog6, gl.LINK_STATUS)) return;
 
-  gl.useProgram(prog6);
+//  gl.useProgram(prog6);
 
 function initTexture(gl) {
   const texture = gl.createTexture();
