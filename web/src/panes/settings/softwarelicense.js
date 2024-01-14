@@ -127,7 +127,7 @@ v.gadgets.push(v.listnote = g = new vp.Gadget(v))
   g.hide = true
   Object.defineProperty(g, 'description', { get : function () {
     const g = this, v = g.viewport
-    return 'desc:'+v.title+':'+v.list.list[v.list.index]
+    return 'desc:'+v.title+':'+v.list.list[v.list.index]+':#'
   }})
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
