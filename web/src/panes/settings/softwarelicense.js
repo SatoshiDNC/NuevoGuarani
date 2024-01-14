@@ -130,6 +130,40 @@ v.gadgets.push(v.listnote = g = new vp.Gadget(v))
     const g = this, v = g.viewport
     return 'desc:'+v.title+':'+v.list.list[v.list.index]+':#'
   }})
+v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
+  g.name = 'lnaddr'
+  g.type = 'button'
+	g.key = 'lnAddrForFairShareRebates'
+	g.title = 'lightning address'
+	Object.defineProperty(g, "subtitle", {
+		get : function () {
+			if (this.value) {
+				var temp = this.value
+				if (temp.length < 50) return ' '+temp
+				else return ' '+temp.substr(0,50)+'...'
+			}	else return 'not set'
+		}
+	});
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
+	g.clickFunc = function() {
+		const g = this
+		PlatformUtil.UserPrompt(tr(g.title)+':', '', val => {
+      if (!val) return
+      { // For the GUI.
+        g.viewport.queueLayout()
+      } { // For the app function.
+        g.value = val
+      } { // For persistence.
+        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+          console.log(`successfully selected ${g.key}`, event)
+        }, (event) => {
+          console.log(`error selecting ${g.key}`, event)
+        })
+      }
+    })
+	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
@@ -152,10 +186,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
 v.load = function(cb) {
 	const debuglog = true
 	const gads = [
-		'list',
-		// 'lnbitsurl', 'lnbitskey',
-		// 'strikeurl', 'strikekey',
-		// 'coinosurl', 'coinoskey',
+		'list', 'lnaddr'
 	]
 	function icb(cb, v) {
 		let allComplete = true;
@@ -206,6 +237,7 @@ v.load = function(cb) {
 	}
 	for (const gad of this.gadgets) {
     if (![
+      'lnaddr',
       // 'lnbitsurl', 'lnbitskey',
       // 'strikeurl', 'strikekey',
       // 'coinosurl', 'coinoskey',
