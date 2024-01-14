@@ -42,6 +42,7 @@ REVERSED=reversed.tmp
 MODIFIED=modified.tmp
 FILTERED=filtered.tmp
 
+COMMIT=`git rev-parse HEAD`
 git log --first-parent --pretty=%at%x20%an%x20%aE%x20%s > $TIMELOG
 
 echo
@@ -54,7 +55,7 @@ echo "Calculating time contributed by $num_devs devs:"
 total_time_spent=0
 total_pay_earned=0
 : > $JSON_OUT
-echo "[" >> $JSON_OUT
+echo "{\"commit\":\"$COMMIT\",\"data\":[" >> $JSON_OUT
 for ((i = 0; i < ${#unique_devs[@]}; i+=2)); do
   dev="${unique_devs[i]}"
   addr="${unique_devs[i+1]}"
@@ -163,7 +164,7 @@ for ((i = 0; i < ${#unique_devs[@]}; i+=2)); do
   total_time_spent=$(( total_time_spent + time_spent ))
   total_pay_earned=$(( total_pay_earned + pay_earned ))
 done
-echo "]" >> $JSON_OUT
+echo "]}" >> $JSON_OUT
 
 # print summary
 echo "$total_time_spent => $total_pay_earned" overall
