@@ -184,6 +184,8 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
   g.name = 'confirmamount'
   g.type = 'button'
 	g.title = 'amount'
+  g.daisychain = true
+  g.nonpersistent = true
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
       let temp = this.value
