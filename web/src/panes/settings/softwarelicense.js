@@ -299,7 +299,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress(targetAddr, amountToPay, `{"investment":"tbd","rebates":"${v.lnaddr.value}"}`, (checkingId, errorDetail) => {
+          wallet.payLightningAddress(targetAddr, amountToPay, Convert.JSONToString({ investment: "tbd", rebates: v.lnaddr.value }), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
