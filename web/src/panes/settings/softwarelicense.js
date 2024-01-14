@@ -262,8 +262,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           break
         }
+      } else {
+        setTimeout(completionlogic, 2000)
       }
-
     }
 
     const amountToPay = +v.confirmamount.value
@@ -302,7 +303,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               console.log('calledback')
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
-              lightningqr.netBusy = false
             } else {
               lightningqr.errorSignal = true
               console.error('Wallet did not generate a recognized invoice type.')
