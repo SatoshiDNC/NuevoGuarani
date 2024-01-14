@@ -260,8 +260,8 @@ v.load = function(cb) {
 		function finishInit(cb, v) {
 			const g = v.typelist;
 			var index = -1;
-			for (var i=0; i<v.wallettypes.length; i++) {
-				if (v.wallettypes[i] == g.tempValue) {
+			for (var i=0; i<g.list.length; i++) {
+				if (g.list[i] == g.tempValue) {
 					index = i;
 					break;
 				}
