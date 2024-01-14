@@ -300,7 +300,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (checkingId) => {
+          wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
@@ -311,7 +311,12 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                 vp.popRoot()
                 v.queueLayout()
                 delete lightningqr.copyGad.auxFunc
-              }      
+              }
+              if (errorDetail) {
+                PlatformUtil.UserAck(errorDetail, () => {})
+                vp.popRoot()
+                v.queueLayout()
+              }
             }
             lightningqr.setRenderFlag(true)
             lightningqr.busySignal = false

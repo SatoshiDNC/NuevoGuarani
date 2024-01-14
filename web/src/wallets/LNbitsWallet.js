@@ -253,7 +253,7 @@ class LNbitsWallet extends BaseWallet {
 						'Accept': 'application/json',
 					},
 				})
-				json1 = await response.json();
+				json1 = await response.json()
 			} else {
 				console.log('debug build; generating fake')
 				json1 = {
@@ -307,11 +307,13 @@ class LNbitsWallet extends BaseWallet {
 
 			console.log('json', Convert.JSONToString(json2))
 			const checkingId = json2.checking_id
+      const errorDetail = json2.detail
 			console.log('checkingId', checkingId)
+			console.log('errorDetail', errorDetail)
 			if (checkingId) {
 				payLightningAddressCallback(checkingId)
 			} else {
-				payLightningAddressCallback()
+				payLightningAddressCallback(undefined, errorDetail)
 			}
 		}
 		asyncLogic();
