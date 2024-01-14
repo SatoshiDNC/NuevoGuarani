@@ -210,7 +210,7 @@ v.renderFunc = function() {
         gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
   				new Float32Array(g.color?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiBackground));
         mat4.identity(mat);
-        mat4.translate(mat,mat, [g.x+margin+border,g.y+daisychain?0:border,0]);
+        mat4.translate(mat,mat, [g.x+margin+border,g.y+(daisychain?0:border),0]);
         mat4.scale(mat,mat, [g.w-2*(margin+border),25,1]);
         if (daisychain) {
           gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
