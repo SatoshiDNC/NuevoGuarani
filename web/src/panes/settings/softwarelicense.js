@@ -221,8 +221,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       err = 'Please enter your Lightning address for rebates'
     } else if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
       err = 'Invalid Lightning address'
-    } else if (v.list.list[v.list.index] == 'invest' && +v.confirmamount.value < +v.amount.value) {
-        PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'), () => {})
+//    } else if (v.list.list[v.list.index] == 'invest' && +v.confirmamount.value < +v.amount.value) {
+//        PlatformUtil.UserAck(tr('For investment, you must pay at least your fair share.'), () => {})
     }
     if (err) {
       PlatformUtil.UserAck(err, () => {})
