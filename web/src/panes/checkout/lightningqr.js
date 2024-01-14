@@ -10,23 +10,30 @@ v.gadgets.push(v.copyGad = g = new vp.Gadget(v));
 	g.x = 0; g.y = 0; g.w = 1; g.h = 1;
 	g.actionFlags = vp.GAF_CLICKABLE;
 	g.clickFunc = function() {
-		console.log('qr-click', lightningqr.qr);
-		if (lightningqr.qr.length == 1) {
-			navigator.clipboard.writeText(lightningqr.qr[0]).then(
-				() => {
-					lightningqr.copiedSignal = true;
-					lightningqr.setRenderFlag(true);
-					setTimeout(() => {
-						lightningqr.copiedSignal = false;
-						lightningqr.setRenderFlag(true);
-					}, 2000);
-					console.log('/* clipboard successfully set */');
-				},
-				() => {
-					console.log('/* clipboard write failed */');
-				},
-			);
-		}
+    if (g.auxFunc) {
+      console.log('calling aux func')
+      g.auxFunc()
+    } else {
+      console.log('qr-click', lightningqr.qr)
+      if (lightningqr.qr.length == 0) {
+      }
+      if (lightningqr.qr.length == 1) {
+        navigator.clipboard.writeText(lightningqr.qr[0]).then(
+          () => {
+            lightningqr.copiedSignal = true
+            lightningqr.setRenderFlag(true)
+            setTimeout(() => {
+              lightningqr.copiedSignal = false
+              lightningqr.setRenderFlag(true)
+            }, 2000);
+            console.log('/* clipboard successfully set */')
+          },
+          () => {
+            console.log('/* clipboard write failed */')
+          },
+        );
+      }
+    }
 	}
 v.clear = function() {
 	this.busySignal = false;
