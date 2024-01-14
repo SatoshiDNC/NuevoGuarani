@@ -208,9 +208,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
   g.hide = true
   g.enabled = !g.hide
   g.color = config.themeColors.uiSettingSelect
+  g.nonpersistent = true
 	g.title = 'pay now'
 	g.button = true
-  g.nonpersistent = true
 	g.clickFunc = function() {
 		const g = this
 	}
