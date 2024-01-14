@@ -158,7 +158,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this
-		PlatformUtil.UserPrompt(tr(g.title)+':', '', val => {
+		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
       { // For the GUI.
         g.viewport.queueLayout()
