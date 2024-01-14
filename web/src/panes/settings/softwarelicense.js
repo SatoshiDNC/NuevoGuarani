@@ -26,6 +26,8 @@ v.pageFocusFunc = function() {
   v.list.hide = true
   v.listnote.hide = true
   v.lnaddr.hide = true
+  v.amount.hide = true
+  v.paynow.hide = true
   delete v.spinner.hide
 
   // query the license api to get the current parameters
@@ -115,7 +117,11 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     } else {
       v.lnaddr.hide = true
     }
+    delete v.amount.hide
+    delete v.paynow.hide
     v.lnaddr.enabled = !v.lnaddr.hide
+    v.amount.enabled = !v.amount.hide
+    v.paynow.enabled = !v.paynow.hide
     v.queueLayout()
 	}
 	g.listItemClick = function(index) {
@@ -172,6 +178,39 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
         })
       }
     })
+	}
+v.gadgets.push(v.amount = g = new vp.Gadget(v));
+  g.name = 'amount'
+  g.type = 'button'
+	g.title = 'amount'
+	Object.defineProperty(g, "subtitle", {
+		get : function () {
+			if (this.value) {
+				var temp = this.value
+				if (+temp <= 0) return 'not set'
+				else return ''+temp
+      }
+		}
+	})
+	g.value = ''
+	g.hide = true
+  g.enabled = !g.hide
+	g.clickFunc = function() {
+		const g = this
+		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
+      if (!val) return
+      g.value = val
+      g.viewport.queueLayout()
+    })
+	}
+v.gadgets.push(v.paynow = g = new vp.Gadget(v));
+  g.hide = true
+  g.enabled = !g.hide
+  g.color = [0,1,0,1]
+	g.title = 'pay now'
+	g.button = true
+	g.clickFunc = function() {
+		const g = this
 	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
