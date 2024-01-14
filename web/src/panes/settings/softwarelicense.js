@@ -26,7 +26,7 @@ v.pageFocusFunc = function() {
   v.list.hide = true
   v.listnote.hide = true
   v.lnaddr.hide = true
-  v.amount.hide = true
+  v.confirmamount.hide = true
   v.paynow.hide = true
   delete v.spinner.hide
 
@@ -120,7 +120,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     delete v.amount.hide
     delete v.paynow.hide
     v.lnaddr.enabled = !v.lnaddr.hide
-    v.amount.enabled = !v.amount.hide
+    v.confirmamount.enabled = !v.confirmamount.hide
     v.paynow.enabled = !v.paynow.hide
     v.queueLayout()
 	}
