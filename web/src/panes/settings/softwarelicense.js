@@ -185,12 +185,10 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 	g.title = 'amount'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
-			if (this.value) {
-				let temp = this.value
-        console.log('temp:', temp)
-				if (!temp || temp == '' || +temp <= 0) return 'not set'
-				else return ''+temp
-      }
+      let temp = this.value
+      console.log('temp:', temp)
+      if (!temp || temp == '' || +temp <= 0) return 'not set'
+      else return ''+temp
 		}
 	})
 	g.value = ''
