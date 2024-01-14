@@ -111,7 +111,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 	g.listItemClick = function(index) {
 		const g = this
 		{ // For the GUI.
-			g.index = index; v.setRenderFlag(true)
+			g.index = index; v.queueLayout()
 		} { // For the app function.
 			g.appFunction()
 		} { // For persistence.
