@@ -120,7 +120,7 @@ class LNbitsWallet extends BaseWallet {
     const wallet = this
 		const asyncLogic = async () => {
 			let json = '';
-			if (!config.debugBuild) {
+			if (true || !config.debugBuild) {
 				const response = await fetch(wallet.url+'/payments/'+checkingId, {
 					method: 'GET',
 					headers: {
