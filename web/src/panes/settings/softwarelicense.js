@@ -25,6 +25,7 @@ v.pageFocusFunc = function() {
   v.how.hide = true
   v.list.hide = true
   v.listnote.hide = true
+  v.lnaddr.hide = true
   delete v.spinner.hide
 
   // query the license api to get the current parameters
@@ -67,7 +68,8 @@ v.pageFocusFunc = function() {
         delete v.list.hide
         delete v.listnote.hide
         v.spinner.hide = true
-        v.queueLayout()  
+        v.list.appFunction()
+        v.queueLayout()
       })
     },1000)
   }
@@ -107,7 +109,13 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		}
 	})
 	g.appFunction = function() {
-    this.viewport.queueLayout()
+    const g = this, v = g.viewport
+    if (v.list.list[v.list.index] == 'invest') {
+      delete v.lnaddr.hide
+    } else {
+      v.lnaddr.hide = true
+    }
+    v.queueLayout()
 	}
 	g.listItemClick = function(index) {
 		const g = this
