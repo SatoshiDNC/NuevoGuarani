@@ -76,7 +76,7 @@ v.pageFocusFunc = function() {
         v.list.appFunction()
         v.queueLayout()
       })
-    },10000)
+    },1000)
   }
   if (!v.busyQueryingFAD) {
     asyncLogic()
@@ -224,6 +224,15 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this
+    if (v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
+      err = 'Please enter your Lightning address for rebates'
+    } else if (v.lnaddr.value.match(/[a-zA-Z][a-zA-Z0-9]*@[a-zA-Z][a-zA-Z0-9]*([.][a-zA-Z][a-zA-Z0-9]*)+/)) {
+      err = 'Invalid Lightning address'
+    }
+    if (err) {
+      PlatformUtil.UserAck(err, () => {})
+      return
+    }
 	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
