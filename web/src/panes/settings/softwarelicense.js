@@ -278,7 +278,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
-        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${inQuestion} satoshis to target@address using any Lightning compatible wallet, then check back here to confirm receipt.\n\n`, (result) => {
+        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${inQuestion} satoshis to ng-fairware@satoshidnc.com using any Lightning compatible wallet, then check back here to confirm receipt.\n\n`, (result) => {
           if (result) {
             console.log('confirmed')
           } else {
@@ -291,7 +291,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.generateInvoice(inQuestion, (invoice, id) => {
+          wallet.payLightningAddress('fairshare.ng@satoshidnc.com', inQuestion, 'my.comment', (payLink, id) => {
             if (invoice && invoice.startsWith('lnbc') && id) {
               lightningqr.qr = [invoice]
               if (!v.hashes) v.hashes = []

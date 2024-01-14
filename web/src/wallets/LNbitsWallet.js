@@ -228,6 +228,55 @@ class LNbitsWallet extends BaseWallet {
 		console.groupEnd();
 	}
 
+  payLightningAddress(lnAddr, sats, comment, payLightningAddressCallback) {
+		console.groupCollapsed(this.constructor.name+'.payLightningAddress(', lnAddr, sats, comment, '...)');
+
+		var total_sat = sats
+		if (total_sat <= 0 || total_sat != (+total_sat).toString()) {
+			console.error('Amount sanity check failed:', total_sat)
+			vp.beep('bad')
+			return
+		}
+
+    const wallet = this
+    const addr = lnAddr.split('@')
+		const asyncLogic = async () => {
+			let json = '';
+			console.log('retrieving metadata for',addr[0]+'@'+addr[1],'live =',!config.debugBuild);
+			if (!config.debugBuild) {
+        const url = `https://${addr[1]}/.well-known/lnurlp/${addr[0]}`
+        console.log(url)
+				const response = await fetch(url, {
+					method: 'GET',
+					headers: {
+						'Accept': 'application/json',
+						'X-API-KEY': wallet.key,
+					},
+				})
+				json = await response.json(); //extract JSON from the http response
+			} else {
+				console.log('debug build; generating fake')
+				json = {
+          error: "z",
+        }
+			}
+
+			console.log('json', Convert.JSONToString(json))
+			// const withdrawalLinkString = json.lnurl
+			// const linkId = json.id
+			// console.log('withdrawalLinkString', withdrawalLinkString)
+			// console.log('uniqueHash', linkId)
+			// if (withdrawalLinkString && withdrawalLinkString.toLowerCase().startsWith('lnurl') && linkId) {
+			// 	withdrawalLinkCallback(withdrawalLinkString, linkId)
+			// } else {
+				withdrawalLinkCallback()
+			// }
+		}
+		asyncLogic();
+
+		console.groupEnd();
+	}
+
 	generateWithdrawalLink(sats, comment, withdrawalLinkCallback) {
 		console.groupCollapsed(this.constructor.name+'.generateWithdrawalLink(', sats, comment, '...)');
 
