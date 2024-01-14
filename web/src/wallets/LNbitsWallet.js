@@ -270,33 +270,29 @@ class LNbitsWallet extends BaseWallet {
 			}
       if (true || !config.debugBuild) {
         const url = `${wallet.url}/payments/lnurl`
-        console.log(url)
+        console.log('url', url)
         const hash = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata))
-        console.log(`{
+        console.log('hash', hash)
+        const bodyStr = `{
           "description_hash": "${hash}",
           "callback": "${json1.callback}",
           "amount": ${total_sat * 1000},
           "comment": "${comment}",
           "description": "fair share of app development cost"
-        }`)
-				const response = await fetch(url, {
-					method: 'POST',
-					headers: {
-						'Origin': 'https://lnbits.satoshidnc.com',
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-KEY': wallet.key,
-					},
-          body: `{
-            "description_hash": "${hash}",
-            "callback": "${json1.callback}",
-            "amount": ${total_sat * 1000},
-            "comment": "${comment}",
-            "description": "fair share of app development cost"
-          }`,
-				})
-				json2 = await response.json(); //extract JSON from the http response
-			} else {
+        }`
+        console.log('bodyStr', bodyStr)
+				// const response = await fetch(url, {
+				// 	method: 'POST',
+				// 	headers: {
+				// 		'Accept': 'application/json',
+				// 		'Content-Type': 'application/json',
+				// 		'X-API-KEY': wallet.key,
+				// 	},
+        //   body: bodyStr,
+				// })
+				// json2 = await response.json(); //extract JSON from the http response
+				json2 = {}
+      } else {
 				console.log('debug build; generating fake')
 				json2 = {
           "tag": "payRequest",
