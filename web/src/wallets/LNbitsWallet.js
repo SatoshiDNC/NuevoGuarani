@@ -39,7 +39,7 @@ class LNbitsWallet extends BaseWallet {
 					},
 					body: body,
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; picking random conversion rate');
 				json = {};
@@ -92,7 +92,7 @@ class LNbitsWallet extends BaseWallet {
             "unit": "sat"
           }`,
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; generating fake');
 				json = { payment_hash: "a37ea5ff05f41891262720e0567e9442f9463c6d12c59ded5cfca8a406c50522", payment_request: "lnbc1230n1pj2kj8esp5z8aqqsaxmghudpe79zgr48squm5x58uneapj8qh3csfynhjjz06qpp55dl2tlc97svfzf38yrs9vl55gtu5v0rdztzemm2ulj52gpk9q53qdqjd4ujqcn4wd5kuetnwvxqzjccqpjrzjqgp7tvtwh6rmpz0j9cv82tcl0fn2r00h0pualrgun6xeztdlhxltgzm59cqq8zcqqyqqqqlgqqqqn3qqvs9qyysgqv0tg90xhcddfk2w2s9pd0c9jrm9znvxujn5w8kunlzcp74yfrqjpnkc9pfqzqjemsrmn4s2lupyfkmhwn3eu58lvl3vfckvyrugv77cqyutv6g", checking_id: "a37ea5ff05f41891262720e0567e9442f9463c6d12c59ded5cfca8a406c50522", lnurl_response: null };
@@ -159,7 +159,7 @@ class LNbitsWallet extends BaseWallet {
 					},
 					body: `{"data": "`+ invoice +`"}`,
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; faking response');
 				json = { description: "some description", date: "some date", amount_msat: 321000 };
@@ -202,7 +202,7 @@ class LNbitsWallet extends BaseWallet {
             "bolt11": "${invoice}"
           }`,
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; faking payment');
 				json = {
@@ -251,10 +251,9 @@ class LNbitsWallet extends BaseWallet {
 					method: 'GET',
 					headers: {
 						'Accept': 'application/json',
-						//'X-API-KEY': wallet.key,
 					},
 				})
-				json1 = await response.json(); //extract JSON from the http response
+				json1 = await response.json();
 			} else {
 				console.log('debug build; generating fake')
 				json1 = {
@@ -281,17 +280,16 @@ class LNbitsWallet extends BaseWallet {
           "description": "fair share of app development cost"
         }`
         console.log('bodyStr', bodyStr)
-				// const response = await fetch(url, {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Accept': 'application/json',
-				// 		'Content-Type': 'application/json',
-				// 		'X-API-KEY': wallet.key,
-				// 	},
-        //   body: bodyStr,
-				// })
-				// json2 = await response.json(); //extract JSON from the http response
-				json2 = {}
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'X-API-KEY': wallet.key,
+					},
+          body: bodyStr,
+				})
+				json2 = await response.json();
       } else {
 				console.log('debug build; generating fake')
 				json2 = {
@@ -359,7 +357,7 @@ class LNbitsWallet extends BaseWallet {
             "custom_url": "https://satoshidnc.com/custom"
           }`,
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; generating fake');
 				json = {
@@ -416,7 +414,7 @@ class LNbitsWallet extends BaseWallet {
 						'X-API-KEY': wallet.key,
 					},
 				});
-				json = await response.json(); //extract JSON from the http response
+				json = await response.json();
 			} else {
 				console.log('debug build; generating fake');
 				json = {
