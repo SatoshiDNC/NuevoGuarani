@@ -47,19 +47,22 @@ function beginInput(g) {
     gl.enableVertexAttribArray(a);
   }
 
-let vpStack = [];
+let vpStack = []
 function pushRoot(viewport) {
-	vpStack.push(rootViewport);
-	rootViewport = viewport;
-	rootViewport.queueLayout();
-console.log('pushRoot');
-	resizeCanvas();
+	vpStack.push(rootViewport)
+	rootViewport = viewport
+	rootViewport.queueLayout()
+console.log('pushRoot')
+	resizeCanvas()
+}
+function peekRoot() {
+	return vpStack[vpStack.length-1]
 }
 function popRoot() {
-	rootViewport = vpStack.pop();
-	rootViewport.queueLayout();
-console.log('popRoot');
-	resizeCanvas();
+	rootViewport = vpStack.pop()
+	rootViewport.queueLayout()
+console.log('popRoot')
+	resizeCanvas()
 }
 
 rootViewport = new ViewPicker();

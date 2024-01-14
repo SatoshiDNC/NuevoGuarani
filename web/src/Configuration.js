@@ -110,6 +110,7 @@ class Configuration {
   get salesIncome() { return salesincomewalletsettings.wallet }
   get exchangeOutflow() { return exchangeoutflowwalletsettings.wallet }
   get invoicePayments() { return invoicepaymentswalletsettings.wallet }
+  get appDevPayments() { return appdevelopmentwalletsettings.wallet }
   
   get stallKeys() {
     if (pricelisttypes[pricelistsettings.typelist.index] !== 'NostrMarket compatible') return

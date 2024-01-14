@@ -228,6 +228,81 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       PlatformUtil.UserAck(err, () => {})
       return
     }
+
+    const completionlogic = () => {
+      if (v.hashes && !lightningqr.netBusy) {
+        // Paid remaining amount via Lightning.
+        const wallet = config.appDevPayments
+        switch (wallet.type) {
+        case 'manual':
+          //billpane.textbox.options.lightningpaid = true
+          setTimeout(completionLogic, 2000)
+          break
+        case 'LNbits compatible':
+          if (!lightningqr.netBusy) {
+            lightningqr.netBusy = true
+            wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
+              lightningqr.netBusy = false
+              if (result && result.paid) {
+                //billpane.textbox.options.lightningpaid = true
+                vp.popRoot()
+                v.queueLayout()
+              } else {
+                setTimeout(completionlogic, 2000)
+              }
+            })
+          }
+          break
+        default:
+          vp.beep('bad')
+          vp.popRoot()
+          v.queueLayout()
+          break
+        }
+      }
+
+    }
+
+    const inQuestion = +v.confirmamount.value
+    if (peekRoot != lightningqr && !lightningqr.netBusy) {
+      // Pay remaining amount via Lightning.
+      lightningqr.clear()
+      vp.pushRoot(lightningqr)
+      const wallet = config.appDevPayments
+      switch (wallet.type) {
+      case 'manual':
+        lightningqr.walletSignal = true
+        v.hashes = []
+        break
+      case 'LNbits compatible':
+        if (!lightningqr.netBusy) {
+          lightningqr.netBusy = true
+          lightningqr.clear()
+          lightningqr.busySignal = true
+          wallet.generateInvoice(inQuestion, (invoice, id) => {
+            if (invoice && invoice.startsWith('lnbc') && id) {
+              lightningqr.qr = [invoice]
+              if (!v.hashes) v.hashes = []
+              v.hashes.push(id)
+            } else {
+              lightningqr.errorSignal = true
+              console.error('Wallet did not generate a recognized invoice type.')
+            }
+            lightningqr.setRenderFlag(true)
+            lightningqr.busySignal = false
+            lightningqr.netBusy = false
+          })
+        }
+        break
+      default:
+        lightningqr.errorSignal = true
+        console.error(`Unexpected wallet type: '${wallet.type}'.`)
+        v.hashes = []
+        break
+      }
+    }
+    setTimeout(completionlogic, 2000)
+
 	}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'

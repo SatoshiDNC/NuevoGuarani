@@ -25,6 +25,7 @@
     initialize: initialize,
     start: start,
 		pushRoot: pushRoot,
+    peekRoot: peekRoot,
 		popRoot: popRoot,
     setDebugFlags: setDebugFlags,
     getContext: getContext,
