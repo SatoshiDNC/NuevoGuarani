@@ -60,6 +60,7 @@ v.pageFocusFunc = function() {
         let amountDue = (totalCost - json.paid) / Math.max(1, json.uniques) - totalWagesPaid
         console.log('amountDue', amountDue)
 
+        v.amount.value = +amountDue
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         v.confirmamount.value = ''+amountDue
         delete v.amount.hide
