@@ -264,7 +264,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
     const inQuestion = +v.confirmamount.value
-    if (peekRoot != lightningqr && !lightningqr.netBusy) {
+    if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
       // Pay remaining amount via Lightning.
       lightningqr.clear()
       vp.pushRoot(lightningqr)
