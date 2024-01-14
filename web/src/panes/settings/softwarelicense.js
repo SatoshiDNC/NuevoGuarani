@@ -17,6 +17,7 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
+v.busyQueryingFAD = false
 v.pageFocusFunc = function() {
   const v = this
   v.ask.hide = true
@@ -74,11 +75,14 @@ v.pageFocusFunc = function() {
         v.spinner.hide = true
         v.list.appFunction()
         v.queueLayout()
+        v.busyQueryingFAD = false
       })
     },10000)
   }
-  asyncLogic()
-
+  if (!v.busyQueryingFAD) {
+    asyncLogic()
+    v.busyQueryingFAD = true
+  }
 }
 // v.gadgets.push(v.desc = g = new vp.Gadget(v))
 //   g.description = 'desc:'+v.title
@@ -114,6 +118,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 	})
 	g.appFunction = function() {
     const g = this, v = g.viewport
+    if (v.busyQueryingFAD) return
     if (v.list.list[v.list.index] == 'invest') {
       delete v.lnaddr.hide
       v.confirmamount.value = Math.max(+v.confirmamount.value, +v.amount.value)
