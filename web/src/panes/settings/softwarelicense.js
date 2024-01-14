@@ -186,7 +186,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
-				var temp = this.value
+				let temp = this.value
         console.log('temp:', temp)
 				if (!temp || temp == '' || +temp <= 0) return 'not set'
 				else return ''+temp
@@ -207,7 +207,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 v.gadgets.push(v.paynow = g = new vp.Gadget(v));
   g.hide = true
   g.enabled = !g.hide
-  g.color = [0,1,0,1]
+  g.color = config.themeColors.uiSuccessGreen
 	g.title = 'pay now'
 	g.button = true
 	g.clickFunc = function() {

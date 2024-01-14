@@ -276,6 +276,7 @@ v.renderFunc = function() {
 					mainShapes.drawArrays5('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
+        console.log("render button")
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5)+14,0]);
 				if (g.icon) {
