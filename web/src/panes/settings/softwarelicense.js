@@ -302,6 +302,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
+          vp.pushRoot(lightningqr)
           wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
