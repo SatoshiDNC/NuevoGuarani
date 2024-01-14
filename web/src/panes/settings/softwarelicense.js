@@ -271,6 +271,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     const amountToPay = +v.confirmamount.value
     const gifttype = v.list.value.includes('grant')? 'grant': v.list.value
     const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
+    const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"tbd"}`
     if (vp.peekRoot() != lightningqr && !lightningqr.netBusy) {
       // Pay remaining amount via Lightning.
       lightningqr.clear()
@@ -287,7 +288,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           delete lightningqr.copyGad.auxFunc
         }
-        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} using any Lightning compatible wallet, then check back here to confirm receipt.\n\n`, (result) => {
+        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
           if (result) {
             console.log('confirmed')
           } else {
@@ -300,7 +301,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.netBusy = true
           lightningqr.clear()
           lightningqr.busySignal = true
-          wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(`{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"tbd"}`), (checkingId, errorDetail) => {
+          wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
