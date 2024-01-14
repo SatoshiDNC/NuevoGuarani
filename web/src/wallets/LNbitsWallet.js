@@ -243,7 +243,7 @@ class LNbitsWallet extends BaseWallet {
 		const asyncLogic = async () => {
 			let json = '';
 			console.log('retrieving metadata for',addr[0]+'@'+addr[1],'live =',!config.debugBuild);
-			if (!config.debugBuild) {
+			if (true || !config.debugBuild) {
         const url = `https://${addr[1]}/.well-known/lnurlp/${addr[0]}`
         console.log(url)
 				const response = await fetch(url, {
