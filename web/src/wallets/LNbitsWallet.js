@@ -278,7 +278,7 @@ class LNbitsWallet extends BaseWallet {
 						'X-API-KEY': wallet.key,
 					},
           data: `{
-            "description_hash": "${sha256(json1.metadata)}",
+            "description_hash": "${window.crypto.subtle.digest(json1.metadata)}",
             "callback": "${json1.callback}",
             "amount": ${total_sat * 1000},
             "comment": "${comment}",
