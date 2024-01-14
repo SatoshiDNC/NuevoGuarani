@@ -306,7 +306,7 @@ class LNbitsWallet extends BaseWallet {
 
 
 			console.log('json', Convert.JSONToString(json2))
-			const checkingId = json.checking_id
+			const checkingId = json2.checking_id
 			console.log('checkingId', checkingId)
 			if (checkingId) {
 				payLightningAddressCallback(checkingId)
