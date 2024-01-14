@@ -269,7 +269,7 @@ class LNbitsWallet extends BaseWallet {
         }
 			}
       if (true || !config.debugBuild) {
-        const url = `${wallet.url}/api/v1/payments/lnurl`
+        const url = `${wallet.url}/payments/lnurl`
         console.log(url)
 				const response = await fetch(url, {
 					method: 'POST',
@@ -278,7 +278,7 @@ class LNbitsWallet extends BaseWallet {
 						'X-API-KEY': wallet.key,
 					},
           data: `{
-            "description_hash": "${window.crypto.subtle.digest(json1.metadata)}",
+            "description_hash": "${window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(json1.metadata))}",
             "callback": "${json1.callback}",
             "amount": ${total_sat * 1000},
             "comment": "${comment}",
