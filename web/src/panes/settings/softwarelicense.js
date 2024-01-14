@@ -238,12 +238,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         case 'manual':
           break
         case 'LNbits compatible':
-          console.log('a')
           if (!lightningqr.netBusy) {
-            console.log('b')
             lightningqr.netBusy = true
+            lightningqr.setRenderFlag(true)
             wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
-              console.log('c')
               lightningqr.netBusy = false
               console.log(Convert.JSONToString(result))
               if (result && result.paid) {
@@ -300,14 +298,12 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.busySignal = true
           wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (checkingId) => {
             if (checkingId) {
-              console.log('calledback')
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
             } else {
               lightningqr.errorSignal = true
               console.error('Wallet did not generate a recognized invoice type.')
               lightningqr.copyGad.auxFunc = () => {
-                console.log('auxFunc()')
                 vp.popRoot()
                 v.queueLayout()
                 delete lightningqr.copyGad.auxFunc
