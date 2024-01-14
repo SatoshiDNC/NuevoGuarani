@@ -230,6 +230,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
     const completionlogic = () => {
+      console.log('completionlogic()')
       if (v.hashes && !lightningqr.netBusy) {
         // Paid remaining amount via Lightning.
         const wallet = config.appDevPayments
@@ -237,9 +238,12 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         case 'manual':
           break
         case 'LNbits compatible':
+          console.log('a')
           if (!lightningqr.netBusy) {
+            console.log('b')
             lightningqr.netBusy = true
             wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
+              console.log('c')
               lightningqr.netBusy = false
               console.log(Convert.JSONToString(result))
               if (result && result.paid) {
@@ -295,8 +299,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           lightningqr.busySignal = true
           wallet.payLightningAddress(targetAddr, amountToPay, 'my.comment', (checkingId) => {
             if (checkingId) {
+              console.log('calledback')
               if (!v.hashes) v.hashes = []
               v.hashes.push(checkingId)
+              lightningqr.netBusy = false
             } else {
               lightningqr.errorSignal = true
               console.error('Wallet did not generate a recognized invoice type.')
