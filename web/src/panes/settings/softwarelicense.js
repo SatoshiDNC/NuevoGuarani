@@ -20,16 +20,6 @@ v.swipeGad.hide = true
 v.busyQueryingFAD = false
 v.pageFocusFunc = function() {
   const v = this
-  v.ask.hide = true
-  v.amount.hide = true
-  v.key.hide = true
-  v.how.hide = true
-  v.list.hide = true
-  v.listnote.hide = true
-  v.lnaddr.hide = true
-  v.confirmamount.hide = true
-  v.paynow.hide = true
-  delete v.spinner.hide
 
   // query the license api to get the current parameters
   const asyncLogic = async () => {
