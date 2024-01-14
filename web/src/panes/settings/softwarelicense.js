@@ -61,6 +61,7 @@ v.pageFocusFunc = function() {
         console.log('amountDue', amountDue)
 
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
+        v.confirmamount.value = ''+amountDue
         delete v.amount.hide
         v.key.description = tr(v.key.template + (timecalc.length==1?'1':'')).replace('@', timecalc.length).replace('@', json.uniques)
         delete v.key.hide
@@ -186,7 +187,6 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
       let temp = this.value
-      console.log('temp:', temp)
       if (!temp || temp == '' || +temp <= 0) return 'not set'
       else return ''+temp
 		}
