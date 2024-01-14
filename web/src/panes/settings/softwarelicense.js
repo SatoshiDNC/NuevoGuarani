@@ -97,7 +97,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.hide = true
   g.key = 'howToPayTheDevelopers'
   g.state = 0
-  g.list = ['invest in the development', 'make a grant to the project', 'donate to the developers']
+  g.list = ['invest', 'make a grant', 'donate']
   g.index = -1;
 	Object.defineProperty(g, "value", {
 		get : function () {
@@ -107,6 +107,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		}
 	})
 	g.appFunction = function() {
+    g.viewport.queueLayout()
 	}
 	g.listItemClick = function(index) {
 		const g = this
