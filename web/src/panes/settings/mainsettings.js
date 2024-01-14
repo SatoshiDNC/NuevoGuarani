@@ -205,6 +205,43 @@ v.renderFunc = function() {
 			}
 			mainShapes.drawArrays2('rect');
 
+      if (g.notpersistent) {
+        const border = 2
+        gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+  				new Float32Array(th.uiBackground));
+        mat4.identity(mat);
+        mat4.translate(mat,mat, [g.x+margin+border,g.y+border,0]);
+        mat4.scale(mat,mat, [g.w-2*(margin+border),25,1]);
+        if (daisychain) {
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+          mainShapes.drawArrays2('rect');
+        } else {
+          mat4.scale(mat,mat, [1/16,1/1,1]);
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+          mainShapes.drawArrays2('settingstop');
+        }
+
+        if (g.daisychain) {
+          mat4.identity(mat);
+          mat4.translate(mat,mat, [g.x+margin+border,g.y+25,0]);
+          mat4.scale(mat,mat, [g.w-2*(margin+border),g.h-25,1]);
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+        } else {
+          mat4.identity(mat);
+          mat4.translate(mat,mat, [g.x+margin+border,g.y+g.h-25,0]);
+          mat4.scale(mat,mat, [g.w-2*(margin+border),25-border,1]);
+          mat4.scale(mat,mat, [1/16,1/1,1]);
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+          mainShapes.drawArrays2('settingsbot');
+
+          mat4.identity(mat);
+          mat4.translate(mat,mat, [g.x+margin+border,g.y+25,0]);
+          mat4.scale(mat,mat, [g.w-2*(margin+border),g.h-50,1]);
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
+        }
+        mainShapes.drawArrays2('rect');
+      }
+
 			if (daisychain) {
 				mainShapes.useProg5();
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
@@ -276,7 +313,6 @@ v.renderFunc = function() {
 					mainShapes.drawArrays5('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
-        console.log("render button", g.name, g.subtitle)
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5)+14,0]);
 				if (g.icon) {
