@@ -172,7 +172,7 @@ v.renderFunc = function() {
 			gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'),
 				false, this.mat);
 			gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-				new Float32Array(g.color?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiSettingsBubble));
+				new Float32Array(g.color&&g.nonpersistent?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiSettingsBubble));
 			mat4.identity(mat);
 			mat4.translate(mat,mat, [g.x+margin,g.y,0]);
 			mat4.scale(mat,mat, [g.w-2*margin,25,1]);
@@ -208,7 +208,7 @@ v.renderFunc = function() {
       if (g.nonpersistent) {
         const border = 2
         gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-  				new Float32Array(th.uiBackground));
+  				new Float32Array(g.color?colorize(g.color, th.uiBackground, th.uiSettingsBubble):th.uiBackground));
         mat4.identity(mat);
         mat4.translate(mat,mat, [g.x+margin+border,g.y+border,0]);
         mat4.scale(mat,mat, [g.w-2*(margin+border),25,1]);
