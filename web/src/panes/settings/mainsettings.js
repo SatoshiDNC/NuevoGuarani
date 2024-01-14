@@ -243,16 +243,17 @@ v.renderFunc = function() {
       }
 
 			if (daisychain) {
-				mainShapes.useProg6();
+				mainShapes.useProg6()
+        gl.enable(gl.BLEND)
 				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'),
-					false, this.mat);
+					false, this.mat)
 				gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-					new Float32Array([1,1,1,1]));
-				mat4.identity(mat);
-				mat4.translate(mat,mat, [g.x+margin+25,g.y,0]);
-				mat4.scale(mat,mat, [g.w-2*margin-50,1,1]);
-				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat);
-				mainShapes.drawArrays6('divSettings');
+					new Float32Array([1,1,1,1]))
+				mat4.identity(mat)
+				mat4.translate(mat,mat, [g.x+margin+25,g.y,0])
+				mat4.scale(mat,mat, [g.w-2*margin-50,1,1])
+				gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uModelViewMatrix'), false, mat)
+				mainShapes.drawArrays6('divSettings')
 			}
 
 			if (g.list) {
