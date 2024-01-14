@@ -248,6 +248,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                 //billpane.textbox.options.lightningpaid = true
                 vp.popRoot()
                 v.queueLayout()
+              } else if (result && result.detail) {
+                PlatformUtil.UserAck(result.detail, () => {})
+                vp.popRoot()
+                v.queueLayout()
               } else {
                 setTimeout(completionlogic, 2000)
               }
