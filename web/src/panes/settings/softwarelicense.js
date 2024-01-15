@@ -288,7 +288,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           break
         }
       } else {
-        setTimeout(completionlogic, 2000)
+        if (v.busySignal) {
+          setTimeout(completionlogic, 2000)
+        }
       }
     }
 
