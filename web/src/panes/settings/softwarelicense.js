@@ -76,7 +76,7 @@ v.pageFocusFunc = function() {
         delete v.how.hide
         delete v.list.hide; v.list.enabled = !v.list.hide
         delete v.listnote.hide
-        v.spinner.hide = true
+        if (v.amount.hide) v.spinner.hide = true
         v.list.appFunction()
         v.queueLayout()
       })
