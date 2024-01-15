@@ -28,7 +28,7 @@ v.pageFocusFunc = function() {
   if (v.amount.hide && v.spinner.errorSignal) {
     delete v.spinner.errorSignal
   }
-  if (!v.busySignal) v.clearBusy()
+  if (!v.amount.hide && !v.busySignal) v.clearBusy()
 
   // query the license api to get the current parameters
   const asyncLogic = async () => {
