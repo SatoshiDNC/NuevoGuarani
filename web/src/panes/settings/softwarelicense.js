@@ -239,6 +239,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
+    delete v.spinner.hide
+    v.setRenderFlag(true)
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
@@ -254,30 +256,28 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const completionlogic = () => {
       console.log('completionlogic()')
-      if (v.hashes && !v.netBusy) {
+      if (v.hashes && !v.busySignal) {
         // Paid remaining amount via Lightning.
         const wallet = config.appDevPayments
         switch (wallet.type) {
         case 'manual':
           break
         case 'LNbits compatible':
-          if (!v.netBusy) {
-            v.netBusy = true
+          v.busySignal = true
+          v.setRenderFlag(true)
+          wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
+            v.busySignal = false
             v.setRenderFlag(true)
-            wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
-              v.netBusy = false
+            console.log(Convert.JSONToString(result))
+            if (result && result.paid) {
+              v.queueLayout()
+            } else if (result && result.detail) {
+              v.errorSignal = true
               v.setRenderFlag(true)
-              console.log(Convert.JSONToString(result))
-              if (result && result.paid) {
-                v.queueLayout()
-              } else if (result && result.detail) {
-                v.errorSignal = true
-                v.setRenderFlag(true)
-              } else {
-                setTimeout(completionlogic, 2000)
-              }
-            })
-          }
+            } else {
+              setTimeout(completionlogic, 2000)
+            }
+          })
           break
         default:
           vp.beep('bad')
@@ -293,7 +293,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     const gifttype = v.list.value
     const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
     const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
-    if (!v.netBusy) {
+    if (!v.busySignal) {
       // Pay remaining amount via Lightning.
       delete v.hashes
       delete v.errorSignal
@@ -310,9 +310,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         })
         break
       case 'LNbits compatible':
-        if (!v.netBusy) {
-          v.netBusy = true
+        if (!v.busySignal) {
           v.busySignal = true
+          v.setRenderFlag(true)
           wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!v.hashes) v.hashes = []
@@ -328,7 +328,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               }
             }
             v.busySignal = false
-            v.netBusy = false
             v.setRenderFlag(true)
           })
         }
