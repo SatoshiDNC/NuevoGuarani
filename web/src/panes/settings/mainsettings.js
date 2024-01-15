@@ -49,7 +49,7 @@ v.layoutFunc = function() {
               if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
               let indent = para.search(/\S|$/)
               toFit = para.split(' ')
-              toFit[0] = StringUtils.repeat(' ', indent)
+              toFit[0] = ' '.repeat(indent) + toFit[0]
               do {
                 do {
                   if (desc) desc = desc + ' ' + toFit.shift()
