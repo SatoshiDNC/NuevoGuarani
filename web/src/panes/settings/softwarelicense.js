@@ -326,9 +326,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             setTimeout(completionlogic, 2000)
           } else {
             v.errorSignal = true
+            v.busySignal = false
             if (errorDetail) {
-              PlatformUtil.UserAck(errorDetail, () => {})
-              v.queueLayout()
+              console.error(errorDetail)
+              //PlatformUtil.UserAck(errorDetail, () => {})
+              //v.queueLayout()
             } else {
               console.error('Wallet did not generate a recognized invoice type.')
             }
