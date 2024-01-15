@@ -89,6 +89,24 @@ v.pageFocusFunc = function() {
     v.busyQueryingFAD = true
   }
 }
+v.setBusy = function() {
+  v.spinner.hide = false
+  v.busySignal = true
+  v.list.enabled = false
+  v.lnaddr.enabled = false
+  v.confirmamount.enabled = false
+  v.paynow.enabled = false
+  v.queueLayout()
+}
+v.clearBusy = function() {
+  v.spinner.hide = !(v.errorSignal || v.successSignal)
+  v.busySignal = false
+  v.list.enabled = !v.list.hide
+  v.lnaddr.enabled = !v.lnaddr.hide
+  v.confirmamount.enabled = !v.confirmamount.hide
+  v.paynow.enabled = !v.paynow.hide
+  v.queueLayout()
+}
 // v.gadgets.push(v.desc = g = new vp.Gadget(v))
 //   g.description = 'desc:'+v.title
 v.gadgets.push(g = new vp.Gadget(v))
@@ -271,19 +289,17 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         case 'manual':
           v.errorSignal = true
           vp.beep('bad')
-          v.queueLayout()
+          v.clearBusy()
           break
         case 'LNbits compatible':
           wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
             console.log(Convert.JSONToString(result))
             if (result && result.paid) {
-              v.busySignal = false
               v.successSignal = true
-              v.setRenderFlag(true)
+              v.clearBusy()
             } else if (result && result.detail) {
-              v.busySignal = false
               v.errorSignal = true
-              v.setRenderFlag(true)
+              v.clearBusy()
             } else {
               setTimeout(completionlogic, 2000)
             }
@@ -292,7 +308,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         default:
           v.errorSignal = true
           vp.beep('bad')
-          v.queueLayout()
+          v.clearBusy()
           break
         }
       } else {
@@ -323,11 +339,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         })
         break
       case 'LNbits compatible':
-        v.busySignal = true
-        delete v.spinner.hide
         v.successSignal = false
         v.errorSignal = false
-        v.queueLayout()
+        v.setBusy()
     
         wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
           if (checkingId) {
@@ -336,7 +350,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             setTimeout(completionlogic, 2000)
           } else {
             v.errorSignal = true
-            v.busySignal = false
+            v.clearBusy()
             if (errorDetail) {
               console.error(errorDetail)
               //PlatformUtil.UserAck(errorDetail, () => {})
@@ -348,10 +362,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         })
         break
       default:
-        delete v.spinner.hide
         v.successSignal = false
         v.errorSignal = true
-        v.queueLayout()
+        v.clearBusy()
         console.error(`Unexpected wallet type: '${wallet.type}'.`)
         break
       }
