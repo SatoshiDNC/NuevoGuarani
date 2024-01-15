@@ -32,7 +32,7 @@ v.pageFocusFunc = function() {
     let json = ''
     console.log('checking the latest user count and funding')
     try {
-      const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.sadtoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
+      const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
