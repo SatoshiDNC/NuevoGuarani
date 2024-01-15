@@ -47,7 +47,9 @@ v.layoutFunc = function() {
               if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
               if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
               if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
+              let indent = para.search(/\S|$/)
               toFit = para.split(' ')
+              toFit[0] = StringUtils.repeat(' ', indent)
               do {
                 do {
                   if (desc) desc = desc + ' ' + toFit.shift()
@@ -65,7 +67,8 @@ v.layoutFunc = function() {
           let desc = ''
           do {
             do {
-              desc = (desc + ' ' + toFit.shift()).trim()
+              if (desc) desc = desc + ' ' + toFit.shift()
+              else desc = toFit.shift()
             } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
             if (desc.startsWith('x2>')) { extraLines = 1 }
             lines.push(desc)
