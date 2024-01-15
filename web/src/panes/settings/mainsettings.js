@@ -74,9 +74,11 @@ v.layoutFunc = function() {
   
         g.h = (16 * (lines.length + extraLines) + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE + blankLines * (-(16 + 2) * SETTINGS_DESC_TEXT_SCALE + 15)
         g.computedLines = lines
-        y += g.h; x = v.sw
         g.autoHull()
+      } else if (g.y != y) {
+        g.y = y
       }
+      y += g.h; x = v.sw
 		} else if (g.list) {
 			g.clickFunc = function(p) {
 				settingsbuttons.listClickFunc.call(g, p);
