@@ -139,10 +139,12 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     v.queueLayout()
 	}
 	g.listItemClick = function(index) {
-		const g = this
+		const g = this, v = g.viewport
 		{ // For the GUI.
 			g.index = index; v.queueLayout()
-		} { // For the app function.
+      v.spinner.hide = true
+      v.queueLayout()
+      } { // For the app function.
 			g.appFunction()
 		} { // For persistence.
       PlatformUtil.DatabasePut('settings', g.value, `${g.key}`, (event) => {
@@ -187,7 +189,9 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
 	g.hide = true
   g.enabled = !g.hide
 	g.clickFunc = function() {
-		const g = this
+		const g = this, v = g.viewport
+    v.spinner.hide = true
+    v.queueLayout()
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
       { // For the GUI.
@@ -221,6 +225,8 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
+    v.spinner.hide = true
+    v.queueLayout()
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
 //      if (v.list.list[v.list.index] == 'invest' && +val < +v.amount.value) {
