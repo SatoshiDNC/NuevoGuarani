@@ -108,6 +108,7 @@ v.gadgets.push(v.how = g = new vp.Gadget(v))
 v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.name = 'list'
   g.hide = true
+  g.enabled = !g.hide
   g.key = 'howToPayTheDevelopers'
   g.state = 0
   g.list = ['invest', 'make a grant', 'donate']
@@ -131,9 +132,11 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     }
     delete v.confirmamount.hide
     delete v.paynow.hide
+    delete v.appdevelopment.hide
     v.lnaddr.enabled = !v.lnaddr.hide
     v.confirmamount.enabled = !v.confirmamount.hide
     v.paynow.enabled = !v.paynow.hide
+    v.appdevelopment.enabled = !v.appdevelopment.hide
     v.queueLayout()
 	}
 	g.listItemClick = function(index) {
@@ -162,6 +165,8 @@ v.gadgets.push(v.appdevelopment = g = new vp.Gadget(v))
 	Object.defineProperty(g, "subtitle", {
 		get : function () { try { const l = appdevelopmentwalletsettings.typelist; return l.list[l.index] } catch (e) {} }
 	})
+  g.hide = true
+  g.enabled = !g.hide
 	g.pane = appdevelopmentwalletsettings
 v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.name = 'lnaddr'
