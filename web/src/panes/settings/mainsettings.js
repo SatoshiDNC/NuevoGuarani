@@ -55,7 +55,8 @@ v.layoutFunc = function() {
                   else desc = toFit.shift()
                 } while (toFit.length > 0 && (defaultFont.calcWidth(desc+' '+toFit[0]) + prefixLen) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
                 lines.push(prefix + desc)
-                desc = ''; prefix = ''; prefixLen = 0
+                desc = '';
+                if (prefix.length <= 2) prefix = ''; prefixLen = 0
               } while (toFit.length > 0)    
             } else {
               para = undefined
@@ -139,7 +140,7 @@ v.renderFunc = function() {
       var color = th.uiSettingsSubText
       let i = 0, blankLines = 0
       for (let line of g.computedLines) {
-        if (g.y + blankLines * 15 + (16 + (16 + 2) * (i+1)) * SETTINGS_DESC_TEXT_SCALE > v.sh + v.userY) break
+        if (g.y + blankLines * 15 + (16 + (16 + 2) * (i-1)) * SETTINGS_DESC_TEXT_SCALE > v.sh + v.userY) break
         if (line == '') {
           blankLines++
         } else {
