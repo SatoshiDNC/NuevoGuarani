@@ -54,7 +54,7 @@ v.layoutFunc = function() {
                   if (desc) desc = desc+' '+toFit.shift()
                   else desc = toFit.shift()
                 } while (toFit.length > 0 && (defaultFont.calcWidth(desc+' '+toFit[0]) + prefixLen) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
-                lines.push(prefix + desc)
+                lines.push((prefix + desc).replaceAll('\n',''))
                 desc = '';
                 if (prefix.length <= 2) { prefix = ''; prefixLen = 0 }
               } while (toFit.length > 0)    
@@ -71,7 +71,7 @@ v.layoutFunc = function() {
               else desc = toFit.shift()
             } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
             if (desc.startsWith('x2>')) { extraLines = 1 }
-            lines.push(desc)
+            lines.push(desc.replaceAll('\n',''))
             desc = ''
           } while (toFit.length > 0)
         }

@@ -33,7 +33,7 @@ $(LPP): LICENSE-%.pp: LICENSE-%.txt
 		| awk 1 RS='%--%' \
 		| sed 's/^      [ ]*/c>/g' \
 		| sed 's/   [ ]*/ /2g' \
-		| sed '1s/   [ ]*/ \\n c>/' \
+		| sed '1s/   [ ]*/ \\\\n c>/' \
 		| sed '$${/^[ ]*$$/d;}' \
 		| awk '{ ORS=""; print "\"lic:";print NR;print "\": `";print $1;print "`,\n"; }' \
 		> $@
