@@ -157,6 +157,12 @@ v.gadgets.push(v.listnote = g = new vp.Gadget(v))
     const g = this, v = g.viewport
     return 'desc:'+v.title+':'+v.list.list[v.list.index]+':#'
   }})
+v.gadgets.push(v.appdevelopment = g = new vp.Gadget(v))
+	g.title = 'wallet for funding developers'
+	Object.defineProperty(g, "subtitle", {
+		get : function () { try { const l = appdevelopmentwalletsettings.typelist; return l.list[l.index] } catch (e) {} }
+	})
+	g.pane = appdevelopmentwalletsettings
 v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.name = 'lnaddr'
   g.type = 'button'
