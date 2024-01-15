@@ -25,56 +25,58 @@ v.layoutFunc = function() {
 			g.layoutFunc();
       y += g.h;
     } else if (g.description) {
-			g.w = v.sw
-			g.x = 0; g.y = y
-
-      let lines = [], blankLines = 0, extraLines = 0
-      let maxw = v.sw - 2 * 20
-      let toFit = tr(g.description).split(' ')
-      if (g.description.includes('#')) {
-        let i = 0
-        let all = ''
-        let para
-        do {
-          i++
-          let key = g.description.replace('#', i)
-          para = tr(key)
-          if (para != key) {
-            if (lines.length > 0) { lines.push(''); blankLines++ }
-            let desc = '', prefix = ''
-            for (let i=0; para[i]==' '; i++) prefix += ' '
-            if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
-            if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
-            if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
-            toFit = para.split(' ')
-            do {
-              do {
-                desc = (desc + ' ' + toFit.shift()).trim()
-              } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
-              lines.push(prefix + desc)
-              desc = ''; prefix = ''
-            } while (toFit.length > 0)    
-          } else {
-            para = undefined
-          }
-        } while (para)
-        toFit = all.split(' ')
-      } else {
-        let desc = ''
-        do {
+      if (g.w != v.sw) {
+        g.w = v.sw
+        g.x = 0; g.y = y
+  
+        let lines = [], blankLines = 0, extraLines = 0
+        let maxw = v.sw - 2 * 20
+        let toFit = tr(g.description).split(' ')
+        if (g.description.includes('#')) {
+          let i = 0
+          let all = ''
+          let para
           do {
-            desc = (desc + ' ' + toFit.shift()).trim()
-          } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
-          if (desc.startsWith('x2>')) { extraLines = 1 }
-          lines.push(desc)
-          desc = ''
-        } while (toFit.length > 0)
+            i++
+            let key = g.description.replace('#', i)
+            para = tr(key)
+            if (para != key) {
+              if (lines.length > 0) { lines.push(''); blankLines++ }
+              let desc = '', prefix = ''
+              for (let i=0; para[i]==' '; i++) prefix += ' '
+              if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
+              if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
+              if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
+              toFit = para.split(' ')
+              do {
+                do {
+                  desc = (desc + ' ' + toFit.shift()).trim()
+                } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
+                lines.push(prefix + desc)
+                desc = ''; prefix = ''
+              } while (toFit.length > 0)    
+            } else {
+              para = undefined
+            }
+          } while (para)
+          toFit = all.split(' ')
+        } else {
+          let desc = ''
+          do {
+            do {
+              desc = (desc + ' ' + toFit.shift()).trim()
+            } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
+            if (desc.startsWith('x2>')) { extraLines = 1 }
+            lines.push(desc)
+            desc = ''
+          } while (toFit.length > 0)
+        }
+  
+        g.h = (16 * (lines.length + extraLines) + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE + blankLines * (-(16 + 2) * SETTINGS_DESC_TEXT_SCALE + 15)
+        g.computedLines = lines
+        y += g.h; x = v.sw
+        g.autoHull()
       }
-
-      g.h = (16 * (lines.length + extraLines) + 2 * (lines.length - 1)) * SETTINGS_DESC_TEXT_SCALE + blankLines * (-(16 + 2) * SETTINGS_DESC_TEXT_SCALE + 15)
-      g.computedLines = lines
-			y += g.h; x = v.sw
-			g.autoHull()
 		} else if (g.list) {
 			g.clickFunc = function(p) {
 				settingsbuttons.listClickFunc.call(g, p);
