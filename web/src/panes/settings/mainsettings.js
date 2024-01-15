@@ -42,19 +42,18 @@ v.layoutFunc = function() {
             para = tr(key)
             if (para != key) {
               if (lines.length > 0) { lines.push(''); blankLines++ }
-              let desc = '', prefix = ''
-              for (let i=0; para[i]==' '; i++) prefix += ' '
+              let desc = ''
+              const prefix = ' '.repeat(para.search(/\S|$/))
+              const prefixLen = defaultFont.calcWidth(prefix)
               if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
               if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
               if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
-              let indent = para.search(/\S|$/)
-              toFit = para.split(' ')
-              toFit[0] = ' '.repeat(indent) + toFit[0]
+              toFit = para.split(' ')              
               do {
                 do {
-                  if (desc) desc = desc + ' ' + toFit.shift()
+                  if (desc) desc = desc+' '+toFit.shift()
                   else desc = toFit.shift()
-                } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
+                } while (toFit.length > 0 && (defaultFont.calcWidth(desc+' '+toFit[0]) + prefixLen) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
                 lines.push(prefix + desc)
                 desc = ''; prefix = ''
               } while (toFit.length > 0)    
