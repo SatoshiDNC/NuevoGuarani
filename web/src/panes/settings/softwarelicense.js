@@ -90,6 +90,7 @@ v.pageFocusFunc = function() {
   }
 }
 v.setBusy = function() {
+  const v = this
   v.spinner.hide = false
   v.busySignal = true
   v.list.enabled = false
@@ -99,6 +100,7 @@ v.setBusy = function() {
   v.queueLayout()
 }
 v.clearBusy = function() {
+  const v = this
   v.spinner.hide = !(v.errorSignal || v.successSignal)
   v.busySignal = false
   v.list.enabled = !v.list.hide
