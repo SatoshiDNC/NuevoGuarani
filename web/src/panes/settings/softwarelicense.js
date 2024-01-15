@@ -19,23 +19,20 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.busyQueryingFAD = false
-v.pageBlurFunc = function() {
-  console.log('blur')
-}
 v.pageFocusFunc = function() {
   const v = this
 
-  if (v.amount.hide && v.spinner.errorSignal) {
-    delete v.spinner.errorSignal
+  if (!v.busySignal) {
+    delete v.errorSignal
+    v.clearBusy()
   }
-  if (!v.amount.hide && !v.busySignal) v.clearBusy()
 
   // query the license api to get the current parameters
   const asyncLogic = async () => {
     let json = ''
     console.log('checking the latest user count and funding')
     try {
-      const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.satoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
+      const response = await fetch(`https://${config.debugBuild?'dev-':''}ng.sadtoshidnc.com/api/v1/license?id=kdfjhgkgfhjkdjghkdjfgh`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -51,7 +48,7 @@ v.pageFocusFunc = function() {
       console.log('timecalc', timecalc)
 
       if (!json) {
-        v.spinner.errorSignal = true
+        v.errorSignal = true
         v.busyQueryingFAD = false
         return
       }
