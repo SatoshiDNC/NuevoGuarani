@@ -325,36 +325,36 @@ v.renderFunc = function() {
 					mainShapes.drawArrays6('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
+        let str = icap(tr(g.title))
+        let color = g.color? g.color: g.nonpersistent? th.uiSettingsSubText: th.uiSettingsText
 				mat4.identity(mat)
 				mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5),0])
+        if (g.nonpersistent && g.subtitle) mat4.scale(mat,mat, [0.75,0.75,1])
 				mat4.translate(mat,mat, [0,14,0])
-        var color = g.color? g.color: g.nonpersistent? th.uiSettingsSubText: th.uiSettingsText
 				if (g.icon) {
 					if (g.icon == "\x0E") color = th.uiSettingSelect
 					iconFont.draw(0,0,g.icon,color, this.mat, mat)
 					defaultFont.draw(0,0,' ',color, this.mat, mat)
-				}
-        let str = icap(tr(g.title))
-        if (g.center) {
+				} else if (g.center) {
+          let scale = g.nonpersistent && g.subtitle? 0.75: 1
           mat4.identity(mat)
           mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5),0])
-          mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str))/2,0,0])
+          mat4.translate(mat,mat, [(g.w-40-defaultFont.calcWidth(str)*scale)/2,0,0])
+          mat4.scale(mat,mat, [scale,scale,1])
+          mat4.translate(mat,mat, [0,14,0])
         }
-        if (g.nonpersistent && g.subtitle) mat4.scale(mat,mat, [0.75,0.75,1])
-				mat4.translate(mat,mat, [0,14/0.75,0])
 				defaultFont.draw(0,0,str,color, this.mat, mat)
 				if (g.subtitle) {
-					mat4.identity(mat)
-					mat4.translate(mat,mat, [g.x+20,g.y+(g.nonpersistent? 15*0.75: 15), 0])
-					mat4.translate(mat,mat, [0,16+6,0])
-					var color = g.nonpersistent? th.uiSettingsText: th.uiSettingsSubText
 					if (typeof g.subtitle === 'object') {
 						str = g.subtitle.map(a => icap(tr(a)).trim()).join(' · ')
 					} else if (g.subtitle) {
 						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim()
 						else str = icap(tr(g.subtitle))
 					}
-          if (g.center) mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str)*0.75)/2,0,0])
+					color = g.nonpersistent? th.uiSettingsText: th.uiSettingsSubText
+					mat4.identity(mat)
+					mat4.translate(mat,mat, [g.x+20,g.y+(g.nonpersistent? 15*0.75: 15), 0])
+					mat4.translate(mat,mat, [0,16+6,0])
           if (!g.nonpersistent) mat4.scale(mat,mat, [0.75,0.75,1])
 					defaultFont.draw(0,14,str,color, this.mat, mat)
 				}
@@ -363,26 +363,24 @@ v.renderFunc = function() {
 				mat4.translate(mat,mat, [g.x+20,g.y+15,0])
 				var color = th.uiSettingsText
 				var str = icap(tr(g.title))
-        if (g.center) mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str))/2,0,0])
 				defaultFont.draw(0,14,str,color, this.mat, mat)
         if (g.alt) {
           defaultFont.draw(0,0,' · '+g.alt,th.uiSettingsSubText, this.mat, mat)
         }
 
-				mat4.identity(mat);
-				mat4.translate(mat,mat, [g.x+20,g.y+15,0]);
-				mat4.translate(mat,mat, [0,16+6,0]);
-				var color = th.uiSettingsSubText;
-				var str;
+				mat4.identity(mat)
+				mat4.translate(mat,mat, [g.x+20,g.y+15,0])
+				mat4.translate(mat,mat, [0,16+6,0])
+				mat4.scale(mat,mat, [0.75,0.75,1])
+				var color = th.uiSettingsSubText
+				var str
 				if (typeof g.subtitle === 'object') {
-					str = g.subtitle.map(a => icap(tr(a))).join(' · ');
+					str = g.subtitle.map(a => icap(tr(a))).join(' · ')
 				} else if (g.subtitle) {
-					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
-					else str = icap(tr(g.subtitle));
+					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim()
+					else str = icap(tr(g.subtitle))
 				}
-        if (g.center) mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str)*0.75)/2,0,0])
-				mat4.scale(mat,mat, [0.75,0.75,1]);
-				defaultFont.draw(0,14,str,color, this.mat, mat);
+				defaultFont.draw(0,14,str,color, this.mat, mat)
 			}
 		}
 		daisychain = g.daisychain && !g.hide;
