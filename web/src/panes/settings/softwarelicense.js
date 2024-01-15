@@ -317,7 +317,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         delete v.spinner.hide
         v.successSignal = false
         v.errorSignal = false
-        v.setRenderFlag(true)
+        v.queueLayout()
     
         wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
           if (checkingId) {
@@ -339,7 +339,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         delete v.spinner.hide
         v.successSignal = false
         v.errorSignal = true
-        v.setRenderFlag(true)
+        v.queueLayout()
         console.error(`Unexpected wallet type: '${wallet.type}'.`)
         break
       }

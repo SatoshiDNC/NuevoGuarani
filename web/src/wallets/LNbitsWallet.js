@@ -247,13 +247,17 @@ class LNbitsWallet extends BaseWallet {
 			if (true || !config.debugBuild) {
         const url = `https://${addr[1]}/.well-known/lnurlp/${addr[0]}`
         console.log(url)
-				const response = await fetch(url, {
-					method: 'GET',
-					headers: {
-						'Accept': 'application/json',
-					},
-				})
-				json1 = await response.json()
+        try {
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+            },
+          })
+          json1 = await response.json()
+        } catch {
+          json1 = {}
+        }
 			} else {
 				console.log('debug build; generating fake')
 				json1 = {
