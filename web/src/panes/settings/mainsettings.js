@@ -143,6 +143,7 @@ v.renderFunc = function() {
             scale *= 2; ii = 2
             line = line.substring(3)
           }
+          if (g.y + blankLines * 15 + (14 + (16 + 2) * i) * SETTINGS_DESC_TEXT_SCALE < 0 + v.userY) { i += ii; continue }
           let col = color
           if (line.startsWith('b>')) {
             col = th.uiSettingsText
