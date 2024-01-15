@@ -56,7 +56,7 @@ v.layoutFunc = function() {
                 } while (toFit.length > 0 && (defaultFont.calcWidth(desc+' '+toFit[0]) + prefixLen) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
                 lines.push(prefix + desc)
                 desc = '';
-                if (prefix.length <= 2) prefix = ''; prefixLen = 0
+                if (prefix.length <= 2) { prefix = ''; prefixLen = 0 }
               } while (toFit.length > 0)    
             } else {
               para = undefined
