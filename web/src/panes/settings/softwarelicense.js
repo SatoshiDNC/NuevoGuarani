@@ -74,7 +74,7 @@ v.pageFocusFunc = function() {
         v.key.description = tr(v.key.template + (timecalc.data.length==1?'1':'')).replace('@', timecalc.data.length).replace('@', json.uniques)
         delete v.key.hide
         delete v.how.hide
-        delete v.list.hide
+        delete v.list.hide; v.list.enabled = !v.list.hide
         delete v.listnote.hide
         v.spinner.hide = true
         v.list.appFunction()
@@ -130,13 +130,10 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
     } else {
       v.lnaddr.hide = true
     }
-    delete v.confirmamount.hide
-    delete v.paynow.hide
-    delete v.appdevelopment.hide
     v.lnaddr.enabled = !v.lnaddr.hide
-    v.confirmamount.enabled = !v.confirmamount.hide
-    v.paynow.enabled = !v.paynow.hide
-    v.appdevelopment.enabled = !v.appdevelopment.hide
+    delete v.confirmamount.hide; v.confirmamount.enabled = !v.confirmamount.hide
+    delete v.paynow.hide; v.paynow.enabled = !v.paynow.hide
+    delete v.appdevelopment.hide; v.appdevelopment.enabled = !v.appdevelopment.hide
     v.queueLayout()
 	}
 	g.listItemClick = function(index) {
