@@ -43,8 +43,8 @@ v.layoutFunc = function() {
             if (para != key) {
               if (lines.length > 0) { lines.push(''); blankLines++ }
               let desc = ''
-              const prefix = ' '.repeat(para.search(/\S|$/))
-              const prefixLen = defaultFont.calcWidth(prefix)
+              let prefix = ' '.repeat(para.search(/\S|$/))
+              let prefixLen = defaultFont.calcWidth(prefix)
               if (para.startsWith('x2>')) { prefix += 'x2>'; para = para.substring(3) }
               if (para.startsWith('b>')) { prefix += 'b>'; para = para.substring(2) }
               if (para.startsWith('c>')) { prefix += 'c>'; para = para.substring(2) }
