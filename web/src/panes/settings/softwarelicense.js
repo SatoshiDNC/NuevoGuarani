@@ -24,7 +24,7 @@ v.pageFocusFunc = function() {
 
   if (!v.busySignal) {
     delete v.errorSignal
-    v.clearBusy()
+    if (!v.amount.hide) v.clearBusy()
   }
 
   // query the license api to get the current parameters
