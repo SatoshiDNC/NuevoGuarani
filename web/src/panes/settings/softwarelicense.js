@@ -143,7 +143,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		} { // For the app function.
 			g.appFunction()
 		} { // For persistence.
-      PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+      PlatformUtil.DatabasePut('settings', g.value, `${g.key}`, (event) => {
 				console.log(`successfully selected ${g.key}`, event)
 			}, (event) => {
 				console.log(`error selecting ${g.key}`, event)
@@ -191,7 +191,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val
       } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+        PlatformUtil.DatabasePut('settings', g.value, `${g.key}`, (event) => {
           console.log(`successfully selected ${g.key}`, event)
         }, (event) => {
           console.log(`error selecting ${g.key}`, event)
@@ -405,8 +405,8 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
-    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
+		if (debuglog) console.log("requesting", `${g.key}`)
+    PlatformUtil.DatabaseGet('settings', `${g.key}`, (event) => {
 			g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
 			finishInit(cb, this)
@@ -435,8 +435,8 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.value);
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
+		if (debuglog) console.log("requesting", `${g.key}`);
+    PlatformUtil.DatabaseGet('settings', `${g.key}`, (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)

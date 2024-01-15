@@ -23,7 +23,7 @@ v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v))
   g.name = 'typelist'
-	g.key = 'walletTypeForSalesIncome'
+	g.key = '@-walletTypeForSalesIncome'
 	g.list = v.wallettypes
   g.index = -1
   g.appFunction = function() {
@@ -71,7 +71,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
 		} { // For the app function.
       v.typelist.appFunction()
 		} { // For persistence.
-      PlatformUtil.DatabasePut('settings', g.list[index], `${getCurrentAccount().id}-${g.key}`, (event) => {
+      PlatformUtil.DatabasePut('settings', g.list[index], g.key.replace('@', getCurrentAccount().id), (event) => {
 				console.log(`successfully selected ${g.key}`, event)
 			}, (event) => {
 				console.log(`error selecting ${g.key}`, event)
@@ -81,7 +81,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
   g.name = 'lnbitsurl'
 	g.type = 'button'
-	g.key = 'LNbitsURLForSalesIncome'
+	g.key = '@-LNbitsURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -105,7 +105,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
       } { // For the app function.
         g.value = val
       } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+        PlatformUtil.DatabasePut('settings', g.value, g.key.replace('@', getCurrentAccount().id), (event) => {
           console.log(`successfully selected ${g.key}`, event)
         }, (event) => {
           console.log(`error selecting ${g.key}`, event)
@@ -116,7 +116,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.name = 'lnbitskey'
   g.type = 'button'
-	g.key = 'lnbitsKeyForSalesIncome'
+	g.key = '@-lnbitsKeyForSalesIncome'
 	g.title = 'API admin or invoice/read key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -140,7 +140,7 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
       } { // For the app function.
         g.value = val
       } { // For persistence.
-        PlatformUtil.DatabasePut('settings', g.value, `${getCurrentAccount().id}-${g.key}`, (event) => {
+        PlatformUtil.DatabasePut('settings', g.value, g.key.replace('@', getCurrentAccount().id), (event) => {
           console.log(`successfully selected ${g.key}`, event)
         }, (event) => {
           console.log(`error selecting ${g.key}`, event)
@@ -158,7 +158,7 @@ v.gadgets.push(v.lnbitsnote = g = new vp.Gadget(v))
 v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
   g.name = 'strikeurl'
   g.type = 'button'
-	g.key = 'strikeURLForSalesIncome'
+	g.key = '@-strikeURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -177,7 +177,7 @@ v.gadgets.push(v.strikeurl = g = new vp.Gadget(v))
 v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
   g.name = 'strikekey'
   g.type = 'button'
-	g.key = 'strikeKeyForSalesIncome'
+	g.key = '@-strikeKeyForSalesIncome'
 	g.title = 'API bearer token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -196,7 +196,7 @@ v.gadgets.push(v.strikekey = g = new vp.Gadget(v));
 v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
   g.name = 'coinosurl'
 	g.type = 'button'
-	g.key = 'coinosURLForSalesIncome'
+	g.key = '@-coinosURLForSalesIncome'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -215,7 +215,7 @@ v.gadgets.push(v.coinosurl = g = new vp.Gadget(v));
 v.gadgets.push(v.coinoskey = g = new vp.Gadget(v))
   g.name = 'coinoskey'
   g.type = 'button'
-	g.key = 'coinosKeyForSalesIncome'
+	g.key = '@-coinosKeyForSalesIncome'
 	g.title = 'API auth token'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -277,8 +277,8 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
-    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
+		if (debuglog) console.log("requesting", g.key.replace('@', getCurrentAccount().id))
+    PlatformUtil.DatabaseGet('settings', g.key.replace('@', getCurrentAccount().id), (event) => {
 			g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
 			finishInit(cb, this)
@@ -306,8 +306,8 @@ v.load = function(cb) {
 			if (debuglog) console.log(`${g.key} ready`, g.value);
 			g.loadComplete = true; icb(cb, v);
 		}
-		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`);
-    PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
+		if (debuglog) console.log("requesting", g.key.replace('@', getCurrentAccount().id));
+    PlatformUtil.DatabaseGet('settings', g.key.replace('@', getCurrentAccount().id), (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)

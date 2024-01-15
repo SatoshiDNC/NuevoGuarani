@@ -23,7 +23,7 @@ v.gadgets.push(v.desc = g = new vp.Gadget(v))
   g.description = 'desc:'+v.title
 v.gadgets.push(v.typelist = g = new vp.Gadget(v));
   g.name = 'typelist'
-  g.key = 'walletTypeForInvoicePayments';
+  g.key = '@-walletTypeForInvoicePayments';
 	g.list = v.wallettypes;
   g.index = -1;
   g.appFunction = salesincomewalletsettings.typelist.appFunction
@@ -31,7 +31,7 @@ v.gadgets.push(v.typelist = g = new vp.Gadget(v));
 v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
   g.name = 'lnbitsurl'
   g.type = 'button'
-	g.key = 'LNbitsURLForInvoicePayments'
+	g.key = '@-LNbitsURLForInvoicePayments'
 	g.title = 'base URL'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
@@ -50,7 +50,7 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.name = 'lnbitskey'
   g.type = 'button'
-	g.key = 'lnbitsKeyForInvoicePayments'
+	g.key = '@-lnbitsKeyForInvoicePayments'
 	g.title = 'key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
