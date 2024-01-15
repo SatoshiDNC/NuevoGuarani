@@ -323,7 +323,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const amountToPay = +v.confirmamount.value
     const gifttype = v.list.value
-    const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
+    const targetAddr = 'limpingstamp86@walletofsatoshi.com' //`${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
     const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (!v.busySignal) {
       // Pay remaining amount via Lightning.
