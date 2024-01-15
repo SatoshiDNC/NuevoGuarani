@@ -19,12 +19,16 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.busyQueryingFAD = false
+v.pageBlurFunc = function() {
+  console.log('blur')
+}
 v.pageFocusFunc = function() {
   const v = this
 
   if (v.amount.hide && v.spinner.errorSignal) {
     delete v.spinner.errorSignal
   }
+  if (!v.busySignal) v.clearBusy()
 
   // query the license api to get the current parameters
   const asyncLogic = async () => {
