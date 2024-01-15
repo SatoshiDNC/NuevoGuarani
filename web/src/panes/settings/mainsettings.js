@@ -139,7 +139,7 @@ v.renderFunc = function() {
       var color = th.uiSettingsSubText
       let i = 0, blankLines = 0
       for (let line of g.computedLines) {
-        if (g.y + blankLines * 15 + (14 + (16 + 2) * i) * SETTINGS_DESC_TEXT_SCALE > v.sh + v.userY) break
+        if (g.y + blankLines * 15 + (16 + (16 + 2) * (i+1)) * SETTINGS_DESC_TEXT_SCALE > v.sh + v.userY) break
         if (line == '') {
           blankLines++
         } else {
@@ -150,7 +150,7 @@ v.renderFunc = function() {
             scale *= 2; ii = 2
             line = line.substring(3)
           }
-          if (g.y + blankLines * 15 + (14 + (16 + 2) * i) * SETTINGS_DESC_TEXT_SCALE < 0 + v.userY) { i += ii; continue }
+          if (g.y + blankLines * 15 + (16 + (16 + 2) * i) * SETTINGS_DESC_TEXT_SCALE < 0 + v.userY) { i += ii; continue }
           let col = color
           if (line.startsWith('b>')) {
             col = th.uiSettingsText
