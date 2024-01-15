@@ -70,13 +70,15 @@ v.pageFocusFunc = function() {
         v.amount.value = +amountDue
         v.amount.description = `x2>b>c>${billpane.formatMoney(amountDue, '₿')} \n c>satoshis`
         v.confirmamount.value = ''+amountDue
-        delete v.amount.hide
         v.key.description = tr(v.key.template + (timecalc.data.length==1?'1':'')).replace('@', timecalc.data.length).replace('@', json.uniques)
-        delete v.key.hide
-        delete v.how.hide
-        delete v.list.hide; v.list.enabled = !v.list.hide
-        delete v.listnote.hide
-        if (v.amount.hide) v.spinner.hide = true
+        if (v.amount.hide) {
+          delete v.amount.hide
+          delete v.key.hide
+          delete v.how.hide
+          delete v.list.hide; v.list.enabled = !v.list.hide
+          delete v.listnote.hide
+          v.spinner.hide = true
+        }
         v.list.appFunction()
         v.queueLayout()
       })
