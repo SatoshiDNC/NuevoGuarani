@@ -393,6 +393,8 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
 		mat4.scale(m,m,[g.h/25,g.h/25,1]);
     if (v.errorSignal) {
       iconFont.draw(-10,7,warning,config.themeColors.uiLightningYellow,v.mat, m)    
+    } else if (v.successSignal) {
+      iconFont.draw(-10,7,warning,config.themeColors.uiSuccessGreen,v.mat, m)    
     } else {
       mat4.rotate(m,m, this.busyCounter, [0,0,1])
       iconFont.draw(-10,7,gear,config.themeColors.uiText,v.mat, m)    
