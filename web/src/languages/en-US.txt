@@ -73,7 +73,7 @@ desc:software license:how	How to pay the developers:
 desc:software license:explain:1	As more users pay, your investment can be proportionally refunded.
 desc:software license:explain:2	When you update to a newer version, you may be asked to pay again to cover the development cost of the new features.
 desc:software license:invest:1	Investment is Fairware's signature option. You get rebated every time your fair share decreases!
-desc:software license:make a grant:1	By making a grant, your contribution will reduce the fair share of other users by paying down developer costs.
+desc:software license:grant:1	By making a grant, your contribution will reduce the fair share of other users by paying down developer costs.
 desc:software license:donate:1	Donating is the most direct way to pay your fair share. There is no intermediary, but it will not reduce anyone else's fair share.
 disable cash payments	disable cash payments
 Discard this invoice?	Discard this invoice?

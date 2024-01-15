@@ -111,7 +111,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.enabled = !g.hide
   g.key = 'howToPayTheDevelopers'
   g.state = 0
-  g.list = ['invest', 'make a grant', 'donate']
+  g.list = ['invest', 'grant', 'donate']
   g.index = -1;
 	Object.defineProperty(g, "value", {
 		get : function () {
@@ -292,7 +292,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
     const amountToPay = +v.confirmamount.value
-    const gifttype = v.list.value.includes('grant')? 'grant': v.list.value
+    const gifttype = v.list.value
     const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
     const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (!v.netBusy) {
