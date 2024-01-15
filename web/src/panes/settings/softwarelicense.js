@@ -254,7 +254,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const completionlogic = () => {
       console.log('completionlogic()')
-      if (v.hashes && !v.busySignal) {
+      if (v.hashes) {
         // Paid remaining amount via Lightning.
         const wallet = config.appDevPayments
         switch (wallet.type) {
@@ -264,16 +264,14 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.queueLayout()
           break
         case 'LNbits compatible':
-          v.busySignal = true
-          v.setRenderFlag(true)
           wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
-            v.busySignal = false
-            v.setRenderFlag(true)
             console.log(Convert.JSONToString(result))
             if (result && result.paid) {
+              v.busySignal = false
               v.successSignal = true
-              v.queueLayout()
+              v.setRenderFlag(true)
             } else if (result && result.detail) {
+              v.busySignal = false
               v.errorSignal = true
               v.setRenderFlag(true)
             } else {
@@ -315,32 +313,27 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         })
         break
       case 'LNbits compatible':
-        if (!v.busySignal) {
-          delete v.spinner.hide
-          v.successSignal = false
-          v.errorSignal = false
-          v.setRenderFlag(true)
-      
-          v.busySignal = true
-          v.setRenderFlag(true)
-          wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
-            if (checkingId) {
-              if (!v.hashes) v.hashes = []
-              v.hashes.push(checkingId)
-              setTimeout(completionlogic, 2000)
+        v.busySignal = true
+        delete v.spinner.hide
+        v.successSignal = false
+        v.errorSignal = false
+        v.setRenderFlag(true)
+    
+        wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
+          if (checkingId) {
+            if (!v.hashes) v.hashes = []
+            v.hashes.push(checkingId)
+            setTimeout(completionlogic, 2000)
+          } else {
+            v.errorSignal = true
+            if (errorDetail) {
+              PlatformUtil.UserAck(errorDetail, () => {})
+              v.queueLayout()
             } else {
-              v.errorSignal = true
-              if (errorDetail) {
-                PlatformUtil.UserAck(errorDetail, () => {})
-                v.queueLayout()
-              } else {
-                console.error('Wallet did not generate a recognized invoice type.')
-              }
+              console.error('Wallet did not generate a recognized invoice type.')
             }
-            v.busySignal = false
-            v.setRenderFlag(true)
-          })
-        }
+          }
+        })
         break
       default:
         delete v.spinner.hide
