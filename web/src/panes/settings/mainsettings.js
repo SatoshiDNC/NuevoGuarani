@@ -50,7 +50,8 @@ v.layoutFunc = function() {
               toFit = para.split(' ')
               do {
                 do {
-                  desc = (desc + ' ' + toFit.shift()).trim()
+                  if (desc) desc = desc + ' ' + toFit.shift()
+                  else desc = toFit.shift()
                 } while (toFit.length > 0 && defaultFont.calcWidth(desc + ' ' + toFit[0]) * SETTINGS_DESC_TEXT_SCALE < maxw && toFit[0] != '\n')
                 lines.push(prefix + desc)
                 desc = ''; prefix = ''
