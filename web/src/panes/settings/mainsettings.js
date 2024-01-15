@@ -113,16 +113,17 @@ v.layoutFunc = function() {
 	v.maxY = y;
 }
 v.renderFunc = function() {
-	const th = config.themeColors;
-	drawThemeBackdrop(this, th);
-	mainShapes.useProg5();
-	gl.enable(gl.BLEND);
+	const th = config.themeColors
+  const v = this
+	drawThemeBackdrop(this, th)
+	mainShapes.useProg5()
+	gl.enable(gl.BLEND)
 	gl.uniform4fv(gl.getUniformLocation(prog5, 'overallColor'),
-		new Float32Array(th.uiForeground));
-	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat);
-	const mat = mat4.create();
-	var y = 25, daisychain = false;
-	const margin = (th.uiBackground[0] + th.uiBackground[1] + th.uiBackground[2] == 0)? 5:5;
+		new Float32Array(th.uiForeground))
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog5, 'uProjectionMatrix'), false, this.mat)
+	const mat = mat4.create()
+	var y = 25, daisychain = false
+	const margin = (th.uiBackground[0] + th.uiBackground[1] + th.uiBackground[2] == 0)? 5:5
 	for (const g of this.gadgets) {
 		if (g.hide) {
 		} else if (g.renderFunc) {
