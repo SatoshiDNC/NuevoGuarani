@@ -21,7 +21,7 @@ v.busyQueryingFAD = false
 v.pageFocusFunc = function() {
   const v = this
 
-  if (v.spinner.errorSignal) {
+  if (v.amount.hide && v.spinner.errorSignal) {
     delete v.spinner.errorSignal
   }
 
