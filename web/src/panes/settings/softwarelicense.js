@@ -239,8 +239,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    delete v.spinner.hide
-    v.setRenderFlag(true)
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
@@ -261,6 +259,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         const wallet = config.appDevPayments
         switch (wallet.type) {
         case 'manual':
+          v.errorSignal = true
+          vp.beep('bad')
+          v.queueLayout()
           break
         case 'LNbits compatible':
           v.busySignal = true
@@ -270,6 +271,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             v.setRenderFlag(true)
             console.log(Convert.JSONToString(result))
             if (result && result.paid) {
+              v.successSignal = true
               v.queueLayout()
             } else if (result && result.detail) {
               v.errorSignal = true
@@ -280,6 +282,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           })
           break
         default:
+          v.errorSignal = true
           vp.beep('bad')
           v.queueLayout()
           break
@@ -311,6 +314,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         break
       case 'LNbits compatible':
         if (!v.busySignal) {
+          delete v.spinner.hide
+          v.successSignal = false
+          v.errorSignal = false
+          v.setRenderFlag(true)
+      
           v.busySignal = true
           v.setRenderFlag(true)
           wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
@@ -333,7 +341,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         }
         break
       default:
+        delete v.spinner.hide
+        v.successSignal = false
         v.errorSignal = true
+        v.setRenderFlag(true)
         console.error(`Unexpected wallet type: '${wallet.type}'.`)
         break
       }
