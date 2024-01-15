@@ -8,6 +8,7 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.license = g = new vp.Gadget(v))
   g.description = 'lic:#'
+  g.static = true
 
 const softwarelicensesettings = v = new vp.View(null)
 v.name = Object.keys({softwarelicensesettings}).pop()

@@ -25,7 +25,7 @@ v.layoutFunc = function() {
 			g.layoutFunc();
       y += g.h;
     } else if (g.description) {
-      if (g.w != v.sw) {
+      if (g.w != v.sw || !g.static) {
         g.w = v.sw
         g.x = 0; g.y = y
   
