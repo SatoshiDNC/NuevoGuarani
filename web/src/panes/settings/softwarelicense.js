@@ -235,6 +235,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
   g.color = config.themeColors.uiSettingSelect
   g.nonpersistent = true
 	g.title = 'pay now'
+  g.center = true
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport

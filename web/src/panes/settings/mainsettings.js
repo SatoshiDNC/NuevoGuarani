@@ -352,19 +352,19 @@ v.renderFunc = function() {
 					defaultFont.draw(0,14,str,color, this.mat, mat);
 				}
 			} else {
-				mat4.identity(mat);
-				mat4.translate(mat,mat, [g.x+20,g.y+15,0]);
-				var color = th.uiSettingsText;
-				var str = icap(tr(g.title));
-				defaultFont.draw(0,14,str,color, this.mat, mat);
+				mat4.identity(mat)
+				mat4.translate(mat,mat, [g.x+20,g.y+15,0])
+				var color = th.uiSettingsText
+				var str = icap(tr(g.title))
+        if (g.center) mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str))/2,0,0])
+				defaultFont.draw(0,14,str,color, this.mat, mat)
         if (g.alt) {
-          defaultFont.draw(0,0,' · '+g.alt,th.uiSettingsSubText, this.mat, mat);
+          defaultFont.draw(0,0,' · '+g.alt,th.uiSettingsSubText, this.mat, mat)
         }
 
 				mat4.identity(mat);
 				mat4.translate(mat,mat, [g.x+20,g.y+15,0]);
 				mat4.translate(mat,mat, [0,16+6,0]);
-				mat4.scale(mat,mat, [0.75,0.75,1]);
 				var color = th.uiSettingsSubText;
 				var str;
 				if (typeof g.subtitle === 'object') {
@@ -373,6 +373,8 @@ v.renderFunc = function() {
 					if (g.subtitle.startsWith(' ')) str = g.subtitle.trim();
 					else str = icap(tr(g.subtitle));
 				}
+        if (g.center) mat4.translate(mat,mat, [(g.w-20*2-defaultFont.calcWidth(str)*0.75)/2,0,0])
+				mat4.scale(mat,mat, [0.75,0.75,1]);
 				defaultFont.draw(0,14,str,color, this.mat, mat);
 			}
 		}
