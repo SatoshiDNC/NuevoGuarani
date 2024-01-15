@@ -241,6 +241,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
+    v.spinner.hide = true
+    v.queueLayout()
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
