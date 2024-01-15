@@ -131,7 +131,7 @@ v.renderFunc = function() {
       var color = th.uiSettingsSubText
       let i = 0, blankLines = 0
       for (let line of g.computedLines) {
-        if (g.y + blankLines * 15 > v.sh) break
+        if (g.y + blankLines * 15 + 14 + (16 + 2) * i > v.sh) break
         if (line == '') {
           blankLines++
         } else {
