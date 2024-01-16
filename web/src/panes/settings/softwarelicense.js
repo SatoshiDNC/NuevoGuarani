@@ -345,7 +345,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const amountToPay = +v.confirmamount.value
     const gifttype = v.list.value
-    const targetAddr = 'limpingstamp86@walletofsatoshi.com' //`${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
+    const targetAddr = `${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com` // 'limpingstamp86@walletofsatoshi.com'
     let commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (!v.busySignal) {
       // Pay remaining amount via Lightning.
@@ -376,7 +376,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         let accum1 = 0, accum2 = 0, accum3 = 0
         for (const topay of v.paylist) {
 
-          // This algorithm ensures that the exact number of sats are distributed
+          // This algorithm ensures that the number of sats distributed comes to the specified total, despite rounding
           accum1 += topay.pay_asked
           accum2 = Math.round(accum1 / total * amountToPay)
           topay.donation_amt = accum2 - accum3
@@ -394,7 +394,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               }
             })  
           } else {
-            v.payresult.description += ` \n Nothing for ${topay.lightning_address}.`
+            v.payresult.description += ` \n Nothing to ${topay.lightning_address}.`
             v.queueLayout()
             topay.successSignal = true
           }
