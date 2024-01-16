@@ -407,9 +407,15 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
   g.layoutFunc = function() {
+    console.log('apinner layout')
     const g = this
     g.h = 25
     g.autoHull()
+    console.log('locktobottom', v.locktobottom)
+    if (v.locktobottom) {
+      v.userY = v.spinner.y + v.spinner.h - v.sh
+      v.queueLayout()
+    }  
   }
   g.renderFunc = function() {
     const g = this, v = g.viewport
