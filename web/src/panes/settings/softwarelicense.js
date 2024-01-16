@@ -19,13 +19,6 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.busyQueryingFAD = false
-v.layoutFunc = function() {
-  console.log('locktobottom', v.locktobottom)
-  if (v.locktobottom) {
-    v.userY = v.spinner.y + v.spinner.h - v.sh
-    v.queueLayout()
-  }
-}
 v.pageFocusFunc = function() {
   const v = this
 
@@ -105,6 +98,7 @@ v.setBusy = function() {
   const v = this
   console.log('spinner', v.spinner.y, '+', v.spinner.h, '-', v.userY, '<=', v.sh)
   if (v.spinner.y + v.spinner.h - v.userY <= v.sh) v.locktobottom = true
+  console.log(v.locktobottom)
   v.busySignal = true
   v.list.enabled = false
   v.lnaddr.enabled = false
@@ -408,7 +402,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.busyCounter = 0
   g.layoutFunc = function() {
     console.log('apinner layout')
-    const g = this
+    const g = this, v = g.viewport
     g.h = 25
     g.autoHull()
     console.log('locktobottom', v.locktobottom)
