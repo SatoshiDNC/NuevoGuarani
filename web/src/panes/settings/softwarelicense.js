@@ -430,6 +430,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     const g = this, v = g.viewport
     const gear = "\x1D"
     const warning = "\x0F"
+    const checkmark = "\x10"
 		this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2
     const m = mat4.create();
 		mat4.identity(m)
@@ -438,7 +439,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     if (v.errorSignal) {
       iconFont.draw(-10,7,warning,config.themeColors.uiLightningYellow,v.mat, m)    
     } else if (v.successSignal) {
-      iconFont.draw(-10,7,warning,config.themeColors.uiSuccessGreen,v.mat, m)    
+      iconFont.draw(-10,7,checkmark,config.themeColors.uiSuccessGreen,v.mat, m)    
     } else if (v.busySignal) {
       mat4.rotate(m,m, this.busyCounter, [0,0,1])
       iconFont.draw(-10,7,gear,config.themeColors.uiText,v.mat, m)    
