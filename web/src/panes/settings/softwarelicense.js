@@ -21,11 +21,8 @@ v.swipeGad.hide = true
 v.busyQueryingFAD = false
 v.layoutFunc = function() {
   if (v.locktobottom) {
-    if (v.spinner.hide) {
-      v.userY = v.locktobottom.y + v.locktobottom.h - v.sh
-    } else {
-      v.userY = v.spinner.y + v.spinner.h - v.sh
-    }
+    v.userY = v.spinner.y + v.spinner.h - v.sh
+    v.queueLayout()
   }
 }
 v.pageFocusFunc = function() {
@@ -87,7 +84,7 @@ v.pageFocusFunc = function() {
           delete v.how.hide
           delete v.list.hide; v.list.enabled = !v.list.hide
           delete v.listnote.hide
-          v.spinner.hide = true
+          v.busySignal = false
         }
         v.list.appFunction()
         v.queueLayout()
@@ -101,14 +98,8 @@ v.pageFocusFunc = function() {
 }
 v.setBusy = function() {
   const v = this
-  if (v.spinner.hide) {
-    console.log('bottommarker', v.bottommarker.y, '+', v.bottommarker.h, '-', v.userY, '<=', v.sh)
-    if (v.bottommarker.y + v.bottommarker.h - v.userY <= v.sh) v.locktobottom = true
-  } else {
-    console.log('spinner', v.spinner.y, '+', v.spinner.h, '-', v.userY, '<=', v.sh)
-    if (v.spinner.y + v.spinner.h - v.userY <= v.sh) v.locktobottom = true
-  }
-  v.spinner.hide = false
+  console.log('spinner', v.spinner.y, '+', v.spinner.h, '-', v.userY, '<=', v.sh)
+  if (v.spinner.y + v.spinner.h - v.userY <= v.sh) v.locktobottom = true
   v.busySignal = true
   v.list.enabled = false
   v.lnaddr.enabled = false
@@ -118,7 +109,6 @@ v.setBusy = function() {
 }
 v.clearBusy = function() {
   const v = this
-  v.spinner.hide = !(v.errorSignal || v.successSignal)
   v.busySignal = false
   v.list.enabled = !v.list.hide
   v.lnaddr.enabled = !v.lnaddr.hide
@@ -179,7 +169,9 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		const g = this, v = g.viewport
 		{ // For the GUI.
 			g.index = index; v.queueLayout()
-      v.spinner.hide = true
+      v.busySignal = false
+      v.errorSignal = false
+      v.successSignal = false
       v.queueLayout()
       } { // For the app function.
 			g.appFunction()
@@ -227,8 +219,10 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.spinner.hide = true
-    v.queueLayout()
+    v.busySignal = false
+    v.errorSignal = false
+    v.successSignal = false
+    v.setRenderFlag(true)
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
       { // For the GUI.
@@ -262,8 +256,10 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.spinner.hide = true
-    v.queueLayout()
+    v.busySignal = false
+    v.errorSignal = false
+    v.successSignal = false
+    v.setRenderFlag(true)
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
 //      if (v.list.list[v.list.index] == 'invest' && +val < +v.amount.value) {
@@ -284,8 +280,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.spinner.hide = true
-    v.queueLayout()
+    v.busySignal = false
+    v.errorSignal = false
+    v.successSignal = false
+    v.setRenderFlag(true)
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
@@ -390,12 +388,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
 	}
-v.gadgets.push(v.bottommarker = g = new vp.Gadget(v))
-  g.enabled = false
-  g.layoutFunc = function() {
-    g.h = 0
-  }
-  g.renderFunc = () => {}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
@@ -417,7 +409,7 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
       iconFont.draw(-10,7,warning,config.themeColors.uiLightningYellow,v.mat, m)    
     } else if (v.successSignal) {
       iconFont.draw(-10,7,warning,config.themeColors.uiSuccessGreen,v.mat, m)    
-    } else {
+    } else if (v.busySignal) {
       mat4.rotate(m,m, this.busyCounter, [0,0,1])
       iconFont.draw(-10,7,gear,config.themeColors.uiText,v.mat, m)    
       v.setRenderFlag(true)
