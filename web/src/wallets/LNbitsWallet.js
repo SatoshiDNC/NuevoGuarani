@@ -67,7 +67,7 @@ class LNbitsWallet extends BaseWallet {
 		console.groupCollapsed(this.constructor.name+'.generateInvoice(',sats,'...)');
 
 		var total_sat = sats;
-		if (total_sat <= 0 || total_sat != (+total_sat).toString()) {
+		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
 			console.error('Amount sanity check failed:', total_sat);
 			vp.beep('bad');
       console.groupEnd();
@@ -233,7 +233,7 @@ class LNbitsWallet extends BaseWallet {
 		console.groupCollapsed(this.constructor.name+'.payLightningAddress(', lnAddr, sats, comment, '...)');
 
 		var total_sat = sats
-		if (total_sat <= 0 || total_sat != (+total_sat).toString()) {
+		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
 			console.error('Amount sanity check failed:', total_sat)
 			vp.beep('bad')
       console.groupEnd();
@@ -337,7 +337,7 @@ class LNbitsWallet extends BaseWallet {
 		console.groupCollapsed(this.constructor.name+'.generateWithdrawalLink(', sats, comment, '...)');
 
 		var total_sat = sats;
-		if (total_sat <= 0 || total_sat != (+total_sat).toString()) {
+		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
 			console.error('Amount sanity check failed:', total_sat);
 			vp.beep('bad');
       console.groupEnd();
