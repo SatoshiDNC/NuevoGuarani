@@ -29,9 +29,13 @@ v.layoutFunc = function() {
 v.pageFocusFunc = function() {
   const v = this
 
-  if (!v.busySignal) {
-    delete v.errorSignal
-    if (!v.amount.hide) v.clearBusy()
+  if (v.amount.hide && !v.busyQueryingFAD) {
+    v.setBusy()
+  } else {
+    if (!v.busySignal) {
+      v.errorSignal = false
+      v.clearBusy()
+    }
   }
 
   // query the license api to get the current parameters
@@ -350,7 +354,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       switch (wallet.type) {
       case 'manual':
         v.payresult.hide = false
-        v.payresult.description = `Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`
+        v.payresult.description = `Manual wallet instructions: \n Send ${amountToPay} satoshis to ${targetAddr} with the following comment: \n ${commentData}`
         v.queueLayout()
         v.clearBusy()
         // PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
