@@ -379,6 +379,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.paylist = JSON.parse(JSON.stringify(timecalc.data)) // make a copy
           commentData = `donation toward ${config.appNameVersion} (commit ${timecalc.commit})`
         }
+        console.log(v.paylist)
         const total = v.paylist.reduce((acc,cur) => {acc+cur.pay_asked}, 0)
         console.log('total', total)
         for (const topay of v.paylist) {
