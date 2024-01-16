@@ -324,6 +324,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               })
             }
           }
+          console.log(flag, v.paylist)
           if (flag) {
             setTimeout(completionlogic, 2000)
           } else {
