@@ -311,11 +311,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
                 //console.log(Convert.JSONToString(result))
                 if (result && result.paid) {
-                  v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
+                  v.payresult.description += ` \n Sent ${topay.donation_amt} sats to ${topay.lightning_address}.`
                   v.queueLayout()
                   topay.successSignal = true
                 } else if (result && result.detail) {
-                  v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                  v.payresult.description += ` \n Couldn't send ${topay.donation_amt} to ${topay.lightning_address}.`
                   v.queueLayout()
                   topay.errorSignal = true
                 } else {
@@ -381,15 +381,22 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         console.log(v.paylist)
         const total = v.paylist.reduce((acc, cur) => acc + cur.pay_asked, 0)
         console.log('total', total)
+        let accum1 = 0, accum2 = 0, accum3 = 0
         for (const topay of v.paylist) {
-          const amt = Math.floor(amountToPay * topay.pay_asked / total)
-          if (amt > 0) {
-            wallet.payLightningAddress(topay.lightning_address, amt, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
+
+          // This algorithm ensures that the exact number of sats are distributed
+          accum1 += v.paylist.pay_asked
+          accum2 = Math.round(accum1 / total * amountToPay)
+          topay.donation_amt = accum2 - accum3
+          accum3 = accum2
+          
+          if (topay.donation_amt > 0) {
+            wallet.payLightningAddress(topay.lightning_address, topay.donation_amt, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
               if (checkingId) {
                 if (!topay.hashes) topay.hashes = []
                 topay.hashes.push(checkingId)
               } else {
-                v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                v.payresult.description += ` \n Couldn't send ${topay.donation_amt} to ${topay.lightning_address}.`
                 v.queueLayout()
                 topay.errorSignal = true
                 // v.clearBusy()
