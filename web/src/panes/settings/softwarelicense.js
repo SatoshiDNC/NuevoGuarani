@@ -306,7 +306,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           break
         case 'LNbits compatible':
           let flag = false
-          for (topay of v.paylist) {
+          for (const topay of v.paylist) {
             if (!topay.successSignal && !topay.errorSignal && topay.hashes) {
               wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
                 //console.log(Convert.JSONToString(result))
@@ -380,7 +380,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           commentData = `donation toward ${config.appNameVersion} (commit ${timecalc.commit})`
         }
         const total = v.paylist.reduce((p,c) => {p+c}, 0)
-        for (topay of v.paylist) {
+        for (const topay of v.paylist) {
           wallet.payLightningAddress(topay.lightning_address, amountToPay * topay.pay_asked / total, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
             if (checkingId) {
               if (!topay.hashes) topay.hashes = []
