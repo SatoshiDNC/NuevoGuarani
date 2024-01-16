@@ -115,6 +115,15 @@ v.clearBusy = function() {
   v.paynow.enabled = !v.paynow.hide
   v.queueLayout()
 }
+v.clearStatus = function() {
+  const v = this
+  v.busySignal = false
+  v.errorSignal = false
+  v.successSignal = false
+  v.payresult.hide = true
+  v.payresult.description = ''
+  v.queueLayout()
+}
 // v.gadgets.push(v.desc = g = new vp.Gadget(v))
 //   g.description = 'desc:'+v.title
 v.gadgets.push(g = new vp.Gadget(v))
@@ -168,10 +177,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
 		const g = this, v = g.viewport
 		{ // For the GUI.
 			g.index = index; v.queueLayout()
-      v.busySignal = false
-      v.errorSignal = false
-      v.successSignal = false
-      v.queueLayout()
+      v.clearStatus()
       } { // For the app function.
 			g.appFunction()
 		} { // For persistence.
@@ -218,10 +224,7 @@ v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.busySignal = false
-    v.errorSignal = false
-    v.successSignal = false
-    v.setRenderFlag(true)
+    v.clearStatus()
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
       { // For the GUI.
@@ -255,10 +258,7 @@ v.gadgets.push(v.confirmamount = g = new vp.Gadget(v));
   g.enabled = !g.hide
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.busySignal = false
-    v.errorSignal = false
-    v.successSignal = false
-    v.setRenderFlag(true)
+    v.clearStatus()
 		PlatformUtil.UserPrompt(tr(g.title)+':', g.value, val => {
       if (!val) return
 //      if (v.list.list[v.list.index] == 'invest' && +val < +v.amount.value) {
@@ -279,12 +279,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    v.busySignal = false
-    v.errorSignal = false
-    v.successSignal = false
-    v.payresult.hide = true
-    v.payresult.description = ''
-    v.queueLayout()
+    v.clearStatus()
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
@@ -406,10 +401,10 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     g.h = 25
     g.autoHull()
     console.log('locktobottom', v.locktobottom)
-    if (v.locktobottom && v.spinner.y + v.spinner.h - v.sh > v.userY) {
-      v.userY = Math.max(0, v.spinner.y + v.spinner.h - v.sh)
-      v.queueLayout()
-    }  
+    // if (v.locktobottom && v.spinner.y + v.spinner.h - v.sh > v.userY) {
+    //   v.userY = Math.max(0, v.spinner.y + v.spinner.h - v.sh)
+    //   v.queueLayout()
+    // }  
   }
   g.renderFunc = function() {
     const g = this, v = g.viewport
