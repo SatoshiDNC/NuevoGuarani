@@ -20,6 +20,7 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.busyQueryingFAD = false
 v.layoutFunc = function() {
+  console.log('locktobottom', v.locktobottom)
   if (v.locktobottom) {
     v.userY = v.spinner.y + v.spinner.h - v.sh
     v.queueLayout()
@@ -283,6 +284,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     v.busySignal = false
     v.errorSignal = false
     v.successSignal = false
+    v.payresult.hide = true
+    v.payresult.description = ''
     v.setRenderFlag(true)
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
@@ -346,14 +349,18 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       const wallet = config.appDevPayments
       switch (wallet.type) {
       case 'manual':
-        PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
-          if (result) {
-            console.log('confirmed')
-            setTimeout(completionlogic, 2000)
-          } else {
-            console.log('canceled')
-          }
-        })
+        v.payresult.hide = false
+        v.payresult.description = `Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`
+        v.queueLayout()
+        v.clearBusy()
+        // PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
+        //   if (result) {
+        //     console.log('confirmed')
+        //     setTimeout(completionlogic, 2000)
+        //   } else {
+        //     console.log('canceled')
+        //   }
+        // })
         break
       case 'LNbits compatible':
         v.successSignal = false
@@ -388,6 +395,10 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
 	}
+v.gadgets.push(v.payresult = g = new vp.Gadget(v))
+  g.name = 'payresult'
+  g.hide = true
+  g.description = ''
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
