@@ -382,23 +382,31 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         const total = v.paylist.reduce((acc, cur) => acc + cur.pay_asked, 0)
         console.log('total', total)
         for (const topay of v.paylist) {
-          wallet.payLightningAddress(topay.lightning_address, amountToPay * topay.pay_asked / total, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
-            if (checkingId) {
-              if (!topay.hashes) topay.hashes = []
-              topay.hashes.push(checkingId)
-            } else {
-              v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
-              topay.errorSignal = true
-              // v.clearBusy()
-              // if (errorDetail) {
-              //   console.error(errorDetail)
-              //   //PlatformUtil.UserAck(errorDetail, () => {})
-              //   //v.queueLayout()
-              // } else {
-              //   console.error('Wallet did not generate a recognized invoice type.')
-              // }
-            }
-          })
+          const amt = Math.floor(amountToPay * topay.pay_asked / total)
+          if (amt > 0) {
+            wallet.payLightningAddress(topay.lightning_address, amt, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
+              if (checkingId) {
+                if (!topay.hashes) topay.hashes = []
+                topay.hashes.push(checkingId)
+              } else {
+                v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                v.queueLayout()
+                topay.errorSignal = true
+                // v.clearBusy()
+                // if (errorDetail) {
+                //   console.error(errorDetail)
+                //   //PlatformUtil.UserAck(errorDetail, () => {})
+                //   //v.queueLayout()
+                // } else {
+                //   console.error('Wallet did not generate a recognized invoice type.')
+                // }
+              }
+            })  
+          } else {
+            v.payresult.description += ` \n Nothing for ${topay.lightning_address}.`
+            v.queueLayout()
+            topay.successSignal = true
+          }
         }
         setTimeout(completionlogic, 2000)
         break
