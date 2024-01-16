@@ -19,6 +19,15 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.busyQueryingFAD = false
+v.layoutFunc = function() {
+  if (v.locktobottom) {
+    if (v.spinner.hide) {
+      v.userY = v.locktobottom.y + v.locktobottom.h - v.sh
+    } else {
+      v.userY = v.spinner.y + v.spinner.h - v.sh
+    }
+  }
+}
 v.pageFocusFunc = function() {
   const v = this
 
@@ -92,6 +101,11 @@ v.pageFocusFunc = function() {
 }
 v.setBusy = function() {
   const v = this
+  if (v.spinner.hide) {
+    if (v.bottommarker.y + v.bottommarker.h - v.userY <= v.sh) v.locktobottom = true
+  } else {
+    if (v.spinner.y + v.spinner.h - v.userY <= v.sh) v.locktobottom = true
+  }
   v.spinner.hide = false
   v.busySignal = true
   v.list.enabled = false
@@ -374,6 +388,11 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     }
 
 	}
+v.gadgets.push(v.bottommarker = g = new vp.Gadget(v))
+  g.enabled = false
+  g.layoutFunc = function() {
+    g.h = 0
+  }
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
