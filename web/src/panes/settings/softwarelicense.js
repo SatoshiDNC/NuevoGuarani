@@ -357,14 +357,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         v.payresult.description = `Manual wallet instructions: \n Send ${amountToPay} satoshis to ${targetAddr} with the following comment: \n ${commentData}`
         v.queueLayout()
         v.clearBusy()
-        // PlatformUtil.UserConfirm(`Manual wallet instructions:\n\nSend ${amountToPay} satoshis to ${targetAddr} with the following comment:\n\n${commentData}`, (result) => {
-        //   if (result) {
-        //     console.log('confirmed')
-        //     setTimeout(completionlogic, 2000)
-        //   } else {
-        //     console.log('canceled')
-        //   }
-        // })
         break
       case 'LNbits compatible':
         v.payresult.hide = false
@@ -385,7 +377,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         for (const topay of v.paylist) {
 
           // This algorithm ensures that the exact number of sats are distributed
-          accum1 += v.paylist.pay_asked
+          accum1 += topay.pay_asked
           accum2 = Math.round(accum1 / total * amountToPay)
           topay.donation_amt = accum2 - accum3
           accum3 = accum2
@@ -399,14 +391,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                 v.payresult.description += ` \n Couldn't send ${topay.donation_amt} to ${topay.lightning_address}.`
                 v.queueLayout()
                 topay.errorSignal = true
-                // v.clearBusy()
-                // if (errorDetail) {
-                //   console.error(errorDetail)
-                //   //PlatformUtil.UserAck(errorDetail, () => {})
-                //   //v.queueLayout()
-                // } else {
-                //   console.error('Wallet did not generate a recognized invoice type.')
-                // }
               }
             })  
           } else {
