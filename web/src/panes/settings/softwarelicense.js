@@ -406,8 +406,8 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
     g.h = 25
     g.autoHull()
     console.log('locktobottom', v.locktobottom)
-    if (v.locktobottom) {
-      v.userY = v.spinner.y + v.spinner.h - v.sh
+    if (v.locktobottom && v.spinner.y + v.spinner.h - v.sh > v.userY) {
+      v.userY = Math.max(0, v.spinner.y + v.spinner.h - v.sh)
       v.queueLayout()
     }  
   }
