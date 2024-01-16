@@ -68,7 +68,7 @@ class LNbitsWallet extends BaseWallet {
 
 		var total_sat = sats;
 		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
-			console.error('Amount sanity check failed:', total_sat);
+			console.error('Amount sanity check failed:', total_sat, '!=', Math.round(+total_sat).toString());
 			vp.beep('bad');
       console.groupEnd();
 			return;
@@ -234,7 +234,7 @@ class LNbitsWallet extends BaseWallet {
 
 		var total_sat = sats
 		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
-			console.error('Amount sanity check failed:', total_sat)
+			console.error('Amount sanity check failed:', total_sat, '!=', Math.round(+total_sat).toString());
 			vp.beep('bad')
       console.groupEnd();
 			return
@@ -338,7 +338,7 @@ class LNbitsWallet extends BaseWallet {
 
 		var total_sat = sats;
 		if (total_sat <= 0 || total_sat != Math.round(+total_sat).toString()) {
-			console.error('Amount sanity check failed:', total_sat);
+			console.error('Amount sanity check failed:', total_sat, '!=', Math.round(+total_sat).toString());
 			vp.beep('bad');
       console.groupEnd();
 			return;
