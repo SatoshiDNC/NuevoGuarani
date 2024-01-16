@@ -273,42 +273,46 @@ class LNbitsWallet extends BaseWallet {
           "nostrPubkey": "7ce94f54f55b884becec9b7b2bab63d4680b4acdd1c84f927f059a519d32ec7a",
         }
 			}
-      if (true || !config.debugBuild) {
-        const url = `${wallet.url}/payments/lnurl`
-        console.log('url', url)
-        const hash = Convert.ArrayBufferToHex(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata)))
-        console.log('hash', hash)
-        const bodyStr = `{
-          "description_hash": "${hash}",
-          "callback": "${json1.callback}",
-          "amount": ${total_sat * 1000},
-          "comment": "${comment}",
-          "description": "fair share of app development cost"
-        }`
-        console.log('bodyStr', bodyStr)
-				const response = await fetch(url, {
-					method: 'POST',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-KEY': wallet.key,
-					},
-          body: bodyStr,
-				})
-				json2 = await response.json();
-      } else {
-				console.log('debug build; generating fake')
-				json2 = {
-          "tag": "payRequest",
-          "callback": "https://lnbits.satoshidnc.com/lnurlp/api/v1/lnurl/cb/lnaddr/XDFjE8",
-          "minSendable": 1000,
-          "maxSendable": 100000000,
-          "metadata": "[[\"text/plain\", \"Payment to geyser.ng\"], [\"text/identifier\", \"geyser.ng@lnbits.satoshidnc.com\"]]",
-          "commentAllowed": 200,
-          "allowsNostr": true,
-          "nostrPubkey": "7ce94f54f55b884becec9b7b2bab63d4680b4acdd1c84f927f059a519d32ec7a",
+      if (json1.metadata && json1.callback) {
+        if (true || !config.debugBuild) {
+          const url = `${wallet.url}/payments/lnurl`
+          console.log('url', url)
+          const hash = Convert.ArrayBufferToHex(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(json1.metadata)))
+          console.log('hash', hash)
+          const bodyStr = `{
+            "description_hash": "${hash}",
+            "callback": "${json1.callback}",
+            "amount": ${total_sat * 1000},
+            "comment": "${comment}",
+            "description": "fair share of app development cost"
+          }`
+          console.log('bodyStr', bodyStr)
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-API-KEY': wallet.key,
+            },
+            body: bodyStr,
+          })
+          json2 = await response.json();
+        } else {
+          console.log('debug build; generating fake')
+          json2 = {
+            "tag": "payRequest",
+            "callback": "https://lnbits.satoshidnc.com/lnurlp/api/v1/lnurl/cb/lnaddr/XDFjE8",
+            "minSendable": 1000,
+            "maxSendable": 100000000,
+            "metadata": "[[\"text/plain\", \"Payment to geyser.ng\"], [\"text/identifier\", \"geyser.ng@lnbits.satoshidnc.com\"]]",
+            "commentAllowed": 200,
+            "allowsNostr": true,
+            "nostrPubkey": "7ce94f54f55b884becec9b7b2bab63d4680b4acdd1c84f927f059a519d32ec7a",
+          }
         }
-			}
+      } else {
+        json2 = {}
+      }
 
 
 			// console.log('json', Convert.JSONToString(json2))
