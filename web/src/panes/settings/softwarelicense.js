@@ -363,7 +363,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         // })
         break
       case 'LNbits compatible':
-        v.payresult = 'Please wait:'
+        v.payresult.hide = false
+        v.payresult.description = 'Please wait:'
         v.successSignal = false
         v.errorSignal = false
         v.setBusy()
