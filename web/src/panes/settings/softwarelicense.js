@@ -306,8 +306,8 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       case 'LNbits compatible':
         let flag = false
         for (const topay of v.paylist) {
-          if (topay.hashes) {
-            if (!topay.successSignal && !topay.errorSignal) {
+          if (!topay.successSignal && !topay.errorSignal) {
+            if (topay.hashes) {
               wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
                 //console.log(Convert.JSONToString(result))
                 if (result && result.paid) {
@@ -322,9 +322,9 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
                   flag = true
                 }
               })
-            }
             } else {
-            flag = true
+              flag = true
+            }
           }
         }
         console.log(flag, v.paylist)
