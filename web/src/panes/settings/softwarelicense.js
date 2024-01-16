@@ -388,7 +388,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             if (checkingId) {
               if (!topay.hashes) topay.hashes = []
               topay.hashes.push(checkingId)
-              setTimeout(completionlogic, 2000)
             } else {
               topay.errorSignal = true
               // v.clearBusy()
@@ -402,6 +401,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
             }
           })
         }
+        setTimeout(completionlogic, 2000)
         break
       default:
         v.successSignal = false
