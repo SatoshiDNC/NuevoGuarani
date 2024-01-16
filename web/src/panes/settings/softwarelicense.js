@@ -306,21 +306,25 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
       case 'LNbits compatible':
         let flag = false
         for (const topay of v.paylist) {
-          if (!topay.successSignal && !topay.errorSignal && topay.hashes) {
-            wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
-              //console.log(Convert.JSONToString(result))
-              if (result && result.paid) {
-                v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
-                v.queueLayout()
-                topay.successSignal = true
-              } else if (result && result.detail) {
-                v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
-                v.queueLayout()
-                topay.errorSignal = true
-              } else {
-                flag = true
-              }
-            })
+          if (topay.hashes) {
+            if (!topay.successSignal && !topay.errorSignal) {
+              wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
+                //console.log(Convert.JSONToString(result))
+                if (result && result.paid) {
+                  v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
+                  v.queueLayout()
+                  topay.successSignal = true
+                } else if (result && result.detail) {
+                  v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                  v.queueLayout()
+                  topay.errorSignal = true
+                } else {
+                  flag = true
+                }
+              })
+            }
+            } else {
+            flag = true
           }
         }
         console.log(flag, v.paylist)
