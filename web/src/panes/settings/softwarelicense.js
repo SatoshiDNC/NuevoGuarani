@@ -295,53 +295,47 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
 
     const completionlogic = () => {
       console.log('completionlogic()')
-      if (v.hashes) {
-        // Paid remaining amount via Lightning.
-        const wallet = config.appDevPayments
-        switch (wallet.type) {
-        case 'manual':
-          v.errorSignal = true
-          vp.beep('bad')
-          v.clearBusy()
-          break
-        case 'LNbits compatible':
-          let flag = false
-          for (const topay of v.paylist) {
-            if (!topay.successSignal && !topay.errorSignal && topay.hashes) {
-              wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
-                //console.log(Convert.JSONToString(result))
-                if (result && result.paid) {
-                  v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
-                  v.queueLayout()
-                  topay.successSignal = true
-                } else if (result && result.detail) {
-                  v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
-                  v.queueLayout()
-                  topay.errorSignal = true
-                } else {
-                  flag = true
-                }
-              })
-            }
+      // Paid remaining amount via Lightning.
+      const wallet = config.appDevPayments
+      switch (wallet.type) {
+      case 'manual':
+        v.errorSignal = true
+        vp.beep('bad')
+        v.clearBusy()
+        break
+      case 'LNbits compatible':
+        let flag = false
+        for (const topay of v.paylist) {
+          if (!topay.successSignal && !topay.errorSignal && topay.hashes) {
+            wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
+              //console.log(Convert.JSONToString(result))
+              if (result && result.paid) {
+                v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
+                v.queueLayout()
+                topay.successSignal = true
+              } else if (result && result.detail) {
+                v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                v.queueLayout()
+                topay.errorSignal = true
+              } else {
+                flag = true
+              }
+            })
           }
-          console.log(flag, v.paylist)
-          if (flag) {
-            setTimeout(completionlogic, 2000)
-          } else {
-            v.successSignal = true
-            v.clearBusy()
-          }
-          break
-        default:
-          v.errorSignal = true
-          vp.beep('bad')
-          v.clearBusy()
-          break
         }
-      } else {
-        if (v.busySignal) {
+        console.log(flag, v.paylist)
+        if (flag) {
           setTimeout(completionlogic, 2000)
+        } else {
+          v.successSignal = true
+          v.clearBusy()
         }
+        break
+      default:
+        v.errorSignal = true
+        vp.beep('bad')
+        v.clearBusy()
+        break
       }
     }
 
@@ -351,7 +345,6 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     let commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (!v.busySignal) {
       // Pay remaining amount via Lightning.
-      delete v.hashes
       delete v.errorSignal
       const wallet = config.appDevPayments
       switch (wallet.type) {
