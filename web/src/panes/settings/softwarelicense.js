@@ -102,8 +102,10 @@ v.pageFocusFunc = function() {
 v.setBusy = function() {
   const v = this
   if (v.spinner.hide) {
+    console.log('bottommarker', v.bottommarker.y, '+', v.bottommarker.h, '-', v.userY, '<=', v.sh)
     if (v.bottommarker.y + v.bottommarker.h - v.userY <= v.sh) v.locktobottom = true
   } else {
+    console.log('spinner', v.spinner.y, '+', v.spinner.h, '-', v.userY, '<=', v.sh)
     if (v.spinner.y + v.spinner.h - v.userY <= v.sh) v.locktobottom = true
   }
   v.spinner.hide = false
