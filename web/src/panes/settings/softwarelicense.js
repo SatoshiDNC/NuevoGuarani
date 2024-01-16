@@ -380,7 +380,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           commentData = `donation toward ${config.appNameVersion} (commit ${timecalc.commit})`
         }
         console.log(v.paylist)
-        const total = v.paylist.reduce((acc,cur) => {acc+cur.pay_asked}, 0)
+        const total = v.paylist.reduce((acc, cur) => acc + cur.pay_asked, 0)
         console.log('total', total)
         for (const topay of v.paylist) {
           wallet.payLightningAddress(topay.lightning_address, amountToPay * topay.pay_asked / total, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
