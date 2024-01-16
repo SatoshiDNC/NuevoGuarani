@@ -377,7 +377,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         v.paylist = [{ time_secs: 0, pay_asked: amountToPay, dev_nym: '', lightning_address: targetAddr }]
         if (gifttype == 'donate') {
           v.paylist = JSON.parse(JSON.stringify(timecalc.data)) // make a copy
-          commentData = `donation toward ${config.appNameVersion} (commit ${topay.commit})`
+          commentData = `donation toward ${config.appNameVersion} (commit ${timecalc.commit})`
         }
         const total = v.paylist.reduce((p,c) => {p+c}, 0)
         for (topay of v.paylist) {
