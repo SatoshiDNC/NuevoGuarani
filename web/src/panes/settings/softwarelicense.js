@@ -383,6 +383,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
               if (!topay.hashes) topay.hashes = []
               topay.hashes.push(checkingId)
             } else {
+              v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
               topay.errorSignal = true
               // v.clearBusy()
               // if (errorDetail) {
