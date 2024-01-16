@@ -395,6 +395,7 @@ v.gadgets.push(v.bottommarker = g = new vp.Gadget(v))
   g.layoutFunc = function() {
     g.h = 0
   }
+  g.renderFunc = () => {}
 v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
