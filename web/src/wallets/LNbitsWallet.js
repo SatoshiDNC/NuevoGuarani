@@ -323,7 +323,9 @@ class LNbitsWallet extends BaseWallet {
 			if (checkingId) {
 				payLightningAddressCallback(checkingId)
 			} else {
-				payLightningAddressCallback(undefined, errorDetail)
+			  console.log(Convert.JSONToString(json1))
+			  console.log(Convert.JSONToString(json2))
+        payLightningAddressCallback(undefined, errorDetail)
 			}
 		}
 		asyncLogic();
