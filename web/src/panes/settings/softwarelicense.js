@@ -347,7 +347,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     const amountToPay = +v.confirmamount.value
     const gifttype = v.list.value
     const targetAddr = 'limpingstamp86@walletofsatoshi.com' //`${gifttype}@${config.debugBuild?'dev-':''}ng.satoshidnc.com`
-    const commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
+    let commentData = `{"action":"${gifttype}"${gifttype=='invest'?`,"rebates":"${v.lnaddr.value}"`:''},"commit":"${timecalc.commit}"}`
     if (!v.busySignal) {
       // Pay remaining amount via Lightning.
       delete v.hashes
@@ -418,11 +418,11 @@ v.gadgets.push(v.spinner = g = new vp.Gadget(v))
   g.description = 'spinner'
   g.busyCounter = 0
   g.layoutFunc = function() {
-    console.log('apinner layout')
+    // console.log('apinner layout')
     const g = this, v = g.viewport
     g.h = 25
     g.autoHull()
-    console.log('locktobottom', v.locktobottom)
+    // console.log('locktobottom', v.locktobottom)
     // if (v.locktobottom && v.spinner.y + v.spinner.h - v.sh > v.userY) {
     //   v.userY = Math.max(0, v.spinner.y + v.spinner.h - v.sh)
     //   v.queueLayout()
