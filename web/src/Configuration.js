@@ -62,6 +62,7 @@ class Configuration {
 		const d = ds[ds.length-1]
 		return d && d.value/2
 	}
+  get appNameVersion() { return 'Nuevo Guarani, v0.1' }
 	get debugBuild() { return releasebuild != true; }
 	get showChangeBreakdown() { try { return currencysettings.showchange.state && this.cashCurrency != 'none'; } catch (e) {} }
 	get mainCurrency() { try { return maincurrency.list.value; } catch (e) {} }

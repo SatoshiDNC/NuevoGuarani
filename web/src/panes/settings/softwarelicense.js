@@ -305,18 +305,31 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
           v.clearBusy()
           break
         case 'LNbits compatible':
-          wallet.checkInvoice(v.hashes[v.hashes.length-1], (result) => {
-            console.log(Convert.JSONToString(result))
-            if (result && result.paid) {
-              v.successSignal = true
-              v.clearBusy()
-            } else if (result && result.detail) {
-              v.errorSignal = true
-              v.clearBusy()
-            } else {
-              setTimeout(completionlogic, 2000)
+          let flag = false
+          for (topay of v.paylist) {
+            if (!topay.successSignal && !topay.errorSignal && topay.hashes) {
+              wallet.checkInvoice(topay.hashes[topay.hashes.length-1], (result) => {
+                //console.log(Convert.JSONToString(result))
+                if (result && result.paid) {
+                  v.payresult.description += ` \n Sent sats to ${topay.lightning_address}.`
+                  v.queueLayout()
+                  topay.successSignal = true
+                } else if (result && result.detail) {
+                  v.payresult.description += ` \n Couldn't send to ${topay.lightning_address}.`
+                  v.queueLayout()
+                  topay.errorSignal = true
+                } else {
+                  flag = true
+                }
+              })
             }
-          })
+          }
+          if (flag) {
+            setTimeout(completionlogic, 2000)
+          } else {
+            v.successSignal = true
+            v.clearBusy()
+          }
           break
         default:
           v.errorSignal = true
@@ -356,27 +369,36 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
         // })
         break
       case 'LNbits compatible':
+        v.payresult = 'Please wait:'
         v.successSignal = false
         v.errorSignal = false
         v.setBusy()
     
-        wallet.payLightningAddress(targetAddr, amountToPay, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
-          if (checkingId) {
-            if (!v.hashes) v.hashes = []
-            v.hashes.push(checkingId)
-            setTimeout(completionlogic, 2000)
-          } else {
-            v.errorSignal = true
-            v.clearBusy()
-            if (errorDetail) {
-              console.error(errorDetail)
-              //PlatformUtil.UserAck(errorDetail, () => {})
-              //v.queueLayout()
+        v.paylist = [{ time_secs: 0, pay_asked: amountToPay, dev_nym: '', lightning_address: targetAddr }]
+        if (gifttype == 'donate') {
+          v.paylist = JSON.parse(JSON.stringify(timecalc.data)) // make a copy
+          commentData = `donation toward ${config.appNameVersion} (commit ${topay.commit})`
+        }
+        const total = v.paylist.reduce((p,c) => {p+c}, 0)
+        for (topay of v.paylist) {
+          wallet.payLightningAddress(topay.lightning_address, amountToPay * topay.pay_asked / total, Convert.EscapeJSON(commentData), (checkingId, errorDetail) => {
+            if (checkingId) {
+              if (!topay.hashes) topay.hashes = []
+              topay.hashes.push(checkingId)
+              setTimeout(completionlogic, 2000)
             } else {
-              console.error('Wallet did not generate a recognized invoice type.')
+              topay.errorSignal = true
+              // v.clearBusy()
+              // if (errorDetail) {
+              //   console.error(errorDetail)
+              //   //PlatformUtil.UserAck(errorDetail, () => {})
+              //   //v.queueLayout()
+              // } else {
+              //   console.error('Wallet did not generate a recognized invoice type.')
+              // }
             }
-          }
-        })
+          })
+        }
         break
       default:
         v.successSignal = false
