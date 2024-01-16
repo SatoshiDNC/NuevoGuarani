@@ -284,7 +284,7 @@ v.gadgets.push(v.paynow = g = new vp.Gadget(v));
     v.successSignal = false
     v.payresult.hide = true
     v.payresult.description = ''
-    v.setRenderFlag(true)
+    v.queueLayout()
     let err
     if (v.list.list[v.list.index] == 'invest' && !v.lnaddr.value) {
       err = 'Please enter your Lightning address for rebates'
