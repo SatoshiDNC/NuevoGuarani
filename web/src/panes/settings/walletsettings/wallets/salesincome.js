@@ -308,7 +308,10 @@ v.load = function(cb) {
     PlatformUtil.DatabaseGet('settings', g.key.replace('@', getCurrentAccount().id), (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
-			if (debuglog) console.log(`${g.key} restored`, ['-sensitive-', '-secret-'].reduce((acc, val) => acc || g.key.includes(val), false)? '********': g.tempValue)
+			if (debuglog) console.log(`${g.key} restored`, ['-sensitive-', '-secret-'].reduce((acc, val) => {
+        console.log('>>>', acc, val, g.key, g.key.includes(val))
+        return acc || g.key.includes(val)
+      }, false)? '********': g.tempValue)
 			finishInit(cb, this, g)
 		}, (event) => {
 			console.log(`error getting ${g.key}`, event)
