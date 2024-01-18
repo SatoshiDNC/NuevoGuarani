@@ -53,7 +53,7 @@ class PlatformUtil {
     } else {
       const result = prompt(promptText, defaultValue)
       if (result !== null) okCallback(result)
-      else cancelCallback()
+      else if (cancelCallback) cancelCallback()
     }
   }
 
