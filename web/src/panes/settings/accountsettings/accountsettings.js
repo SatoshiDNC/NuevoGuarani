@@ -95,6 +95,7 @@ let showConfigOnlyOnce = true;
 function loadAccount() {
 	const panes = [
 		accountsettings,
+    officialdetails,
 		languagesettings,
 		maincurrency,
 		cashcurrency,
