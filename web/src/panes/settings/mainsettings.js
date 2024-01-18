@@ -443,7 +443,7 @@ v.gadgets.push(g = new vp.Gadget(v))
 for (const pane of [
   maincurrency, cashcurrency, nostrmarketstall,
   salesincomewalletsettings, exchangeoutflowwalletsettings, invoicepaymentswalletsettings, appdevelopmentwalletsettings,
-  accountsettings, languagesettings, currencysettings, walletsettings, pricelistsettings, camerasettings, colorsettings,
+  accountsettings, officialdetails, languagesettings, currencysettings, walletsettings, pricelistsettings, camerasettings, colorsettings,
   softwarelicensesettings, readfulllicensetext, dangerzone,
 ]) {
 	pane.layoutFunc = mainsettings.layoutFunc
