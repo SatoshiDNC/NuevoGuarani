@@ -308,8 +308,11 @@ v.load = function(cb) {
 		}
 		if (debuglog) console.log("requesting", g.key.replace('@', getCurrentAccount().id));
     PlatformUtil.DatabaseGet('settings', g.key.replace('@', getCurrentAccount().id), (event) => {
-			if (event.target.result !== undefined)
+			if (event.target.result !== undefined) {
 				g.tempValue = event.target.result
+        console.log(typeof g.tempValue)
+        if (typeof g.tempValue == 'string' && g.tempValue.trim() == '') g.tempValue = ''
+      }
 			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
 			finishInit(cb, this, g)
 		}, (event) => {
