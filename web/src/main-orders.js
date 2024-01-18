@@ -86,7 +86,7 @@ function checkOnlineOrders() {
                   if (name == stallName || stallName === undefined) {
                     stallId = id
                     if (url && stallId && stallKey) {
-                      console.log('checking for orders', url, stallId, stallKey)
+                      console.log('checking for orders', url, stallId)
                       //const response = await fetch(url+'/stall/order/'+stallId+'?paid=true&shipped=false&api-key='+stallKey, {
                       const response = await fetch(url+'/stall/order/'+stallId+'?api-key='+stallKey, {
                           method: 'GET',
