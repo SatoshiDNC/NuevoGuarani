@@ -218,7 +218,7 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v))
 v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v))
 	g.type = 'button'
 	g.key = 'secret-nostrMarketWalletKey'
-	g.title = 'key'
+	g.title = 'invoicing key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {
@@ -295,27 +295,27 @@ v.gadgets.push(v.manageprices = g = new vp.Gadget(v));
 v.load = function(cb) {
 	const debuglog = true
 	{
-		const g = this.typelist, v = this;
-		g.tempValue = '';
+		const g = this.typelist, v = this
+		g.tempValue = ''
 		function finishInit(cb, v) {
-			const g = v.typelist;
-			var index = -1;
+			const g = v.typelist
+			var index = -1
 			for (var i=0; i<pricelisttypes.length; i++) {
 				if (pricelisttypes[i] == g.tempValue) {
-					index = i;
-					break;
+					index = i
+					break
 				}
 			}
-			if (index < 0) index = 0;
+			if (index < 0) index = 0
 			{ // For the GUI.
-				pricelistsettings.typelist.index = index;
-				pricelistsettings.setRenderFlag(true);
+				pricelistsettings.typelist.index = index
+				pricelistsettings.setRenderFlag(true)
 			} { // For the app function.
         pricelistsettings.typelist.appFunction()
 			} { // For persistence.
 			}
-			if (debuglog) console.log(`${g.key} ready`, g.tempValue);
-			v.loadComplete = true; cb();
+			if (debuglog) console.log(`${g.key} ready`, g.tempValue)
+			v.loadComplete = true; cb()
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
@@ -330,24 +330,24 @@ v.load = function(cb) {
 	for (const gad of [
 		'nostrmarketurl', 'nostrmarketwalletkey',
 	]) {
-		const g = this[gad];
-		g.tempValue = g.defaultValue;
+		const g = this[gad]
+		g.tempValue = g.defaultValue
 		function finishInit(v, g) {
 			{ // For the GUI.
-				g.viewport.queueLayout();
+				g.viewport.queueLayout()
 			} { // For the app function.
-				g.value = g.tempValue;
+				g.value = g.tempValue
         g.appFunction()
 			} { // For persistence.
 			}
 			delete g.tempValue;
-			if (debuglog) console.log(`${g.key} ready`, g.value);
+			if (debuglog) console.log(`${g.key} ready`, Convert.MaskIfGadgetIsSensitive(g, g.value))
 		}
 		if (debuglog) console.log("requesting", `${getCurrentAccount().id}-${g.key}`)
     PlatformUtil.DatabaseGet('settings', `${getCurrentAccount().id}-${g.key}`, (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
-			if (debuglog) console.log(`${g.key} restored`, g.tempValue)
+			if (debuglog) console.log(`${g.key} restored`, Convert.MaskIfGadgetIsSensitive(g, g.tempValue))
 			finishInit(this, g)
 		}, (event) => {
 			console.log(`error getting ${g.key}`, event)
