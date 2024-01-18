@@ -251,13 +251,14 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
     let started = 0
     let finished = 0
 
-    const tr = db.transaction(["accounts"], "readonly")
+    const objectStores = ['accounts', 'settings', 'sales', 'prices', 'inventory', 'barcodes', 'nostrmarket-orders', 'emoji', 'state', 'orders']
+    const tr = db.transaction(objectStores, "readonly")
 
     const finish = () => {
       console.log(data)
     }
 
-    for (const os of ['accounts', 'settings']) {
+    for (const os of objectStores) {
       started++
       console.log('exporting', os)
       data[os] = []
