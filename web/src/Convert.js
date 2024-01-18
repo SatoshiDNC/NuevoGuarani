@@ -98,7 +98,7 @@ class Convert {
       .join('')
   }
 
-  static MaskIfGadgetIsSensistive(g, value) {
+  static MaskIfGadgetIsSensitive(g, value) {
     return ['-sensitive-', '-secret-'].reduce((acc, val) => acc || g.key.includes(val), false)? '********': value
   }
 }
