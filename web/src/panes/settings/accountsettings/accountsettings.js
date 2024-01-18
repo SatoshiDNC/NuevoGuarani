@@ -237,11 +237,14 @@ v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 v.gadgets.push(v.export = g = new vp.Gadget(v));
   g.color = config.themeColors.uiSettingSelect
   g.nonpersistent = true
-	g.title = 'export'
+	Object.defineProperty(g, "title", {
+		get : function () { return `export '${config.accountName}'` }
+	});
   g.center = true
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
+    console.log('export')
   }
 v.load = function(cb) {
 	const debuglog = true
