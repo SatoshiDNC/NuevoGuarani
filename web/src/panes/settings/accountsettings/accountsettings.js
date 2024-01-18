@@ -248,8 +248,15 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
     const prefix = id + '-'
     console.log('export', id)
     const data = {}
+    let started = 0
+    let finished = 0
+
+    finish = () => {
+      console.log(data)
+    }
 
     data.accounts = []
+    started++
 		db.transaction(["accounts"], "readonly")
       .objectStore("accounts")
 		  .openCursor().onsuccess = (event) => {
@@ -262,10 +269,11 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
 				cursor.continue()
 			} else {
         console.log('no data')
+        finished++
+        if (finished == started) finish()
 			}
 		}
 
-    console.log(data)
 
   }
 v.load = function(cb) {
