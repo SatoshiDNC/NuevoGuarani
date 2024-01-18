@@ -146,7 +146,7 @@ v.gadgets.push(v.list = g = new vp.Gadget(v))
   g.name = 'list'
   g.hide = true
   g.enabled = !g.hide
-  g.key = 'howToPayTheDevelopers'
+  g.key = 'accountglobal-howToPayTheDevelopers'
   g.state = 0
   g.list = ['invest', 'grant', 'donate']
   g.index = -1;
@@ -206,7 +206,7 @@ v.gadgets.push(v.appdevelopment = g = new vp.Gadget(v))
 v.gadgets.push(v.lnaddr = g = new vp.Gadget(v));
   g.name = 'lnaddr'
   g.type = 'button'
-	g.key = 'lnAddrForFairShareRebates'
+	g.key = 'accountglobal-lnAddrForFairShareRebates'
 	g.title = 'Lightning address for rebates'
   g.nonpersistent = true // actually it is persistent, but we want the style
   g.daisychain = true
