@@ -268,9 +268,8 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
         const cursor = event.target.result
         if (cursor) {
           if (os.autoIncrement) {
-            for (e of cursor.value) {
-              console.log(cursor.value)
-            }
+            console.log(cursor.value)
+            //data[objectStore].push({ data: cursor.value })
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {
               //console.log('key', cursor.key)
