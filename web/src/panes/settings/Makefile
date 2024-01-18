@@ -5,8 +5,7 @@ FILES = \
 	languagesettings.js \
 	currencies/all.js \
 	currencysettings.js \
-	wallets/all.js \
-	walletsettings.js \
+	walletsettings/all.js \
 	pricelistsettings.js \
 	layoutsettings.js \
 	colorsettings.js \
@@ -24,7 +23,7 @@ all.js: $(FILES)
 clean:
 	@$(MAKE) -sC accountsettings clean # ADD DIRS AS NEEDED
 	@$(MAKE) -sC currencies clean # ADD DIRS AS NEEDED
-	@$(MAKE) -sC wallets clean # ADD DIRS AS NEEDED
+	@$(MAKE) -sC walletsettings clean # ADD DIRS AS NEEDED
 	@-rm -f all.js
 
 # Textbook subdirectory recursion
