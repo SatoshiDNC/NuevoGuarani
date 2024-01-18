@@ -244,20 +244,28 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    console.log('export', getCurrentAccount().id)
+    const id = getCurrentAccount().id
+    const prefix = id + '-'
+    console.log('export', id)
+    const data = {}
 
+    data.accounts = []
 		db.transaction(["accounts"], "readonly")
       .objectStore("accounts")
 		  .openCursor().onsuccess = (event) => {
 			const cursor = event.target.result
 			if (cursor) {
-        console.log('key', cursor.key)
+        if (cursor.key == id || cursor.key.startsWith(prefix)) {
+          console.log('key', cursor.key)
+          data.accounts.push(cursor.value)
+        }
 				cursor.continue()
 			} else {
         console.log('no data')
 			}
 		}
 
+    console.log(data)
 
   }
 v.load = function(cb) {
