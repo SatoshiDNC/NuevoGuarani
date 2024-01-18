@@ -261,24 +261,21 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
     data.version = db.version
     for (const objectStore of objectStores) {
       started++
-      //console.log('exporting', objectStore)
       data[objectStore] = []
       const os = tr.objectStore(objectStore)
       os.openCursor().onsuccess = (event) => {
         const cursor = event.target.result
         if (cursor) {
           if (os.autoIncrement) {
-            console.log(cursor.value)
-            //data[objectStore].push({ data: cursor.value })
+            if (cursor.value.store == id)
+            data[objectStore].push({ data: cursor.value })
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {
-              //console.log('key', cursor.key)
               data[objectStore].push({ key: cursor.key, data: cursor.value })
             }
           }
           cursor.continue()
         } else {
-          //console.log('no more', os, 'data')
           finished++
           if (finished == started) finish()
         }
