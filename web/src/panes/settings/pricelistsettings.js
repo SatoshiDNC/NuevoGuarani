@@ -217,7 +217,7 @@ v.gadgets.push(v.nostrmarketurl = g = new vp.Gadget(v))
   }
 v.gadgets.push(v.nostrmarketwalletkey = g = new vp.Gadget(v))
 	g.type = 'button'
-	g.key = 'secret-nostrMarketWalletKey'
+	g.key = 'sensitive-nostrMarketWalletKey'
 	g.title = 'invoicing key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
