@@ -232,7 +232,7 @@ v.gadgets.push(v.editaccount = g = new vp.Gadget(v))
 	}
 v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 	g.title = 'official details'
-  g.subtitle = ['business name', 'address', 'phone', 'tax id', 'cashier']
+  g.subtitle = ['business name', 'address', 'phone', 'TIN', 'cashier']
 	g.pane = officialdetails
 v.load = function(cb) {
 	const debuglog = true
