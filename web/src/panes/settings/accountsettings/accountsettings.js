@@ -251,7 +251,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
     let started = 0
     let finished = 0
 
-    finish = () => {
+    const finish = () => {
       console.log(data)
     }
 
