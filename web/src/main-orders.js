@@ -141,7 +141,7 @@ function checkOnlineOrders() {
                               const newOrder = {
                                 //notificationId: Convert.StringToHashCode(a.id), // exception to rule above; this member is not present for regular sales
                                 nostrMarketOrderId: id, // exception to rule above: this member is not present for regular sales
-                                store: a.id,
+                                account: a.id,
                                 status: currentState,
                                 date: new Date(),
                                 "dataentry": {
@@ -195,7 +195,7 @@ function checkOnlineOrders() {
               stallName = event.target.result
               ready()
             })
-            PlatformUtil.DatabaseGet('settings', `${a.id}-nostrMarketWalletKey`, (event) => {
+            PlatformUtil.DatabaseGet('settings', `${a.id}-secret-nostrMarketWalletKey`, (event) => {
               stallKey = event.target.result
               ready()
             })

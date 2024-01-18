@@ -267,7 +267,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
         const cursor = event.target.result
         if (cursor) {
           if (os.autoIncrement) {
-            if (cursor.value.store == id)
+            if (cursor.value.account == id)
             data[objectStore].push({ data: cursor.value })
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {

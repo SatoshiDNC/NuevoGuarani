@@ -9,7 +9,7 @@ v.saveData = function() {
   console.log('saveData()')
 	var currentState = 'saved';
 	const newItem = {
-		store: getCurrentAccount().id,
+		account: getCurrentAccount().id,
 		status: currentState,
 		date: new Date(),
 		"dataentry": {
@@ -56,8 +56,8 @@ v.loadData = function(table = 'sales') {
     while (cursor && (range === undefined || cursor.key < this.lastLoadedKey)) {
       console.log('cursor contains subsequent data')
       console.log('cursor', Convert.JSONToString(cursor.value))
-      //console.log(cursor.value.store)
-      if (cursor.value.store == getCurrentAccount().id) {
+      //console.log(cursor.value.account)
+      if (cursor.value.account == getCurrentAccount().id) {
         this.lastLoadedKey = cursor.key
         this.lastLoadedTable = table
 //				setConversionRates();

@@ -50,8 +50,8 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.name = 'lnbitskey'
   g.type = 'button'
-	g.key = 'lnbitsKeyForAppDevelopment'
-	g.title = 'key'
+	g.key = 'secret-lnbitsKeyForAppDevelopment'
+	g.title = 'spending key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {

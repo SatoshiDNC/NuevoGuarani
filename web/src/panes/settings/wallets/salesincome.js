@@ -116,8 +116,8 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
   g.name = 'lnbitskey'
   g.type = 'button'
-	g.key = '@-lnbitsKeyForSalesIncome'
-	g.title = 'API admin or invoice/read key'
+	g.key = '@-sensitive-lnbitsKeyForSalesIncome'
+	g.title = 'invoicing key'
 	Object.defineProperty(g, "subtitle", {
 		get : function () {
 			if (this.value) {

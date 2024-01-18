@@ -52,7 +52,7 @@ function openDatabase() {
 			objectStore = db.createObjectStore('settings')
 			objectStore = db.createObjectStore('sales', { autoIncrement: true })
 			objectStore = db.createObjectStore('prices')
-			objectStore = db.createObjectStore('inventory', { autoIncrement: true })
+			objectStore = db.createObjectStore('inventory', { autoIncrement: true }) // never used
 			objectStore = db.createObjectStore('barcodes')
 		}
     if (event.oldVersion < 2) { objectStore = db.createObjectStore('nostrmarket-orders') }
