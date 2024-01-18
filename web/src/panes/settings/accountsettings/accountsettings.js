@@ -246,7 +246,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
 		const g = this, v = g.viewport
     const id = getCurrentAccount().id
     const prefix = id + '-'
-    console.log('export', id)
+    //console.log('export', id)
     const data = {}
     let started = 0
     let finished = 0
@@ -258,17 +258,24 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
       console.log(data)
     }
 
-    for (const os of objectStores) {
+    data.version = db.version
+    for (const objectStore of objectStores) {
       started++
-      //console.log('exporting', os)
+      //console.log('exporting', objectStore)
       data[os] = []
-      tr.objectStore(os)
-      .openCursor().onsuccess = (event) => {
+      const os = tr.objectStore(objectStore)
+      os.openCursor().onsuccess = (event) => {
         const cursor = event.target.result
         if (cursor) {
-          if (cursor.key == id || cursor.key.startsWith(prefix)) {
-            //console.log('key', cursor.key)
-            data[os].push({ key: cursor.key, data: cursor.value })
+          if (os.autoIncrement) {
+            for (e of cursor.value) {
+              console.log(cursor.value)
+            }
+          } else {
+            if (cursor.key == id || cursor.key.startsWith(prefix)) {
+              //console.log('key', cursor.key)
+              data[os].push({ key: cursor.key, data: cursor.value })
+            }
           }
           cursor.continue()
         } else {
