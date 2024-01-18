@@ -238,7 +238,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
   g.color = config.themeColors.uiSettingSelect
   g.nonpersistent = true
 	Object.defineProperty(g, "title", {
-		get : function () { return `export '${config.accountName}'` }
+		get : function () { return `export “${icap(tr(config.accountName))}”` }
 	});
   g.center = true
 	g.button = true
