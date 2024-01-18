@@ -99,7 +99,6 @@ v.gadgets.push(v.lnbitsurl = g = new vp.Gadget(v))
 	g.clickFunc = function() {
 		const g = this
     PlatformUtil.UserPrompt(tr(g.title)+':', g.defaultValue, val => {
-      if (!val) return
       { // For the GUI.
         g.viewport.queueLayout()
       } { // For the app function.
@@ -134,7 +133,6 @@ v.gadgets.push(v.lnbitskey = g = new vp.Gadget(v));
 	g.clickFunc = function() {
 		const g = this
 		PlatformUtil.UserPrompt(tr(g.title)+':', '', val => {
-      if (!val) return
       { // For the GUI.
         g.viewport.queueLayout()
       } { // For the app function.
