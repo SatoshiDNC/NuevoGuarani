@@ -262,7 +262,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
     for (const objectStore of objectStores) {
       started++
       //console.log('exporting', objectStore)
-      data[os] = []
+      data[objectStore] = []
       const os = tr.objectStore(objectStore)
       os.openCursor().onsuccess = (event) => {
         const cursor = event.target.result
