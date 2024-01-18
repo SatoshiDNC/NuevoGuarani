@@ -3,6 +3,7 @@ all: subdirs all.js # Textbook subdirectory recursion
 FILES = \
 	accountsettings.js \
 	officialdetails/all.js \
+	exportaccount/all.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
