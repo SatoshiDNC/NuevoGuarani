@@ -244,7 +244,21 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
 	g.button = true
 	g.clickFunc = function() {
 		const g = this, v = g.viewport
-    console.log('export')
+    console.log('export', getCurrentAccount().id)
+
+		db.transaction(["accounts"], "readonly")
+      .objectStore("accounts")
+		  .openCursor().onsuccess = (event) => {
+			const cursor = event.target.result
+			if (cursor) {
+        console.log('key', cursor.key)
+				cursor.continue()
+			} else {
+        console.log('no data')
+			}
+		}
+
+
   }
 v.load = function(cb) {
 	const debuglog = true
