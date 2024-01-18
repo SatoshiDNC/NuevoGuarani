@@ -47,11 +47,13 @@ class PlatformUtil {
     }
   }
 
-  static UserPrompt(promptText, defaultValue, callback) {
+  static UserPrompt(promptText, defaultValue, okCallback, cancelCallback) {
     if (typeof Android !== 'undefined') {
-      Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(callback))
+      Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(okCallback))
     } else {
-      callback(prompt(promptText, defaultValue))
+      const result = prompt(promptText, defaultValue)
+      if (result !== null) okCallback(result)
+      else cancelCallback()
     }
   }
 
