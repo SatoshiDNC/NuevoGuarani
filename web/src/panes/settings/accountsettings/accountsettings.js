@@ -259,23 +259,24 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
 
     for (const os of ['accounts', 'settings']) {
       started++
+      console.log('exporting', os)
       data[os] = []
       tr.objectStore(os)
       .openCursor().onsuccess = (event) => {
-      const cursor = event.target.result
-      if (cursor) {
-        if (cursor.key == id || cursor.key.startsWith(prefix)) {
-          console.log('key', cursor.key)
-          data.accounts.push(cursor.value)
+        const cursor = event.target.result
+        if (cursor) {
+          if (cursor.key == id || cursor.key.startsWith(prefix)) {
+            console.log('key', cursor.key)
+            data.accounts.push(cursor.value)
+          }
+          cursor.continue()
+        } else {
+          console.log('no more', os, 'data')
+          finished++
+          if (finished == started) finish()
         }
-        cursor.continue()
-      } else {
-        console.log('no', os, 'data')
-        finished++
-        if (finished == started) finish()
       }
     }
-  }
 
 
   }
