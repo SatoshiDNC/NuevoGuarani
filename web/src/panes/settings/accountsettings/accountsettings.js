@@ -15,7 +15,6 @@ function dateToID(d) {
 		+ d.getMinutes().toString().padStart(2,'0')
 		+ d.getSeconds().toString().padStart(2,'0')
 		+ d.getMilliseconds().toString().padStart(3,'0')
-		;
 }
 
 {
@@ -277,9 +276,8 @@ v.load = function(cb) {
 			finishInit(cb, this, g)
 		})
 	}
-  if (gads.count == 0) {
-    this.loadComplete = true
-    cb()
+  if (gads.length == 0) {
+    icb(cb, this)
   }
 }
 
