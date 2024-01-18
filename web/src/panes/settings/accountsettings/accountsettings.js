@@ -234,6 +234,15 @@ v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 	g.title = 'official details'
   g.subtitle = ['business name', 'address', 'phone', 'TIN', 'cashier']
 	g.pane = officialdetails
+v.gadgets.push(v.export = g = new vp.Gadget(v));
+  g.color = config.themeColors.uiSettingSelect
+  g.nonpersistent = true
+	g.title = 'export'
+  g.center = true
+	g.button = true
+	g.clickFunc = function() {
+		const g = this, v = g.viewport
+  }
 v.load = function(cb) {
 	const debuglog = true
 	const gads = []
