@@ -268,7 +268,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
         if (cursor) {
           if (cursor.key == id || cursor.key.startsWith(prefix)) {
             console.log('key', cursor.key)
-            data[os].push(cursor.value)
+            data[os].push({ key: cursor.key, data: cursor.value })
           }
           cursor.continue()
         } else {
