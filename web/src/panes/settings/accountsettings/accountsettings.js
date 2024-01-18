@@ -257,24 +257,25 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
       console.log(data)
     }
 
-    data.accounts = []
-    started++
-    for (os of ['accounts', 'settings'])
-		tr.objectStore(os)
-		  .openCursor().onsuccess = (event) => {
-			const cursor = event.target.result
-			if (cursor) {
+    for (const os of ['accounts', 'settings']) {
+      started++
+      data[os] = []
+      tr.objectStore(os)
+      .openCursor().onsuccess = (event) => {
+      const cursor = event.target.result
+      if (cursor) {
         if (cursor.key == id || cursor.key.startsWith(prefix)) {
           console.log('key', cursor.key)
           data.accounts.push(cursor.value)
         }
-				cursor.continue()
-			} else {
+        cursor.continue()
+      } else {
         console.log('no', os, 'data')
         finished++
         if (finished == started) finish()
-			}
-		}
+      }
+    }
+  }
 
 
   }
