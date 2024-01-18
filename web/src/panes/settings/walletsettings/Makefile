@@ -1,8 +1,8 @@
 all: subdirs all.js # Textbook subdirectory recursion
 
 FILES = \
-	walletsettings.js \
 	wallets/all.js \
+	walletsettings.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
