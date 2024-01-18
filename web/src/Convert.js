@@ -97,4 +97,8 @@ class Convert {
       .map(x => x.toString(16).padStart(2, '0'))
       .join('')
   }
+
+  static MaskIfGadgetIsSensistive(g, value) {
+    return ['-sensitive-', '-secret-'].reduce((acc, val) => acc || g.key.includes(val), false)? '********': value
+  }
 }

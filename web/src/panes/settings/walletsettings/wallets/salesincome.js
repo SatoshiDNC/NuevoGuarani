@@ -295,23 +295,20 @@ v.load = function(cb) {
 		g.tempValue = g.defaultValue;
 		function finishInit(cb, v, g) {
 			{ // For the GUI.
-				g.viewport.queueLayout();
+				g.viewport.queueLayout()
 			} { // For the app function.
-				g.value = g.tempValue;
+				g.value = g.tempValue
 			} { // For persistence.
 			}
 			delete g.tempValue;
-			if (debuglog) console.log(`${g.key} ready`, g.value);
-			g.loadComplete = true; icb(cb, v);
+			if (debuglog) console.log(`${g.key} ready`, Convert.MaskIfGadgetIsSensitive(g, g.value))
+			g.loadComplete = true; icb(cb, v)
 		}
 		if (debuglog) console.log("requesting", g.key.replace('@', getCurrentAccount().id));
     PlatformUtil.DatabaseGet('settings', g.key.replace('@', getCurrentAccount().id), (event) => {
 			if (event.target.result !== undefined)
 				g.tempValue = event.target.result
-			if (debuglog) console.log(`${g.key} restored`, ['-sensitive-', '-secret-'].reduce((acc, val) => {
-        console.log('>>>', acc, val, g.key, g.key.includes(val))
-        return acc || g.key.includes(val)
-      }, false)? '********': g.tempValue)
+			if (debuglog) console.log(`${g.key} restored`, Convert.MaskIfGadgetIsSensitive(g, g.tempValue))
 			finishInit(cb, this, g)
 		}, (event) => {
 			console.log(`error getting ${g.key}`, event)
