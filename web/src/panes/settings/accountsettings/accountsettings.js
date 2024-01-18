@@ -1,5 +1,6 @@
 // forward declaration of views for setting cross-references (be sure to avoid premature use!)
 const officialdetails = new vp.View(null)
+const exportaccountsettings = new vp.View(null)
 
 var accounts = []
 function getCurrentAccount() { return accounts[accountsettings.accountlist.index] }
@@ -234,56 +235,10 @@ v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 	g.title = 'official details'
   g.subtitle = ['business name', 'address', 'phone', 'TIN', 'cashier']
 	g.pane = officialdetails
-v.gadgets.push(v.export = g = new vp.Gadget(v));
-  g.color = config.themeColors.uiSettingSelect
-  g.nonpersistent = true
-	Object.defineProperty(g, "title", {
-		get : function () { return `export “${icap(tr(config.accountName))}”` }
-	});
-  g.center = true
-	g.button = true
-	g.clickFunc = function() {
-		const g = this, v = g.viewport
-    const id = getCurrentAccount().id
-    const prefix = id + '-'
-    //console.log('export', id)
-    const data = {}
-    let started = 0
-    let finished = 0
-
-    const objectStores = ['accounts', 'settings', 'sales', 'prices', 'inventory', 'barcodes', 'nostrmarket-orders', 'emoji', 'state', 'orders']
-    const tr = db.transaction(objectStores, "readonly")
-
-    const finish = () => {
-      console.log(data)
-    }
-
-    data.version = db.version
-    for (const objectStore of objectStores) {
-      started++
-      data[objectStore] = []
-      const os = tr.objectStore(objectStore)
-      os.openCursor().onsuccess = (event) => {
-        const cursor = event.target.result
-        if (cursor) {
-          if (os.autoIncrement) {
-            if (cursor.value.account == id)
-            data[objectStore].push({ data: cursor.value })
-          } else {
-            if (cursor.key == id || cursor.key.startsWith(prefix)) {
-              data[objectStore].push({ key: cursor.key, data: cursor.value })
-            }
-          }
-          cursor.continue()
-        } else {
-          finished++
-          if (finished == started) finish()
-        }
-      }
-    }
-
-
-  }
+v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
+	g.title = 'export account'
+  g.subtitle = ['export to another device']
+	g.pane = exportaccountsettings
 v.load = function(cb) {
 	const debuglog = true
 	const gads = []
