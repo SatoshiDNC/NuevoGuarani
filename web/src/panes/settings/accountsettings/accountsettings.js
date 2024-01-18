@@ -274,7 +274,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v));
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {
               //console.log('key', cursor.key)
-              data[os].push({ key: cursor.key, data: cursor.value })
+              data[objectStore].push({ key: cursor.key, data: cursor.value })
             }
           }
           cursor.continue()
