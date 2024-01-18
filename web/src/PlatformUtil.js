@@ -52,6 +52,7 @@ class PlatformUtil {
       Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(okCallback))
     } else {
       const result = prompt(promptText, defaultValue)
+      console.log('result', result)
       if (result !== null) okCallback(result)
       else if (cancelCallback) cancelCallback()
     }
