@@ -97,6 +97,7 @@ function loadAccount() {
 	const panes = [
 		accountsettings,
     officialdetails,
+    exportaccountsettings,
 		languagesettings,
 		maincurrency,
 		cashcurrency,
