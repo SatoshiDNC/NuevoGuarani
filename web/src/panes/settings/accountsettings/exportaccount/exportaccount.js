@@ -58,6 +58,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
 
     const finish = () => {
       console.log(data)
+      PlatformUtil.DownloadURI(Convert.StringToDataURL(Convert.JSONToString(data), 'text/json'), 'account-export.json')
     }
 
     data.version = db.version

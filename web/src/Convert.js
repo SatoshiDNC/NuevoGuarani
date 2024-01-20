@@ -98,6 +98,10 @@ class Convert {
       .join('')
   }
 
+  static StringToDataURL(stringData, mimeType) {
+    return `data:${mimeType};base64,${btoa(stringData)}`
+  }
+
   static MaskIfGadgetIsSensitive(g, value) {
     return ['sensitive', 'secret'].reduce((acc, val) => {
       return acc || g.key.includes('-'+val+'-') || g.key.startsWith(val+'-')
