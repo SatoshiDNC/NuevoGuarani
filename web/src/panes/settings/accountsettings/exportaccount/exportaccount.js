@@ -6,7 +6,34 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
-v.gadgets.push(v.export = g = new vp.Gadget(v));
+v.gadgets.push(v.itemscan = g = new vp.Gadget(v))
+	g.key = 'exportInvoicingKeys'
+	g.type = 'enable'
+	g.title = 'export invoicing keys'
+	g.subtitle = 'invoicing keys are sensitive data'
+  g.state = false
+  g.daisychain = true
+	Object.defineProperty(g, "icon", {
+		get : function () { return this.state? "\x0E":"\x0D" }
+	})
+	g.appFunction = function() {
+		const g = this
+	}
+	g.clickFunc = function(index) {
+		const g = this
+		{ // For the GUI.
+			g.state = !g.state; v.setRenderFlag(true)
+		} { // For the app function.
+			if (g.appFunction) g.appFunction()
+		} { // For persistence.
+      PlatformUtil.DatabasePut('settings', g.state, `${getCurrentAccount().id}-${g.key}`, (event) => {
+				console.log(`successfully selected ${g.key}`, event)
+			}, (event) => {
+				console.log(`error selecting ${g.key}`, event)
+			})
+		}
+	}
+v.gadgets.push(v.export = g = new vp.Gadget(v))
   g.color = config.themeColors.uiSettingSelect
   g.nonpersistent = true
 	Object.defineProperty(g, "title", {

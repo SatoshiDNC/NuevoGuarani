@@ -3,8 +3,7 @@ all: subdirs all.js # Textbook subdirectory recursion
 FILES = \
 	accountsettings/all.js \
 	languagesettings.js \
-	currencies/all.js \
-	currencysettings.js \
+	currencysettings/all.js \
 	walletsettings/all.js \
 	pricelistsettings.js \
 	layoutsettings.js \
@@ -22,7 +21,7 @@ all.js: $(FILES)
 .PHONY: clean
 clean:
 	@$(MAKE) -sC accountsettings clean # ADD DIRS AS NEEDED
-	@$(MAKE) -sC currencies clean # ADD DIRS AS NEEDED
+	@$(MAKE) -sC currencysettings clean # ADD DIRS AS NEEDED
 	@$(MAKE) -sC walletsettings clean # ADD DIRS AS NEEDED
 	@-rm -f all.js
 
