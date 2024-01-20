@@ -7,7 +7,7 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
-	g.description = 'Spending keys will never be exported.'
+	g.description = 'Spending keys will never be exported. You must enter them again after importing.'
 v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	g.key = 'exportInvoicingKeys'
 	g.type = 'enable'
@@ -73,7 +73,11 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
             data[objectStore].push({ data: cursor.value })
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {
-              data[objectStore].push({ key: cursor.key, data: cursor.value })
+              if (cursor.key.indexOf('-secret-') == -1) {
+                if (cursor.key.indexOf('-sensitive-') == -1 || exportaccountsettings.invoicingkeys.state) {
+                  data[objectStore].push({ key: cursor.key, data: cursor.value })
+                }
+              }
             }
           }
           cursor.continue()
