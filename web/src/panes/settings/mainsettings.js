@@ -325,18 +325,19 @@ v.renderFunc = function() {
 					mainShapes.drawArrays6('divSettings');
 				}
 			} else if (['button','enable'].includes(g.type) || g.button) {
+        const inputstyle = g.nonpersistent && g.type != 'enable'
         let str = icap(tr(g.title))
-        let color = g.color? g.color: g.nonpersistent? th.uiSettingsSubText: th.uiSettingsText
+        let color = g.color? g.color: inputstyle? th.uiSettingsSubText: th.uiSettingsText
 				mat4.identity(mat)
 				mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5),0])
-        if (g.nonpersistent && g.subtitle) mat4.scale(mat,mat, [0.75,0.75,1])
+        if (inputstyle && g.subtitle) mat4.scale(mat,mat, [0.75,0.75,1])
 				mat4.translate(mat,mat, [0,14,0])
 				if (g.icon) {
 					if (g.icon == "\x0E") color = th.uiSettingSelect
 					iconFont.draw(0,0,g.icon,color, this.mat, mat)
 					defaultFont.draw(0,0,' ',color, this.mat, mat)
 				} else if (g.center) {
-          let scale = g.nonpersistent && g.subtitle? 0.75: 1
+          let scale = inputstyle && g.subtitle? 0.75: 1
           mat4.identity(mat)
           mat4.translate(mat,mat, [g.x+20,g.y+15+(g.subtitle?0:2.5),0])
           mat4.translate(mat,mat, [(g.w-40-defaultFont.calcWidth(str)*scale)/2,0,0])
@@ -351,11 +352,11 @@ v.renderFunc = function() {
 						if (g.subtitle.startsWith(' ')) str = g.subtitle.trim()
 						else str = icap(tr(g.subtitle))
 					}
-					color = g.nonpersistent? th.uiSettingsText: th.uiSettingsSubText
+					color = inputstyle? th.uiSettingsText: th.uiSettingsSubText
 					mat4.identity(mat)
-					mat4.translate(mat,mat, [g.x+20,g.y+(g.nonpersistent? 15*0.75: 15), 0])
+					mat4.translate(mat,mat, [g.x+20,g.y+(inputstyle? 15*0.75: 15), 0])
 					mat4.translate(mat,mat, [0,16+6,0])
-          if (!g.nonpersistent) mat4.scale(mat,mat, [0.75,0.75,1])
+          if (!inputstyle) mat4.scale(mat,mat, [0.75,0.75,1])
 					defaultFont.draw(0,14,str,color, this.mat, mat)
 				}
 			} else {
