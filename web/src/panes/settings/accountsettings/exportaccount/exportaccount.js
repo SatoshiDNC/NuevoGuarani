@@ -61,6 +61,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), 'account-export.json')
     }
 
+    data.timestamp = new Date().getTime()
     data.version = db.version
     for (const objectStore of objectStores) {
       started++
