@@ -99,7 +99,7 @@ class Convert {
   }
 
   static StringToDataURL(stringData, mimeType) {
-    return `data:${mimeType};base64,${btoa(stringData)}`
+    return `data:${mimeType};base64,${btoa(new TextEncoder().encode(stringData))}`
   }
 
   static MaskIfGadgetIsSensitive(g, value) {
