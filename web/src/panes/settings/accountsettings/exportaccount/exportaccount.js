@@ -6,12 +6,15 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
-v.gadgets.push(v.itemscan = g = new vp.Gadget(v))
+v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
+	g.description = 'Spending keys will never be exported.'
+v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	g.key = 'exportInvoicingKeys'
 	g.type = 'enable'
 	g.title = 'export invoicing keys'
 	g.subtitle = 'invoicing keys are sensitive data'
   g.state = false
+  g.nonpersistent = true
   g.daisychain = true
 	Object.defineProperty(g, "icon", {
 		get : function () { return this.state? "\x0E":"\x0D" }
