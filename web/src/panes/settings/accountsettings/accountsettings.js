@@ -238,12 +238,12 @@ v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 	g.title = 'official details'
   g.subtitle = ['business name', 'address', 'phone', 'TIN', 'cashier']
 	g.pane = officialdetails
-  g.daisychain = true
 v.gadgets.push(v.exportaccountsettings = g = new vp.Gadget(v))
 	g.title = 'export account'
   g.subtitle = ['export to another device']
 	g.pane = exportaccountsettings
-  v.gadgets.push(v.importaccountsettings = g = new vp.Gadget(v))
+  g.daisychain = true
+v.gadgets.push(v.importaccountsettings = g = new vp.Gadget(v))
 	g.title = 'import account'
   g.subtitle = ['import from another device']
 	g.pane = importaccountsettings
