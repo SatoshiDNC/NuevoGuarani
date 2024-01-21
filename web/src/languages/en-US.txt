@@ -82,6 +82,10 @@ enabled payment methods	Enabled payment methods
 enter	enter
 enumerate change due	enumerate change due
 (ex)change outflow	(Ex)change outflow
+export @	export @
+export account	export account
+export invoicing keys	export invoicing keys
+export to another device	export to another device
 external	External
 financial	financial
 How would you like to pay?	How would you like to pay?
@@ -90,6 +94,7 @@ invoice details	invoice details
 invoice number	invoice #
 invoice payments	invoice payments
 invoice subtotal	subtotal
+invoicing keys are sensitive data	invoicing keys are sensitive data
 item	item
 1 item	1 item
 @ items	@ items
@@ -119,6 +124,7 @@ none	none
 NostrMarket compatible	NostrMarket compatible
 NostrMarket stall	NostrMarket stall
 not set	Not set
+official details	official details
 only allow Lightning payments	only allow Lightning payments
 orders	orders
 pay {AMNT} sats for {DESC}	pay {AMNT} sats for {DESC}
@@ -142,6 +148,7 @@ settings	Settings
 shows how many of each denomination to return	shows how many of each denomination to return
 software license payments	software license payments
 some	some
+Spending keys will never be exported. You must enter them again when importing.	Spending keys will never be exported. You must enter them again when importing.
 stall	stall
 state	state
 strike compatible	Strike compatible

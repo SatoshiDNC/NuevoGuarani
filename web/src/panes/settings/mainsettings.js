@@ -333,9 +333,8 @@ v.renderFunc = function() {
         if (inputstyle && g.subtitle) mat4.scale(mat,mat, [0.75,0.75,1])
 				mat4.translate(mat,mat, [0,14,0])
 				if (g.icon) {
-					if (g.icon == "\x0E") color = th.uiSettingSelect
-					iconFont.draw(0,0,g.icon,color, this.mat, mat)
-					defaultFont.draw(0,0,' ',color, this.mat, mat)
+					iconFont.draw(0,0,g.icon, g.icon == "\x0E"? th.uiSettingSelect: color, this.mat, mat)
+					defaultFont.draw(0,0,' ', color, this.mat, mat)
 				} else if (g.center) {
           let scale = inputstyle && g.subtitle? 0.75: 1
           mat4.identity(mat)

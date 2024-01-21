@@ -67,6 +67,10 @@ Discard this invoice?	¿Emboyke ko factura?
 	enter	intro
 	enumerate change due	enumere su vuelto
 	(ex)change outflow	salida de cambio/vuelto
+	export @	exportar @
+	export account	exportar la cuenta
+	export invoicing keys	exportar claves de facturación
+	export to another device	exportar a otro dispositivo
 	external	Exterior
 	financial	financiero
 How would you like to pay?	¿Mba'éichapa repagase?
@@ -75,6 +79,7 @@ instant	KO'AG̃AITE
 	invoice number	factura na
 	invoice payments	pagos de facturas
 	invoice subtotal	importe total
+	invoicing keys are sensitive data	las claves de facturación son datos sensibles
 item	mba'e
 	1 item	1 artículo
 	@ items	@ artículos
@@ -104,6 +109,7 @@ no	NO
 	NostrMarket compatible	Compatible con NostrMarket
 	NostrMarket stall	puesto del NostrMarket
 	not set	No configurado
+	official details	datos oficiales
 	only allow Lightning payments	sólo permiten pagos relámpago
 	orders	pedidos
 	pay {AMNT} sats for {DESC}	pagar {AMNT} sats por {DESC}
@@ -127,6 +133,7 @@ qty	hetakue
 	shows how many of each denomination to return	muestra cuántos ejemplares de cada denominación
 	software license payments	pagos de licencias de software
 	some	algunos
+	Spending keys will never be exported. You must enter them again when importing.	Las claves de gasto nunca se exportarán. Deberá introducirlas de nuevo al importar.
 	stall	puesto
 	state	departamento
 	strike compatible	Compatible con strike

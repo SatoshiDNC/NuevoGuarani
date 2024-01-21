@@ -69,6 +69,10 @@ enabled payment methods	Aktivierte Zahlungsarten
 enter	Eingabe
 enumerate change due	Wechselgeld aufzählen
 (ex)change outflow	Abflüsse von Wechselgeld/Geldwechsel
+export @	@ exportieren
+export account	das Konto exportieren
+export invoicing keys	Schlüssel für Rechnungsstellung
+export to another device	Export auf ein anderes Gerät
 external	Extern
 financial	finanzielle
 How would you like to pay?	Wie möchten Sie bezahlen?
@@ -77,6 +81,7 @@ invoice details	Rechnungsdaten
 invoice number	Rechnungsnummer
 invoice payments	Rechnungszahlungen
 invoice subtotal	Rechnungszwischensumme
+invoicing keys are sensitive data	Schlüssel für die Rechnungsstellung sind sensible Daten
 item	Artikel
 1 item	1 Artikel
 @ items	@ Artikel
@@ -106,6 +111,7 @@ none	keine
 NostrMarket compatible	NostrMarket kompatibel
 NostrMarket stall	NostrMarket-Stand
 not set	Nicht eingestellt
+official details	offizielle Details
 only allow Lightning payments	nur Blitzzahlungen zulassen
 orders	Bestellungen
 pay {AMNT} sats for {DESC}	{AMNT} sats für {DESC} bezahlen
@@ -129,6 +135,7 @@ settings	Einstellungen
 shows how many of each denomination to return	zeigt an, wie viele der einzelnen Stückelungen
 software license payments	Zahlungen für Softwarelizenzen
 some	einige
+Spending keys will never be exported. You must enter them again when importing.	Ausgabeschlüssel werden nie exportiert. Sie müssen sie beim Importieren erneut eingeben.
 stall	Stand
 state	Staat
 strike compatible	Strike-kompatibel
