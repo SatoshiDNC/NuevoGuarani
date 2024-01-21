@@ -1,10 +1,7 @@
 all: subdirs all.js # Textbook subdirectory recursion
 
 FILES = \
-	accountsettings.js \
-	officialdetails/all.js \
-	exportaccount/all.js \
-	importaccount/all.js \
+	importaccount.js \
 
 all.js: $(FILES)
 	cat $(FILES) > all.js
@@ -12,9 +9,7 @@ all.js: $(FILES)
 # Clean files from subdirs and this dir
 .PHONY: clean
 clean:
-	@$(MAKE) -sC officialdetails clean # ADD DIRS AS NEEDED
-	@$(MAKE) -sC exportaccount clean # ADD DIRS AS NEEDED
-	@$(MAKE) -sC importaccount clean # ADD DIRS AS NEEDED
+#	@$(MAKE) -sC exportaccount clean # ADD DIRS AS NEEDED
 	@-rm -f all.js
 
 # Textbook subdirectory recursion

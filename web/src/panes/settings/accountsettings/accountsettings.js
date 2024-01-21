@@ -1,6 +1,7 @@
 // forward declaration of views for setting cross-references (be sure to avoid premature use!)
 const officialdetails = new vp.View(null)
 const exportaccountsettings = new vp.View(null)
+const importaccountsettings = new vp.View(null)
 
 var accounts = []
 function getCurrentAccount() { return accounts[accountsettings.accountlist.index] }
@@ -98,6 +99,7 @@ function loadAccount() {
 		accountsettings,
     officialdetails,
     exportaccountsettings,
+    importaccountsettings,
 		languagesettings,
 		maincurrency,
 		cashcurrency,
@@ -236,10 +238,15 @@ v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
 	g.title = 'official details'
   g.subtitle = ['business name', 'address', 'phone', 'TIN', 'cashier']
 	g.pane = officialdetails
-v.gadgets.push(v.officialdetails = g = new vp.Gadget(v))
+  g.daisychain = true
+v.gadgets.push(v.exportaccountsettings = g = new vp.Gadget(v))
 	g.title = 'export account'
   g.subtitle = ['export to another device']
 	g.pane = exportaccountsettings
+  v.gadgets.push(v.importaccountsettings = g = new vp.Gadget(v))
+	g.title = 'import account'
+  g.subtitle = ['import from another device']
+	g.pane = importaccountsettings
 v.load = function(cb) {
 	const debuglog = true
 	const gads = []
