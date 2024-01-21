@@ -413,11 +413,12 @@ v.renderFuncAux = function() {
 	const mat = mat4.create()
 	var w = v.videoDims[0], h = v.videoDims[1]
 	var x = v.vidPos[0], y = v.vidPos[1]
+  console.log(x,y,w,h)
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [x, y, 0])
 	mat4.scale(mat, mat, [w, h, 1])
 	mainShapes.useProg4()
-	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, this.mat)
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
 	mainShapes.drawArrays4('rect')
