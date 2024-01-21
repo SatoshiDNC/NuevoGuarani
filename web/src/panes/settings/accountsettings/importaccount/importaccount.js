@@ -430,7 +430,10 @@ console.log('videofeed', v.videoDims[0], v.videoDims[1])
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
+  gl.scissor(g.x, g.y, g.w, g.h)
+  gl.enable(gl.SCISSOR_TEST)
 	mainShapes.drawArrays4('rect')
+  gl.disable(gl.SCISSOR_TEST)
 
 	if (this.scanner
 	&& this.scanner.lastresult.data != ''
