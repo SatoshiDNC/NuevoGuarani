@@ -173,84 +173,86 @@ v.layoutFuncAux = function() {
 		}
 	}
 
-	// Strategy: since the video might not be proportioned to fill the entire viewport,
-  // adapt the layout for each scenario, placing the button bar in the position that
-  // results in the most pleasing aesthetic.
+  v.vidPos = [0,0]
 
-	v.vidPos = [(v.sw-v.designFit[0])/2, (v.sh-v.designFit[1])/2]
-	const view_aspect = v.w/v.h
-	const vid_aspect = v.designFit[0]/v.designFit[1]
-	const s = v.w > v.h? v.h / 400 : v.w / 400 /* button scale determined by view size */
-	var decidedlayout = ''
-	v.overlaymode = false
-	var sidemax = v.sh, bottommax = v.sw
-	if (view_aspect > vid_aspect) { // wee have blank spaces on left and right
-		const amt = v.w - v.h * vid_aspect
-		if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
-			decidedlayout = 'sidebar'
-			// if necessary, shift video slightly to ensure enough space for the buttons
-			if (Math.floor(amt/s) < 100) {
-				v.vidPos[0] = Math.ceil(50*s/v.getScale())
-			}
-		} else { // it's not enough space, so overlay and decide what looks best
-			v.overlaymode = true
-			if (view_aspect < 1) { // portrait, overlay the buttons within video frame
-				decidedlayout = 'bottombar'
-				bottommax = v.designFit[0]
-			} else { // overlay, but also shift the video fully under, not to cross the edge
-				decidedlayout = 'sidebar'
-				v.vidPos[0] = 0
-			}
-		}
-	} else { // we have blank spaces on top and bottom
-		const amt = v.h - v.w / vid_aspect
-		if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
-			decidedlayout = 'bottombar'
-			// if necessary, shift video slightly to ensure enough space for the buttons
-			if (Math.floor(amt/s) < 100) {
-				v.vidPos[1] = v.sh - v.designFit[1] - Math.ceil(50*s/v.getScale())
-			}
-		} else { // it's not enough space, so overlay and decide what looks best
-			v.overlaymode = true
-			if (view_aspect > 1) { // landscape, overlay the buttons within video frame
-				decidedlayout = 'sidebar'
-				sidemax = v.designFit[1]
-			} else { // overlay, but also shift the video fully under, not to cross the edge
-				decidedlayout = 'bottombar'
-				v.vidPos[1] = v.sh - v.designFit[1]
-			}
-		}
-	}
-	for (const g of v.gadgets) if (g.refw && g.refh) {
-		g.w = g.refw / v.getScale() * s
-		g.h = g.refh / v.getScale() * s
-	}
-	const bw = 50 / v.getScale() * s
-	switch (decidedlayout) {
-	case 'sidebar':
-		var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.h
-		var space = (sidemax - gadtotal) / (v.gadgets.length * 2)
-		var y = (v.sh - sidemax)/2
-		for (const g of v.gadgets) {
-			g.x = (bw - g.w)/2
-			g.y = y + space
-			y += space + g.h + space
-		}
-		break
-	case 'bottombar':
-		var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.w
-		var space = (bottommax - gadtotal) / (v.gadgets.length * 2)
-		var x = (v.sw - bottommax)/2
-		for (const g of v.gadgets) {
-			g.y = v.sh - bw + (bw - g.h)/2
-			g.x = x + space
-			x += space + g.w + space
-		}
-		break
-	}
-	for (const g of v.gadgets) if (g.refw && g.refh) {
-		g.autoHull()
-	}
+	// // Strategy: since the video might not be proportioned to fill the entire viewport,
+  // // adapt the layout for each scenario, placing the button bar in the position that
+  // // results in the most pleasing aesthetic.
+
+	// v.vidPos = [(v.sw-v.designFit[0])/2, (v.sh-v.designFit[1])/2]
+	// const view_aspect = v.w/v.h
+	// const vid_aspect = v.designFit[0]/v.designFit[1]
+	// const s = v.w > v.h? v.h / 400 : v.w / 400 /* button scale determined by view size */
+	// var decidedlayout = ''
+	// v.overlaymode = false
+	// var sidemax = v.sh, bottommax = v.sw
+	// if (view_aspect > vid_aspect) { // wee have blank spaces on left and right
+	// 	const amt = v.w - v.h * vid_aspect
+	// 	if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
+	// 		decidedlayout = 'sidebar'
+	// 		// if necessary, shift video slightly to ensure enough space for the buttons
+	// 		if (Math.floor(amt/s) < 100) {
+	// 			v.vidPos[0] = Math.ceil(50*s/v.getScale())
+	// 		}
+	// 	} else { // it's not enough space, so overlay and decide what looks best
+	// 		v.overlaymode = true
+	// 		if (view_aspect < 1) { // portrait, overlay the buttons within video frame
+	// 			decidedlayout = 'bottombar'
+	// 			bottommax = v.designFit[0]
+	// 		} else { // overlay, but also shift the video fully under, not to cross the edge
+	// 			decidedlayout = 'sidebar'
+	// 			v.vidPos[0] = 0
+	// 		}
+	// 	}
+	// } else { // we have blank spaces on top and bottom
+	// 	const amt = v.h - v.w / vid_aspect
+	// 	if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
+	// 		decidedlayout = 'bottombar'
+	// 		// if necessary, shift video slightly to ensure enough space for the buttons
+	// 		if (Math.floor(amt/s) < 100) {
+	// 			v.vidPos[1] = v.sh - v.designFit[1] - Math.ceil(50*s/v.getScale())
+	// 		}
+	// 	} else { // it's not enough space, so overlay and decide what looks best
+	// 		v.overlaymode = true
+	// 		if (view_aspect > 1) { // landscape, overlay the buttons within video frame
+	// 			decidedlayout = 'sidebar'
+	// 			sidemax = v.designFit[1]
+	// 		} else { // overlay, but also shift the video fully under, not to cross the edge
+	// 			decidedlayout = 'bottombar'
+	// 			v.vidPos[1] = v.sh - v.designFit[1]
+	// 		}
+	// 	}
+	// }
+	// for (const g of v.gadgets) if (g.refw && g.refh) {
+	// 	g.w = g.refw / v.getScale() * s
+	// 	g.h = g.refh / v.getScale() * s
+	// }
+	// const bw = 50 / v.getScale() * s
+	// switch (decidedlayout) {
+	// case 'sidebar':
+	// 	var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.h
+	// 	var space = (sidemax - gadtotal) / (v.gadgets.length * 2)
+	// 	var y = (v.sh - sidemax)/2
+	// 	for (const g of v.gadgets) {
+	// 		g.x = (bw - g.w)/2
+	// 		g.y = y + space
+	// 		y += space + g.h + space
+	// 	}
+	// 	break
+	// case 'bottombar':
+	// 	var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.w
+	// 	var space = (bottommax - gadtotal) / (v.gadgets.length * 2)
+	// 	var x = (v.sw - bottommax)/2
+	// 	for (const g of v.gadgets) {
+	// 		g.y = v.sh - bw + (bw - g.h)/2
+	// 		g.x = x + space
+	// 		x += space + g.w + space
+	// 	}
+	// 	break
+	// }
+	// for (const g of v.gadgets) if (g.refw && g.refh) {
+	// 	g.autoHull()
+	// }
 }
 v.renderFuncAux = function() {
 
@@ -403,6 +405,7 @@ v.renderFuncAux = function() {
 
 	if (!v.designFit || !v.vidPos) return
 	if (!this.updateFlag) return
+  g.busySignal = false
 //	this.updateFlag = false
 //	console.log('renderFunc')
 	if (!this.texture) this.texture = initTexture(gl)
