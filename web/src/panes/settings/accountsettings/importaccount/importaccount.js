@@ -40,7 +40,7 @@ v.pageBlurFunc = function() {
   v.playing = false
   v.timeupdate = false
   v.updateFlag = false
-  delete v.designFit
+  delete v.videoDims
 }
 
 v.updateFlag = false
@@ -56,7 +56,7 @@ v.switchedToFunc = function() {
 	if (!v.videoEl) {
 		v.videoEl = document.getElementById('scan1')
 		v.videoEl.addEventListener("loadedmetadata", function (e) {
-			v.designFit = [v.videoWidth, v.videoHeight]
+			v.videoDims = [v.videoWidth, v.videoHeight]
 			v.queueLayout()
 		}, false)
 		v.videoEl.addEventListener("playing", () => {
@@ -93,7 +93,7 @@ v.switchedToFunc = function() {
 				this.playing = false
 				this.timeupdate = false
 				this.updateFlag = false
-				delete this.designFit
+				delete this.videoDims
 				payinvconf.data = result.data.toLowerCase()
 				var root = menudiv, v = payinvconf
 				root.b = v; v.parent = root
@@ -122,7 +122,7 @@ v.switchedToFunc = function() {
 							this.playing = false
 							this.timeupdate = false
 							this.updateFlag = false
-							delete this.designFit
+							delete this.videoDims
 							displayreceipt.setData(data)
 							pmtrcptmain.userY = 0
 							var root = menudiv, v = displayreceipt
@@ -162,10 +162,10 @@ v.switchedToFunc = function() {
 v.layoutFuncAux = function() {
 	const v = this
 	if (!this.videoEl) return
-	if (!v.designFit) return
-	if (this.videoEl.videoWidth  != v.designFit[0]
-	||  this.videoEl.videoHeight != v.designFit[1]) {
-		this.designFit = [this.videoEl.videoWidth, this.videoEl.videoHeight]
+	if (!v.videoDims) return
+	if (this.videoEl.videoWidth  != v.videoDims[0]
+	||  this.videoEl.videoHeight != v.videoDims[1]) {
+		this.videoDims = [this.videoEl.videoWidth, this.videoEl.videoHeight]
 		this.queueLayout()
 		if (this.scanner) {
 			this.scanner.stop()
@@ -403,7 +403,7 @@ v.renderFuncAux = function() {
     return
   }
 
-	if (!v.designFit || !v.vidPos) return
+	if (!v.videoDims || !v.vidPos) return
 	if (!this.updateFlag) return
   g.busySignal = false
 //	this.updateFlag = false
@@ -411,7 +411,7 @@ v.renderFuncAux = function() {
 	if (!this.texture) this.texture = initTexture(gl)
   updateTexture(gl, this.texture, this.videoEl)
 	const mat = mat4.create()
-	var w = v.designFit[0], h = v.designFit[1]
+	var w = v.videoDims[0], h = v.videoDims[1]
 	var x = v.vidPos[0], y = v.vidPos[1]
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [x, y, 0])
@@ -455,7 +455,7 @@ v.renderFuncAux = function() {
 	}
 
   mainShapes.useProg2()
-	var s = v.designFit[0] < v.designFit[1]? v.designFit[0]: v.designFit[1]
+	var s = v.videoDims[0] < v.videoDims[1]? v.videoDims[0]: v.videoDims[1]
 	w = s * 0.9; h = s * 0.9
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
 /*
@@ -479,7 +479,7 @@ v.renderFuncAux = function() {
 */
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]))
 	mat4.identity(mat)
-	mat4.translate(mat, mat, [x + (v.designFit[0] - w)/2, y + (v.designFit[1] - h)/2, 0])
+	mat4.translate(mat, mat, [x + (v.videoDims[0] - w)/2, y + (v.videoDims[1] - h)/2, 0])
 	mat4.scale(mat, mat, [w, h, 1])
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
 	mainShapes.drawArrays2('scanbox')
