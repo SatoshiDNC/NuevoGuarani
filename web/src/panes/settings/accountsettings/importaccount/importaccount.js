@@ -399,9 +399,9 @@ v.renderFuncAux = function() {
     defaultFont.draw(0,0,str,config.themeColors.uiText,v.mat, m)
   }
   if (g.busySignal) setTimeout(g.timeoutFunc, 100)
-  if (earlyreturn) {
-    return
-  }
+  // if (earlyreturn) {
+  //   return
+  // }
 
   console.log(v.videoDims, v.vidPos)
 	if (!v.videoDims || !v.vidPos) return
