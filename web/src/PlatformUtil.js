@@ -162,9 +162,35 @@ class PlatformUtil {
 
   static DownloadURI(uri, name) {
     if (typeof Android !== 'undefined') {
+
+      // hacky port from Java
+      function decodeDataURL(url) {
+        if (!url.startsWith("data")) {
+          console.log("Not a data url: " + url);
+          return
+        }
+        const comma = url.indexOf(',');
+        let beforeData = url.substring("data:".length, comma);
+        const base64 = beforeData.endsWith(";base64");
+        if (base64) {
+          beforeData = beforeData.substring(0, beforeData.length - 7);
+        }
+        const mediaType = undefined // extractMediaType(beforeData);
+        const charset = undefined // extractCharset(beforeData);
+        let data = url.substring(comma + 1) // .getBytes(charset);
+        if (base64) {
+          data = atob(data) // Base64.decodeBase64(decodeUrl(data));
+        }
+        else {
+          // data = URLCodec.decodeUrl(data);
+        }
+        return data
+      }
+      const content = decodeDataURL(uri)
+      
       const successSlot = PlatformUtil.InitCallback((event) => { console.debug('Download request succeeded from Android side.') })
       const failureSlot = PlatformUtil.InitCallback((event) => { console.debug('Download request failed from Android side.') })
-      Android.downloadURI(uri, name, successSlot, failureSlot)
+      Android.downloadURI(content, name, successSlot, failureSlot)
       PlatformUtil.DeleteCallback(successSlot)
       PlatformUtil.DeleteCallback(failureSlot)
     } else {

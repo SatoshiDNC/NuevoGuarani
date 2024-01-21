@@ -6,6 +6,11 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
+v.pageFocusFunc = function() {
+  const v = this
+  v.result.hide = true
+  v.queueLayout()
+}
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
 	g.description = 'Spending keys will never be exported. You must enter them again after importing.'
 v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
@@ -57,11 +62,15 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
     const tr = db.transaction(objectStores, "readonly")
 
     const finish = () => {
-      console.log(data)
-      PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), 'account-export.json')
+      const filename = 'account-export.ng'
+      PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
+      v.result.description = `Saved to Downloads as '${filename}'.`
+      v.result.hide = false
+      v.queueLayout()
     }
 
     data.timestamp = new Date().getTime()
+    data.type = 'export'
     data.version = db.version
     for (const objectStore of objectStores) {
       started++
@@ -92,6 +101,9 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
 
 
   }
+v.gadgets.push(v.result = g = new vp.Gadget(v))
+	g.description = 'Account exported.'
+  g.hide = true
 v.load = function(cb) {
 	const debuglog = true
 	const gads = []

@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
@@ -32,6 +33,16 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -312,19 +323,33 @@ public class WebUtils {
 
     @JavascriptInterface
     public void downloadURI(String uri, String name, int successCallback, int failureCallback) {
-        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri typedUri = Uri.parse(uri);
-        DownloadManager.Request request = new DownloadManager.Request(typedUri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-        long reference = manager.enqueue(request);
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    File destinationFilename = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                    String[] tokens = name.split("\\.(?=[^\\.]+$)");
+                    int i = 1;
+                    while (destinationFilename.exists()) {
+                        destinationFilename = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), tokens[0] + " (" + i + ")." + tokens[1]);
+                        i++;
+                    }
+                    PrintWriter out = new PrintWriter(destinationFilename);
+                    out.println(uri);
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
 
-        String cb = "Android.Callback(" + successCallback + ")";
-        Log.d("DEBUG", "callback: " + cb);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            view.evaluateJavascript(cb, null);
-        } else {
-            view.loadUrl("javascript:" + cb);
-        }
+                String cb = "Android.Callback(" + successCallback + ")";
+                Log.d("DEBUG", "callback: " + cb);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    view.evaluateJavascript(cb, null);
+                } else {
+                    view.loadUrl("javascript:" + cb);
+                }
+            }
+        });
     }
 
     private int mBackCallback = 0;
