@@ -372,6 +372,7 @@ v.renderFuncAux = function() {
   mainShapes.drawArrays2('rect')
 //console.log(g.busySignal, g.busyCounter)
   const iconSize = [2,2,1]
+  const crosshairColor = [1,1,1,1]
   if (g.busySignal) {
     g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
 
@@ -380,13 +381,13 @@ v.renderFuncAux = function() {
     //mat4.scale(m,m,[w,w,1])
     mat4.scale(m,m,iconSize)
     mat4.rotate(m,m, g.busyCounter, [0,0,1])
-    iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
+    iconFont.draw(-10,7,"\x0A",crosshairColor,v.mat, m)
 
   } else if (g.walletSignal) {
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
     mat4.scale(m,m,iconSize)
-    financeGraphicsFont.draw(-8.5,8.5,"\x08",config.themeColors.uiText,v.mat, m)
+    financeGraphicsFont.draw(-8.5,8.5,"\x08",crosshairColor,v.mat, m)
   } else if (g.errorSignal) {
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
@@ -401,7 +402,7 @@ v.renderFuncAux = function() {
     mat4.translate(m,m,[x+w/2,y+w/2,0])
     mat4.scale(m,m,iconSize)
     mat4.translate(m,m,[-tw/2,7,0])
-    defaultFont.draw(0,0,str,config.themeColors.uiText,v.mat, m)
+    defaultFont.draw(0,0,str,crosshairColor,v.mat, m)
   }
   if (g.busySignal) setTimeout(g.timeoutFunc, 100)
   // if (earlyreturn) {
@@ -471,7 +472,7 @@ v.renderFuncAux = function() {
 
   mainShapes.useProg2()
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
-	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]))
+	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array(crosshairColor))
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [g.x + (g.w - g.w * 0.9)/2, g.y + (g.h - g.h * 0.9)/2, 0])
 	mat4.scale(mat, mat, [g.w * 0.9, g.h * 0.9, 1])
