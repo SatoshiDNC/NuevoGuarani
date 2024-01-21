@@ -411,12 +411,14 @@ v.renderFuncAux = function() {
 	if (!this.texture) this.texture = initTexture(gl)
   updateTexture(gl, this.texture, this.videoEl)
 	const mat = mat4.create()
-	var w = v.videoDims[0], h = v.videoDims[1]
-	var x = v.vidPos[0], y = v.vidPos[1]
+	// var w = v.videoDims[0], h = v.videoDims[1]
+	// var x = v.vidPos[0], y = v.vidPos[1]
+	var w = g.w, h = g.h
+	var x = g.x, y = g.y
   console.log(x,y,w,h)
 	mat4.identity(mat)
-	mat4.translate(mat, mat, [g.x, g.y, 0])
-	mat4.scale(mat, mat, [g.w, g.h, 1])
+	mat4.translate(mat, mat, [x, y, 0])
+	mat4.scale(mat, mat, [w, h, 1])
 	mainShapes.useProg4()
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
