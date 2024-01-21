@@ -103,7 +103,7 @@ v.switchedToFunc = function() {
 			// && typeof(ob[0]) == 'number' && ob[0] > 0
 			// && typeof(ob[1]) == 'number' && ob[0] <= ob[1]) {
       if (result.data.match(/[0-9]+\/[0-9]+:/)) {
-        console.log(this.results[m-1])
+        console.log(result.data)
         const slashPos = result.data.indexOf('/')
         const colonPos = result.data.indexOf(':')
         const payload = result.data.substring(colonPos+1)
