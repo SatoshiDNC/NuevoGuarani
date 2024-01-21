@@ -403,7 +403,6 @@ v.renderFuncAux = function() {
   //   return
   // }
 
-  console.log(v.videoDims, v.vidPos)
 	if (!v.videoDims || !v.vidPos) return
 	if (!this.updateFlag) return
   g.busySignal = false
@@ -416,8 +415,8 @@ v.renderFuncAux = function() {
 	var x = v.vidPos[0], y = v.vidPos[1]
   console.log(x,y,w,h)
 	mat4.identity(mat)
-	mat4.translate(mat, mat, [x, y, 0])
-	mat4.scale(mat, mat, [w, h, 1])
+	mat4.translate(mat, mat, [g.x, g.y, 0])
+	mat4.scale(mat, mat, [g.w, g.h, 1])
 	mainShapes.useProg4()
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
