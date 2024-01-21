@@ -489,7 +489,7 @@ v.renderFuncAux = function() {
 */
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]))
 	mat4.identity(mat)
-	mat4.translate(mat, mat, [x + (v.videoDims[0] - w)/2, y + (v.videoDims[1] - h)/2, 0])
+	mat4.translate(mat, mat, [x + (w - g.w)/2, y + (h - g.h)/2, 0])
 	mat4.scale(mat, mat, [w, h, 1])
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
 	mainShapes.drawArrays2('scanbox')
