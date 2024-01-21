@@ -129,40 +129,35 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   g.clear()
   g.renderFunc = function () {
     const g = this, v = g.viewport
-    console.log('renderFunc')
     let earlyreturn = 0
     if (this.triggerPad || this.qr.length == 0) {
-      console.log('a')
       delete this.triggerPad
       this.pad = 10
       v.setRenderFlag(true)
       earlyreturn = 1
     }
     if (!earlyreturn && this.pad > 0) {
-      console.log('b')
       this.pad -= 1
       v.setRenderFlag(true)
       earlyreturn = 1
     }
     if (!earlyreturn && this.pad == 0) {
-      console.log('c')
       this.pad = -1
       this.qrindex = -1
       this.reftime = Date.now()
     }
     if (this.qr.length == 0 || this.copiedSignal) {
-      console.log('d')
       earlyreturn = 1
     }
   
     // Transitional gray placeholder or white background.
-    var w = Math.min(v.sw, v.sh) * (earlyreturn?0.9:1)
-    var x = (v.sw - w) / 2
-    var y = (v.sh - w) / 2
+    var w = Math.min(g.w, g.h) * (earlyreturn?0.9:1)
+    var x = (g.w - w) / 2
+    var y = (g.h - w) / 2
     mainShapes.useProg2()
     const m = mat4.create()
     mat4.identity(m)
-    mat4.translate(m,m,[x,y,0])
+    mat4.translate(m,m,[g.x+x,g.y+y,0])
     mat4.scale(m,m,[w,w,1])
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
