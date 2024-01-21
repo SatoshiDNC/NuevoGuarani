@@ -7,6 +7,15 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
+  g.busyCounter = 0
+  g.clear = function() {
+    this.busySignal = false
+    this.errorSignal = false
+    this.walletSignal = false
+    this.copiedSignal = false
+    this.triggerPad = true
+  }
+  g.clear()
   g.layoutFunc = function () {
     const g = this, v = g.viewport
     g.h = g.w
@@ -147,6 +156,7 @@ v.switchedToFunc = function() {
 	this.scanner.results = []
 	this.scanner.lastresult = {data: ''}
 	this.scanner.start()
+  this.qrscanner.busySignal = true
 }
 
 v.layoutFuncAux = function() {
@@ -322,10 +332,75 @@ v.renderFuncAux = function() {
   */
   }
 
-	const th = config.themeColors, v = this
-	// gl.clearColor(...th.uiBackground)
-	// gl.clear(gl.COLOR_BUFFER_BIT)
-	this.setRenderFlag(true)
+	const th = config.themeColors, v = this, g = v.qrscanner
+	v.setRenderFlag(true)
+
+  let earlyreturn = 0
+  if (g.triggerPad || true) {
+    delete g.triggerPad
+    g.pad = 10
+    earlyreturn = 1
+  }
+  if (!earlyreturn && g.pad > 0) {
+    g.pad -= 1
+    earlyreturn = 1
+  }
+  if (!earlyreturn && this.pad == 0) {
+    g.pad = -1
+    g.qrindex = -1
+    g.reftime = Date.now()
+  }
+  if (true || g.copiedSignal) {
+    earlyreturn = 1
+  }
+
+  // Transitional gray placeholder or white background.
+  var w = Math.min(g.w, g.h) * (earlyreturn?0.9:1)
+  var x = g.x + (g.w - w) / 2
+  var y = g.y + (g.h - w) / 2
+  mainShapes.useProg2()
+  const m = mat4.create()
+  mat4.identity(m)
+  mat4.translate(m,m,[x,y,0])
+  mat4.scale(m,m,[w,w,1])
+  gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
+  gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+    new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]))
+  gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
+  mainShapes.drawArrays2('rect')
+//console.log(g.busySignal, g.busyCounter)
+  if (g.busySignal) {
+    g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
+
+    mat4.identity(m)
+    mat4.translate(m,m,[x+w/2,y+w/2,0])
+    //mat4.scale(m,m,[w,w,1])
+    mat4.rotate(m,m, g.busyCounter, [0,0,1])
+    iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
+
+  } else if (g.walletSignal) {
+    mat4.identity(m)
+    mat4.translate(m,m,[x+w/2,y+w/2,0])
+    financeGraphicsFont.draw(-8.5,8.5,"\x08",config.themeColors.uiText,v.mat, m)
+  } else if (g.errorSignal) {
+    mat4.identity(m)
+    mat4.translate(m,m,[x+w/2,y+w/2,0])
+    //mat4.scale(m,m,[w,w,1])
+    //mat4.rotate(m,m, g.busyCounter, [0,0,1])
+    iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
+  } else if (g.copiedSignal) {
+    let str = icap(tr("copied"))
+    let tw = defaultFont.calcWidth(str)
+    mat4.identity(m)
+    mat4.translate(m,m,[x+w/2,y+w/2,0])
+    mat4.translate(m,m,[-tw/2,7,0])
+    defaultFont.draw(0,0,str,config.themeColors.uiText,v.mat, m)
+  }
+  if (g.busySignal) setTimeout(g.timeoutFunc, 100)
+  if (earlyreturn) {
+    return
+  }
+
 	if (!v.designFit || !v.vidPos) return
 	if (!this.updateFlag) return
 //	this.updateFlag = false
