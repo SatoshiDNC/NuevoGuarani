@@ -103,15 +103,18 @@ v.switchedToFunc = function() {
 			// && typeof(ob[0]) == 'number' && ob[0] > 0
 			// && typeof(ob[1]) == 'number' && ob[0] <= ob[1]) {
       if (result.data.match(/[0-9]+\/[0-9]+:/)) {
+        console.log(this.results[m-1])
         const slashPos = result.data.indexOf('/')
         const colonPos = result.data.indexOf(':')
+        const payload = result.data.substring(colonPos+1)
+        console.log(payload)
         const m = result.data.substring(0,slashPos)
         const n = result.data.substring(slashPos+1,colonPos)
 				if (this.results.length == 0) {
           this.results = Array(n).join(".").split(".")
 				}
 				if (n == this.results.length && this.results[m-1] != result.data.substring(colonPos+1)) {
-					this.results[m-1] = result.data.substring(colonPos+1)
+					this.results[m-1] = payload
           console.log(this.results[m-1])
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
