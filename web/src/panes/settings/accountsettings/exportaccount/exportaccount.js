@@ -152,12 +152,12 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   
     // Transitional gray placeholder or white background.
     var w = Math.min(g.w, g.h) * (earlyreturn?0.9:1)
-    var x = (g.w - w) / 2
-    var y = (g.h - w) / 2
+    var x = g.x + (g.w - w) / 2
+    var y = g.y + (g.h - w) / 2
     mainShapes.useProg2()
     const m = mat4.create()
     mat4.identity(m)
-    mat4.translate(m,m,[g.x+x,g.y+y,0])
+    mat4.translate(m,m,[x,y,0])
     mat4.scale(m,m,[w,w,1])
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
