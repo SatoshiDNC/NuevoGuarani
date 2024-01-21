@@ -81,7 +81,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       let notSuccessful = true
       do {
         v.qrcode.qr = []
-        buffer = payload
+        let buffer = payload
         let i = 0, j = Math.ceil((buffer.length + 4) / maxLen)
         while (buffer != '') {
           i++
