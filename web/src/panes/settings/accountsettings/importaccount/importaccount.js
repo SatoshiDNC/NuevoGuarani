@@ -416,10 +416,10 @@ v.renderFuncAux = function() {
 	var w = g.w, h = g.h
 	var x = g.x, y = g.y
   if (v.videoDims[0] > v.videoDims[1]) {
-    w = g.h
+    w = g.h / v.videoDims[1] * v.videoDims[0]
     x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
   } else {
-    h = g.w
+    w = g.w / v.videoDims[0] * v.videoDims[1]
     y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
   }
   console.log(x,y,w,h)
