@@ -13,8 +13,26 @@ v.pageFocusFunc = function() {
   v.qrcode.clear()
   v.queueLayout()
 }
+// v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
+// 	g.description = 'Spending keys will never be exported. You must enter them again when importing.'
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
-	g.description = 'Spending keys will never be exported. You must enter them again when importing.'
+	g.key = 'exportSpendingKeys'
+	g.type = 'enable'
+	g.title = 'export spending keys'
+	g.subtitle = 'spending keys are secret data'
+  g.state = false
+  g.nonpersistent = true
+  g.daisychain = true
+	Object.defineProperty(g, "icon", {
+		get : function () { return this.state? "\x0E":"\x0D" }
+	})
+	g.appFunction = function() {
+		const g = this
+	}
+	g.clickFunc = function(index) {
+		const g = this
+    g.state = !g.state; v.setRenderFlag(true)
+	}
 v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	g.key = 'exportInvoicingKeys'
 	g.type = 'enable'
@@ -31,17 +49,7 @@ v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	}
 	g.clickFunc = function(index) {
 		const g = this
-		{ // For the GUI.
-			g.state = !g.state; v.setRenderFlag(true)
-		} { // For the app function.
-			if (g.appFunction) g.appFunction()
-		} { // For persistence.
-      PlatformUtil.DatabasePut('settings', g.state, `${getCurrentAccount().id}-${g.key}`, (event) => {
-				console.log(`successfully selected ${g.key}`, event)
-			}, (event) => {
-				console.log(`error selecting ${g.key}`, event)
-			})
-		}
+    g.state = !g.state; v.setRenderFlag(true)
 	}
 v.gadgets.push(v.export = g = new vp.Gadget(v))
   g.color = config.themeColors.uiSettingSelect
@@ -89,10 +97,16 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
             data[objectStore].push({ data: cursor.value })
           } else {
             if (cursor.key == id || cursor.key.startsWith(prefix)) {
-              if (cursor.key.indexOf('-secret-') == -1) {
-                if (cursor.key.indexOf('-sensitive-') == -1 || exportaccountsettings.invoicingkeys.state) {
+              if (cursor.key.indexOf('-secret-') != -1) {
+                if (exportaccountsettings.spendingkeys.state) {
                   data[objectStore].push({ key: cursor.key, data: cursor.value })
                 }
+              } else if (cursor.key.indexOf('-sensitive-') != -1) {
+                if (exportaccountsettings.invoicingkeys.state) {
+                  data[objectStore].push({ key: cursor.key, data: cursor.value })
+                }
+              } else {
+                data[objectStore].push({ key: cursor.key, data: cursor.value })
               }
             }
           }
