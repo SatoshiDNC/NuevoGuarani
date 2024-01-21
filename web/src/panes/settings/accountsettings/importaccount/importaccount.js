@@ -406,12 +406,9 @@ v.renderFuncAux = function() {
 	if (v.videoDims && v.vidPos && v.updateFlag) {
     g.busySignal = false
   //	this.updateFlag = false
-  //	console.log('renderFunc')
     if (!this.texture) this.texture = initTexture(gl)
     updateTexture(gl, this.texture, this.videoEl)
     const mat = mat4.create()
-    // var w = v.videoDims[0], h = v.videoDims[1]
-    // var x = v.vidPos[0], y = v.vidPos[1]
     var w = g.w, h = g.h
     var x = g.x, y = g.y
     if (v.videoDims[0] > v.videoDims[1]) {
@@ -468,38 +465,13 @@ v.renderFuncAux = function() {
 	}
 
   mainShapes.useProg2()
-	var s = v.videoDims[0] < v.videoDims[1]? v.videoDims[0]: v.videoDims[1]
-	w = s * 0.9; h = s * 0.9
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
-/*
-	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-		new Float32Array([0,0,0,0.5]));
-	for (var i=0; i<4; i++) {
-		mat4.identity(mat);
-		switch(i) {
-		case 0:	mat4.translate(mat, mat, [0, 0, 0]);
-						mat4.scale(mat, mat, [v.sw, (v.sh-h)/2, 1]); break;
-		case 1:	mat4.translate(mat, mat, [0, (v.sh-h)/2, 0]);
-						mat4.scale(mat, mat, [(v.sw-w)/2, h, 1]); break;
-		case 2:	mat4.translate(mat, mat, [v.sw - (v.sw-w)/2, (v.sh-h)/2, 0]);
-						mat4.scale(mat, mat, [(v.sw-w)/2, h, 1]); break;
-		case 3:	mat4.translate(mat, mat, [0, v.sh - (v.sh-h)/2, 0]);
-						mat4.scale(mat, mat, [v.sw, (v.sh-h)/2, 1]); break;
-		}
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat);
-		mainShapes.drawArrays2('rect');
-	}
-*/
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array([1,1,1,1]))
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [g.x + (g.w - g.w * 0.9)/2, g.y + (g.h - g.h * 0.9)/2, 0])
 	mat4.scale(mat, mat, [g.w * 0.9, g.h * 0.9, 1])
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
 	mainShapes.drawArrays2('scanbox')
-
-	// for (const g of this.gadgets) {
-	// 	if (g.renderFunc) g.renderFunc.call(g)
-	// }
 }
 
 v.load = function(cb) {
