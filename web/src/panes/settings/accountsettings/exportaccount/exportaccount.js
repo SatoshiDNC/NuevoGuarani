@@ -225,9 +225,9 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     }
     if (this.qrindex < 0) this.qrindex = 0
   
-    w = Math.min(v.sw, v.sh) * 0.9
-    x = (v.sw - w) / 2
-    y = (v.sh - w) / 2
+    w = Math.min(g.w, g.h) * 0.9
+    x = g.x + (g.w - w) / 2
+    y = g.y + (g.h - w) / 2
     mat4.identity(m)
     mat4.translate(m,m,[x,y,0])
     mat4.scale(m,m,[w,w,1])
