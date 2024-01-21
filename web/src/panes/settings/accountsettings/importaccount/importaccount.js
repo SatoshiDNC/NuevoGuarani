@@ -110,14 +110,15 @@ v.switchedToFunc = function() {
 				if (this.results.length == 0) {
           this.results = Array(n).join(".").split(".")
 				}
-				if (this.results[m-1] != result.data.substring(colonPos+1)) {
+				if (n == this.results.length && this.results[m-1] != result.data.substring(colonPos+1)) {
 					this.results[m-1] = result.data.substring(colonPos+1)
+          console.log(this.results[m-1])
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
 						beeptype = 'qr-part'
 						break
 					}
-					if (beeptype == 'qr-scan' && n == this.results.length) {
+					if (beeptype == 'qr-scan') {
 						var data = this.results.join('').trim()
             console.log(data)
             if ((ob = tryParseJSONObject(data)) !== false) {
@@ -467,7 +468,7 @@ v.renderFuncAux = function() {
 		mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
 		mat4.scale(m, m, [0.14, -0.14, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
-		var tris = len2.pies/3
+		var tris = mainShapes.len2.pies/3
 		var parts = this.scanner.results.length
 		for (var i=0; i<parts; i++) if (this.scanner.results[i] != '') {
 			var beg = Math.round(tris * i / parts)
