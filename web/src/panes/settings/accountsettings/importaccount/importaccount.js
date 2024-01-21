@@ -357,7 +357,7 @@ v.renderFuncAux = function() {
   }
 
   // Transitional gray placeholder or white background.
-  var w = Math.min(g.w, g.h) * (earlyreturn?0.9:1)
+  var w = Math.min(g.w, g.h) // * (earlyreturn?0.9:1)
   var x = g.x + (g.w - w) / 2
   var y = g.y + (g.h - w) / 2
   mainShapes.useProg2()
@@ -431,7 +431,7 @@ console.log('videofeed', v.videoDims[0], v.videoDims[1])
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
 	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
   const vs = v.viewScale
-  gl.scissor(g.x * vs, v.H - v.y - (g.y + g.h) * vs, g.w * vs, g.h * vs)
+  gl.scissor(v.x + g.x * vs, v.H - v.y - (g.y + g.h) * vs, g.w * vs, g.h * vs)
   gl.enable(gl.SCISSOR_TEST)
 	mainShapes.drawArrays4('rect')
   gl.disable(gl.SCISSOR_TEST)
