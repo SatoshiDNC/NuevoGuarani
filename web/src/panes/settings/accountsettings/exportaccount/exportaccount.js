@@ -70,7 +70,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       let payload = JSON.stringify(data)
       v.qrcode.busySignal = true
       v.qrcode.hide = false
-      v.qrcode.qr = [payload]
+      v.qrcode.qr = ['test']
       v.queueLayout()
     }
 
