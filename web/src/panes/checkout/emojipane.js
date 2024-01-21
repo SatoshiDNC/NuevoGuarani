@@ -7,12 +7,12 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v));
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN;
 v.controlOffset = 2; // number of control icons
 v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
-	g.actionFlags = vp.GAF_CLICKABLE;
+	g.actionFlags = vp.GAF_CLICKABLE | vp.GAF_BACKNAV;
 	g.x = 0; g.y = 0;
 	g.clickFunc = function(e) {
 		const g = this, v = g.viewport
-		const i = Math.floor((e.x+v.userX*v.viewScale)/v.w*v.gridX)
-		const j = Math.floor((e.y+v.userY*v.viewScale)/v.w*v.gridX)
+		const i = e? Math.floor((e.x+v.userX*v.viewScale)/v.w*v.gridX): 0 // (0, 0) for back nav
+		const j = e? Math.floor((e.y+v.userY*v.viewScale)/v.w*v.gridX): 0
     const index = i+j*v.gridX - v.controlOffset
     if (index == -2) { // cancel
 			vp.popRoot()
@@ -25,21 +25,13 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
 			if (this.viewport.callback) this.viewport.callback.call(undefined, config.priceList.thumbnailData[index].label)
 		}
 	}
-v.gadgets.push(v.backGad = g = new vp.Gadget(v));
-	g.actionFlags = vp.GAF_BACKNAV; // this gadget is solely for Android integration; regular taps are via gridGad above
-	g.x = 0; g.y = 0;
-	g.clickFunc = function(e) {
-		const g = this, v = g.viewport
-    vp.popRoot()
-    if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'cancel')
-	}
 v.layoutFunc = function() {
 	const v = this;
 
 	let w = Math.round(Math.sqrt(100 * v.sw / v.sh));
 	if (w != v.lastBuilt) {
 		v.lastBuilt = w;
-		let i=v.controlOffset, j=0, x=w, y=0;
+		let i=v.controlOffset, j=0, x=w, y=1;
 		let data = [];
 		const nx = config.priceList.thumbnailsPerRow, ny = config.priceList.thumbnailsPerColumn;
 		let category = '';
@@ -69,9 +61,6 @@ v.layoutFunc = function() {
 	if (v.swipeGad) v.swipeGad.layout.call(v.swipeGad);
 
 	let g
-  g = v.backGad
-    g.w = v.sw/v.gridX; g.h = g.w
-    g.autoHull()
 	g = v.gridGad
     g.w = v.sw; g.h = v.maxY
     g.autoHull()
