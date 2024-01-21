@@ -76,9 +76,15 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
       //v.result.description = `Saved to Downloads as '${filename}'.`
       let payload = JSON.stringify(data)
-      v.qrcode.busySignal = true
+      const maxLen = 128
+      v.qrcode.qr = []
+      while (payload != '') {
+        let part = payload.substring(0,maxLen)
+        payload = payload.substring(maxLen)
+        if (part.length < maxLen) part = (part + String.fromCharCode(Math.floor(Math.random()*26)+65).repeat(maxLen)).substring(0,maxLen)
+        v.qrcode.qr.push(part)
+      }
       v.qrcode.hide = false
-      v.qrcode.qr = ['testsdfgsdfgsdgfsfdgsdfgsdfgsdfgsgfsdfgsdfgsdfgsfdgsfdgsfdgsdfgsgsdfgsfgsgsdfgsdfgsfdgsfgsfg','this']
       v.queueLayout()
     }
 
@@ -210,7 +216,6 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     if (earlyreturn) {
       return
     }
-    console.log('e')
   //	if (this.qr.length == 1 && (
   //			this.qr[0].startsWith('lnbc')
   //	||  this.qr[0].startsWith('lnurl'))) {
