@@ -9,9 +9,7 @@ class PlatformUtil {
       Android.Callback = function(slot, result) {
         if (slot < 0) return
         const cb = Android._CallbackQueue[slot]
-        delete Android._CallbackQueue[slot]
-        console.log("slot " + slot + "/" + Android._CallbackQueue.length + " deleted from callback queue")
-        cb(result)
+        cb(slot, result)
       }
     }
   }
@@ -31,6 +29,10 @@ class PlatformUtil {
     console.log("slot " + slot + "/" + Android._CallbackQueue.length + " added to callback queue")
     return slot
   }
+  static DeleteCallback(slot) {
+    delete Android._CallbackQueue[slot]
+    console.log("slot " + slot + "/" + Android._CallbackQueue.length + " deleted from callback queue")
+}
 
   static AudioClick() {
     if (typeof Android !== 'undefined') {
@@ -49,7 +51,9 @@ class PlatformUtil {
 
   static UserPrompt(promptText, defaultValue, okCallback, cancelCallback) {
     if (typeof Android !== 'undefined') {
-      Android.userPrompt(promptText, defaultValue, PlatformUtil.InitCallback(okCallback))
+      const okSlot = PlatformUtil.InitCallback(okCallback)
+      Android.userPrompt(promptText, defaultValue, okSlot)
+      PlatformUtil.DeleteCallback(okSlot)
     } else {
       const result = prompt(promptText, defaultValue)
       if (result !== null) okCallback(result)
@@ -59,7 +63,9 @@ class PlatformUtil {
 
   static UserConfirm(promptText, callback) {
     if (typeof Android !== 'undefined') {
-      Android.userConfirm(promptText, PlatformUtil.InitCallback(callback))
+      const slot = PlatformUtil.InitCallback(callback)
+      Android.userConfirm(promptText, slot)
+      PlatformUtil.DeleteCallback(slot)
     } else {
       callback(confirm(promptText))
     }
@@ -67,7 +73,9 @@ class PlatformUtil {
 
   static UserAck(promptText, callback) {
     if (typeof Android !== 'undefined') {
-      Android.userAck(promptText, PlatformUtil.InitCallback(callback))
+      const slot = PlatformUtil.InitCallback(callback)
+      Android.userAck(promptText, slot)
+      PlatformUtil.DeleteCallback(slot)
     } else {
       callback(alert(promptText))
     }
@@ -153,12 +161,28 @@ class PlatformUtil {
   }
 
   static DownloadURI(uri, name) {
-    const link = document.createElement("a")
-    link.download = name
-    link.href = uri
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    if (typeof Android !== 'undefined') {
+      const successSlot = PlatformUtil.InitCallback((event) => { console.debug('Download request succeeded from Android side.') })
+      const failureSlot = PlatformUtil.InitCallback((event) => { console.debug('Download request failed from Android side.') })
+      Android.downloadURI(uri, name, successSlot, failureSlot)
+      PlatformUtil.DeleteCallback(successSlot)
+      PlatformUtil.DeleteCallback(failureSlot)
+    } else {
+      const link = document.createElement("a")
+      link.download = name
+      link.href = uri
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  }
+
+  static backCallback
+  static SetBackCallback(callback) {
+    if (typeof Android !== 'undefined') {
+      PlatformUtil.backCallback = PlatformUtil.InitCallback(callback)
+      Android.setBackCallback(PlatformUtil.backCallback)
+    }
   }
 
 }

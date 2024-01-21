@@ -25,6 +25,14 @@ v.gadgets.push(v.gridGad = g = new vp.Gadget(v));
 			if (this.viewport.callback) this.viewport.callback.call(undefined, config.priceList.thumbnailData[index].label)
 		}
 	}
+v.gadgets.push(v.backGad = g = new vp.Gadget(v));
+	g.actionFlags = vp.GAF_BACKNAV; // this gadget is solely for Android integration; regular taps are via gridGad above
+	g.x = 0; g.y = 0;
+	g.clickFunc = function(e) {
+		const g = this, v = g.viewport
+    vp.popRoot()
+    if (this.viewport.callback) this.viewport.callback.call(undefined, undefined, 'cancel')
+	}
 v.layoutFunc = function() {
 	const v = this;
 
@@ -60,9 +68,13 @@ v.layoutFunc = function() {
 	v.maxY = this.gridY * v.sw/v.gridX;
 	if (v.swipeGad) v.swipeGad.layout.call(v.swipeGad);
 
-	let g = v.gridGad;
-	g.w = v.sw; g.h = v.maxY;
-	g.autoHull();
+	let g
+  g = v.backGad
+    g.w = v.sw/v.gridX; g.h = g.w
+    g.autoHull()
+	g = v.gridGad
+    g.w = v.sw; g.h = v.maxY
+    g.autoHull()
 }
 v.renderFunc = function() {
 	drawThemeBackdrop(this, config.themeColors);

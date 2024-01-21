@@ -695,8 +695,10 @@ billpane.subtotal = v = new vp.View();
 v.name = Object.keys({'billpane_subtotal':0}).pop();
 v.height = 1 * (16 + 8+8 + 4 + 2 + 4);
 v.gadgets.push(v.trashGad = g = new vp.Gadget(v));
-	g.actionFlags = vp.GAF_CLICKABLE;
-	g.todo = false;
+  g.todo = false;
+  Object.defineProperty(g, 'actionFlags', {
+    get : function () { return this.todo? vp.GAF_CLICKABLE: vp.GAF_CLICKABLE | vp.GAF_BACKNAV }
+  })
 	g.layoutFunc = function() {
 		var g = this, v = g.viewport, s = v.getScale();
 		g.w = v.sh*3/5; g.h = v.sh*3/5;

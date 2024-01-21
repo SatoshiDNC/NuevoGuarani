@@ -22,8 +22,11 @@ v.gadgets.push(v.maximizer = g = new vp.Gadget(v));
 	}
 }
 v.gadgets.push(v.backbutton = g = new vp.Gadget(v));
-	g.w = 30; g.h = 30; g.actionFlags = vp.GAF_CLICKABLE;
+	g.w = 30; g.h = 30;
 	g.x = (50 - g.w)/2; g.y = (50 - g.h)/2; g.z = 1;
+  Object.defineProperty(g, 'actionFlags', {
+    get : function () { let i = 0; try { i = settingspages.index } catch {}; return i == 0? vp.GAF_CLICKABLE: vp.GAF_CLICKABLE | vp.GAF_BACKNAV }
+  })
 	g.autoHull();
 	g.renderFunc = function() {
 		const g = this, th = config.themeColors;

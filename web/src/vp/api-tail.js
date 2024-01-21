@@ -1,25 +1,52 @@
-  function setDebugFlags(debug, cont) { showdebug=!!debug; continuous=!!cont; }
+  function setDebugFlags(debug, cont) { showdebug=!!debug; continuous=!!cont }
   function beep(type = '') {
-		if (!beepSound) return;
+		if (!beepSound) return
 		switch (type) {
 		case 'qr-scan':
-			beepSound.setValueAtTime(2, ac.currentTime);
-			beepSound.setValueAtTime(3, ac.currentTime+0.05);
-			beepSound.setValueAtTime(0, ac.currentTime+0.1);
-			break;
+			beepSound.setValueAtTime(2, ac.currentTime)
+			beepSound.setValueAtTime(3, ac.currentTime+0.05)
+			beepSound.setValueAtTime(0, ac.currentTime+0.1)
+			break
 		case 'qr-part':
-			beepSound.setValueAtTime(2, ac.currentTime);
-			beepSound.setValueAtTime(0, ac.currentTime+0.05);
-			break;
+			beepSound.setValueAtTime(2, ac.currentTime)
+			beepSound.setValueAtTime(0, ac.currentTime+0.05)
+			break
 		case 'click':
-			clickSound.setValueAtTime(0.1, ac.currentTime);
-			clickSound.setValueAtTime(0, ac.currentTime+0.001);
-			break;
+			clickSound.setValueAtTime(0.1, ac.currentTime)
+			clickSound.setValueAtTime(0, ac.currentTime+0.001)
+			break
 		default:
-			beepSound.setValueAtTime(1, ac.currentTime);
-			beepSound.setValueAtTime(0, ac.currentTime+0.1);
+			beepSound.setValueAtTime(1, ac.currentTime)
+			beepSound.setValueAtTime(0, ac.currentTime+0.1)
 		}
-	};
+	}
+
+  function backAction() {
+    function JSONToString(obj) {
+      var cache = []
+      return JSON.stringify(obj, (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (cache.includes(value)) return
+          cache.push(value)
+        }
+        return value
+      }, '· ')
+    }
+  
+    let hitList = new vp.HitList(rootViewport.w / 2, rootViewport.h / 2)
+    const r = Math.sqrt((rootViewport.w / 2) ** 2 + (rootViewport.h / 2) ** 2)
+    console.log('radius', r)
+    rootViewport.getHits(hitList, r)
+    hitList.sortHits()
+    for (const h of hitList.hits) {
+      const g = h.gad
+      if (!g.ownedBy && !!(g.actionFlags & vp.GAF_BACKNAV)) {
+        if (g.clickFunc) g.clickFunc.call(g, undefined)
+      }
+      console.log(g.viewport.name + '/gad', g.enabled, g.selected, g.z, g.actionFlags)
+    }
+    //console.log(JSONToString(hitList))
+}
 
   return {
     initialize: initialize,
@@ -68,8 +95,10 @@
     GAF_NUMINPUT: GAF_NUMINPUT,
     GAF_TEXTINPUT: GAF_TEXTINPUT,
 		GAF_GONEXT: GAF_GONEXT,
+    GAF_BACKNAV: GAF_BACKNAV,
     GAF_ALL: GAF_ALL,
     HitList: HitList,
     LayoutState: LayoutState,
-  };
+    backAction: backAction,
+  }
 })();

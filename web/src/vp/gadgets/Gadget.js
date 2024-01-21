@@ -25,6 +25,7 @@
     var GAF_NUMINPUT = 4096;
     var GAF_TEXTINPUT = 8192;
     var GAF_GONEXT = 16384;
+    var GAF_BACKNAV = 32768; // if set, Android back-button navigation triggers this gadget
     class Gadget {
       constructor(viewport) {
         this.viewport = viewport;

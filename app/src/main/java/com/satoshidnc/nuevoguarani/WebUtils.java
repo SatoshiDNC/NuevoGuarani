@@ -1,5 +1,8 @@
 package com.satoshidnc.nuevoguarani;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
@@ -9,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Looper;
 import android.text.InputType;
@@ -304,5 +308,37 @@ public class WebUtils {
     public void stopNotifying(int id) {
         NotificationManagerCompat notMan = NotificationManagerCompat.from(context);
         notMan.cancel(id);
+    }
+
+    @JavascriptInterface
+    public void downloadURI(String uri, String name, int successCallback, int failureCallback) {
+        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri typedUri = Uri.parse(uri);
+        DownloadManager.Request request = new DownloadManager.Request(typedUri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        long reference = manager.enqueue(request);
+
+        String cb = "Android.Callback(" + successCallback + ")";
+        Log.d("DEBUG", "callback: " + cb);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            view.evaluateJavascript(cb, null);
+        } else {
+            view.loadUrl("javascript:" + cb);
+        }
+    }
+
+    private int mBackCallback = 0;
+    @JavascriptInterface
+    public void setBackCallback(int callback) {
+        mBackCallback = callback;
+    }
+    public void backCallback() {
+        String cb = "Android.Callback(" + mBackCallback + ")";
+        Log.d("DEBUG", "callback: " + cb);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            view.evaluateJavascript(cb, null);
+        } else {
+            view.loadUrl("javascript:" + cb);
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -31,6 +32,7 @@ import org.apache.commons.io.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
     public static WebView view;
+    public static WebUtils webUtils;
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +66,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        view.addJavascriptInterface(new WebUtils(this, view), "Android");
+        webUtils = new WebUtils(this, view);
+        view.addJavascriptInterface(webUtils, "Android");
         String s = loadResource(R.raw.index);
         view.loadDataWithBaseURL("https://ng.satoshidnc.com", s, "text/html", null,null);
+
+        OnBackPressedCallback backCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.w("WARN", "handleOnBackPressed()");
+                webUtils.backCallback();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, backCallback);
 
 //                Snackbar.make(view, "Snackbar", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
