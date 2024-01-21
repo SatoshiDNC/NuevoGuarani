@@ -78,7 +78,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       let payload = JSON.stringify(data)
       const maxLen = 128
       let headerLen = 4
-      notSuccessful = true
+      let notSuccessful = true
       do {
         v.qrcode.qr = []
         buffer = payload
@@ -91,6 +91,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
           v.qrcode.qr.push(part)
         }
         notSuccessful = !(v.qrcode.qr.length == j && v.qrcode.qr[j-1].length <= maxLen)
+        console.log('!s', notSuccessful)
         headerLen += 2
       } while (notSuccessful)
       v.qrcode.hide = false
