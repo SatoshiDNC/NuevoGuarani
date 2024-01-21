@@ -23,6 +23,15 @@ v.pageFocusFunc = function() {
 }
 v.pageBlurFunc = function() {
   const v = this
+  if (v.scanner) {
+    v.scanner.stop()
+    v.scanner.destroy()
+  }
+  v.scanner = undefined
+  v.playing = false
+  v.timeupdate = false
+  v.updateFlag = false
+  delete v.designFit
 }
 
 v.updateFlag = false
