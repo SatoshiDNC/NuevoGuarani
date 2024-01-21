@@ -408,6 +408,7 @@ v.renderFuncAux = function() {
   g.busySignal = false
 //	this.updateFlag = false
 //	console.log('renderFunc')
+console.log('videofeed', v.videoDims[0], v.videoDims[1])
 	if (!this.texture) this.texture = initTexture(gl)
   updateTexture(gl, this.texture, this.videoEl)
 	const mat = mat4.create()
@@ -419,10 +420,9 @@ v.renderFuncAux = function() {
     w = g.h / v.videoDims[1] * v.videoDims[0]
     x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
   } else {
-    w = g.w / v.videoDims[0] * v.videoDims[1]
+    h = g.w / v.videoDims[0] * v.videoDims[1]
     y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
   }
-  console.log(x,y,w,h)
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [x, y, 0])
 	mat4.scale(mat, mat, [w, h, 1])

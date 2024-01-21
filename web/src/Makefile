@@ -1,7 +1,7 @@
 all: subdirs program-debug.html # Textbook subdirectory recursion
 rel: subdirs program-release.html # to build the release version
 
-CLOSURE = java -jar ../3rd-party/closure-compiler-v20230802.jar --language_in UNSTABLE
+CLOSURE = java -jar ../3rd-party/closure-compiler-v20230802.jar --language_in UNSTABLE --env CUSTOM
 
 program-release.html: \
 	head.html \
@@ -44,6 +44,8 @@ program-debug.html: \
 all.min.js: all.js
 	$(CLOSURE) \
 		--js all.js \
+		--js ../3rd-party/qr-scanner.min.js \
+		--js ../3rd-party/qr-scanner-worker.min.js \
 		--js_output_file all.min.js
 
 all.js: \
