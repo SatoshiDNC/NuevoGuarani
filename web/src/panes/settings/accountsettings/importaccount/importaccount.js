@@ -403,6 +403,7 @@ v.renderFuncAux = function() {
     return
   }
 
+  console.log(v.videoDims, v.vidPos)
 	if (!v.videoDims || !v.vidPos) return
 	if (!this.updateFlag) return
   g.busySignal = false
