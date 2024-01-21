@@ -403,12 +403,12 @@ v.renderFuncAux = function() {
   //   return
   // }
 
+  const mat = mat4.create()
 	if (v.videoDims && v.vidPos && v.updateFlag) {
     g.busySignal = false
   //	this.updateFlag = false
     if (!this.texture) this.texture = initTexture(gl)
     updateTexture(gl, this.texture, this.videoEl)
-    const mat = mat4.create()
     var w = g.w, h = g.h
     var x = g.x, y = g.y
     if (v.videoDims[0] > v.videoDims[1]) {
