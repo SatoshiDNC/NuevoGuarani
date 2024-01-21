@@ -371,22 +371,26 @@ v.renderFuncAux = function() {
   gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
   mainShapes.drawArrays2('rect')
 //console.log(g.busySignal, g.busyCounter)
+  const iconSize = [2,2,1]
   if (g.busySignal) {
     g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
 
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
     //mat4.scale(m,m,[w,w,1])
+    mat4.scale(m,m,iconSize)
     mat4.rotate(m,m, g.busyCounter, [0,0,1])
     iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
 
   } else if (g.walletSignal) {
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
+    mat4.scale(m,m,iconSize)
     financeGraphicsFont.draw(-8.5,8.5,"\x08",config.themeColors.uiText,v.mat, m)
   } else if (g.errorSignal) {
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
+    mat4.scale(m,m,iconSize)
     //mat4.scale(m,m,[w,w,1])
     //mat4.rotate(m,m, g.busyCounter, [0,0,1])
     iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
@@ -395,6 +399,7 @@ v.renderFuncAux = function() {
     let tw = defaultFont.calcWidth(str)
     mat4.identity(m)
     mat4.translate(m,m,[x+w/2,y+w/2,0])
+    mat4.scale(m,m,iconSize)
     mat4.translate(m,m,[-tw/2,7,0])
     defaultFont.draw(0,0,str,config.themeColors.uiText,v.mat, m)
   }
