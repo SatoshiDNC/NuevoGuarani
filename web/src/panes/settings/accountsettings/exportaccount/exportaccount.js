@@ -64,8 +64,8 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
     const finish = () => {
       const filename = 'account-export.ng'
       PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
-      v.result.description = `Saved to Downloads as '${filename}'.`
-      v.result.hide = false
+      //v.result.description = `Saved to Downloads as '${filename}'.`
+      v.qrcode.hide = false
       v.queueLayout()
     }
 
