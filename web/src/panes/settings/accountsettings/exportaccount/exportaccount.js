@@ -82,7 +82,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       do {
         v.qrcode.qr = []
         let buffer = payload
-        let i = 0, j = Math.ceil((buffer.length + headerLen) / maxLen)
+        let i = 0, j = Math.ceil((buffer.length) / (maxLen - headerLen))
         while (buffer != '') {
           i++
           let part = i + '/' + j + ':' + buffer.substring(0,maxLen-headerLen)
