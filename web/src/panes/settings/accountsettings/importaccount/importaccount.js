@@ -415,6 +415,13 @@ v.renderFuncAux = function() {
 	// var x = v.vidPos[0], y = v.vidPos[1]
 	var w = g.w, h = g.h
 	var x = g.x, y = g.y
+  if (v.videoDims[0] > v.videoDims[1]) {
+    w = g.h
+    x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
+  } else {
+    h = g.w
+    y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
+  }
   console.log(x,y,w,h)
 	mat4.identity(mat)
 	mat4.translate(mat, mat, [x, y, 0])
