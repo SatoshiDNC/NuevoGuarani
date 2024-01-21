@@ -8,7 +8,7 @@ v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
   g.layoutFunc = function () {
-    const g = this
+    const g = this, v = g.viewport
     g.h = g.w
     g.autoHull()
     v.layoutFuncAux()
