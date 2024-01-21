@@ -6,6 +6,17 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
+v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
+  g.layoutFunc = function () {
+    const g = this
+    g.h = g.w
+    g.autoHull()
+    v.layoutFuncAux()
+  }
+  g.renderFunc = function () {
+    const g = this, v = g.viewport
+    v.renderFuncAux()
+  }
 v.pageFocusFunc = function() {
   const v = this
   v.switchedToFunc()
@@ -129,10 +140,10 @@ v.switchedToFunc = function() {
 	this.scanner.start()
 }
 
-v.layoutFunc = function() {
+v.layoutFuncAux = function() {
 	const v = this
 	if (!this.videoEl) return
-	if (!v.designFit) return;
+	if (!v.designFit) return
 	if (this.videoEl.videoWidth  != v.designFit[0]
 	||  this.videoEl.videoHeight != v.designFit[1]) {
 		this.designFit = [this.videoEl.videoWidth, this.videoEl.videoHeight]
@@ -222,7 +233,7 @@ v.layoutFunc = function() {
 		g.autoHull()
 	}
 }
-v.renderFunc = function() {
+v.renderFuncAux = function() {
 
 function adj(m) { // Compute the adjugate of m
   return [
