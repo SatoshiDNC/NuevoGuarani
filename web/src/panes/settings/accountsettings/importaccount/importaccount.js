@@ -403,38 +403,37 @@ v.renderFuncAux = function() {
   //   return
   // }
 
-	if (!v.videoDims || !v.vidPos) return
-	if (!this.updateFlag) return
-  g.busySignal = false
-//	this.updateFlag = false
-//	console.log('renderFunc')
-console.log('videofeed', v.videoDims[0], v.videoDims[1])
-	if (!this.texture) this.texture = initTexture(gl)
-  updateTexture(gl, this.texture, this.videoEl)
-	const mat = mat4.create()
-	// var w = v.videoDims[0], h = v.videoDims[1]
-	// var x = v.vidPos[0], y = v.vidPos[1]
-	var w = g.w, h = g.h
-	var x = g.x, y = g.y
-  if (v.videoDims[0] > v.videoDims[1]) {
-    w = g.h / v.videoDims[1] * v.videoDims[0]
-    x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
-  } else {
-    h = g.w / v.videoDims[0] * v.videoDims[1]
-    y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
+	if (!v.videoDims || !v.vidPos || !this.updateFlag) {
+    g.busySignal = false
+  //	this.updateFlag = false
+  //	console.log('renderFunc')
+    if (!this.texture) this.texture = initTexture(gl)
+    updateTexture(gl, this.texture, this.videoEl)
+    const mat = mat4.create()
+    // var w = v.videoDims[0], h = v.videoDims[1]
+    // var x = v.vidPos[0], y = v.vidPos[1]
+    var w = g.w, h = g.h
+    var x = g.x, y = g.y
+    if (v.videoDims[0] > v.videoDims[1]) {
+      w = g.h / v.videoDims[1] * v.videoDims[0]
+      x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
+    } else {
+      h = g.w / v.videoDims[0] * v.videoDims[1]
+      y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
+    }
+    mat4.identity(mat)
+    mat4.translate(mat, mat, [x, y, 0])
+    mat4.scale(mat, mat, [w, h, 1])
+    mainShapes.useProg4()
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
+    gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
+    const vs = v.viewScale
+    gl.scissor(v.x + g.x * vs, v.H - v.y - (g.y + g.h) * vs, g.w * vs, g.h * vs)
+    gl.enable(gl.SCISSOR_TEST)
+    mainShapes.drawArrays4('rect')
+    gl.disable(gl.SCISSOR_TEST)
   }
-	mat4.identity(mat)
-	mat4.translate(mat, mat, [x, y, 0])
-	mat4.scale(mat, mat, [w, h, 1])
-	mainShapes.useProg4()
-	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
-	gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
-	gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
-  const vs = v.viewScale
-  gl.scissor(v.x + g.x * vs, v.H - v.y - (g.y + g.h) * vs, g.w * vs, g.h * vs)
-  gl.enable(gl.SCISSOR_TEST)
-	mainShapes.drawArrays4('rect')
-  gl.disable(gl.SCISSOR_TEST)
 
 	if (this.scanner
 	&& this.scanner.lastresult.data != ''
