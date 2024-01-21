@@ -87,12 +87,13 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
           i++
           let part = i + '/' + j + ':' + buffer.substring(0,maxLen-headerLen)
           buffer = buffer.substring(maxLen-headerLen)
-          if (part.length < maxLen) part = (part + ' '.repeat(maxLen)).substring(0,maxLen)
+          if (buffer == '' && part.length < maxLen) part = (part + ' '.repeat(maxLen)).substring(0,maxLen)
           v.qrcode.qr.push(part)
+          console.log(part)
         }
         console.log(v.qrcode.qr.length, j)
         console.log(v.qrcode.qr[j-1].length, maxLen)
-        notSuccessful = !(v.qrcode.qr.length == j && v.qrcode.qr[j-1].length <= maxLen)
+        notSuccessful = !(v.qrcode.qr.length == j && v.qrcode.qr[j-1].length <= maxLen && (j<2 || v.qrcode.qr[j-2].length <= maxLen))
         console.log('!s', notSuccessful)
         headerLen += 2
       } while (notSuccessful)
