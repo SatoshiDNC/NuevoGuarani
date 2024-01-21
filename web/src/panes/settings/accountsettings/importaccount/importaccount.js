@@ -83,51 +83,60 @@ v.switchedToFunc = function() {
 			if (repeat) return
 
 			var beeptype = 'click', ob = false
-			if (result.data.toLowerCase().startsWith('lnbc')
-			||  result.data.toLowerCase().startsWith('lnurl')) {
-				this.results = []
-				vp.beep('qr-scan')
-				this.scanner.stop()
-				this.scanner.destroy()
-				this.scanner = undefined
-				this.playing = false
-				this.timeupdate = false
-				this.updateFlag = false
-				delete this.videoDims
-				payinvconf.data = result.data.toLowerCase()
-				var root = menudiv, v = payinvconf
-				root.b = v; v.parent = root
-				root.relayout()
-			} else if ((ob = tryParseJSONObject(result.data)) !== false
-			&& typeof(ob) == 'object'
-			&& typeof(ob[0]) == 'number' && ob[0] > 0
-			&& typeof(ob[1]) == 'number' && ob[0] <= ob[1]) {
+			// if (result.data.toLowerCase().startsWith('lnbc')
+			// ||  result.data.toLowerCase().startsWith('lnurl')) {
+			// 	this.results = []
+			// 	vp.beep('qr-scan')
+			// 	this.scanner.stop()
+			// 	this.scanner.destroy()
+			// 	this.scanner = undefined
+			// 	this.playing = false
+			// 	this.timeupdate = false
+			// 	this.updateFlag = false
+			// 	delete this.videoDims
+			// 	payinvconf.data = result.data.toLowerCase()
+			// 	var root = menudiv, v = payinvconf
+			// 	root.b = v; v.parent = root
+			// 	root.relayout()
+			// } else if ((ob = tryParseJSONObject(result.data)) !== false
+			// && typeof(ob) == 'object'
+			// && typeof(ob[0]) == 'number' && ob[0] > 0
+			// && typeof(ob[1]) == 'number' && ob[0] <= ob[1]) {
+      if (result.data.match(/[0-9]+\/[0-9]+:/)) {
+        const slashPos = result.data.indexOf('/')
+        const colonPos = result.data.indexOf(':')
+        const m = result.data.substring(0,slashPos)
+        const n = result.data.substring(slashPos+1,colonPos)
 				if (this.results.length == 0) {
-					this.results = Array(ob[1]).join(".").split(".")
+          this.results = Array(n).join(".").split(".")
 				}
-				if (this.results[ob[0]-1] != result.data) {
-					this.results[ob[0]-1] = result.data
+				if (this.results[m-1] != result.data.substring(colonPos+1)) {
+					this.results[m-1] = result.data.substring(colonPos+1)
 					beeptype = 'qr-scan'
-					for (var i=0; i<ob[1]; i++) if (this.results[i] == '') {
+					for (var i=0; i<n; i++) if (this.results[i] == '') {
 						beeptype = 'qr-part'
 						break
 					}
-					if (beeptype == 'qr-scan' && ob[1] == this.results.length) {
-						var receipt = new Receipt()
-						var data = receipt.fromParts(this.results)
-						if (data) {
-							this.scanner.stop()
-							this.scanner.destroy()
-							this.scanner = undefined
-							this.playing = false
-							this.timeupdate = false
-							this.updateFlag = false
-							delete this.videoDims
-							displayreceipt.setData(data)
-							pmtrcptmain.userY = 0
-							var root = menudiv, v = displayreceipt
-							root.b = v; v.parent = root
-							root.relayout()
+					if (beeptype == 'qr-scan' && n == this.results.length) {
+						var data = this.results.join('').trim()
+            console.log(data)
+            if ((ob = tryParseJSONObject(data)) !== false) {
+              console.log(Convert.JSONToString(ob))
+            // }
+						// var data = receipt.fromParts(this.results)
+						// if (data) {
+						// 	this.scanner.stop()
+						// 	this.scanner.destroy()
+						// 	this.scanner = undefined
+						// 	this.playing = false
+						// 	this.timeupdate = false
+						// 	this.updateFlag = false
+						// 	delete this.videoDims
+						// 	displayreceipt.setData(data)
+						// 	pmtrcptmain.userY = 0
+						// 	var root = menudiv, v = displayreceipt
+						// 	root.b = v; v.parent = root
+						// 	root.relayout()
 						} else {
 							beeptype = 'error'
 						}
