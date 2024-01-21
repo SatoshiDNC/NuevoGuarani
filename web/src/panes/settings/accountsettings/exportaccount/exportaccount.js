@@ -9,6 +9,8 @@ v.swipeGad.hide = true
 v.pageFocusFunc = function() {
   const v = this
   v.result.hide = true
+  v.qrcode.hide = true
+  v.qrcode.clear()
   v.queueLayout()
 }
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
@@ -67,6 +69,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //v.result.description = `Saved to Downloads as '${filename}'.`
       v.qrcode.busySignal = true
       v.qrcode.hide = false
+      v.qrcode.qr = [data]
       v.queueLayout()
     }
 
