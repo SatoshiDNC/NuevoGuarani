@@ -77,13 +77,22 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //v.result.description = `Saved to Downloads as '${filename}'.`
       let payload = JSON.stringify(data)
       const maxLen = 128
-      v.qrcode.qr = []
-      while (payload != '') {
-        let part = payload.substring(0,maxLen)
-        payload = payload.substring(maxLen)
-        if (part.length < maxLen) part = (part + String.fromCharCode(Math.floor(Math.random()*26)+65).repeat(maxLen)).substring(0,maxLen)
-        v.qrcode.qr.push(part)
-      }
+      let headerLen = 4
+      notSuccessful = true
+      do {
+        v.qrcode.qr = []
+        buffer = payload
+        let i = 0, j = Math.ceil((buffer.length + 4) / maxLen)
+        while (buffer != '') {
+          i++
+          let part = i + '/' + j + ':' + buffer.substring(0,maxLen-headerLen)
+          buffer = buffer.substring(maxLen-headerLen)
+          if (part.length < maxLen) part = (part + ' '.repeat(maxLen)).substring(0,maxLen)
+          v.qrcode.qr.push(part)
+        }
+        notSuccessful = !(v.qrcode.qr.length == j && v.qrcode.qr[j-1].length <= maxLen)
+        headerLen += 2
+      } while (notSuccessful)
       v.qrcode.hide = false
       v.queueLayout()
     }
