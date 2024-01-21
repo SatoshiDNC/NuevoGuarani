@@ -62,9 +62,10 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
     const tr = db.transaction(objectStores, "readonly")
 
     const finish = () => {
-      const filename = 'account-export.ng'
-      PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
+      //const filename = 'account-export.ng'
+      //PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
       //v.result.description = `Saved to Downloads as '${filename}'.`
+      v.qrcode.busySignal = true
       v.qrcode.hide = false
       v.queueLayout()
     }
@@ -127,24 +128,29 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   }
   g.renderFunc = function () {
     const g = this, v = g.viewport
+    console.log('renderFunc')
     let earlyreturn = 0
     if (this.triggerPad || this.qr.length == 0) {
+      console.log('a')
       delete this.triggerPad
       this.pad = 10
       v.setRenderFlag(true)
       earlyreturn = 1
     }
     if (!earlyreturn && this.pad > 0) {
+      console.log('b')
       this.pad -= 1
       v.setRenderFlag(true)
       earlyreturn = 1
     }
     if (!earlyreturn && this.pad == 0) {
+      console.log('c')
       this.pad = -1
       this.qrindex = -1
       this.reftime = Date.now()
     }
     if (this.qr.length == 0 || this.copiedSignal) {
+      console.log('d')
       earlyreturn = 1
     }
   
@@ -194,6 +200,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     if (earlyreturn) {
       return
     }
+    console.log('e')
   //	if (this.qr.length == 1 && (
   //			this.qr[0].startsWith('lnbc')
   //	||  this.qr[0].startsWith('lnurl'))) {
