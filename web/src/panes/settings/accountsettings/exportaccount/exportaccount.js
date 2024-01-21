@@ -107,10 +107,6 @@ v.gadgets.push(v.result = g = new vp.Gadget(v))
   g.hide = true
 v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   g.hide = true
-  g.busySignal = false
-  g.errorSignal = false
-  g.walletSignal = false
-  g.copiedSignal = false
   g.busyCounter = 0
   g.layoutFunc = function () {
     const g = this
@@ -126,6 +122,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     this.qrtex = []
     this.triggerPad = true
   }
+  g.clear()
   g.renderFunc = function () {
     const g = this, v = g.viewport
     console.log('renderFunc')
