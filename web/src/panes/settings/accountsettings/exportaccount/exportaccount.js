@@ -106,7 +106,6 @@ v.gadgets.push(v.result = g = new vp.Gadget(v))
 	g.description = 'Account exported.'
   g.hide = true
 v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
-	g.description = 'Account exported.'
   g.hide = true
   g.busySignal = false
   g.errorSignal = false
@@ -114,6 +113,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   g.copiedSignal = false
   g.busyCounter = 0
   g.layoutFunc = function () {
+    const g = this
     g.h = g.w
     g.autoHull()
   }
