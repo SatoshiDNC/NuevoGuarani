@@ -16,25 +16,27 @@ v.pageBlurFunc = function() {
 
 v.updateFlag = false
 v.checkReady = function() {
-	if (this.playing && this.timeupdate) {
-		this.setRenderFlag(true)
-		this.updateFlag = true
+  const v = this
+	if (v.playing && v.timeupdate) {
+		v.setRenderFlag(true)
+		v.updateFlag = true
 	}
 }
 v.switchedToFunc = function() {
-	if (!this.videoEl) {
-		this.videoEl = document.getElementById('scan1')
-		this.videoEl.addEventListener("loadedmetadata", function (e) {
-			this.designFit = [this.videoWidth, this.videoHeight]
-			this.queueLayout()
+  const v = this
+	if (!v.videoEl) {
+		v.videoEl = document.getElementById('scan1')
+		v.videoEl.addEventListener("loadedmetadata", function (e) {
+			v.designFit = [v.videoWidth, v.videoHeight]
+			v.queueLayout()
 		}, false)
-		this.videoEl.addEventListener("playing", () => {
-			this.playing = true
-			this.checkReady()
+		v.videoEl.addEventListener("playing", () => {
+			v.playing = true
+			v.checkReady()
 		}, true)
-		this.videoEl.addEventListener("timeupdate", () => {
-			this.timeupdate = true
-			this.checkReady()
+		v.videoEl.addEventListener("timeupdate", () => {
+			v.timeupdate = true
+			v.checkReady()
 		}, true)
 	}
 	var s = this.videoEl.videoWidth; if (s>this.videoEl.videoHeight) s = this.videoEl.videoHeight
