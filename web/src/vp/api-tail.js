@@ -22,20 +22,8 @@
 	}
 
   function backAction() {
-    function JSONToString(obj) {
-      var cache = []
-      return JSON.stringify(obj, (key, value) => {
-        if (typeof value === 'object' && value !== null) {
-          if (cache.includes(value)) return
-          cache.push(value)
-        }
-        return value
-      }, '· ')
-    }
-  
     let hitList = new vp.HitList(rootViewport.w / 2, rootViewport.h / 2)
     const r = Math.sqrt((rootViewport.w / 2) ** 2 + (rootViewport.h / 2) ** 2)
-    console.log('radius', r)
     rootViewport.getHits(hitList, r)
     hitList.sortHits()
     for (const h of hitList.hits) {
@@ -43,9 +31,7 @@
       if (!g.ownedBy && !!(g.actionFlags & vp.GAF_BACKNAV)) {
         if (g.clickFunc) g.clickFunc.call(g, undefined)
       }
-      console.log(g.viewport.name + '/gad', g.enabled, g.selected, g.z, g.actionFlags)
     }
-    //console.log(JSONToString(hitList))
 }
 
   return {

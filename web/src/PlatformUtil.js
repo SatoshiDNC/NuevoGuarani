@@ -26,12 +26,12 @@ class PlatformUtil {
     }
     slot = Android._CallbackQueue.length
     Android._CallbackQueue[slot] = callback
-    console.log("slot " + slot + "/" + Android._CallbackQueue.length + " added to callback queue")
+    //console.log("slot " + slot + "/" + Android._CallbackQueue.length + " added to callback queue")
     return slot
   }
   static DeleteCallback(slot) {
     delete Android._CallbackQueue[slot]
-    console.log("slot " + slot + "/" + Android._CallbackQueue.length + " deleted from callback queue")
+    //console.log("slot " + slot + "/" + Android._CallbackQueue.length + " deleted from callback queue")
 }
 
   static AudioClick() {
