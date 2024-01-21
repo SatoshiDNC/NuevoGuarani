@@ -82,8 +82,8 @@ all.js: \
 		> all.js
 #	echo "import QrScanner from 'data:application/x-javascript;base64,`cat ../3rd-party/qr-scanner-batch.min.js | base64 | tr -d '\r\n'`';" \
 #		>> all.js
-#	echo "import QrScanner from '../3rd-party/qr-scanner.min.js'" \
-#		>> all.js
+	echo "import QrScanner from '../3rd-party/qr-scanner.min.js'" \
+		>> all.js
 	echo "const timecalc = " \
 		>> all.js
 	cat \
