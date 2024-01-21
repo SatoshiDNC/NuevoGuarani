@@ -314,8 +314,8 @@ v.renderFuncAux = function() {
   }
 
 	const th = config.themeColors, v = this
-	gl.clearColor(...th.uiBackground)
-	gl.clear(gl.COLOR_BUFFER_BIT)
+	// gl.clearColor(...th.uiBackground)
+	// gl.clear(gl.COLOR_BUFFER_BIT)
 	this.setRenderFlag(true)
 	if (!v.designFit || !v.vidPos) return
 	if (!this.updateFlag) return
