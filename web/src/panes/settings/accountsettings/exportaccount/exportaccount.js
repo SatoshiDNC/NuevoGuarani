@@ -67,9 +67,10 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //const filename = 'account-export.ng'
       //PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
       //v.result.description = `Saved to Downloads as '${filename}'.`
+      let payload = JSON.stringify(data)
       v.qrcode.busySignal = true
       v.qrcode.hide = false
-      v.qrcode.qr = [data]
+      v.qrcode.qr = [payload]
       v.queueLayout()
     }
 
