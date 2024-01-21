@@ -144,8 +144,11 @@ class PagesView extends View {
 			}
 
 			if (pageChangeFlag) {
+				if (otherPage.pageBlurFunc) {
+					otherPage.pageBlurFunc()
+				}
 				if (curPage.pageFocusFunc) {
-					curPage.pageFocusFunc();
+					curPage.pageFocusFunc()
 				}
 			}
 

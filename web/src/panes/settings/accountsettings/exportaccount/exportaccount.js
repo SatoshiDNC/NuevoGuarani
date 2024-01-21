@@ -13,6 +13,7 @@ v.pageFocusFunc = function() {
   v.qrcode.clear()
   v.queueLayout()
 }
+v.pageBlurFunc = v.pageFocusFunc
 // v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
 // 	g.description = 'Spending keys will never be exported. You must enter them again when importing.'
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
