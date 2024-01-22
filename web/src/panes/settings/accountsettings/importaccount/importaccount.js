@@ -457,8 +457,8 @@ v.renderFuncAux = function() {
 	&& this.scanner.results.length > 1) {
 	  mainShapes.useProg2()
 		var p = this.scanner.lastresult.cornerPoints
-    x = 0
-    y = 0
+    x = -v.videoDims[0]/2
+    y = -v.videoDims[1]/2
 		var t = transform2d(undefined,
 			p[0].x+x, p[0].y+y, p[1].x+x, p[1].y+y, p[3].x+x, p[3].y+y, p[2].x+x, p[2].y+y)
 		let m = mat4.fromValues(
@@ -474,8 +474,8 @@ v.renderFuncAux = function() {
 			new Float32Array([0,1,0,this.scanner.intensity]))
     console.log(v.videoDims, v.sw, v.sh, x, y, w, h)
     console.log(w/v.videoDims[0], h/v.videoDims[1])
-		//mat4.scale(m, m, [w/v.videoDims[0], -h/v.videoDims[1], 1])
-		//mat4.translate(m, m, [x, y, 0])
+		mat4.scale(m, m, [g.w/v.videoDims[0], -g.h/v.videoDims[1], 1])
+		mat4.translate(m, m, [g.x+g.w/2, g.y+g.h/2, 0])
 		//mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
 		//mat4.scale(m, m, [0.14, -0.14, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
