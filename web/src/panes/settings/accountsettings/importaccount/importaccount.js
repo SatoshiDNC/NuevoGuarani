@@ -486,7 +486,7 @@ v.renderFuncAux = function() {
     let prevScanned = false
     let i = 0
     const offset = 0
-		for (const j=0; j<parts; j++) {
+		for (let j=0; j<parts; j++) {
       prevScanned = scanned
       scanned = this.scanner.results[(j+offset)%parts] != ''
       if (scanned && !prevScanned) {
