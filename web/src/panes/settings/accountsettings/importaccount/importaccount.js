@@ -28,6 +28,7 @@ v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
   }
 v.pageFocusFunc = function() {
   const v = this
+  v.qrscanner.hide = false
   v.switchedToFunc()
 }
 v.pageBlurFunc = function() {
@@ -73,7 +74,6 @@ v.switchedToFunc = function() {
 		}, true)
 	}
 	var s = this.videoEl.videoWidth; if (s>this.videoEl.videoHeight) s = this.videoEl.videoHeight
-	var vidEl = this.videoEl
 	var cam
 	if (camerasettings.cameralist.index >= 0)
 		cam = cameras[camerasettings.cameralist.index].deviceId
