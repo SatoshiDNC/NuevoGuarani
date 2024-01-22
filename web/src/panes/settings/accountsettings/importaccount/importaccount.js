@@ -108,14 +108,11 @@ v.switchedToFunc = function() {
         const payload = result.data.substring(colonPos+1)
         const m = +result.data.substring(0,slashPos)
         const n = +result.data.substring(slashPos+1,colonPos)
-        console.log(m,n)
 				if (this.results.length == 0) {
           this.results = Array(n).join(".").split(".")
 				}
-        console.log(this.results.length)
 				if (n == this.results.length && this.results[m-1] != result.data.substring(colonPos+1)) {
 					this.results[m-1] = payload
-          console.log(this.results[m-1])
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
 						beeptype = 'qr-part'

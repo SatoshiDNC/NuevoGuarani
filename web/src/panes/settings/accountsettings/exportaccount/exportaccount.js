@@ -242,7 +242,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     if (i < this.qr.length && this.qrtex.length <= i) {
   //console.log('render', this.qr[i].substring(0,10));
       var qrd = this.qr[i]
-      if (qrd == qrd.toLowerCase()) qrd = qrd.toUpperCase()
+      //if (qrd == qrd.toLowerCase()) qrd = qrd.toUpperCase()
       QrCreator.render({
         text: qrd, // Sadly, this library doesn't optimize uppercase-only codes.
         radius: 0.0, // 0.0 to 0.5
