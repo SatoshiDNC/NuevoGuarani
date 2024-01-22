@@ -482,12 +482,13 @@ v.renderFuncAux = function() {
 		var tris = mainShapes.len2.pies/3
 		var parts = this.scanner.results.length
     let beg = 0
+    let scanned = false
     let prevScanned = false
     let i = 0
     const offset = 0
 		for (const j=0; j<parts; j++) {
       prevScanned = scanned
-      const scanned = this.scanner.results[(j+offset)%parts] != ''
+      scanned = this.scanner.results[(j+offset)%parts] != ''
       if (scanned && !prevScanned) {
         beg = Math.round(tris * i / parts)
       } else if (!scanned && prevScanned) {
