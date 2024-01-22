@@ -485,21 +485,21 @@ v.renderFuncAux = function() {
     let end = 0
     let scanned = false
     let prevScanned = false
-    const offset = 0
+    const offset = 0.25
 		for (let i=0; i<parts; i++) {
       prevScanned = scanned
       scanned = this.scanner.results[i] != ''
       if (scanned && !prevScanned) {
-        beg = Math.round(i / parts * tris) % tris
+        beg = Math.round((i / parts + offset) * tris) % tris
       } else if (!scanned && prevScanned) {
-        end = Math.round(i / parts * tris) % tris
+        end = Math.round((i / parts + offset) * tris) % tris
         gl.drawArrays(mainShapes.typ2.pies,
           mainShapes.beg2.pies + beg * 3,
           (end - beg) * 3)
       }
 		}
     if (prevScanned) {
-      end = Math.round(i / parts * tris) % tris
+      end = Math.round((i / parts + offset) * tris) % tris
       gl.drawArrays(mainShapes.typ2.pies,
         mainShapes.beg2.pies + beg * 3,
         (end - beg) * 3)
