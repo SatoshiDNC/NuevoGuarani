@@ -465,7 +465,7 @@ v.renderFuncAux = function() {
     }
     const vs = g.w / Math.min(v.videoDims[0], v.videoDims[1])
 		var t = transform2d(undefined,
-			(p[1].x+x)*vs, (p[1].y+y)*vs, (p[3].x+x)*vs, (p[3].y+y)*vs, (p[2].x+x)*vs, (p[2].y+y)*vs, (p[0].x+x)*vs, (p[0].y+y)*vs)
+			(p[0].x+x)*vs, (p[0].y+y)*vs, (p[1].x+x)*vs, (p[1].y+y)*vs, (p[3].x+x)*vs, (p[3].y+y)*vs, (p[2].x+x)*vs, (p[2].y+y)*vs)
 		let m = mat4.fromValues(
 			t[ 0],t[ 1],t[ 2],t[ 3],
 			t[ 4],t[ 5],t[ 6],t[ 7],
@@ -481,13 +481,29 @@ v.renderFuncAux = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
 		var tris = mainShapes.len2.pies/3
 		var parts = this.scanner.results.length
-		for (var i=0; i<parts; i++) if (this.scanner.results[i] != '') {
-			var beg = Math.round(tris * i / parts)
-			var end = Math.round(tris * (i + 1) / parts)
-			gl.drawArrays(mainShapes.typ2.pies,
-				mainShapes.beg2.pies + beg * 3,
-				(end - beg) * 3)
+    let beg = 0
+    let prevScanned = false
+    let i = 0
+    const offset = 0
+		for (const j=0; j<parts; j++) {
+      prevScanned = scanned
+      const scanned = this.scanner.results[(j+offset)%parts] != ''
+      if (scanned && !prevScanned) {
+        beg = Math.round(tris * i / parts)
+      } else if (!scanned && prevScanned) {
+        end = Math.round(tris * i / parts)
+        gl.drawArrays(mainShapes.typ2.pies,
+          mainShapes.beg2.pies + beg * 3,
+          (end - beg) * 3)
+      }
+      i++
 		}
+    if (prevScanned) {
+      end = tris
+      gl.drawArrays(mainShapes.typ2.pies,
+        mainShapes.beg2.pies + beg * 3,
+        (end - beg) * 3)
+    }
 		this.scanner.intensity *= 0.95
 	}
 
