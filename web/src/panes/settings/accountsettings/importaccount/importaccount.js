@@ -463,7 +463,7 @@ v.renderFuncAux = function() {
     let yo = 0//g.h/2
     const vs = 1//g.w / Math.min(v.videoDims[0], v.videoDims[1])
 		var t = transform2d(undefined,
-			(p[0].x+x)*vs+xo, (p[0].y+y)*vs+yo, (p[1].x+x)*vs+xo, (p[1].y+y)*vs+yo, (p[3].x+x)*vs+xo, (p[3].y+y)*vs+yo, (p[2].x+x)*vs+xo, (p[2].y+y))*vs+yo
+			(p[0].x+x)*vs+xo, (p[0].y+y)*vs+yo, (p[1].x+x)*vs+xo, (p[1].y+y)*vs+yo, (p[3].x+x)*vs+xo, (p[3].y+y)*vs+yo, (p[2].x+x)*vs+xo, (p[2].y+y)*vs+yo)
 		let m = mat4.fromValues(
 			t[ 0],t[ 1],t[ 2],t[ 3],
 			t[ 4],t[ 5],t[ 6],t[ 7],
