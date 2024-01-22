@@ -106,8 +106,8 @@ v.switchedToFunc = function() {
         const slashPos = result.data.indexOf('/')
         const colonPos = result.data.indexOf(':')
         const payload = result.data.substring(colonPos+1)
-        const m = result.data.substring(0,slashPos)
-        const n = result.data.substring(slashPos+1,colonPos)
+        const m = +result.data.substring(0,slashPos)
+        const n = +result.data.substring(slashPos+1,colonPos)
         console.log(m,n)
         console.log(this.results)
 				if (this.results.length == 0) {
