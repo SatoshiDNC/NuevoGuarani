@@ -32,6 +32,10 @@ v.pageFocusFunc = function() {
 }
 v.pageBlurFunc = function() {
   const v = this
+  v.stopScanning()
+}
+v.stopScanning = function() {
+  const v = this
   if (v.scanner) {
     v.scanner.stop()
     v.scanner.destroy()
@@ -123,6 +127,9 @@ v.switchedToFunc = function() {
             console.log(data)
             if ((ob = tryParseJSONObject(data)) !== false) {
               console.log(Convert.JSONToString(ob))
+              v.stopScanning()
+              v.qrscanner.hide = true
+              v.queueLayout()
             // }
 						// var data = receipt.fromParts(this.results)
 						// if (data) {
