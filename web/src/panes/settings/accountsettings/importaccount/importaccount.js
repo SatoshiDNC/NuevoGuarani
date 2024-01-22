@@ -452,7 +452,7 @@ v.renderFuncAux = function() {
     gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
     gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
     const vs = v.viewScale
-    gl.scissor(v.x + Math.ceil(g.x * vs), v.H - v.y - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs) - 1, Math.floor(g.h * vs) - 1)
+    gl.scissor(v.x + Math.ceil(g.x * vs), v.H - v.y - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs), Math.floor(g.h * vs))
     gl.enable(gl.SCISSOR_TEST)
     mainShapes.drawArrays4('rect')
     gl.disable(gl.SCISSOR_TEST)
