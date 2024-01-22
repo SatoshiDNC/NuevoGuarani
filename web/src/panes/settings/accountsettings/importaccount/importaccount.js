@@ -486,24 +486,27 @@ v.renderFuncAux = function() {
     let scanned = false
     let prevScanned = false
     const offset = 0.25
-		for (let i=0; i<parts; i++) {
+		for (let i=0; i<=parts; i++) {
       prevScanned = scanned
-      scanned = this.scanner.results[i] != ''
+      scanned = i<parts? this.scanner.results[i] != '': false
       if (scanned && !prevScanned) {
         beg = Math.round((i / parts + offset) * tris) % tris
       } else if (!scanned && prevScanned) {
         end = Math.round((i / parts + offset) * tris) % tris
-        gl.drawArrays(mainShapes.typ2.pies,
-          mainShapes.beg2.pies + beg * 3,
-          (end - beg) * 3)
+        if (end < beg) {
+          gl.drawArrays(mainShapes.typ2.pies,
+            mainShapes.beg2.pies + beg * 3,
+            (tris - beg) * 3)
+          gl.drawArrays(mainShapes.typ2.pies,
+            mainShapes.beg2.pies + 0 * 3,
+            end * 3)
+        } else {
+          gl.drawArrays(mainShapes.typ2.pies,
+            mainShapes.beg2.pies + beg * 3,
+            (end - beg) * 3)
+        }
       }
 		}
-    if (prevScanned) {
-      end = Math.round((i / parts + offset) * tris) % tris
-      gl.drawArrays(mainShapes.typ2.pies,
-        mainShapes.beg2.pies + beg * 3,
-        (end - beg) * 3)
-    }
 		this.scanner.intensity *= 0.95
 	}
 
