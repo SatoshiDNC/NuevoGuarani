@@ -439,10 +439,10 @@ v.renderFuncAux = function() {
     var x = g.x, y = g.y
     if (v.videoDims[0] > v.videoDims[1]) {
       w = g.h / v.videoDims[1] * v.videoDims[0]
-      x = -(g.h / v.videoDims[1] * v.videoDims[0] - g.h) / 2
+      x = g.x - (g.h / v.videoDims[1] * v.videoDims[0] - g.w) / 2
     } else {
       h = g.w / v.videoDims[0] * v.videoDims[1]
-      y = -(g.w / v.videoDims[0] * v.videoDims[1] - g.w) / 2
+      y = g.y - (g.w / v.videoDims[0] * v.videoDims[1] - g.h) / 2
     }
     mat4.identity(mat)
     mat4.translate(mat, mat, [x, y, 0])
@@ -464,16 +464,20 @@ v.renderFuncAux = function() {
 	&& this.scanner.results.length > 1) {
 	  mainShapes.useProg2()
 		var p = this.scanner.lastresult.cornerPoints
-    x = g.x / g.w * v.videoDims[0]
-    y = g.y / g.h * v.videoDims[1]
     if (v.videoDims[0] > v.videoDims[1]) {
-      x -= (v.videoDims[0]-v.videoDims[1])/2
+      h = g.h
+      w = h / v.videoDims[1] * v.videoDims[0]
+      x = g.x - (w-h)/2
+      y = g.y
     } else {
-      y -= (v.videoDims[1]-v.videoDims[0])/2
+      w = g.w
+      h = w / v.videoDims[0] * v.videoDims[1]
+      x = g.x
+      y = g.y - (h-w)/2
     }
     const vs = g.w / Math.min(v.videoDims[0], v.videoDims[1])
 		var t = transform2d(undefined,
-			(p[0].x+x)*vs, (p[0].y+y)*vs, (p[1].x+x)*vs, (p[1].y+y)*vs, (p[3].x+x)*vs, (p[3].y+y)*vs, (p[2].x+x)*vs, (p[2].y+y)*vs)
+			p[0].x*vs+x, p[0].y*vs+y, p[1].x*vs+x, p[1].y*vs+y, p[3].x*vs+x, p[3].y*vs+y, p[2].x*vs+x, p[2].y*vs+y)
 		let m = mat4.fromValues(
 			t[ 0],t[ 1],t[ 2],t[ 3],
 			t[ 4],t[ 5],t[ 6],t[ 7],
