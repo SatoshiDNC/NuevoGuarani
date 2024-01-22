@@ -459,8 +459,9 @@ v.renderFuncAux = function() {
 		var p = this.scanner.lastresult.cornerPoints
     x = -v.videoDims[0]/2
     y = -v.videoDims[1]/2
+    const vs = Math.min(v.videoDims[0], v.videoDims[1])
 		var t = transform2d(undefined,
-			p[0].x+x, p[0].y+y, p[1].x+x, p[1].y+y, p[3].x+x, p[3].y+y, p[2].x+x, p[2].y+y)
+			(p[0].x+x)/vs, (p[0].y+y)/vs, (p[1].x+x)/vs, (p[1].y+y)/vs, (p[3].x+x)/vs, (p[3].y+y)/vs, (p[2].x+x)/vs, (p[2].y+y))/vs
 		let m = mat4.fromValues(
 			t[ 0],t[ 1],t[ 2],t[ 3],
 			t[ 4],t[ 5],t[ 6],t[ 7],
@@ -474,7 +475,6 @@ v.renderFuncAux = function() {
 			new Float32Array([0,1,0,this.scanner.intensity]))
     console.log(v.videoDims, v.sw, v.sh, x, y, w, h)
     console.log(w/v.videoDims[0], h/v.videoDims[1])
-    mat4.identity(m)
     mat4.translate(m,m, [g.x,g.y,0])
     mat4.scale(m,m, [g.w,g.h,1])
 		//mat4.scale(m, m, [g.w/v.videoDims[0], -g.h/v.videoDims[1], 1])
