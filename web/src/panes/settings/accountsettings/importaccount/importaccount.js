@@ -459,7 +459,7 @@ v.renderFuncAux = function() {
 		var p = this.scanner.lastresult.cornerPoints
     x = -v.videoDims[0]/2
     y = -v.videoDims[1]/2
-    const vs = g.w * Math.min(v.videoDims[0], v.videoDims[1])
+    const vs = 1//g.w * Math.min(v.videoDims[0], v.videoDims[1])
 		var t = transform2d(undefined,
 			(p[0].x+x)*vs, (p[0].y+y)*vs, (p[1].x+x)*vs, (p[1].y+y)*vs, (p[3].x+x)*vs, (p[3].y+y)*vs, (p[2].x+x)*vs, (p[2].y+y))*vs
 		let m = mat4.fromValues(
