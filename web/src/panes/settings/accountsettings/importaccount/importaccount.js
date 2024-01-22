@@ -482,6 +482,7 @@ v.renderFuncAux = function() {
 		var tris = mainShapes.len2.pies/3
 		var parts = this.scanner.results.length
     let beg = 0
+    let end = 0
     let scanned = false
     let prevScanned = false
     let i = 0
