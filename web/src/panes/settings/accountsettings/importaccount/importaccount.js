@@ -488,7 +488,7 @@ v.renderFuncAux = function() {
     const offset = 0
 		for (let i=0; i<parts; i++) {
       prevScanned = scanned
-      scanned = this.scanner.results[j] != ''
+      scanned = this.scanner.results[i] != ''
       if (scanned && !prevScanned) {
         beg = Math.round(i / parts * tris) % tris
       } else if (!scanned && prevScanned) {
