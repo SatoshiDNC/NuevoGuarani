@@ -469,8 +469,9 @@ v.renderFuncAux = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,1,0,this.scanner.intensity]))
-    console.log(v.videoDims, v.sw, v.sh)
-		mat4.scale(m, m, [w/v.videoDims[0], h/v.videoDims[1], 0])
+    console.log(v.videoDims, v.sw, v.sh, x, y, w, h)
+    console.log(w/v.videoDims[0], h/v.videoDims[1])
+		mat4.scale(m, m, [w/v.videoDims[0], h/v.videoDims[1], 1])
 		mat4.translate(m, m, [x, y, 0])
 		mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
 		mat4.scale(m, m, [0.14, -0.14, 1])
