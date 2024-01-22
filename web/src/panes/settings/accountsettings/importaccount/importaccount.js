@@ -109,7 +109,6 @@ v.switchedToFunc = function() {
         const m = +result.data.substring(0,slashPos)
         const n = +result.data.substring(slashPos+1,colonPos)
         console.log(m,n)
-        console.log(this.results)
 				if (this.results.length == 0) {
           this.results = Array(n).join(".").split(".")
 				}
@@ -473,14 +472,11 @@ v.renderFuncAux = function() {
 			t[ 8],t[ 9],t[10],t[11],
 			t[12],t[13],t[14],t[15],
 		)
-    console.log(p)
-		gl.disable(gl.DEPTH_TEST)
+    gl.disable(gl.DEPTH_TEST)
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,1,0,this.scanner.intensity]))
-    console.log(v.videoDims, v.sw, v.sh, x, y, w, h)
-    console.log(w/v.videoDims[0], h/v.videoDims[1])
-		mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
+    mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
 		mat4.scale(m, m, [0.14, -0.14, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
 		var tris = mainShapes.len2.pies/3
