@@ -458,7 +458,7 @@ v.renderFuncAux = function() {
 	  mainShapes.useProg2()
 		var p = this.scanner.lastresult.cornerPoints
     x = -(v.videoDims[0]-v.videoDims[1])/2
-    y = 0//-v.videoDims[1]/2
+    y = g.y / g.w * v.videoDims[1]
     let xo = 0// g.w/2
     let yo = 0//g.h/2
     const vs = g.w / Math.min(v.videoDims[0], v.videoDims[1])
