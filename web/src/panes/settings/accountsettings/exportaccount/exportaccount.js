@@ -270,7 +270,6 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       t = 0;
       this.reftime = curtime
       this.qrindex += 1
-      console.log(this.qr[this.qrindex])
       if (this.qrindex >= this.qr.length) this.qrindex = 0
     }
   

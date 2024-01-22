@@ -7,9 +7,10 @@ v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
 v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
+  g.busySignal = true
   g.busyCounter = 0
   g.clear = function() {
-    this.busySignal = false
+    this.busySignal = true
     this.errorSignal = false
     this.walletSignal = false
     this.copiedSignal = false
@@ -52,8 +53,8 @@ v.updateFlag = false
 v.checkReady = function() {
   const v = this
 	if (v.playing && v.timeupdate) {
-		v.setRenderFlag(true)
 		v.updateFlag = true
+    v.setRenderFlag(true)
 	}
 }
 v.switchedToFunc = function() {
@@ -352,7 +353,6 @@ v.renderFuncAux = function() {
   }
 
 	const th = config.themeColors, v = this, g = v.qrscanner
-	v.setRenderFlag(true)
 
   let earlyreturn = 0
   if (g.triggerPad || true) {
@@ -374,62 +374,65 @@ v.renderFuncAux = function() {
   }
 
   // Transitional gray placeholder or white background.
-  var w = Math.min(g.w, g.h) // * (earlyreturn?0.9:1)
-  var x = g.x + (g.w - w) / 2
-  var y = g.y + (g.h - w) / 2
-  mainShapes.useProg2()
   const m = mat4.create()
-  mat4.identity(m)
-  mat4.translate(m,m,[x,y,0])
-  mat4.scale(m,m,[w,w,1])
-  gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
-  gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-    new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]))
-  gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
-  mainShapes.drawArrays2('rect')
-//console.log(g.busySignal, g.busyCounter)
-  const iconSize = [2,2,1]
   const crosshairColor = [1,1,1,1]
-  if (g.busySignal) {
-    g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
-
+  if (g.busySignal || g.walletSignal || g.errorSignal || g.copiedSignal) {
+    var w = Math.min(g.w, g.h) // * (earlyreturn?0.9:1)
+    var x = g.x + (g.w - w) / 2
+    var y = g.y + (g.h - w) / 2
+    mainShapes.useProg2()
     mat4.identity(m)
-    mat4.translate(m,m,[x+w/2,y+w/2,0])
-    //mat4.scale(m,m,[w,w,1])
-    mat4.scale(m,m,iconSize)
-    mat4.rotate(m,m, g.busyCounter, [0,0,1])
-    iconFont.draw(-10,7,"\x0A",crosshairColor,v.mat, m)
-
-  } else if (g.walletSignal) {
-    mat4.identity(m)
-    mat4.translate(m,m,[x+w/2,y+w/2,0])
-    mat4.scale(m,m,iconSize)
-    financeGraphicsFont.draw(-8.5,8.5,"\x08",crosshairColor,v.mat, m)
-  } else if (g.errorSignal) {
-    mat4.identity(m)
-    mat4.translate(m,m,[x+w/2,y+w/2,0])
-    mat4.scale(m,m,iconSize)
-    //mat4.scale(m,m,[w,w,1])
-    //mat4.rotate(m,m, g.busyCounter, [0,0,1])
-    iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
-  } else if (g.copiedSignal) {
-    let str = icap(tr("copied"))
-    let tw = defaultFont.calcWidth(str)
-    mat4.identity(m)
-    mat4.translate(m,m,[x+w/2,y+w/2,0])
-    mat4.scale(m,m,iconSize)
-    mat4.translate(m,m,[-tw/2,7,0])
-    defaultFont.draw(0,0,str,crosshairColor,v.mat, m)
+    mat4.translate(m,m,[x,y,0])
+    mat4.scale(m,m,[w,w,1])
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
+    gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+      new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]))
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
+    mainShapes.drawArrays2('rect')
+    const iconSize = [2,2,1]
+    if (g.busySignal) {
+	    v.setRenderFlag(true)
+      g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
+  
+      mat4.identity(m)
+      mat4.translate(m,m,[x+w/2,y+w/2,0])
+      //mat4.scale(m,m,[w,w,1])
+      mat4.scale(m,m,iconSize)
+      mat4.rotate(m,m, g.busyCounter, [0,0,1])
+      iconFont.draw(-10,7,"\x0A",crosshairColor,v.mat, m)
+  
+    } else if (g.walletSignal) {
+      mat4.identity(m)
+      mat4.translate(m,m,[x+w/2,y+w/2,0])
+      mat4.scale(m,m,iconSize)
+      financeGraphicsFont.draw(-8.5,8.5,"\x08",crosshairColor,v.mat, m)
+    } else if (g.errorSignal) {
+      mat4.identity(m)
+      mat4.translate(m,m,[x+w/2,y+w/2,0])
+      mat4.scale(m,m,iconSize)
+      //mat4.scale(m,m,[w,w,1])
+      //mat4.rotate(m,m, g.busyCounter, [0,0,1])
+      iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
+    } else if (g.copiedSignal) {
+      let str = icap(tr("copied"))
+      let tw = defaultFont.calcWidth(str)
+      mat4.identity(m)
+      mat4.translate(m,m,[x+w/2,y+w/2,0])
+      mat4.scale(m,m,iconSize)
+      mat4.translate(m,m,[-tw/2,7,0])
+      defaultFont.draw(0,0,str,crosshairColor,v.mat, m)
+    }
+    if (g.busySignal) setTimeout(g.timeoutFunc, 100)
+    // if (earlyreturn) {
+    //   return
+    // }
   }
-  if (g.busySignal) setTimeout(g.timeoutFunc, 100)
-  // if (earlyreturn) {
-  //   return
-  // }
 
+  // Draw the video feed
   const mat = mat4.create()
 	if (v.videoDims && v.vidPos && v.updateFlag) {
     g.busySignal = false
-  //	this.updateFlag = false
+    v.setRenderFlag(true)
     if (!this.texture) this.texture = initTexture(gl)
     updateTexture(gl, this.texture, this.videoEl)
     var w = g.w, h = g.h
@@ -449,12 +452,13 @@ v.renderFuncAux = function() {
     gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
     gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
     const vs = v.viewScale
-    gl.scissor(v.x + g.x * vs, v.H - v.y - (g.y + g.h) * vs, g.w * vs, g.h * vs)
+    gl.scissor(v.x + Math.ceil(g.x * vs), v.H - v.y - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs) - 1, Math.floor(g.h * vs) - 1)
     gl.enable(gl.SCISSOR_TEST)
     mainShapes.drawArrays4('rect')
     gl.disable(gl.SCISSOR_TEST)
   }
 
+  // Draw the progress clock
 	if (this.scanner
 	&& this.scanner.lastresult.data != ''
 	&& this.scanner.results.length > 1) {
@@ -514,6 +518,7 @@ v.renderFuncAux = function() {
 		this.scanner.intensity *= 0.95
 	}
 
+  // Draw the scan box
   mainShapes.useProg2()
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array(crosshairColor))
