@@ -466,10 +466,10 @@ v.renderFuncAux = function() {
 			t[12],t[13],t[14],t[15],
 		)
 		gl.disable(gl.DEPTH_TEST)
-		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
+		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,1,0,this.scanner.intensity]))
-		mat4.scale(m, m, [v.sw/v.videoDims[0], v.sh/v.videoDims[1], 1])
+		mat4.scale(m, m, [1/v.videoDims[0], 1/v.videoDims[1], 1])
 		mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
 		mat4.scale(m, m, [0.14, -0.14, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
