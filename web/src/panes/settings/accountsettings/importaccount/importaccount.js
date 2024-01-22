@@ -457,6 +457,8 @@ v.renderFuncAux = function() {
 	&& this.scanner.results.length > 1) {
 	  mainShapes.useProg2()
 		var p = this.scanner.lastresult.cornerPoints
+    x = 0
+    y = 0
 		var t = transform2d(undefined,
 			p[0].x+x, p[0].y+y, p[1].x+x, p[1].y+y, p[3].x+x, p[3].y+y, p[2].x+x, p[2].y+y)
 		let m = mat4.fromValues(
