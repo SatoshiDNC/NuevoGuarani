@@ -272,6 +272,7 @@ v.layoutFuncAux = function() {
 	// 	g.autoHull()
 	// }
 }
+globalThis._disableBarcodeDetector = true
 console.log('globalThis', globalThis)
 
 v.renderFuncAux = function() {
