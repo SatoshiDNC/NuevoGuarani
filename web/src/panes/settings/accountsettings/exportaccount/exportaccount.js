@@ -291,6 +291,10 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     }
   
     if (this.qr.length > 1) {
+      function polarSquare(phi){
+        phi = ((phi/Math.PI*180+45)%90-45)/180*Math.PI
+        return 1/Math.cos(phi)
+      }  
       mainShapes.useProg2()
       gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
       gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -299,23 +303,52 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       mat4.translate(mat,mat,[0.425,0.425,0])
       mat4.scale(mat,mat,[0.15,0.15,1])
       gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-      mainShapes.drawArrays2('circle')
+      // mainShapes.drawArrays2('circle')
       gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
         new Float32Array([1,1,1,1]))
       mat4.copy(mat, m)
       mat4.translate(mat,mat,[0.43,0.43,0])
       mat4.scale(mat,mat,[0.14,0.14,1])
       gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-      mainShapes.drawArrays2('circle')
+      // mainShapes.drawArrays2('circle')
       gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
         new Float32Array([0,0,0,1]))
       mat4.copy(mat, m)
       mat4.translate(mat,mat,[0.5,0.5,0])
-      mat4.rotate(mat,mat,(t/r+this.qrindex)/this.qr.length*2*Math.PI,[0,0,1])
-      mat4.translate(mat,mat,[-0.003,0,0])
-      mat4.scale(mat,mat,[0.006,-0.06,1])
-      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-      mainShapes.drawArrays2('rect')
+      mat4.copy(m, mat)
+      // const a = (t/r+this.qrindex)/this.qr.length*2*Math.PI
+      const a = (t/r+this.qrindex)/this.qr.length*8
+      // const s = polarSquare(a)
+      const s = (1/0.9 + 1)/2
+      const br = Math.min(1,8/this.qr.length)
+      const bl = 0.5*s*br
+      const bw = (1 - 1/0.9)/2/2
+      // for (const b of [{a,c:[0,0,0,0.5]}, {a:a+Math.PI/2,c:[0,1,1,1]}, {a:a+Math.PI,c:[0.8,0,0.8,0.5]}, {a:a-Math.PI/2,c:[0.9,0.9,0,1]}]) {
+      for (const b of [{a,c:[0.75,0.75,0.75,1]}, {a:a+2,c:[0.33,1,1,1]}, {a:a+4,c:[0.9,0.66,0.9,1]}, {a:a+6,c:[0.9,0.85,0,1]}]) {
+        gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+          new Float32Array(b.c))
+        let a = b.a >= 8? b.a - 8 : b.a
+        let ap = a - Math.floor(a/2)*2
+        if (ap < 1 + br + bw) {
+          mat4.copy(mat, m)
+          // mat4.rotate(mat,mat,b.a,[0,0,1])
+          // mat4.translate(mat,mat,[-0.003,-0.5*s,0])
+          // mat4.scale(mat,mat,[0.006,-(1/0.9-1)/2*s,1])
+          mat4.rotate(mat,mat,Math.floor((a)/2)*Math.PI/2,[0,0,1])
+          mat4.translate(mat,mat,[0.5*s*(ap)-bl,-0.5*s-bw/2,0])
+          mat4.scale(mat,mat,[Math.min(bl,bl-bw/2+0.5*s*(1-ap)),bw,1])
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
+          mainShapes.drawArrays2('rect')
+        }
+        if (ap >= 1 - bw) {
+          mat4.copy(mat, m)
+          mat4.rotate(mat,mat,(Math.floor((a)/2)+1)*Math.PI/2,[0,0,1])
+          mat4.translate(mat,mat,[0.5*s*(a-1-Math.floor(a)%8),-0.5*s-bw/2,0])
+          mat4.scale(mat,mat,[-Math.min(bl,-bw/2+0.5*s*(ap-1)),bw,1])
+          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
+          mainShapes.drawArrays2('rect')  
+        }
+      }
   
       //setTimeout(this.timeoutFunc, 1000)
       v.setRenderFlag(true)
