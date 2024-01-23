@@ -79,6 +79,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //v.result.description = `Saved to Downloads as '${filename}'.`
       let payload = JSON.stringify(data)
       const maxLen = 128
+      payload = payload.repeat(6)
       let headerLen = 4
       let notSuccessful = true
       do {
@@ -144,9 +145,9 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   g.hide = true
   g.busyCounter = 0
   g.layoutFunc = function () {
-    const g = this
-    g.w = Math.min(Math.min(v.sw, v.sh), g.w)
-    g.h = g.w
+    const g = this, v = g.viewport
+    g.h = g.w = Math.min(Math.min(v.sw, v.sh), g.w)
+    g.x = (v.sw - g.w)/2
     g.autoHull()
   }
   g.clear = function() {
@@ -290,11 +291,11 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       defaultFont.draw(-5,7, '🗲', customerColors.uiLightningYellow, v.mat, m)
     }
   
-    if (this.qr.length > 1) {
+    if (false && this.qr.length >= 8) {
       function polarSquare(phi){
         phi = ((phi/Math.PI*180+45)%90-45)/180*Math.PI
         return 1/Math.cos(phi)
-      }  
+      }
       mainShapes.useProg2()
       gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
       gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -349,11 +350,12 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
           mainShapes.drawArrays2('rect')  
         }
       }
-  
+    }
+
+    if (this.qr.length > 1) {
       //setTimeout(this.timeoutFunc, 1000)
       v.setRenderFlag(true)
-    }
-    
+    }    
   }
 v.load = function(cb) {
 	const debuglog = true
