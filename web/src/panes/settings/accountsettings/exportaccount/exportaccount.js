@@ -79,7 +79,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //v.result.description = `Saved to Downloads as '${filename}'.`
       let payload = JSON.stringify(data)
       payload = payload.repeat(6)
-      const maxLen = 128 + Math.floor(Math.sqrt(payload.length)/2)
+      const maxLen = 128 + Math.floor(Math.sqrt(payload.length))
       let headerLen = 4
       let notSuccessful = true
       do {
@@ -291,6 +291,22 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       defaultFont.draw(-5,7, '🗲', customerColors.uiLightningYellow, v.mat, m)
     }
   
+    if (this.qr.length > 1) {
+      const frameText = this.qr[this.qrindex].split(':')[0]
+      const tw = defaultFont.calcWidth(frameText)
+      mainShapes.useProg2()
+      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
+      gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+        new Float32Array([1,1,1,1]))
+      mat4.identity(mat)
+      mat4.translate(mat,mat,[g.x + g.w/2 - (tw+2)/2, g.y + g.h/2 - 9, 0])
+      mat4.scale(mat,mat,[tw+2, 18, 1])
+      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
+      mainShapes.drawArrays2('rect')
+      mat4.identity(mat)
+      mat4.translate(mat,mat,[g.x + g.w/2,g.y + g.h/2,0])
+      defaultFont.draw(-tw/2,7, frameText, [0,0,0,1], v.mat, mat)
+    }
     if (false && this.qr.length >= 8) {
       function polarSquare(phi){
         phi = ((phi/Math.PI*180+45)%90-45)/180*Math.PI
