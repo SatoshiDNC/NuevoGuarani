@@ -486,8 +486,9 @@ v.renderFuncAux = function() {
 		)
     {
       const v = vec4.create()
-      vec4.transformMat4(v,[0,0,0,0],m); console.log(Convert.JSONToString(v))
-      vec4.transformMat4(v,[1,0,0,0],m); console.log(Convert.JSONToString(v))
+      vec4.transformMat4(v,[0,0,0,0],m); // console.log(Convert.JSONToString(v))
+      vec4.transformMat4(v,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
+      console.log(Math.atan2(v[1],v[0]))
     }
     gl.disable(gl.DEPTH_TEST)
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)

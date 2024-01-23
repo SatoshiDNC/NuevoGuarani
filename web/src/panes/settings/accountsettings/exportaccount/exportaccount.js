@@ -145,6 +145,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   g.busyCounter = 0
   g.layoutFunc = function () {
     const g = this
+    g.w = Math.min(Math.min(v.sw, v.sh), g.w)
     g.h = g.w
     g.autoHull()
   }
