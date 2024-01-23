@@ -118,6 +118,7 @@ v.switchedToFunc = function() {
 				}
 				if (n == this.results.length && this.results[m-1] != result.data.substring(colonPos+1)) {
 					this.results[m-1] = payload
+          this.currentSlot = m-1
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
 						beeptype = 'click' // 'qr-part' gets annoying
@@ -515,6 +516,32 @@ v.renderFuncAux = function() {
 		for (let i=0; i<=parts; i++) {
       prevScanned = scanned
       scanned = i<parts? this.scanner.results[i] != '': false
+      if (scanned) total++
+      if (scanned && !prevScanned) {
+        beg = Math.floor((i / parts + offset) * quads) % quads
+      } else if (!scanned && prevScanned) {
+        end = Math.floor((i / parts + offset) * quads) % quads
+        if (end < beg) {
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + beg * 2,
+            (quads - beg) * 2 + 2)
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + 0 * 2,
+            end * 2 + 2)
+        } else if (end > beg) {
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + beg * 2,
+            (end - beg) * 2 + 2)
+        } else if (total == parts) {
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress, mainShapes.len2.qrprogress)
+        }
+      }
+		}
+    scanned = false
+		for (let i=this.currentSlot; i<=this.currentSlot+1; i++) {
+      prevScanned = scanned
+      scanned = i==this.currentSlot? true: false
       if (scanned) total++
       if (scanned && !prevScanned) {
         beg = Math.floor((i / parts + offset) * quads) % quads
