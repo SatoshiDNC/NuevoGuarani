@@ -57,8 +57,8 @@ const mainShapes = new ShapeBuffer(function() {
       let a = i/n*2*Math.PI
       p.push(0.5 + 0.5 * Math.sin(a)*polarSquare(a))
       p.push(0.5 + 0.5 * Math.cos(a)*polarSquare(a))
-      p.push(0.5 + 0.5 * Math.sin(a)*polarSquare(a)*1.1)
-      p.push(0.5 + 0.5 * Math.cos(a)*polarSquare(a)*1.1)
+      p.push(0.5 + 0.5 * Math.sin(a)*polarSquare(a)*(1/0.9))
+      p.push(0.5 + 0.5 * Math.cos(a)*polarSquare(a)*(1/0.9))
     }
     this.addShape2('qrprogress', gl.TRIANGLE_STRIP,
       ...p )
