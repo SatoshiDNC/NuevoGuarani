@@ -123,6 +123,7 @@ v.switchedToFunc = function() {
 						beeptype = 'qr-part'
 						break
 					}
+          beeptype = 'qr-part' ////////////////////////////////////////////////
 					if (beeptype == 'qr-scan') {
 						var data = this.results.join('').trim()
             console.log(data)
@@ -272,8 +273,6 @@ v.layoutFuncAux = function() {
 	// 	g.autoHull()
 	// }
 }
-globalThis._disableBarcodeDetector = true
-console.log('globalThis', globalThis)
 
 v.renderFuncAux = function() {
 
@@ -489,42 +488,52 @@ v.renderFuncAux = function() {
 		)
     {
       const u = vec4.create()
-      vec4.transformMat4(u,[0,0,0,0],m); // console.log(Convert.JSONToString(v))
       vec4.transformMat4(u,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
-      console.log(Math.atan2(u[1],u[0]), v.videoDims[0], v.videoDims[1])
+      const w = vec4.create()
+      vec4.transformMat4(w,[p[1].x-p[0].x,p[1].y-p[0].y,0,0],m); // console.log(Convert.JSONToString(v))
+      vec4.transformMat4(w,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
+      vec4.transformMat4(w,w,v.mat); // console.log(Convert.JSONToString(v))
+      console.log(Math.atan2(u[1],u[0]).toFixed(1), Math.atan2(w[1],w[0]).toFixed(1))
     }
     gl.disable(gl.DEPTH_TEST)
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,1,0,this.scanner.intensity]))
-    mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
-		mat4.scale(m, m, [0.14, -0.14, 1])
+    // mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
+		// mat4.scale(m, m, [0.14, -0.14, 1])
+    mat4.translate(m, m, [0, 1, 0])
+		mat4.scale(m, m, [1, -1, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
-		var tris = mainShapes.len2.pies/3
-		var parts = this.scanner.results.length
+		const quads = (mainShapes.len2.qrprogress-2)/2
+		const parts = this.scanner.results.length
     let beg = 0
     let end = 0
     let scanned = false
     let prevScanned = false
+    let total = 0
     const offset = 0.25
 		for (let i=0; i<=parts; i++) {
       prevScanned = scanned
       scanned = i<parts? this.scanner.results[i] != '': false
+      if (scanned) total++
       if (scanned && !prevScanned) {
-        beg = Math.round((i / parts + offset) * tris) % tris
+        beg = Math.floor((i / parts + offset) * quads) % quads
       } else if (!scanned && prevScanned) {
-        end = Math.round((i / parts + offset) * tris) % tris
+        end = Math.floor((i / parts + offset) * quads) % quads
         if (end < beg) {
-          gl.drawArrays(mainShapes.typ2.pies,
-            mainShapes.beg2.pies + beg * 3,
-            (tris - beg) * 3)
-          gl.drawArrays(mainShapes.typ2.pies,
-            mainShapes.beg2.pies + 0 * 3,
-            end * 3)
-        } else {
-          gl.drawArrays(mainShapes.typ2.pies,
-            mainShapes.beg2.pies + beg * 3,
-            (end - beg) * 3)
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + beg * 2,
+            (quads - beg) * 2 + 2)
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + 0 * 2,
+            end * 2 + 2)
+        } else if (end > beg) {
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress + beg * 2,
+            (end - beg) * 2 + 2)
+        } else if (total == parts) {
+          gl.drawArrays(mainShapes.typ2.qrprogress,
+            mainShapes.beg2.qrprogress, mainShapes.len2.qrprogress)
         }
       }
 		}

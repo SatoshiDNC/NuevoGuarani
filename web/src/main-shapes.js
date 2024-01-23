@@ -48,6 +48,23 @@ const mainShapes = new ShapeBuffer(function() {
 	}
 
 	{
+    function polarSquare(phi){
+      phi = ((phi/Math.PI*180+45)%90-45)/180*Math.PI
+      return 1/Math.cos(phi)
+    }
+    const p = []; var n = 360
+    for (var i=0; i<=n; i++) {
+      let a = i/n*2*Math.PI
+      p.push(0.5 + 0.5 * Math.sin(a)*polarSquare(a))
+      p.push(0.5 + 0.5 * Math.cos(a)*polarSquare(a))
+      p.push(0.5 + 0.5 * Math.sin(a)*polarSquare(a)*1.1)
+      p.push(0.5 + 0.5 * Math.cos(a)*polarSquare(a)*1.1)
+    }
+    this.addShape2('qrprogress', gl.TRIANGLE_STRIP,
+      ...p )
+	}
+
+	{
     const p = []; var n = 100;
     for (var i=0; i<n; i++) {
       p.push(0.5);
