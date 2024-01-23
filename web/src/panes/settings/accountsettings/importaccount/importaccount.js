@@ -14,7 +14,6 @@ v.gadgets.push(v.qrscanner = g = new vp.Gadget(v))
     this.errorSignal = false
     this.walletSignal = false
     this.copiedSignal = false
-    this.triggerPad = true
   }
   g.clear()
   g.layoutFunc = function () {
@@ -88,25 +87,6 @@ v.switchedToFunc = function() {
 			if (repeat) return
 
 			var beeptype = 'click', ob = false
-			// if (result.data.toLowerCase().startsWith('lnbc')
-			// ||  result.data.toLowerCase().startsWith('lnurl')) {
-			// 	this.results = []
-			// 	vp.beep('qr-scan')
-			// 	this.scanner.stop()
-			// 	this.scanner.destroy()
-			// 	this.scanner = undefined
-			// 	this.playing = false
-			// 	this.timeupdate = false
-			// 	this.updateFlag = false
-			// 	delete this.videoDims
-			// 	payinvconf.data = result.data.toLowerCase()
-			// 	var root = menudiv, v = payinvconf
-			// 	root.b = v; v.parent = root
-			// 	root.relayout()
-			// } else if ((ob = tryParseJSONObject(result.data)) !== false
-			// && typeof(ob) == 'object'
-			// && typeof(ob[0]) == 'number' && ob[0] > 0
-			// && typeof(ob[1]) == 'number' && ob[0] <= ob[1]) {
       if (result.data.match(/[0-9]+\/[0-9]+:/)) {
         const slashPos = result.data.indexOf('/')
         const colonPos = result.data.indexOf(':')
@@ -134,11 +114,17 @@ v.switchedToFunc = function() {
             v.stopScanning()
             v.qrscanner.hide = true
             v.queueLayout()
-        }
+          }
 				}
 				vp.beep(beeptype)
 			} else {
-				console.log('Unrecognized QR code')
+				console.log('Invalid QR code format')
+        if (this.results.length == 0) {
+          vp.beep('error')
+          v.stopScanning()
+          v.qrscanner.hide = true
+          v.queueLayout()
+        }
 			}
 		},
 		{
@@ -147,14 +133,13 @@ v.switchedToFunc = function() {
         const smallestDimension = Math.min(video.videoWidth, video.videoHeight)
         const scanRegionSize = smallestDimension
         return {
-            x: Math.round((video.videoWidth - scanRegionSize) / 2),
-            y: Math.round((video.videoHeight - scanRegionSize) / 2),
-            width: scanRegionSize,
-            height: scanRegionSize,
+          x: Math.round((video.videoWidth - scanRegionSize) / 2),
+          y: Math.round((video.videoHeight - scanRegionSize) / 2),
+          width: scanRegionSize,
+          height: scanRegionSize,
         }
     	}, returnDetailedScanResult: true
 		},
-//calculateScanRegion: {x:0, y:0, width:100, height:100, downScaledWidth:400, downScaledHeight:400}, 
 	);
 	this.scanner.results = []
 	this.scanner.lastresult = {data: ''}
@@ -175,87 +160,6 @@ v.layoutFuncAux = function() {
 			this.scanner.start()
 		}
 	}
-
-  v.vidPos = [0,0]
-
-	// // Strategy: since the video might not be proportioned to fill the entire viewport,
-  // // adapt the layout for each scenario, placing the button bar in the position that
-  // // results in the most pleasing aesthetic.
-
-	// v.vidPos = [(v.sw-v.designFit[0])/2, (v.sh-v.designFit[1])/2]
-	// const view_aspect = v.w/v.h
-	// const vid_aspect = v.designFit[0]/v.designFit[1]
-	// const s = v.w > v.h? v.h / 400 : v.w / 400 /* button scale determined by view size */
-	// var decidedlayout = ''
-	// v.overlaymode = false
-	// var sidemax = v.sh, bottommax = v.sw
-	// if (view_aspect > vid_aspect) { // wee have blank spaces on left and right
-	// 	const amt = v.w - v.h * vid_aspect
-	// 	if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
-	// 		decidedlayout = 'sidebar'
-	// 		// if necessary, shift video slightly to ensure enough space for the buttons
-	// 		if (Math.floor(amt/s) < 100) {
-	// 			v.vidPos[0] = Math.ceil(50*s/v.getScale())
-	// 		}
-	// 	} else { // it's not enough space, so overlay and decide what looks best
-	// 		v.overlaymode = true
-	// 		if (view_aspect < 1) { // portrait, overlay the buttons within video frame
-	// 			decidedlayout = 'bottombar'
-	// 			bottommax = v.designFit[0]
-	// 		} else { // overlay, but also shift the video fully under, not to cross the edge
-	// 			decidedlayout = 'sidebar'
-	// 			v.vidPos[0] = 0
-	// 		}
-	// 	}
-	// } else { // we have blank spaces on top and bottom
-	// 	const amt = v.h - v.w / vid_aspect
-	// 	if (Math.ceil(amt/s) >= 50) { // it's enough empty space for the buttons, so use it
-	// 		decidedlayout = 'bottombar'
-	// 		// if necessary, shift video slightly to ensure enough space for the buttons
-	// 		if (Math.floor(amt/s) < 100) {
-	// 			v.vidPos[1] = v.sh - v.designFit[1] - Math.ceil(50*s/v.getScale())
-	// 		}
-	// 	} else { // it's not enough space, so overlay and decide what looks best
-	// 		v.overlaymode = true
-	// 		if (view_aspect > 1) { // landscape, overlay the buttons within video frame
-	// 			decidedlayout = 'sidebar'
-	// 			sidemax = v.designFit[1]
-	// 		} else { // overlay, but also shift the video fully under, not to cross the edge
-	// 			decidedlayout = 'bottombar'
-	// 			v.vidPos[1] = v.sh - v.designFit[1]
-	// 		}
-	// 	}
-	// }
-	// for (const g of v.gadgets) if (g.refw && g.refh) {
-	// 	g.w = g.refw / v.getScale() * s
-	// 	g.h = g.refh / v.getScale() * s
-	// }
-	// const bw = 50 / v.getScale() * s
-	// switch (decidedlayout) {
-	// case 'sidebar':
-	// 	var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.h
-	// 	var space = (sidemax - gadtotal) / (v.gadgets.length * 2)
-	// 	var y = (v.sh - sidemax)/2
-	// 	for (const g of v.gadgets) {
-	// 		g.x = (bw - g.w)/2
-	// 		g.y = y + space
-	// 		y += space + g.h + space
-	// 	}
-	// 	break
-	// case 'bottombar':
-	// 	var gadtotal = 0; for (const g of v.gadgets) if (g.refw && g.refh) gadtotal += g.w
-	// 	var space = (bottommax - gadtotal) / (v.gadgets.length * 2)
-	// 	var x = (v.sw - bottommax)/2
-	// 	for (const g of v.gadgets) {
-	// 		g.y = v.sh - bw + (bw - g.h)/2
-	// 		g.x = x + space
-	// 		x += space + g.w + space
-	// 	}
-	// 	break
-	// }
-	// for (const g of v.gadgets) if (g.refw && g.refh) {
-	// 	g.autoHull()
-	// }
 }
 
 v.renderFuncAux = function() {
@@ -319,7 +223,6 @@ v.renderFuncAux = function() {
     return [v[0]/v[2], v[1]/v[2]]
   }
   function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
-    //var w = elt.offsetWidth, h = elt.offsetHeight
     var w = 1, h = 1
     var t = general2DProjection
       (0, 0, x1, y1, w, 0, x2, y2, 0, h, x3, y3, w, h, x4, y4)
@@ -329,41 +232,17 @@ v.renderFuncAux = function() {
         0   , 0   , 1, 0   ,
         t[2], t[5], 0, t[8]]
     return t
-  /*
-    t = "matrix3d(" + t.join(", ") + ")"
-    elt.style["-webkit-transform"] = t
-    elt.style["-moz-transform"] = t
-    elt.style["-o-transform"] = t
-    elt.style.transform = t
-  */
   }
 
 	const th = config.themeColors, v = this, g = v.qrscanner
 
-  let earlyreturn = 0
-  if (g.triggerPad || true) {
-    delete g.triggerPad
-    g.pad = 10
-    earlyreturn = 1
-  }
-  if (!earlyreturn && g.pad > 0) {
-    g.pad -= 1
-    earlyreturn = 1
-  }
-  if (!earlyreturn && this.pad == 0) {
-    g.pad = -1
-    g.qrindex = -1
-    g.reftime = Date.now()
-  }
-  if (true || g.copiedSignal) {
-    earlyreturn = 1
-  }
-
-  // Transitional gray placeholder or white background.
   const m = mat4.create()
   const crosshairColor = [1,1,1,1]
-	if (!v.videoDims || !v.vidPos || !v.updateFlag) {
-    var w = Math.min(g.w, g.h) // * (earlyreturn?0.9:1)
+
+	if (!v.videoDims || !v.updateFlag) {
+
+    // draw transitional gray placeholder
+    var w = Math.min(g.w, g.h)
     var x = g.x + (g.w - w) / 2
     var y = g.y + (g.h - w) / 2
     mainShapes.useProg2()
@@ -372,21 +251,20 @@ v.renderFuncAux = function() {
     mat4.scale(m,m,[w,w,1])
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
     gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-      new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]))
+      new Float32Array([0.7,0.7,0.7,1]))
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
     mainShapes.drawArrays2('rect')
+
+    // draw icon (if applicable)
     const iconSize = [2,2,1]
     if (g.busySignal) {
 	    v.setRenderFlag(true)
       g.busyCounter += 0.01; if (g.busyCounter > Math.PI/2) g.busyCounter -= Math.PI/2
-  
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
-      //mat4.scale(m,m,[w,w,1])
       mat4.scale(m,m,iconSize)
       mat4.rotate(m,m, g.busyCounter, [0,0,1])
       iconFont.draw(-10,7,"\x0A",crosshairColor,v.mat, m)
-  
     } else if (g.walletSignal) {
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
@@ -396,8 +274,6 @@ v.renderFuncAux = function() {
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
       mat4.scale(m,m,iconSize)
-      //mat4.scale(m,m,[w,w,1])
-      //mat4.rotate(m,m, g.busyCounter, [0,0,1])
       iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
     } else if (g.copiedSignal) {
       let str = icap(tr("copied"))
@@ -409,14 +285,9 @@ v.renderFuncAux = function() {
       defaultFont.draw(0,0,str,crosshairColor,v.mat, m)
     }
     if (g.busySignal) setTimeout(g.timeoutFunc, 100)
-    // if (earlyreturn) {
-    //   return
-    // }
-  }
+  } else {
 
-  // Draw the video feed
-  const mat = mat4.create()
-	if (v.videoDims && v.vidPos && v.updateFlag) {
+    // render the video feed
     g.busySignal = false
     v.setRenderFlag(true)
     if (!this.texture) this.texture = initTexture(gl)
@@ -430,12 +301,12 @@ v.renderFuncAux = function() {
       h = g.w / v.videoDims[0] * v.videoDims[1]
       y = g.y - (g.w / v.videoDims[0] * v.videoDims[1] - g.h) / 2
     }
-    mat4.identity(mat)
-    mat4.translate(mat, mat, [x, y, 0])
-    mat4.scale(mat, mat, [w, h, 1])
+    mat4.identity(m)
+    mat4.translate(m, m, [x, y, 0])
+    mat4.scale(m, m, [w, h, 1])
     mainShapes.useProg4()
     gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uProjectionMatrix'), false, v.mat)
-    gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
+    gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, m)
     gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
     const vs = v.viewScale
     gl.scissor(v.x + v.userX*v.viewScale + Math.ceil(g.x * vs), v.H - v.y + v.userY*v.viewScale - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs), Math.floor(g.h * vs))
@@ -444,7 +315,7 @@ v.renderFuncAux = function() {
     gl.disable(gl.SCISSOR_TEST)
   }
 
-  // Draw the progress clock
+  // draw the progress clock
 	if (this.scanner
 	&& this.scanner.lastresult.data != ''
 	&& this.scanner.results.length > 1) {
@@ -474,8 +345,6 @@ v.renderFuncAux = function() {
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
 			new Float32Array([0,1,0,this.scanner.intensity]))
-    // mat4.translate(m, m, [0.43, 0.43 + 0.14, 0])
-		// mat4.scale(m, m, [0.14, -0.14, 1])
     mat4.translate(m, m, [0, 1, 0])
 		mat4.scale(m, m, [1, -1, 1])
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
@@ -532,14 +401,14 @@ v.renderFuncAux = function() {
 		this.scanner.intensity *= 0.95
 	}
 
-  // Draw the scan box
+  // draw the scan box
   mainShapes.useProg2()
 	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, this.mat)
 	gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'), new Float32Array(crosshairColor))
-	mat4.identity(mat)
-	mat4.translate(mat, mat, [g.x + (g.w - g.w * 0.9)/2, g.y + (g.h - g.h * 0.9)/2, 0])
-	mat4.scale(mat, mat, [g.w * 0.9, g.h * 0.9, 1])
-	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
+	mat4.identity(m)
+	mat4.translate(m, m, [g.x + (g.w - g.w * 0.9)/2, g.y + (g.h - g.h * 0.9)/2, 0])
+	mat4.scale(m, m, [g.w * 0.9, g.h * 0.9, 1])
+	gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
 	mainShapes.drawArrays2('scanbox')
 }
 

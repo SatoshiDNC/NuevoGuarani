@@ -6,14 +6,15 @@ v.minY = 0; v.maxY = 0
 v.gadgets.push(v.swipeGad = new vp.SwipeGadget(v))
 v.swipeGad.actionFlags = vp.GAF_SWIPEABLE_UPDOWN | vp.GAF_SCROLLABLE_UPDOWN
 v.swipeGad.hide = true
-v.pageFocusFunc = function() {
+v.resetBarcode = function() {
   const v = this
   v.result.hide = true
   v.qrcode.hide = true
   v.qrcode.clear()
   v.queueLayout()
 }
-v.pageBlurFunc = v.pageFocusFunc
+v.pageFocusFunc = v.resetBarcode
+v.pageBlurFunc = v.resetBarcode
 // v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
 // 	g.description = 'Spending keys will never be exported. You must enter them again when importing.'
 v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
@@ -30,9 +31,11 @@ v.gadgets.push(v.spendingkeys = g = new vp.Gadget(v))
 	g.appFunction = function() {
 		const g = this
 	}
-	g.clickFunc = function(index) {
-		const g = this
-    g.state = !g.state; v.setRenderFlag(true)
+	g.clickFunc = function() {
+		const g = this, v = g.viewport
+    g.state = !g.state
+    v.setRenderFlag(true)
+    v.resetBarcode()
 	}
 v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	g.key = 'exportInvoicingKeys'
@@ -48,10 +51,12 @@ v.gadgets.push(v.invoicingkeys = g = new vp.Gadget(v))
 	g.appFunction = function() {
 		const g = this
 	}
-	g.clickFunc = function(index) {
-		const g = this
-    g.state = !g.state; v.setRenderFlag(true)
-	}
+	g.clickFunc = function() {
+		const g = this, v = g.viewport
+    g.state = !g.state
+    v.setRenderFlag(true)
+    v.resetBarcode()
+  }
 v.gadgets.push(v.export = g = new vp.Gadget(v))
   g.color = config.themeColors.uiSettingSelect
   g.nonpersistent = true
@@ -182,7 +187,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       earlyreturn = 1
     }
   
-    // Transitional gray placeholder or white background.
+    // draw transitional gray placeholder or white background
     var w = Math.min(g.w, g.h) * (earlyreturn?0.9:1)
     var x = g.x + (g.w - w) / 2
     var y = g.y + (g.h - w) / 2
@@ -196,16 +201,14 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       new Float32Array(earlyreturn?[0.7,0.7,0.7,1]:[1,1,1,1]))
     gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
     mainShapes.drawArrays2('rect')
-  //console.log(this.busySignal, this.busyCounter)
+
+    // draw icon (if applicable)
     if (this.busySignal) {
       this.busyCounter += 0.01; if (this.busyCounter > Math.PI/2) this.busyCounter -= Math.PI/2
-  
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
-      //mat4.scale(m,m,[w,w,1])
       mat4.rotate(m,m, this.busyCounter, [0,0,1])
       iconFont.draw(-10,7,"\x0A",config.themeColors.uiText,v.mat, m)
-  
     } else if (this.walletSignal) {
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
@@ -213,8 +216,6 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
     } else if (this.errorSignal) {
       mat4.identity(m)
       mat4.translate(m,m,[x+w/2,y+w/2,0])
-      //mat4.scale(m,m,[w,w,1])
-      //mat4.rotate(m,m, this.busyCounter, [0,0,1])
       iconFont.draw(-10,7,"\x0F",config.themeColors.uiLightningYellow,v.mat, m)
     } else if (this.copiedSignal) {
       let str = icap(tr("copied"))
@@ -224,15 +225,11 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       mat4.translate(m,m,[-tw/2,7,0])
       defaultFont.draw(0,0,str,config.themeColors.uiText,v.mat, m)
     }
+
     if (this.busySignal) setTimeout(this.timeoutFunc, 100)
     if (earlyreturn) {
       return
     }
-  //	if (this.qr.length == 1 && (
-  //			this.qr[0].startsWith('lnbc')
-  //	||  this.qr[0].startsWith('lnurl'))) {
-  //		this.queryStatus = true;
-  //	}
   
     var img = document.querySelector('#buf1')
     const rgbToHex = (r, g, b) => {
@@ -241,9 +238,7 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
   
     var i = this.qrindex + 1
     if (i < this.qr.length && this.qrtex.length <= i) {
-  //console.log('render', this.qr[i].substring(0,10));
       var qrd = this.qr[i]
-      //if (qrd == qrd.toLowerCase()) qrd = qrd.toUpperCase()
       QrCreator.render({
         text: qrd, // Sadly, this library doesn't optimize uppercase-only codes.
         radius: 0.0, // 0.0 to 0.5
@@ -274,22 +269,24 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       if (this.qrindex >= this.qr.length) this.qrindex = 0
     }
   
-    const mat = mat4.create()
-    if (this.qr[this.qrindex].toLowerCase().startsWith('lnbc')
-    ||  this.qr[this.qrindex].toLowerCase().startsWith('lnurl')) {
-      const m = mat4.create()
-      mat4.identity(mat)
-      mat4.translate(mat,mat,[v.sw/2,v.sh/2,0])
-      mat4.scale(mat,mat,[w/160,w/160,1])
-      w = Math.min(v.sw, v.sh)
-      for (var i=-1; i<=1; i++) for (var j=-1; j<=1; j++) if (i!=0||j!=0) {
-        mat4.copy(m, mat)
-        defaultFont.draw(-5+i/2,7+j/2, '🗲', [0,0,0,1], v.mat, m)
-      }
-      mat4.copy(m, mat)
-      defaultFont.draw(-5,7, '🗲', customerColors.uiLightningYellow, v.mat, m)
-    }
+    // // draw lightning symbol in center of Lightning barcodes
+    // const mat = mat4.create()
+    // if (this.qr[this.qrindex].toLowerCase().startsWith('lnbc')
+    // ||  this.qr[this.qrindex].toLowerCase().startsWith('lnurl')) {
+    //   const m = mat4.create()
+    //   mat4.identity(mat)
+    //   mat4.translate(mat,mat,[v.sw/2,v.sh/2,0])
+    //   mat4.scale(mat,mat,[w/160,w/160,1])
+    //   w = Math.min(v.sw, v.sh)
+    //   for (var i=-1; i<=1; i++) for (var j=-1; j<=1; j++) if (i!=0||j!=0) {
+    //     mat4.copy(m, mat)
+    //     defaultFont.draw(-5+i/2,7+j/2, '🗲', [0,0,0,1], v.mat, m)
+    //   }
+    //   mat4.copy(m, mat)
+    //   defaultFont.draw(-5,7, '🗲', customerColors.uiLightningYellow, v.mat, m)
+    // }
   
+    // indicate progress in center of multi-frame barcodes
     if (this.qr.length > 1) {
       const frameText = this.qr[this.qrindex].split(':')[0]
       const tw = defaultFont.calcWidth(frameText)
@@ -297,78 +294,17 @@ v.gadgets.push(v.qrcode = g = new vp.Gadget(v))
       gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
       gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
         new Float32Array([1,1,1,1]))
-      mat4.identity(mat)
-      mat4.translate(mat,mat,[g.x + g.w/2 - (tw+2)/2, g.y + g.h/2 - 9, 0])
-      mat4.scale(mat,mat,[tw+2, 18, 1])
-      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
+      mat4.identity(m)
+      mat4.translate(m,m,[g.x + g.w/2 - (tw+2)/2, g.y + g.h/2 - 9, 0])
+      mat4.scale(m,m,[tw+2, 18, 1])
+      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, m)
       mainShapes.drawArrays2('rect')
-      mat4.identity(mat)
-      mat4.translate(mat,mat,[g.x + g.w/2,g.y + g.h/2,0])
-      defaultFont.draw(-tw/2,7, frameText, [0,0,0,1], v.mat, mat)
-    }
-    if (false && this.qr.length >= 8) {
-      function polarSquare(phi){
-        phi = ((phi/Math.PI*180+45)%90-45)/180*Math.PI
-        return 1/Math.cos(phi)
-      }
-      mainShapes.useProg2()
-      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
-      gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-        new Float32Array([0,0,0,1]))
-      mat4.copy(mat, m)
-      mat4.translate(mat,mat,[0.425,0.425,0])
-      mat4.scale(mat,mat,[0.15,0.15,1])
-      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-      // mainShapes.drawArrays2('circle')
-      gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-        new Float32Array([1,1,1,1]))
-      mat4.copy(mat, m)
-      mat4.translate(mat,mat,[0.43,0.43,0])
-      mat4.scale(mat,mat,[0.14,0.14,1])
-      gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-      // mainShapes.drawArrays2('circle')
-      gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-        new Float32Array([0,0,0,1]))
-      mat4.copy(mat, m)
-      mat4.translate(mat,mat,[0.5,0.5,0])
-      mat4.copy(m, mat)
-      // const a = (t/r+this.qrindex)/this.qr.length*2*Math.PI
-      const a = (t/r+this.qrindex)/this.qr.length*8
-      // const s = polarSquare(a)
-      const s = (1/0.9 + 1)/2
-      const br = Math.min(1,8/this.qr.length)
-      const bl = 0.5*s*br
-      const bw = (1 - 1/0.9)/2/2
-      // for (const b of [{a,c:[0,0,0,0.5]}, {a:a+Math.PI/2,c:[0,1,1,1]}, {a:a+Math.PI,c:[0.8,0,0.8,0.5]}, {a:a-Math.PI/2,c:[0.9,0.9,0,1]}]) {
-      for (const b of [{a,c:[0.75,0.75,0.75,1]}, {a:a+2,c:[0.33,1,1,1]}, {a:a+4,c:[0.9,0.66,0.9,1]}, {a:a+6,c:[0.9,0.85,0,1]}]) {
-        gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
-          new Float32Array(b.c))
-        let a = b.a >= 8? b.a - 8 : b.a
-        let ap = a - Math.floor(a/2)*2
-        if (ap < 1 + br + bw) {
-          mat4.copy(mat, m)
-          // mat4.rotate(mat,mat,b.a,[0,0,1])
-          // mat4.translate(mat,mat,[-0.003,-0.5*s,0])
-          // mat4.scale(mat,mat,[0.006,-(1/0.9-1)/2*s,1])
-          mat4.rotate(mat,mat,Math.floor((a)/2)*Math.PI/2,[0,0,1])
-          mat4.translate(mat,mat,[0.5*s*(ap)-bl,-0.5*s-bw/2,0])
-          mat4.scale(mat,mat,[Math.min(bl,bl-bw/2+0.5*s*(1-ap)),bw,1])
-          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-          mainShapes.drawArrays2('rect')
-        }
-        if (ap >= 1 - bw) {
-          mat4.copy(mat, m)
-          mat4.rotate(mat,mat,(Math.floor((a)/2)+1)*Math.PI/2,[0,0,1])
-          mat4.translate(mat,mat,[0.5*s*(a-1-Math.floor(a)%8),-0.5*s-bw/2,0])
-          mat4.scale(mat,mat,[-Math.min(bl,-bw/2+0.5*s*(ap-1)),bw,1])
-          gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uModelViewMatrix'), false, mat)
-          mainShapes.drawArrays2('rect')  
-        }
-      }
+      mat4.identity(m)
+      mat4.translate(m,m,[g.x + g.w/2,g.y + g.h/2,0])
+      defaultFont.draw(-tw/2,7, frameText, [0,0,0,1], v.mat, m)
     }
 
     if (this.qr.length > 1) {
-      //setTimeout(this.timeoutFunc, 1000)
       v.setRenderFlag(true)
     }    
   }
