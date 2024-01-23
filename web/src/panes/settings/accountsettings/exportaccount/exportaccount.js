@@ -78,7 +78,6 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
       //PlatformUtil.DownloadURI(Convert.StringToDataURL(JSON.stringify(data), 'text/json'), filename)
       //v.result.description = `Saved to Downloads as '${filename}'.`
       let payload = JSON.stringify(data)
-      payload = payload.repeat(6)
       const maxLen = 128 + Math.floor(Math.sqrt(payload.length))
       let headerLen = 4
       let notSuccessful = true

@@ -116,46 +116,29 @@ v.switchedToFunc = function() {
 				if (this.results.length == 0) {
           this.results = Array(n).join(".").split(".")
 				}
+        this.currentSlot = m-1
 				if (n == this.results.length && this.results[m-1] != result.data.substring(colonPos+1)) {
 					this.results[m-1] = payload
-          this.currentSlot = m-1
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
 						beeptype = 'click' // 'qr-part' gets annoying
 						break
 					}
-          beeptype = 'click' ////////////////////////////////////////////////
 					if (beeptype == 'qr-scan') {
 						var data = this.results.join('').trim()
-            console.log(data)
             if ((ob = tryParseJSONObject(data)) !== false) {
-              console.log(Convert.JSONToString(ob))
-              v.stopScanning()
-              v.qrscanner.hide = true
-              v.queueLayout()
-            // }
-						// var data = receipt.fromParts(this.results)
-						// if (data) {
-						// 	this.scanner.stop()
-						// 	this.scanner.destroy()
-						// 	this.scanner = undefined
-						// 	this.playing = false
-						// 	this.timeupdate = false
-						// 	this.updateFlag = false
-						// 	delete this.videoDims
-						// 	displayreceipt.setData(data)
-						// 	pmtrcptmain.userY = 0
-						// 	var root = menudiv, v = displayreceipt
-						// 	root.b = v; v.parent = root
-						// 	root.relayout()
 						} else {
 							beeptype = 'error'
+              console.log('Could not decode joined data')
 						}
-					}
+            v.stopScanning()
+            v.qrscanner.hide = true
+            v.queueLayout()
+        }
 				}
 				vp.beep(beeptype)
 			} else {
-				console.log('Unrecognized QR code:', result)
+				console.log('Unrecognized QR code')
 			}
 		},
 		{
@@ -379,7 +362,7 @@ v.renderFuncAux = function() {
   // Transitional gray placeholder or white background.
   const m = mat4.create()
   const crosshairColor = [1,1,1,1]
-  if (g.busySignal || g.walletSignal || g.errorSignal || g.copiedSignal) {
+	if (!v.videoDims || !v.vidPos || !v.updateFlag) {
     var w = Math.min(g.w, g.h) // * (earlyreturn?0.9:1)
     var x = g.x + (g.w - w) / 2
     var y = g.y + (g.h - w) / 2
@@ -487,15 +470,6 @@ v.renderFuncAux = function() {
 			t[ 8],t[ 9],t[10],t[11],
 			t[12],t[13],t[14],t[15],
 		)
-    {
-      const u = vec4.create()
-      vec4.transformMat4(u,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
-      const w = vec4.create()
-      vec4.transformMat4(w,[p[1].x-p[0].x,p[1].y-p[0].y,0,0],m); // console.log(Convert.JSONToString(v))
-      vec4.transformMat4(w,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
-      vec4.transformMat4(w,w,v.mat); // console.log(Convert.JSONToString(v))
-      console.log(Math.atan2(u[1],u[0]).toFixed(1), Math.atan2(w[1],w[0]).toFixed(1))
-    }
     gl.disable(gl.DEPTH_TEST)
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
 		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
@@ -538,32 +512,23 @@ v.renderFuncAux = function() {
         }
       }
 		}
-    scanned = false
-		for (let i=this.currentSlot; i<=this.currentSlot+1; i++) {
-      prevScanned = scanned
-      scanned = i==this.currentSlot? true: false
-      if (scanned) total++
-      if (scanned && !prevScanned) {
-        beg = Math.floor((i / parts + offset) * quads) % quads
-      } else if (!scanned && prevScanned) {
-        end = Math.floor((i / parts + offset) * quads) % quads
-        if (end < beg) {
-          gl.drawArrays(mainShapes.typ2.qrprogress,
-            mainShapes.beg2.qrprogress + beg * 2,
-            (quads - beg) * 2 + 2)
-          gl.drawArrays(mainShapes.typ2.qrprogress,
-            mainShapes.beg2.qrprogress + 0 * 2,
-            end * 2 + 2)
-        } else if (end > beg) {
-          gl.drawArrays(mainShapes.typ2.qrprogress,
-            mainShapes.beg2.qrprogress + beg * 2,
-            (end - beg) * 2 + 2)
-        } else if (total == parts) {
-          gl.drawArrays(mainShapes.typ2.qrprogress,
-            mainShapes.beg2.qrprogress, mainShapes.len2.qrprogress)
-        }
-      }
-		}
+		gl.uniform4fv(gl.getUniformLocation(prog2, 'overallColor'),
+			new Float32Array([0,0.5,1,Math.sqrt(this.scanner.intensity)]))
+    end = Math.floor(((this.scanner.currentSlot+1) / parts + offset) * quads) % quads
+    beg = end - 1
+    if (beg < 0) beg = quads - 1
+    if (end < beg) {
+      gl.drawArrays(mainShapes.typ2.qrprogress,
+        mainShapes.beg2.qrprogress + beg * 2,
+        (quads - beg) * 2 + 2)
+      gl.drawArrays(mainShapes.typ2.qrprogress,
+        mainShapes.beg2.qrprogress + 0 * 2,
+        end * 2 + 2)
+    } else if (end > beg) {
+      gl.drawArrays(mainShapes.typ2.qrprogress,
+        mainShapes.beg2.qrprogress + beg * 2,
+        (end - beg) * 2 + 2)
+    }
 		this.scanner.intensity *= 0.95
 	}
 
