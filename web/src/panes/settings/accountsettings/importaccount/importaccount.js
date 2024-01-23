@@ -272,6 +272,8 @@ v.layoutFuncAux = function() {
 	// 	g.autoHull()
 	// }
 }
+console.log('globalThis', globalThis)
+
 v.renderFuncAux = function() {
 
   function adj(m) { // Compute the adjugate of m
@@ -485,10 +487,10 @@ v.renderFuncAux = function() {
 			t[12],t[13],t[14],t[15],
 		)
     {
-      const v = vec4.create()
-      vec4.transformMat4(v,[0,0,0,0],m); // console.log(Convert.JSONToString(v))
-      vec4.transformMat4(v,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
-      console.log(Math.atan2(v[1],v[0]))
+      const u = vec4.create()
+      vec4.transformMat4(u,[0,0,0,0],m); // console.log(Convert.JSONToString(v))
+      vec4.transformMat4(u,[1,0,0,0],m); // console.log(Convert.JSONToString(v))
+      console.log(Math.atan2(u[1],u[0]), v.videoDims[0], v.videoDims[1])
     }
     gl.disable(gl.DEPTH_TEST)
 		gl.uniformMatrix4fv(gl.getUniformLocation(prog2, 'uProjectionMatrix'), false, v.mat)
