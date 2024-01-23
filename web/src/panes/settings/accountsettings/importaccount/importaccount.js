@@ -120,10 +120,10 @@ v.switchedToFunc = function() {
 					this.results[m-1] = payload
 					beeptype = 'qr-scan'
 					for (var i=0; i<n; i++) if (this.results[i] == '') {
-						beeptype = 'qr-part'
+						beeptype = 'click' // 'qr-part' gets annoying
 						break
 					}
-          beeptype = 'qr-part' ////////////////////////////////////////////////
+          beeptype = 'click' ////////////////////////////////////////////////
 					if (beeptype == 'qr-scan') {
 						var data = this.results.join('').trim()
             console.log(data)
@@ -454,7 +454,7 @@ v.renderFuncAux = function() {
     gl.uniformMatrix4fv(gl.getUniformLocation(prog4, 'uModelViewMatrix'), false, mat)
     gl.uniform4fv(gl.getUniformLocation(prog4, 'overallColor'), new Float32Array([1,1,1,1]))
     const vs = v.viewScale
-    gl.scissor(v.x + v.userX + Math.ceil(g.x * vs), v.H - v.y + v.userY/v.viewScale - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs), Math.floor(g.h * vs))
+    gl.scissor(v.x + v.userX*v.viewScale + Math.ceil(g.x * vs), v.H - v.y + v.userY*v.viewScale - Math.ceil((g.y + g.h) * vs), Math.floor(g.w * vs), Math.floor(g.h * vs))
     gl.enable(gl.SCISSOR_TEST)
     mainShapes.drawArrays4('rect')
     gl.disable(gl.SCISSOR_TEST)
