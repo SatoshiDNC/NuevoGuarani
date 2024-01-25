@@ -81,6 +81,14 @@ v.switchedToFunc = function() {
 	this.scanner = new QrScanner(
 		this.videoEl,
 		function(result) {
+      function doImport(o) {
+        console.log('importing from', Convert.JSONToString(o))
+        PlatformUtil.DatabasePut('accounts', o.accounts[0].data, o.accounts[0].key, () => {
+          PlatformUtil.DatabasePut('settings', o.accounts[0].data.id, 'selectedAccount')
+          o.settings.map(v => PlatformUtil.DatabasePut('settings', v.data, v.key))
+          openDatabase()
+        })
+      }
 			this.intensity = 0.5
 			var repeat = (result.data == this.lastresult.data)
 			this.lastresult = result
@@ -107,6 +115,23 @@ v.switchedToFunc = function() {
 					if (beeptype == 'qr-scan') {
 						var data = this.results.join('').trim()
             if ((ob = tryParseJSONObject(data)) !== false) {
+              if (ob.accounts.length == 1) {
+                const a = ob.accounts[0]
+                if (accounts.reduce((i,v) => i || v.key == a.id, false)) {
+                  PlatformUtil.UserConfirm("This account exists. Overwrite?", (y) => {
+                    if (y) {
+                      doImport(ob)
+                    }
+                    settingsbuttons.backbutton.clickFunc()
+                  })
+                } else {
+                  doImport(ob)
+                  settingsbuttons.backbutton.clickFunc()
+                }
+              } else {
+                beeptype = 'error'
+                console.log('Data did not contain exactly one account')
+              }
 						} else {
 							beeptype = 'error'
               console.log('Could not decode joined data')

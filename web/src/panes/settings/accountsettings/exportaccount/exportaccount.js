@@ -75,7 +75,7 @@ v.gadgets.push(v.export = g = new vp.Gadget(v))
     let started = 0
     let finished = 0
 
-    const objectStores = ['accounts', 'settings', 'sales', 'prices', 'inventory', 'barcodes', 'nostrmarket-orders', 'emoji', 'state', 'orders']
+    const objectStores = ['accounts', 'settings'] // , 'sales', 'prices', 'inventory', 'barcodes', 'nostrmarket-orders', 'emoji', 'state', 'orders']
     const tr = db.transaction(objectStores, "readonly")
 
     const finish = () => {

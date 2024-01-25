@@ -51,9 +51,12 @@ class PlatformUtil {
 
   static UserPrompt(promptText, defaultValue, okCallback, cancelCallback) {
     if (typeof Android !== 'undefined') {
-      const okSlot = PlatformUtil.InitCallback(okCallback)
+      const okSlot = PlatformUtil.InitCallback((slot, result) => {
+        if (result !== null) okCallback(result)
+        else if (cancelCallback) cancelCallback()
+        PlatformUtil.DeleteCallback(okSlot)
+      })
       Android.userPrompt(promptText, defaultValue, okSlot)
-      PlatformUtil.DeleteCallback(okSlot)
     } else {
       const result = prompt(promptText, defaultValue)
       if (result !== null) okCallback(result)
@@ -63,9 +66,11 @@ class PlatformUtil {
 
   static UserConfirm(promptText, callback) {
     if (typeof Android !== 'undefined') {
-      const slot = PlatformUtil.InitCallback(callback)
+      const slot = PlatformUtil.InitCallback((slot,result) => {
+        callback(result)
+        PlatformUtil.DeleteCallback(slot)
+      })
       Android.userConfirm(promptText, slot)
-      PlatformUtil.DeleteCallback(slot)
     } else {
       callback(confirm(promptText))
     }
@@ -73,9 +78,11 @@ class PlatformUtil {
 
   static UserAck(promptText, callback) {
     if (typeof Android !== 'undefined') {
-      const slot = PlatformUtil.InitCallback(callback)
+      const slot = PlatformUtil.InitCallback((slot, result) => {
+        callback(result)
+        PlatformUtil.DeleteCallback(slot)
+      })
       Android.userAck(promptText, slot)
-      PlatformUtil.DeleteCallback(slot)
     } else {
       callback(alert(promptText))
     }
