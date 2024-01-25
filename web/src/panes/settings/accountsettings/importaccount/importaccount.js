@@ -117,7 +117,7 @@ v.switchedToFunc = function() {
             if ((ob = tryParseJSONObject(data)) !== false) {
               if (ob.accounts.length == 1) {
                 const a = ob.accounts[0]
-                if (accounts.reduce((i,v) => i || v.key == a.id, false)) {
+                if (accounts.reduce((i,v) => i || v.id == a.key, false)) {
                   PlatformUtil.UserConfirm("This account exists. Overwrite?", (y) => {
                     if (y) {
                       doImport(ob)
